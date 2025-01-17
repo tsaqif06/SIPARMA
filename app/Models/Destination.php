@@ -20,40 +20,44 @@ class Destination extends Model
         'close_time',
         'operational_status',
         'weekday_price',
-        'weekend_price',
+        'weekend_price'
     ];
 
-    // Relasi ke tabel tbl_restaurants
     public function restaurants()
     {
         return $this->hasMany(Restaurant::class, 'destination_id');
     }
 
-    // Relasi ke tabel tbl_transactions
+    public function adminDestinations()
+    {
+        return $this->hasMany(AdminDestination::class, 'destination_id');
+    }
+
+    public function gallery()
+    {
+        return $this->hasMany(GalleryDestination::class, 'destination_id');
+    }
+
     public function transactions()
     {
         return $this->hasMany(Transaction::class, 'destination_id');
     }
 
-    // Relasi ke tabel tbl_reviews
     public function reviews()
     {
         return $this->hasMany(Review::class, 'destination_id');
     }
 
-    // Relasi ke tabel tbl_complaints
     public function complaints()
     {
         return $this->hasMany(Complaint::class, 'destination_id');
     }
 
-    // Relasi ke tabel tbl_admin_destinations
-    public function admin()
+    public function promo()
     {
-        return $this->hasOne(AdminDestination::class, 'destination_id');
+        return $this->hasMany(Promo::class, 'destination_id');
     }
 
-    // Relasi ke tabel tbl_midtrans
     public function midtrans()
     {
         return $this->hasOne(Midtrans::class, 'destination_id');

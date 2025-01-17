@@ -16,7 +16,7 @@ class Review extends Model
         'destination_id',
         'restaurant_id',
         'rating',
-        'comment',
+        'comment'
     ];
 
     public function user()

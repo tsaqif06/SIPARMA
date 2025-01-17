@@ -5,24 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Promo extends Model
+class GalleryRestaurant extends Model
 {
     use HasFactory;
 
-    protected $table = 'tbl_promos';
-
     protected $fillable = [
-        'destination_id',
         'restaurant_id',
-        'discount',
-        'valid_from',
-        'valid_until'
+        'image_url',
+        'image_type'
     ];
-
-    public function destination()
-    {
-        return $this->belongsTo(Destination::class, 'destination_id');
-    }
 
     public function restaurant()
     {

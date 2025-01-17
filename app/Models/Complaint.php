@@ -16,7 +16,7 @@ class Complaint extends Model
         'destination_id',
         'restaurant_id',
         'complaint_text',
-        'status',
+        'status'
     ];
 
     public function user()

@@ -24,35 +24,36 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'profile_picture'
     ];
 
-    // Relasi ke tabel tbl_reviews
-    public function reviews()
+    public function adminDestinations()
     {
-        return $this->hasMany(Review::class, 'user_id');
+        return $this->hasMany(AdminDestination::class, 'user_id');
     }
 
-    // Relasi ke tabel tbl_transactions
+    public function adminRestaurants()
+    {
+        return $this->hasMany(AdminRestaurant::class, 'user_id');
+    }
+
     public function transactions()
     {
         return $this->hasMany(Transaction::class, 'user_id');
     }
 
-    // Relasi ke tabel tbl_complaints
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'user_id');
+    }
+
     public function complaints()
     {
         return $this->hasMany(Complaint::class, 'user_id');
     }
 
-    // Relasi ke tabel tbl_admin_destinations (1 user hanya memiliki 1 admin destination)
-    public function adminDestination()
+    public function recommendations()
     {
-        return $this->hasOne(AdminDestination::class, 'user_id');
-    }
-
-    // Relasi ke tabel tbl_admin_restaurants (1 user hanya memiliki 1 admin restaurant)
-    public function adminRestaurant()
-    {
-        return $this->hasOne(AdminRestaurant::class, 'user_id');
+        return $this->hasMany(Recommendation::class, 'user_id');
     }
 }

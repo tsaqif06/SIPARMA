@@ -16,7 +16,7 @@ class Transaction extends Model
         'destination_id',
         'amount',
         'status',
-        'transaction_code',
+        'transaction_code'
     ];
 
     public function user()

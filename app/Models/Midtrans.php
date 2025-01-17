@@ -9,13 +9,11 @@ class Midtrans extends Model
 {
     use HasFactory;
 
-    protected $table = 'tbl_midtrans';
-
     protected $fillable = [
         'destination_id',
         'client_key',
         'server_key',
-        'is_active',
+        'is_active'
     ];
 
     public function destination()

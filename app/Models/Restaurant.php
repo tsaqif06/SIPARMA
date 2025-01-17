@@ -16,32 +16,41 @@ class Restaurant extends Model
         'description',
         'location',
         'destination_id',
-        'menu_images',
-        'promo_description',
-        'status',
+        'status'
     ];
 
-    // Relasi ke tabel tbl_reviews
+    public function destination()
+    {
+        return $this->belongsTo(Destination::class, 'destination_id');
+    }
+
+    public function menus()
+    {
+        return $this->hasMany(RestaurantMenu::class, 'restaurant_id');
+    }
+
+    public function gallery()
+    {
+        return $this->hasMany(GalleryRestaurant::class, 'restaurant_id');
+    }
+
+    public function adminRestaurants()
+    {
+        return $this->hasMany(AdminRestaurant::class, 'restaurant_id');
+    }
+
     public function reviews()
     {
         return $this->hasMany(Review::class, 'restaurant_id');
     }
 
-    // Relasi ke tabel tbl_complaints
     public function complaints()
     {
         return $this->hasMany(Complaint::class, 'restaurant_id');
     }
 
-    // Relasi ke tabel tbl_admin_restaurants
-    public function admin()
+    public function promo()
     {
-        return $this->hasOne(AdminRestaurant::class, 'restaurant_id');
-    }
-
-    // Relasi ke tabel tbl_destinations
-    public function destination()
-    {
-        return $this->belongsTo(Destination::class, 'destination_id');
+        return $this->hasMany(Promo::class, 'restaurant_id');
     }
 }

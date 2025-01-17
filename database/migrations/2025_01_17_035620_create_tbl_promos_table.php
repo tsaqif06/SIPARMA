@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tbl_promotions', function (Blueprint $table) {
+        Schema::create('tbl_promos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('destination_id')->nullable()->constrained('tbl_destinations');
             $table->foreignId('restaurant_id')->nullable()->constrained('tbl_restaurants');
-            $table->string('promo_code', 100);
             $table->decimal('discount', 10, 2);
             $table->date('valid_from');
             $table->date('valid_until');
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tbl_promotions');
+        Schema::dropIfExists('tbl_promos');
     }
 };
