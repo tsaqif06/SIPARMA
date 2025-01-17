@@ -9,6 +9,7 @@ class GalleryDestination extends Model
 {
     use HasFactory;
 
+    protected $table = 'tbl_gallery_destinations';
     protected $fillable = [
         'destination_id',
         'image_url',
