@@ -16,11 +16,9 @@ return new class extends Migration
             $table->string('name', 100);
             $table->text('description');
             $table->string('location', 255);
-            $table->foreignId('destination_id')->constrained('tbl_destinations')->onDelete('cascade');
-            $table->text('menu_images')->nullable();
-            $table->text('promo_description')->nullable();
+            $table->foreignId('destination_id')->constrained('tbl_destinations');
             $table->enum('status', ['active', 'inactive']);
-            $table->timestamps();
+            $table->timestamps(0);
         });
     }
 

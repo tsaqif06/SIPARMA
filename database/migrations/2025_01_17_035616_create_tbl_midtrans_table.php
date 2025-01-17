@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tbl_admin_destinations', function (Blueprint $table) {
+        Schema::create('tbl_midtrans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('tbl_users');
             $table->foreignId('destination_id')->constrained('tbl_destinations');
-            $table->timestamps();
+            $table->string('client_key', 255);
+            $table->string('server_key', 255);
+            $table->boolean('is_active')->default(true);
+            $table->timestamps(0);
         });
     }
 
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tbl_admin_destinations');
+        Schema::dropIfExists('tbl_midtrans');
     }
 };

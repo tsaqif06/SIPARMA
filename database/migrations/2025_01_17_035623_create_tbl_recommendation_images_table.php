@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tbl_midtrans', function (Blueprint $table) {
+        Schema::create('tbl_recommendation_images', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('destination_id')->constrained('tbl_destinations')->onDelete('cascade');
-            $table->string('client_key', 255);
-            $table->string('server_key', 255);
-            $table->boolean('is_active');
-            $table->timestamps();
+            $table->foreignId('recommendation_id')->constrained('tbl_recommendations');
+            $table->text('image_url');
+            $table->timestamps(0);
         });
     }
 
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tbl_midtrans');
+        Schema::dropIfExists('tbl_recommendation_images');
     }
 };

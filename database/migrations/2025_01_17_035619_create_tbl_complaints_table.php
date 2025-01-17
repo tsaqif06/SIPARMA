@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('tbl_complaints', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('tbl_users')->onDelete('cascade');
-            $table->foreignId('destination_id')->constrained('tbl_destinations')->onDelete('cascade');
-            $table->foreignId('restaurant_id')->constrained('tbl_restaurants')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('tbl_users');
+            $table->foreignId('destination_id')->nullable()->constrained('tbl_destinations');
+            $table->foreignId('restaurant_id')->nullable()->constrained('tbl_restaurants');
             $table->text('complaint_text');
-            $table->enum('status', ['open', 'resolved', 'pending']);
-            $table->timestamps();
+            $table->enum('status', ['new', 'resolved', 'closed']);
+            $table->timestamps(0);
         });
     }
 
