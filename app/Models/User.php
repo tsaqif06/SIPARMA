@@ -17,29 +17,42 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    protected $table = 'tbl_users';
+
     protected $fillable = [
         'name',
         'email',
         'password',
+        'role',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    // Relasi ke tabel tbl_reviews
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'user_id');
+    }
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
+    // Relasi ke tabel tbl_transactions
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class, 'user_id');
+    }
+
+    // Relasi ke tabel tbl_complaints
+    public function complaints()
+    {
+        return $this->hasMany(Complaint::class, 'user_id');
+    }
+
+    // Relasi ke tabel tbl_admin_destinations (1 user hanya memiliki 1 admin destination)
+    public function adminDestination()
+    {
+        return $this->hasOne(AdminDestination::class, 'user_id');
+    }
+
+    // Relasi ke tabel tbl_admin_restaurants (1 user hanya memiliki 1 admin restaurant)
+    public function adminRestaurant()
+    {
+        return $this->hasOne(AdminRestaurant::class, 'user_id');
+    }
 }
