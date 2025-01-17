@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role', ['user', 'admin_wisata', 'admin_restoran', 'superadmin']);
             $table->string('profile_picture', 255)->nullable();
-            $table->timestamps(0);
+            $table->timestamps();
         });
     }
 

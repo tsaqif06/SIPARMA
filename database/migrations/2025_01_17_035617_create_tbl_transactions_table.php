@@ -18,7 +18,7 @@ return new class extends Migration
             $table->decimal('amount', 10, 2);
             $table->enum('status', ['pending', 'paid', 'failed']);
             $table->string('transaction_code', 100);
-            $table->timestamps(0);
+            $table->timestamps();
         });
     }
 

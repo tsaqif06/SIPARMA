@@ -22,7 +22,7 @@ return new class extends Migration
             $table->enum('operational_status', ['open', 'closed', 'holiday']);
             $table->decimal('weekday_price', 10, 2);
             $table->decimal('weekend_price', 10, 2);
-            $table->timestamps(0);
+            $table->timestamps();
         });
     }
 

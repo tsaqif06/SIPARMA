@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('recommendation_id')->constrained('tbl_recommendations');
             $table->text('image_url');
-            $table->timestamps(0);
+            $table->timestamps();
         });
     }
 

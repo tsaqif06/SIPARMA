@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('destination_name', 100);
             $table->text('description');
             $table->enum('status', ['pending', 'approved', 'rejected']);
-            $table->timestamps(0);
+            $table->timestamps();
         });
     }
 

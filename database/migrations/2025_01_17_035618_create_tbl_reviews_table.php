@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('restaurant_id')->nullable()->constrained('tbl_restaurants');
             $table->integer('rating');
             $table->text('comment');
-            $table->timestamps(0);
+            $table->timestamps();
         });
     }
 

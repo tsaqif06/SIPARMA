@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('restaurant_id')->nullable()->constrained('tbl_restaurants');
             $table->text('complaint_text');
             $table->enum('status', ['new', 'resolved', 'closed']);
-            $table->timestamps(0);
+            $table->timestamps();
         });
     }
 

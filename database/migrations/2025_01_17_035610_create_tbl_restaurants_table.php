@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('location', 255);
             $table->foreignId('destination_id')->constrained('tbl_destinations');
             $table->enum('status', ['active', 'inactive']);
-            $table->timestamps(0);
+            $table->timestamps();
         });
     }
 

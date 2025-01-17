@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('client_key', 255);
             $table->string('server_key', 255);
             $table->boolean('is_active')->default(true);
-            $table->timestamps(0);
+            $table->timestamps();
         });
     }
 

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('restaurant_id')->constrained('tbl_restaurants');
             $table->enum('approval_status', ['pending', 'approved', 'rejected']);
             $table->text('ownership_docs')->nullable();
-            $table->timestamps(0);
+            $table->timestamps();
         });
     }
 

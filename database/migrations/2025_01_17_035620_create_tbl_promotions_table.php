@@ -19,7 +19,7 @@ return new class extends Migration
             $table->decimal('discount', 10, 2);
             $table->date('valid_from');
             $table->date('valid_until');
-            $table->timestamps(0);
+            $table->timestamps();
         });
     }
 

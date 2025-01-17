@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('menu_name', 100);
             $table->text('menu_description');
             $table->decimal('menu_price', 10, 2);
-            $table->timestamps(0);
+            $table->timestamps();
         });
     }
 

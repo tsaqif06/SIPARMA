@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('restaurant_id')->constrained('tbl_restaurants');
             $table->string('image_url', 255);
             $table->enum('image_type', ['place', 'menu', 'promo']);
-            $table->timestamps(0);
-        }); 
+            $table->timestamps();
+        });
     }
 
     /**
