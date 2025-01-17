@@ -10,6 +10,7 @@ class DestinationFactory extends Factory
     {
         return [
             'name' => $this->faker->city(),
+            'type' => $this->faker->randomElement(['alam', 'wahana']),
             'description' => $this->faker->paragraph(),
             'location' => $this->faker->address(),
             'price' => $this->faker->randomFloat(2, 10, 100),

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('tbl_destinations', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100);
+            $table->enum('type', ['alam', 'wahana']);
             $table->text('description');
             $table->string('location', 255);
             $table->decimal('price', 10, 2);
