@@ -9,7 +9,8 @@
                 @foreach ($promo as $prom)
                     <div class="col-md-3">
                         <div class="card">
-                            <img src="{{ $prom->image_url ?? 'default.jpg' }}" class="card-img-top" alt="{{ $prom->name }}">
+                            <img src="{{ $prom->image_url ?? 'https://picsum.photos/200.webp' }}" class="card-img-top"
+                                alt="{{ $prom->name }}">
                             <div class="card-body">
                                 <h5 class="card-title">{{ $prom->name }}</h5>
                                 <!-- Menampilkan rating rata-rata -->
@@ -34,8 +35,8 @@
                 @foreach ($destinations as $destination)
                     <div class="col-md-3">
                         <div class="card">
-                            <img src="{{ $destination->image_url ?? 'https://picsum.photos/200' }}" class="card-img-top"
-                                alt="{{ $destination->name }}">
+                            <img src="{{ $destination->image_url ?? 'https://picsum.photos/200.webp' }}"
+                                class="card-img-top" alt="{{ $destination->name }}">
                             <div class="card-body">
                                 <h5 class="card-title">{{ $destination->name }}</h5>
                                 <!-- Menampilkan rating rata-rata -->
