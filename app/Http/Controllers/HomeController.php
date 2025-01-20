@@ -17,31 +17,31 @@ class HomeController extends Controller
         $categories = [
             'alams' => Destination::withAvg('reviews', 'rating')->where('type', 'alam')->limit(4)->get(),
             'wahanas' => Destination::withAvg('reviews', 'rating')->where('type', 'wahana')->limit(4)->get(),
-            'restaurants' => Destination::withAvg('reviews', 'rating')->where('type', 'sejarah')->limit(4)->get(),
+            'restaurants' => Restaurant::withAvg('reviews', 'rating')->limit(4)->get(),
         ];
 
-        // Ambil promo destinasi yang valid
-        $promoDestinations = Destination::with('promo')
-            ->withAvg('reviews', 'rating')  // Mendapatkan rata-rata rating
-            ->whereHas('promo', function ($query) {
-                $query->where('discount', '>', 0)
-                    ->whereDate('valid_from', '<=', now())
-                    ->whereDate('valid_until', '>=', now());
-            })
-            ->limit(4)
-            ->get();
+        $promos = [
+            'destinations' => Destination::with('promo')
+                ->withAvg('reviews', 'rating')
+                ->whereHas('promo', function ($query) {
+                    $query->where('discount', '>', 0)
+                        ->whereDate('valid_from', '<=', now())
+                        ->whereDate('valid_until', '>=', now());
+                })
+                ->limit(4)
+                ->get(),
+            'restaurants' => Restaurant::with('promo')
+                ->withAvg('reviews', 'rating')
+                ->whereHas('promo', function ($query) {
+                    $query->where('discount', '>', 0)
+                        ->whereDate('valid_from', '<=', now())
+                        ->whereDate('valid_until', '>=', now());
+                })
+                ->limit(4)
+                ->get(),
+        ];
 
-        $promoRestaurants = Restaurant::with('promo')
-            ->withAvg('reviews', 'rating')  // Mendapatkan rata-rata rating
-            ->whereHas('promo', function ($query) {
-                $query->where('discount', '>', 0)
-                    ->whereDate('valid_from', '<=', now())
-                    ->whereDate('valid_until', '>=', now());
-            })
-            ->limit(4)
-            ->get();
-
-        return view('home.index', compact('categories', 'promoDestinations', 'promoRestaurants'));
+        return view('home.index', compact('categories', 'promos'));
     }
 
     /**

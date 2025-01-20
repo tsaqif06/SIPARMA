@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 
 class RestaurantController extends Controller
 {
-    public function show($id)
+    public function show($slug)
     {
-        $restaurant = Restaurant::findOrFail($id);
+        $restaurant = Restaurant::where('slug', $slug)->firstOrFail();
 
         return view('restaurants.show', compact('restaurant'));
     }

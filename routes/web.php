@@ -11,9 +11,9 @@ Route::get('/wahana', [HomeController::class, 'wisataWahana'])->name('home.wahan
 Route::get('/restoran', [HomeController::class, 'restoran'])->name('home.restoran');
 
 
-Route::get('/destinations/{id}', [DestinationController::class, 'show'])->name('destinations.show');
+Route::get('/destinations/{slug}', [DestinationController::class, 'show'])->name('destinations.show');
 
-Route::get('/restaurants/{id}', [RestaurantController::class, 'show'])->name('restaurants.show');
+Route::get('/restaurants/{slug}', [RestaurantController::class, 'show'])->name('restaurants.show');
 
 Route::get('/complain', function () {
     return view('complain.index');
