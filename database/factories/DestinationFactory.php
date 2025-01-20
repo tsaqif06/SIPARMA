@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class DestinationFactory extends Factory
@@ -10,6 +11,9 @@ class DestinationFactory extends Factory
     {
         return [
             'name' => $this->faker->city(),
+            'slug' => function (array $attributes) {
+                return Str::slug($attributes['name']);
+            },
             'type' => $this->faker->randomElement(['alam', 'wahana']),
             'description' => $this->faker->paragraph(),
             'location' => $this->faker->address(),

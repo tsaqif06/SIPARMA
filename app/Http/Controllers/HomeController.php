@@ -9,15 +9,20 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
     /**
-     * Menampilkan halaman wisata alam.
+     * Menampilkan halaman utama (Home).
      */
-    public function wisataAlam()
+    public function index()
     {
-        // Destinasi alam yang direkomendasikan
-        $recommendedDestinations = Destination::where('type', 'alam')->limit(4)->get();
+        // Ambil destinasi untuk setiap kategori
+        $categories = [
+            'alams' => Destination::withAvg('reviews', 'rating')->where('type', 'alam')->limit(4)->get(),
+            'wahanas' => Destination::withAvg('reviews', 'rating')->where('type', 'wahana')->limit(4)->get(),
+            'restaurants' => Destination::withAvg('reviews', 'rating')->where('type', 'sejarah')->limit(4)->get(),
+        ];
 
-        // Destinasi alam dengan promo yang valid
-        $promoDestinations = Destination::where('type', 'alam')
+        // Ambil promo destinasi yang valid
+        $promoDestinations = Destination::with('promo')
+            ->withAvg('reviews', 'rating')  // Mendapatkan rata-rata rating
             ->whereHas('promo', function ($query) {
                 $query->where('discount', '>', 0)
                     ->whereDate('valid_from', '<=', now())
@@ -26,19 +31,8 @@ class HomeController extends Controller
             ->limit(4)
             ->get();
 
-        return view('home.alam', compact('recommendedDestinations', 'promoDestinations'));
-    }
-
-    /**
-     * Menampilkan halaman wisata wahana.
-     */
-    public function wisataWahana()
-    {
-        // Destinasi wahana yang direkomendasikan
-        $recommendedDestinations = Destination::where('type', 'wahana')->limit(4)->get();
-
-        // Destinasi wahana dengan promo yang valid
-        $promoDestinations = Destination::where('type', 'wahana')
+        $promoRestaurants = Restaurant::with('promo')
+            ->withAvg('reviews', 'rating')  // Mendapatkan rata-rata rating
             ->whereHas('promo', function ($query) {
                 $query->where('discount', '>', 0)
                     ->whereDate('valid_from', '<=', now())
@@ -47,29 +41,32 @@ class HomeController extends Controller
             ->limit(4)
             ->get();
 
-        return view('home.wahana', compact('recommendedDestinations', 'promoDestinations'));
+        return view('home.index', compact('categories', 'promoDestinations', 'promoRestaurants'));
     }
 
     /**
-     * Menampilkan halaman restoran.
+     * Menampilkan halaman Promo (destinasi dan restoran dengan promo).
      */
-    public function restoran()
+    public function promo()
     {
-        // Restoran dengan rating tertinggi berdasarkan rata-rata rating dari review
-        $topRatedRestaurants = Restaurant::withAvg('reviews', 'rating')  // Menghitung rata-rata rating
-            ->orderBy('reviews_avg_rating', 'desc')  // Urutkan berdasarkan rata-rata rating
-            ->limit(4)
+        // Promo destinasi yang valid
+        $promoDestinations = Destination::with('promo')
+            ->whereHas('promo', function ($query) {
+                $query->where('discount', '>', 0)
+                    ->whereDate('valid_from', '<=', now())
+                    ->whereDate('valid_until', '>=', now());
+            })
             ->get();
 
-        // Restoran dengan promo yang valid
-        $promoRestaurants = Restaurant::whereHas('promo', function ($query) {
-            $query->where('discount', '>', 0)
-                ->whereDate('valid_from', '<=', now())
-                ->whereDate('valid_until', '>=', now());
-        })
-            ->limit(4)
+        // Promo restoran yang valid
+        $promoRestaurants = Restaurant::with('promo')
+            ->whereHas('promo', function ($query) {
+                $query->where('discount', '>', 0)
+                    ->whereDate('valid_from', '<=', now())
+                    ->whereDate('valid_until', '>=', now());
+            })
             ->get();
 
-        return view('home.restoran', compact('topRatedRestaurants', 'promoRestaurants'));
+        return view('home.promo', compact('promoDestinations', 'promoRestaurants'));
     }
 }

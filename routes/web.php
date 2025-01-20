@@ -5,9 +5,10 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\RestaurantController;
 
-Route::get('/home/alam', [HomeController::class, 'wisataAlam'])->name('home.alam');
-Route::get('/home/wahana', [HomeController::class, 'wisataWahana'])->name('home.wahana');
-Route::get('/home/restoran', [HomeController::class, 'restoran'])->name('home.restoran');
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
+Route::get('/alam', [HomeController::class, 'wisataAlam'])->name('home.alam');
+Route::get('/wahana', [HomeController::class, 'wisataWahana'])->name('home.wahana');
+Route::get('/restoran', [HomeController::class, 'restoran'])->name('home.restoran');
 
 
 Route::get('/destinations/{id}', [DestinationController::class, 'show'])->name('destinations.show');
