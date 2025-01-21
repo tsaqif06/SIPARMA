@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tbl_users', function (Blueprint $table) {
+        Schema::create('tbl_gallery_destinations', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 100);
-            $table->string('email', 100)->unique();
-            $table->string('password');
-            $table->enum('role', ['user', 'admin_wisata', 'admin_restoran', 'superadmin']);
-            $table->string('profile_picture', 255)->nullable();
+            $table->foreignId('destination_id')->constrained('tbl_destinations')->cascadeOnDelete();
+            $table->string('image_url', 255);
+            $table->enum('image_type', ['place', 'promo']);
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tbl_users');
+        Schema::dropIfExists('tbl_gallery_destinations');
     }
 };

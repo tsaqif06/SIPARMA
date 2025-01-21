@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('tbl_complaints', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('tbl_users');
-            $table->foreignId('destination_id')->nullable()->constrained('tbl_destinations');
-            $table->foreignId('restaurant_id')->nullable()->constrained('tbl_restaurants');
+            $table->foreignId('user_id')->constrained('tbl_users')->cascadeOnDelete();
+            $table->foreignId('destination_id')->nullable()->constrained('tbl_destinations')->nullOnDelete();
+            $table->foreignId('place_id')->nullable()->constrained('tbl_places')->nullOnDelete();
             $table->text('complaint_text');
             $table->enum('status', ['new', 'resolved', 'closed']);
             $table->timestamps();

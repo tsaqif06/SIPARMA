@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tbl_recommendation_images', function (Blueprint $table) {
+        Schema::create('tbl_gallery_rides', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('recommendation_id')->constrained('tbl_recommendations');
-            $table->text('image_url');
+            $table->foreignId('rides_id')->constrained('tbl_rides')->cascadeOnDelete();
+            $table->string('image_url', 255);
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tbl_recommendation_images');
+        Schema::dropIfExists('tbl_gallery_rides');
     }
 };

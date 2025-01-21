@@ -53,4 +53,9 @@ class Restaurant extends Model
     {
         return $this->hasMany(Promo::class, 'restaurant_id');
     }
+
+    public function facilities()
+    {
+        return $this->hasMany(Facility::class, 'item_id');
+    }
 }

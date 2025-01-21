@@ -47,12 +47,14 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:tbl_users,email',
             'password' => 'required|min:6|confirmed',
+            'phone_number' => 'nullable|regex:/^[0-9]{10,15}$/',
         ]);
 
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
+            'phone_number' => $validated['phone_number'],
         ]);
 
         // Auth::login($user);

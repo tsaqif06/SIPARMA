@@ -24,7 +24,8 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-        'profile_picture'
+        'profile_picture',
+        'phone_number',
     ];
 
     public function adminDestinations()

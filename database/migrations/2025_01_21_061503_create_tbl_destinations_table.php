@@ -14,15 +14,16 @@ return new class extends Migration
         Schema::create('tbl_destinations', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100);
+            $table->string('slug', 255);
             $table->enum('type', ['alam', 'wahana']);
             $table->text('description');
             $table->string('location', 255);
-            $table->decimal('price', 10, 2);
             $table->time('open_time');
             $table->time('close_time');
             $table->enum('operational_status', ['open', 'closed', 'holiday']);
-            $table->decimal('weekday_price', 10, 2);
+            $table->decimal('price', 10, 2);
             $table->decimal('weekend_price', 10, 2);
+            $table->decimal('children_price', 10, 2);
             $table->timestamps();
         });
     }

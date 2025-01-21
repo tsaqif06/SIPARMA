@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tbl_gallery_restaurants', function (Blueprint $table) {
+        Schema::create('tbl_gallery_places', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('restaurant_id')->constrained('tbl_restaurants');
+            $table->foreignId('places_id')->constrained('tbl_places')->cascadeOnDelete();
             $table->string('image_url', 255);
             $table->enum('image_type', ['place', 'menu', 'promo']);
             $table->timestamps();
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tbl_gallery_restaurants');
+        Schema::dropIfExists('tbl_gallery_places');
     }
 };

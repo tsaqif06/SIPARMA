@@ -28,4 +28,9 @@ class Transaction extends Model
     {
         return $this->belongsTo(Destination::class, 'destination_id');
     }
+
+    public function tickets()
+    {
+        return $this->hasMany(TransactionTicket::class, 'transaction_id');
+    }
 }

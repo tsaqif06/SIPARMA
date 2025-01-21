@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tbl_admin_destinations', function (Blueprint $table) {
+        Schema::create('tbl_bundle_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('tbl_users');
-            $table->foreignId('destination_id')->constrained('tbl_destinations');
+            $table->foreignId('bundle_id')->constrained('tbl_bundles')->cascadeOnDelete();
+            $table->enum('item_type', ['destination', 'ride']);
+            $table->unsignedBigInteger('item_id');
+            $table->integer('quantity');
             $table->timestamps();
         });
     }
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tbl_admin_destinations');
+        Schema::dropIfExists('tbl_bundle_items');
     }
 };

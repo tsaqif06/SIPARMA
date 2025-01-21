@@ -2,8 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Ride;
+use App\Models\Promo;
+use App\Models\Review;
+use App\Models\Midtrans;
+use App\Models\Complaint;
+use App\Models\Restaurant;
+use App\Models\Transaction;
+use App\Models\AdminDestination;
+use App\Models\GalleryDestination;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Destination extends Model
 {
@@ -13,15 +22,16 @@ class Destination extends Model
 
     protected $fillable = [
         'name',
+        'slug',
         'type',
         'description',
         'location',
-        'price',
         'open_time',
         'close_time',
         'operational_status',
-        'weekday_price',
-        'weekend_price'
+        'price',
+        'weekend_price',
+        'children_price',
     ];
 
     public function restaurants()
@@ -62,5 +72,15 @@ class Destination extends Model
     public function midtrans()
     {
         return $this->hasOne(Midtrans::class, 'destination_id');
+    }
+
+    public function ride()
+    {
+        return $this->hasMany(Ride::class, 'destination_id');
+    }
+
+    public function facilities()
+    {
+        return $this->hasMany(Facility::class, 'item_id');
     }
 }

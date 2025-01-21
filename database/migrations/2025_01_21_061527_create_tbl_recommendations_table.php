@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('tbl_recommendations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('tbl_users');
+            $table->foreignId('user_id')->constrained('tbl_users')->cascadeOnDelete();
             $table->string('destination_name', 100);
-            $table->text('description');
+            $table->text('description')->nullable();
+            $table->string('location', 255);
             $table->enum('status', ['pending', 'approved', 'rejected']);
             $table->timestamps();
         });

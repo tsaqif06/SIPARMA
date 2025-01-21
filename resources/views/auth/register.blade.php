@@ -20,6 +20,13 @@
                 @enderror
             </div>
             <div class="mb-3">
+                <label for="phone_number" class="form-label">Phone Number</label>
+                <input type="text" name="phone_number" class="form-control" id="phone_number" required>
+                @error('phone_number')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
                 <input type="password" name="password" class="form-control" id="password" required>
                 @error('password')

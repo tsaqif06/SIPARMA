@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('tbl_transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('tbl_users');
-            $table->foreignId('destination_id')->constrained('tbl_destinations');
+            $table->foreignId('user_id')->constrained('tbl_users')->cascadeOnDelete();
+            $table->foreignId('destination_id')->constrained('tbl_destinations')->cascadeOnDelete();
             $table->decimal('amount', 10, 2);
             $table->enum('status', ['pending', 'paid', 'failed']);
             $table->string('transaction_code', 100);

@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tbl_midtrans', function (Blueprint $table) {
+        Schema::create('tbl_admin_destinations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('destination_id')->constrained('tbl_destinations');
-            $table->string('client_key', 255);
-            $table->string('server_key', 255);
-            $table->boolean('is_active')->default(true);
+            $table->foreignId('user_id')->constrained('tbl_users')->cascadeOnDelete();
+            $table->foreignId('destination_id')->constrained('tbl_destinations')->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tbl_midtrans');
+        Schema::dropIfExists('tbl_admin_destinations');
     }
 };

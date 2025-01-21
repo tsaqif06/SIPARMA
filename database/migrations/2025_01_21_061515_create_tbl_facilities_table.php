@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tbl_gallery_destinations', function (Blueprint $table) {
+        Schema::create('tbl_facilities', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('destination_id')->constrained('tbl_destinations');
-            $table->string('image_url', 255);
-            $table->enum('image_type', ['place', 'promo', 'menu']);
+            $table->enum('item_type', ['destination', 'place']);
+            $table->unsignedBigInteger('item_id');
+            $table->string('name', 100);
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tbl_gallery_destinations');
+        Schema::dropIfExists('tbl_facilities');
     }
 };

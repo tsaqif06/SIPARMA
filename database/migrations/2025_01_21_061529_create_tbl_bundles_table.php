@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tbl_promos', function (Blueprint $table) {
+        Schema::create('tbl_bundles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('destination_id')->nullable()->constrained('tbl_destinations');
-            $table->foreignId('restaurant_id')->nullable()->constrained('tbl_restaurants');
-            $table->decimal('discount', 10, 2);
-            $table->date('valid_from');
-            $table->date('valid_until');
+            $table->string('name', 100);
+            $table->text('description')->nullable();
+            $table->decimal('total_price', 10, 2);
+            $table->decimal('discount', 10, 2)->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tbl_promos');
+        Schema::dropIfExists('tbl_bundles');
     }
 };

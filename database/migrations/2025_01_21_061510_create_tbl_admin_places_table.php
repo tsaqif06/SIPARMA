@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tbl_admin_restaurants', function (Blueprint $table) {
+        Schema::create('tbl_admin_places', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('tbl_users');
-            $table->foreignId('restaurant_id')->constrained('tbl_restaurants');
+            $table->foreignId('user_id')->constrained('tbl_users')->cascadeOnDelete();
+            $table->foreignId('place_id')->constrained('tbl_places')->cascadeOnDelete();
             $table->enum('approval_status', ['pending', 'approved', 'rejected']);
             $table->text('ownership_docs')->nullable();
             $table->timestamps();
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tbl_admin_restaurants');
+        Schema::dropIfExists('tbl_admin_places');
     }
 };
