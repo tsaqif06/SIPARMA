@@ -8,17 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Complaint extends Model
 {
     use HasFactory;
-
     protected $table = 'tbl_complaints';
-
-    protected $fillable = [
-        'user_id',
-        'destination_id',
-        'restaurant_id',
-        'complaint_text',
-        'status'
-    ];
-
+    protected $fillable = ['user_id', 'destination_id', 'place_id', 'complaint_text', 'status'];
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -29,8 +20,8 @@ class Complaint extends Model
         return $this->belongsTo(Destination::class, 'destination_id');
     }
 
-    public function restaurant()
+    public function place()
     {
-        return $this->belongsTo(Restaurant::class, 'restaurant_id');
+        return $this->belongsTo(Place::class, 'place_id');
     }
 }

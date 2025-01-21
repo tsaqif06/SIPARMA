@@ -27,20 +27,11 @@ class UserFactory extends Factory
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'password' => bcrypt('password123'),
-            'role' => $this->faker->randomElement(['user', 'admin_wisata', 'admin_restoran']),
-            'profile_picture' => $this->faker->imageUrl(300, 300, 'people'),
+            'role' => $this->faker->randomElement(['user', 'admin_wisata', 'admin_tempat']),
+            'profile_picture' => 'https://picsum.photos/200',
+            'phone_number' => $this->faker->phoneNumber(),
             'created_at' => now(),
             'updated_at' => now(),
         ];
-    }
-
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
-    public function unverified(): static
-    {
-        return $this->state(fn(array $attributes) => [
-            'email_verified_at' => null,
-        ]);
     }
 }

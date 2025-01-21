@@ -9,15 +9,15 @@ class Recommendation extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'user_id',
-        'destination_name',
-        'description',
-        'status'
-    ];
-
+    protected $table = 'tbl_recommendation';
+    protected $fillable = ['user_id', 'destination_name', 'description', 'location', 'status'];
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function images()
+    {
+        return $this->hasMany(RecommendationImage::class, 'recommendation_id');
     }
 }

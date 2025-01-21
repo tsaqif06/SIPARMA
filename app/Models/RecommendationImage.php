@@ -8,12 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class RecommendationImage extends Model
 {
     use HasFactory;
-
-    protected $fillable = [
-        'recommendation_id',
-        'image_url'
-    ];
-
+    protected $table = 'tbl_recommendation_images';
+    protected $fillable = ['recommendation_id', 'image_url'];
     public function recommendation()
     {
         return $this->belongsTo(Recommendation::class, 'recommendation_id');

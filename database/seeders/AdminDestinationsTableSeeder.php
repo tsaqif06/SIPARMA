@@ -9,6 +9,6 @@ class AdminDestinationsTableSeeder extends Seeder
 {
     public function run()
     {
-        AdminDestination::factory(3)->create();
+        AdminDestination::factory(5)->create();
     }
 }

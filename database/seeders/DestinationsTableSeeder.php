@@ -9,6 +9,6 @@ class DestinationsTableSeeder extends Seeder
 {
     public function run()
     {
-        Destination::factory(20)->create();
+        Destination::factory(5)->create();
     }
 }

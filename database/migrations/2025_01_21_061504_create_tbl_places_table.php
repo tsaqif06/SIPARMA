@@ -16,9 +16,11 @@ return new class extends Migration
             $table->string('name', 100);
             $table->string('slug', 255);
             $table->text('description');
+            $table->time('open_time');
+            $table->time('close_time');
+            $table->enum('operational_status', ['open', 'closed']);
             $table->string('location', 255);
             $table->string('type', 100);
-            $table->enum('status', ['active', 'inactive']);
             $table->foreignId('destination_id')->nullable()->constrained('tbl_destinations')->nullOnDelete();
             $table->timestamps();
         });

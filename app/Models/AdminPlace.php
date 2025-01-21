@@ -5,20 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AdminDestination extends Model
+class AdminPlace extends Model
 {
     use HasFactory;
-    protected $table = 'tbl_admin_destinations';
+    protected $table = 'tbl_admin_places';
 
-    protected $fillable = ['user_id', 'destination_id'];
+    protected $fillable = ['user_id', 'place_id', 'approval_status', 'ownership_docs'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function destination()
+    public function place()
     {
-        return $this->belongsTo(Destination::class);
+        return $this->belongsTo(Place::class);
     }
 }
