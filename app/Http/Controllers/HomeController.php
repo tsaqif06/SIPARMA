@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Destination;
-use App\Models\Restaurant;
+use App\Models\Place;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -17,7 +17,7 @@ class HomeController extends Controller
         $categories = [
             'alams' => Destination::withAvg('reviews', 'rating')->where('type', 'alam')->limit(4)->get(),
             'wahanas' => Destination::withAvg('reviews', 'rating')->where('type', 'wahana')->limit(4)->get(),
-            'restaurants' => Restaurant::withAvg('reviews', 'rating')->limit(4)->get(),
+            'places' => Place::withAvg('reviews', 'rating')->limit(4)->get(),
         ];
 
         $promos = [
@@ -30,7 +30,7 @@ class HomeController extends Controller
                 })
                 ->limit(4)
                 ->get(),
-            'restaurants' => Restaurant::with('promo')
+            'places' => Place::with('promo')
                 ->withAvg('reviews', 'rating')
                 ->whereHas('promo', function ($query) {
                     $query->where('discount', '>', 0)
