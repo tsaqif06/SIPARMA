@@ -20,18 +20,18 @@ class HomeController extends Controller
         ];
 
         $promos = [
-            'destinations' => Destination::with('promo')
+            'destinations' => Destination::with('promos')
                 ->withAvg('reviews', 'rating')
-                ->whereHas('promo', function ($query) {
+                ->whereHas('promos', function ($query) {
                     $query->where('discount', '>', 0)
                         ->whereDate('valid_from', '<=', now())
                         ->whereDate('valid_until', '>=', now());
                 })
                 ->limit(4)
                 ->get(),
-            'places' => Place::with('promo')
+            'places' => Place::with('promos')
                 ->withAvg('reviews', 'rating')
-                ->whereHas('promo', function ($query) {
+                ->whereHas('promos', function ($query) {
                     $query->where('discount', '>', 0)
                         ->whereDate('valid_from', '<=', now())
                         ->whereDate('valid_until', '>=', now());
