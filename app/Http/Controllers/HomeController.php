@@ -13,7 +13,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // Ambil destinasi untuk setiap kategori
         $categories = [
             'alams' => Destination::withAvg('reviews', 'rating')->where('type', 'alam')->limit(4)->get(),
             'wahanas' => Destination::withAvg('reviews', 'rating')->where('type', 'wahana')->limit(4)->get(),
@@ -59,7 +58,7 @@ class HomeController extends Controller
             ->get();
 
         // Promo restoran yang valid
-        $promoRestaurants = Restaurant::with('promo')
+        $promoPlaces = Place::with('promo')
             ->whereHas('promo', function ($query) {
                 $query->where('discount', '>', 0)
                     ->whereDate('valid_from', '<=', now())
