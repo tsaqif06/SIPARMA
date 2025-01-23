@@ -26,7 +26,6 @@ class DatabaseSeeder extends Seeder
             // RestaurantMenusTableSeeder::class,
             // GalleryDestinationsTableSeeder::class,
             // GalleryRestaurantsTableSeeder::class,
-            // MidtransTableSeeder::class,
             // TransactionsTableSeeder::class,
             // ReviewsTableSeeder::class,
             // ComplaintsTableSeeder::class,

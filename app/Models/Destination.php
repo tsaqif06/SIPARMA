@@ -9,7 +9,22 @@ class Destination extends Model
 {
     use HasFactory;
     protected $table = 'tbl_destinations';
-    protected $fillable = ['name', 'slug', 'type', 'description', 'location', 'open_time', 'close_time', 'operational_status', 'price', 'weekend_price', 'children_price'];
+    protected $fillable = [
+        'name',
+        'slug',
+        'type',
+        'description',
+        'location',
+        'open_time',
+        'close_time',
+        'operational_status',
+        'price',
+        'weekend_price',
+        'children_price',
+        'account_number',
+        'bank_name',
+        'account_name'
+    ];
     public function admin()
     {
         return $this->hasMany(AdminDestination::class, 'destination_id');
@@ -35,9 +50,14 @@ class Destination extends Model
         return $this->hasMany(GalleryDestination::class, 'destination_id');
     }
 
-    public function midtrans()
+    public function balance()
     {
-        return $this->hasOne(Midtrans::class, 'destination_id');
+        return $this->hasOne(Balance::class, 'destination_id', 'id');
+    }
+
+    public function balanceLogs()
+    {
+        return $this->hasMany(BalanceLog::class, 'destination_id', 'id');
     }
 
     public function transactions()

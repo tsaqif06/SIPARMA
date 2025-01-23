@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tbl_midtrans', function (Blueprint $table) {
+        Schema::create('tbl_balance', function (Blueprint $table) {
             $table->id();
             $table->foreignId('destination_id')->constrained('tbl_destinations')->cascadeOnDelete();
-            $table->string('client_key', 255);
-            $table->string('server_key', 255);
-            $table->boolean('is_active');
+            $table->decimal('balance', 15, 2)->default(0);
+            $table->decimal('total_profit', 15, 2)->default(0);
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tbl_midtrans');
+        Schema::dropIfExists('tbl_balance');
     }
 };
