@@ -1,7 +1,5 @@
 <?php
 
-// app/Http/Controllers/AuthController.php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -14,13 +12,13 @@ class AuthController extends Controller
     // Menampilkan form login
     public function showLoginForm()
     {
-        return view('auth.login');
+        return view('user.auth.login');
     }
 
     // Menampilkan form register
     public function showRegisterForm()
     {
-        return view('auth.register');
+        return view('user.auth.register');
     }
 
     // Proses login

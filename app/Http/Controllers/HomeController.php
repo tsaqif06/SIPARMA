@@ -40,7 +40,7 @@ class HomeController extends Controller
                 ->get(),
         ];
 
-        return view('home.index', compact('categories', 'promos'));
+        return view('user.home.index', compact('categories', 'promos'));
     }
 
     /**
@@ -66,6 +66,6 @@ class HomeController extends Controller
             })
             ->get();
 
-        return view('home.promo', compact('promoDestinations', 'promoRestaurants'));
+        return view('user.home.promo', compact('promoDestinations', 'promoRestaurants'));
     }
 }

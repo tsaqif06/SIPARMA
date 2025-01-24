@@ -11,6 +11,6 @@ class PlaceController extends Controller
     {
         $places = Place::where('slug', $slug)->firstOrFail();
 
-        return view('places.show', compact('places'));
+        return view('user.places.show', compact('places'));
     }
 }

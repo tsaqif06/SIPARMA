@@ -11,6 +11,6 @@ class DestinationController extends Controller
     {
         $destination = Destination::where('slug', $slug)->firstOrFail();
 
-        return view('destinations.show', compact('destination'));
+        return view('user.destinations.show', compact('destination'));
     }
 }
