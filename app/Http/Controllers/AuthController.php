@@ -9,19 +9,26 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    // Menampilkan form login
     public function showLoginForm()
     {
         return view('user.auth.login');
     }
 
-    // Menampilkan form register
+    public function showLoginFormAdmin()
+    {
+        return view('admin.auth.login');
+    }
+
     public function showRegisterForm()
     {
         return view('user.auth.register');
     }
 
-    // Proses login
+    public function showRegisterFormAdmin()
+    {
+        return view('admin.auth.register');
+    }
+
     public function login(Request $request)
     {
         $validated = $request->validate([
@@ -38,7 +45,28 @@ class AuthController extends Controller
         ]);
     }
 
-    // Proses register
+    public function loginAdmin(Request $request)
+    {
+        $validated = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+        ]);
+
+        $user = User::where('email', $validated['email'])->first();
+
+        if ($user && in_array($user->role, ['superadmin', 'admin_wisata', 'admin_tempat'])) {
+            $remember = $request->has('remember');
+
+            if (Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']], $remember)) {
+                return redirect()
+                    ->route('admin.dashboard')
+                    ->with('success', 'Login berhasil! Selamat datang, ' . $user->name);
+            }
+        }
+
+        return back()->with('error', $user ? 'Akun tidak memiliki akses admin.' : 'Email atau password salah.');
+    }
+
     public function register(Request $request)
     {
         $validated = $request->validate([
@@ -55,13 +83,9 @@ class AuthController extends Controller
             'phone_number' => $validated['phone_number'],
         ]);
 
-        // Auth::login($user);
-
-        // return redirect('/');
         return redirect('/login');
     }
 
-    // Logout
     public function logout()
     {
         Auth::logout();

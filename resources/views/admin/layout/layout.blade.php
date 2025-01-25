@@ -1,0 +1,24 @@
+<!-- meta tags and other links -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+@include('admin.components.head')
+
+<body>
+    @include('admin.components.sidebar')
+
+    <main class="dashboard-main">
+        @include('admin.components.navbar')
+        <div class="dashboard-main-body">
+            <x-breadcrumb title='{{ isset($title) ? $title : '' }}' subTitle='{{ isset($subTitle) ? $subTitle : '' }}' />
+            @yield('content')
+
+            @include('admin.components.flasher')>
+        </div>
+        @include('admin.components.footer')
+    </main>
+
+    @include('partials.script', ['script' => $script ?? ''])
+</body>
+
+</html>

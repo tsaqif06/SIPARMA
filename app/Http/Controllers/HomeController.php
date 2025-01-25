@@ -43,6 +43,11 @@ class HomeController extends Controller
         return view('user.home.index', compact('categories', 'promos'));
     }
 
+    public function indexAdmin()
+    {
+        return view('admin.dashboard.index');
+    }
+
     /**
      * Menampilkan halaman Promo (destinasi dan restoran dengan promo).
      */

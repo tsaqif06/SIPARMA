@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('user.layouts.app')
 
 @section('content')
     <div class="container">
@@ -17,7 +17,7 @@
                                 <p class="card-text">
                                     Rating: {{ number_format($prom->reviews_avg_rating, 1) }} / 5
                                 </p>
-                                <a href="{{ route('destinations.show', $prom->slug) }}" class="btn btn-primary">View
+                                <a href="{{ route('destination.show', $prom->slug) }}" class="btn btn-primary">View
                                     More</a>
                             </div>
                         </div>
@@ -43,7 +43,7 @@
                                 <p class="card-text">
                                     Rating: {{ number_format($destination->reviews_avg_rating, 1) }} / 5
                                 </p>
-                                <a href="{{ route('destinations.show', $destination->slug) }}" class="btn btn-primary">View
+                                <a href="{{ route('destination.show', $destination->slug) }}" class="btn btn-primary">View
                                     More</a>
                             </div>
                         </div>

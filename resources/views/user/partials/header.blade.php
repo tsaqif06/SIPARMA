@@ -6,9 +6,9 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="{{ route('home.alam') }}">Alam</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('home.wahana') }}">Wahana</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('home.restoran') }}">Restoran</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('home.index') }}">Beranda</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('home.wisata') }}">Wisata</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('home.tempat') }}">Tempat</a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="langDropdown"
                         data-bs-toggle="dropdown">Language</a>

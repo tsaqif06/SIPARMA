@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('user.layouts.app')
 
 @section('title', 'Home - Restoran')
 
@@ -12,7 +12,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ $restaurant->name }}</h5>
                         <p class="card-text">Rating: {{ $restaurant->rating }}/5</p>
-                        <a href="{{ route('restaurants.show', $restaurant->id) }}" class="btn btn-primary">Details</a>
+                        <a href="{{ route('place.show', $restaurant->id) }}" class="btn btn-primary">Details</a>
                     </div>
                 </div>
             </div>
@@ -27,7 +27,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ $promo->name }}</h5>
                         <p class="card-text">Discount: {{ $promo->discount }}%</p>
-                        <a href="{{ route('restaurants.show', $promo->id) }}" class="btn btn-success">Details</a>
+                        <a href="{{ route('place.show', $promo->id) }}" class="btn btn-success">Details</a>
                     </div>
                 </div>
             </div>
