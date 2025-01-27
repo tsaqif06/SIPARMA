@@ -20,7 +20,6 @@
                         <tr>
                             <th scope="col">
                                 <div class="form-check style-check d-flex align-items-center">
-                                    <input class="form-check-input" type="checkbox">
                                     <label class="form-check-label">
                                         #
                                     </label>
@@ -39,7 +38,6 @@
                             <tr>
                                 <td>
                                     <div class="form-check style-check d-flex align-items-center">
-                                        <input class="form-check-input" type="checkbox">
                                         <label class="form-check-label">
                                             {{ $i }}
                                         </label>
