@@ -71,6 +71,12 @@
             </li> --}}
             <li class="sidebar-menu-group-title">Data</li>
             <li>
+                <a href="{{ route('admin.users.index') }}">
+                    <iconify-icon icon="flowbite:users-group-outline" class="menu-icon"></iconify-icon>
+                    <span>Users</span>
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('admin.destinations.index') }}">
                     <iconify-icon icon="material-symbols:map-outline" class="menu-icon"></iconify-icon>
                     <span>Wisata</span>

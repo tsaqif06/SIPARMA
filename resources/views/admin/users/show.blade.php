@@ -1,7 +1,7 @@
 @extends('admin.layout.layout')
 @php
-    $title = 'View Profile';
-    $subTitle = 'View Profile';
+    $title = 'Lihat Profil';
+    $subTitle = 'Lihat Profil';
     $script = '<script>
         // ======================== Upload Image Start =====================
         function readURL(input) {
@@ -43,52 +43,103 @@
         <div class="col-lg-4">
             <div class="user-grid-card position-relative border radius-16 overflow-hidden bg-base h-100">
                 <img src="{{ asset('assets/images/user-grid/user-grid-bg1.png') }}" alt=""
-                    class="w-100 object-fit-cover">
+                    class="w-100 object-fit-cover" style="height: 150px">
                 <div class="pb-24 ms-16 mb-24 me-16  mt--100">
                     <div class="text-center border border-top-0 border-start-0 border-end-0">
-                        <img src="{{ asset('assets/images/user-grid/user-grid-img14.png') }}" alt=""
+                        <img src="{{ $user->profile_picture }}" alt="{{ $user->name }}"
                             class="border br-white border-width-2-px w-200-px h-200-px rounded-circle object-fit-cover">
-                        <h6 class="mb-0 mt-16">Jacob Jones</h6>
-                        <span class="text-secondary-light mb-16">ifrandom@gmail.com</span>
+                        <h6 class="mb-0 mt-16">{{ $user->name }}</h6>
+                        <span class="text-secondary-light mb-16">{{ $user->email }}</span>
                     </div>
                     <div class="mt-24">
-                        <h6 class="text-xl mb-16">Personal Info</h6>
-                        <ul>
-                            <li class="d-flex align-items-center gap-1 mb-12">
-                                <span class="w-30 text-md fw-semibold text-primary-light">Full Name</span>
-                                <span class="w-70 text-secondary-light fw-medium">: Will Jonto</span>
-                            </li>
-                            <li class="d-flex align-items-center gap-1 mb-12">
-                                <span class="w-30 text-md fw-semibold text-primary-light"> Email</span>
-                                <span class="w-70 text-secondary-light fw-medium">: willjontoax@gmail.com</span>
-                            </li>
-                            <li class="d-flex align-items-center gap-1 mb-12">
-                                <span class="w-30 text-md fw-semibold text-primary-light"> Phone Number</span>
-                                <span class="w-70 text-secondary-light fw-medium">: (1) 2536 2561 2365</span>
-                            </li>
-                            <li class="d-flex align-items-center gap-1 mb-12">
-                                <span class="w-30 text-md fw-semibold text-primary-light"> Department</span>
-                                <span class="w-70 text-secondary-light fw-medium">: Design</span>
-                            </li>
-                            <li class="d-flex align-items-center gap-1 mb-12">
-                                <span class="w-30 text-md fw-semibold text-primary-light"> Designation</span>
-                                <span class="w-70 text-secondary-light fw-medium">: UI UX Designer</span>
-                            </li>
-                            <li class="d-flex align-items-center gap-1 mb-12">
-                                <span class="w-30 text-md fw-semibold text-primary-light"> Languages</span>
-                                <span class="w-70 text-secondary-light fw-medium">: English</span>
-                            </li>
-                            <li class="d-flex align-items-center gap-1">
-                                <span class="w-30 text-md fw-semibold text-primary-light"> Bio</span>
-                                <span class="w-70 text-secondary-light fw-medium">: Lorem Ipsum is simply dummy text of the
-                                    printing and typesetting industry.</span>
-                            </li>
+                        <h6 class="text-xl mb-16">Informasi Pribadi</h6>
+                        @php
+                            if ($user->role == 'superadmin') {
+                                $user->role = 'Super Admin';
+                            } elseif ($user->role == 'admin_wisata') {
+                                $user->role = 'Admin Wisata';
+                            } elseif ($user->role == 'admin_tempar') {
+                                $user->role = 'Admin Tempat';
+                            }
+                        @endphp
+                        <li class="d-flex align-items-center gap-1 mb-12">
+                            <span class="w-30 text-md fw-semibold text-primary-light"> Role</span>
+                            <span class="w-70 text-secondary-light fw-medium">: {{ $user->role }}</span>
+                        </li>
+                        <li class="d-flex align-items-center gap-1 mb-12">
+                            <span class="w-30 text-md fw-semibold text-primary-light">No. Telepon</span>
+                            <span class="w-70 text-secondary-light fw-medium">: {{ $user->phone_number }}</span>
+                        </li>
+                        @if ($managedItems && $managedItems->isNotEmpty())
+                            @foreach ($managedItems as $item)
+                                <li class="d-flex align-items-center gap-1 mb-12">
+                                    <span class="w-30 text-md fw-semibold text-primary-light">Nomor Akun</span>
+                                    <span class="w-70 text-secondary-light fw-medium">:
+                                        {{ $item->account_number ?? '-' }}</span>
+                                </li>
+                                <li class="d-flex align-items-center gap-1 mb-12">
+                                    <span class="w-30 text-md fw-semibold text-primary-light">Nama Akun</span>
+                                    <span class="w-70 text-secondary-light fw-medium">:
+                                        {{ $item->account_name ?? '-' }}</span>
+                                </li>
+                                <li class="d-flex align-items-center gap-1 mb-12">
+                                    <span class="w-30 text-md fw-semibold text-primary-light">Nama Bank</span>
+                                    <span class="w-70 text-secondary-light fw-medium">:
+                                        {{ $item->bank_name ?? '-' }}</span>
+                                </li>
+                            @endforeach
+                        @endif
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="col-lg-8">
+            <div class="user-grid-card position-relative border radius-16 overflow-hidden bg-base h-100">
+                <div class="pb-24 ms-16 mb-24 me-16 mt-16">
+                    <h6 class="text-xl mb-16">Tempat Yang Diurus</h6>
+                    @if ($managedItems && $managedItems->isNotEmpty())
+                        <ul>
+                            @foreach ($managedItems as $item)
+                                <li>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-0 fw-semibold text-primary-light">{{ $item->name }}</h6>
+                                            <small class="text-secondary-light">
+                                                Lokasi: {{ $item->location }}
+                                            </small>
+                                            <p class="text-secondary-light mb-0">Tipe: {{ ucfirst($item->type) }}</p>
+                                            <p class="text-secondary-light">Status:
+                                                {{ ucfirst($item->operational_status) }}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-4">
+                                        <h6 class="text-lg text-primary">Galeri</h6>
+                                        @if ($item->galleries && $item->galleries->isNotEmpty())
+                                            <div class="row">
+                                                @foreach ($item->galleries as $gallery)
+                                                    <div class="col-md-4">
+                                                        <img src="{{ asset($gallery->image_url) }}" alt="Gallery Image"
+                                                            class="img-fluid rounded mb-3">
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        @else
+                                            <p>Tidak ada gambar yang tersedia.</p>
+                                        @endif
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <p>Tidak ada tempat yang diurus oleh admin ini.</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+        {{--  <div class="col-lg-8">
             <div class="card h-100">
                 <div class="card-body p-24">
                     <ul class="nav border-gradient-tab nav-pills mb-20 d-inline-flex" id="pills-tab" role="tablist">
@@ -302,6 +353,6 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>  --}}
     </div>
 @endsection

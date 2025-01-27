@@ -1,7 +1,7 @@
 @extends('admin.layout.layout')
 
 @php
-    $title = 'Wisata';
+    $title = 'Data Wisata';
     $subTitle = 'Wisata';
 @endphp
 
@@ -14,8 +14,8 @@
     </a>
     <div class="card basic-data-table">
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table bordered-table mb-0" id="dataTable" data-page-length='10'>
+            <div class="table-responsive scroll-sm">
+                <table class="table bordered-table sm-table mb-0" id="dataTable" data-page-length='10'>
                     <thead>
                         <tr>
                             <th scope="col">

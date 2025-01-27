@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\AdminDestinationController;
 
@@ -56,6 +57,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/user/{id}', [UserController::class, 'update'])->name('user.update');
         Route::delete('/user/{id}', [UserController::class, 'delete'])->name('user.delete');
 
+        Route::resource('users', AdminUserController::class);
         Route::resource('destinations', AdminDestinationController::class);
     });
 });

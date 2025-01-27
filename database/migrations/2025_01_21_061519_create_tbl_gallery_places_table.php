@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tbl_gallery_places', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('places_id')->constrained('tbl_places')->cascadeOnDelete();
+            $table->foreignId('place_id')->constrained('tbl_places')->cascadeOnDelete();
             $table->string('image_url', 255);
             $table->enum('image_type', ['place', 'menu', 'promo']);
             $table->timestamps();

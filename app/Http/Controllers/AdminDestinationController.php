@@ -14,7 +14,6 @@ class AdminDestinationController extends Controller
      */
     public function index()
     {
-        $tableTitle = "Wisata";
         $destinations = Destination::all();
 
         foreach ($destinations as $destination) {
@@ -29,7 +28,7 @@ class AdminDestinationController extends Controller
             }
         }
 
-        return view('admin.destinations.index', compact('tableTitle', 'destinations'));
+        return view('admin.destinations.index', compact('destinations'));
     }
 
     /**

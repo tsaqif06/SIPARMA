@@ -17,12 +17,12 @@ class User extends Authenticatable
 
     public function adminDestinations()
     {
-        return $this->hasMany(AdminDestination::class);
+        return $this->hasMany(AdminDestination::class, 'user_id', 'id');
     }
 
     public function adminPlaces()
     {
-        return $this->hasMany(AdminPlace::class);
+        return $this->hasMany(AdminPlace::class, 'user_id', 'id');
     }
 
     public function transactions()
