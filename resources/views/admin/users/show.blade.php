@@ -99,6 +99,7 @@
             <div class="user-grid-card position-relative border radius-16 overflow-hidden bg-base h-100">
                 <div class="pb-24 ms-16 mb-24 me-16 mt-16">
                     <h6 class="text-xl mb-16">Tempat Yang Diurus</h6>
+                    <hr class="mb-16">
                     @if ($managedItems && $managedItems->isNotEmpty())
                         <ul>
                             @foreach ($managedItems as $item)
