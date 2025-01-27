@@ -1,15 +1,15 @@
 @extends('admin.layout.layout')
 
 @php
-    $title = 'Data';
-    $subTitle = 'Destinations';
+    $title = 'Wisata';
+    $subTitle = 'Wisata';
 @endphp
 
 @section('content')
     <div class="card basic-data-table">
-        <div class="card-header">
+        {{--  <div class="card-header">
             <h5 class="card-title mb-0">Tabel {{ $tableTitle }}</h5>
-        </div>
+        </div>  --}}
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table bordered-table mb-0" id="dataTable" data-page-length='10'>
@@ -42,13 +42,7 @@
                                         </label>
                                     </div>
                                 </td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <img src="{{ asset('assets/images/user-list/user-list1.png') }}" alt=""
-                                            class="flex-shrink-0 me-12 radius-8">
-                                        <h6 class="text-md mb-0 fw-medium flex-grow-1">{{ $data->name }}</h6>
-                                    </div>
-                                </td>
+                                <td>{{ $data->name }}</td>
                                 <td>{{ $data->location }}</td>
                                 <td>{{ ucfirst($data->type) }}</td>
                                 <td>
