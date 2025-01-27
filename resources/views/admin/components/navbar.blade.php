@@ -319,7 +319,7 @@
                             </button>
                         </div>
                         <ul class="to-top-list">
-                            <li>
+                            {{--  <li>
                                 <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-primary d-flex align-items-center gap-3" href="{{ route('viewProfile') }}">
                                     <iconify-icon icon="solar:user-linear" class="icon text-xl"></iconify-icon> My Profile
                                 </a>
@@ -333,7 +333,7 @@
                                 <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-primary d-flex align-items-center gap-3" href="{{ route('company') }}">
                                     <iconify-icon icon="icon-park-outline:setting-two" class="icon text-xl"></iconify-icon> Setting
                                 </a>
-                            </li>
+                            </li>  --}}
                             <li>
                                 <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-danger d-flex align-items-center gap-3" href="javascript:void(0)">
                                     <iconify-icon icon="lucide:power" class="icon text-xl"></iconify-icon> Log Out

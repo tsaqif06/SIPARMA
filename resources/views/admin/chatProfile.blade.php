@@ -9,7 +9,7 @@
     <div class="chat-wrapper">
         <div class="chat-sidebar profile-setting card">
             <div class="text-end">
-                <a href="{{ route('chatMessage') }}">>
+                <a href="{{ route('chatMessage') }}">
                     <iconify-icon icon="akar-icons:cross"></iconify-icon>
                 </a>
             </div>

@@ -10,15 +10,16 @@
     <main class="dashboard-main">
         @include('admin.components.navbar')
         <div class="dashboard-main-body">
-            <x-breadcrumb title='{{ isset($title) ? $title : '' }}' subTitle='{{ isset($subTitle) ? $subTitle : '' }}' />
+            {{--  <x-breadcrumb title='{{ isset($title) ? $title : '' }}' subTitle='{{ isset($subTitle) ? $subTitle : '' }}' />  --}}
+            @include('admin.components.breadcrumb', ['title' => $title ?? '', 'subTitle' => $subTitle ?? ''])
             @yield('content')
 
-            @include('admin.components.flasher')>
+            @include('admin.components.flasher')
         </div>
         @include('admin.components.footer')
     </main>
 
-    @include('partials.script', ['script' => $script ?? ''])
+    @include('admin.components.script', ['script' => $script ?? ''])
 </body>
 
 </html>

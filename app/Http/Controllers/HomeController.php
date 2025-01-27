@@ -45,32 +45,6 @@ class HomeController extends Controller
 
     public function indexAdmin()
     {
-        return view('admin.dashboard.index');
-    }
-
-    /**
-     * Menampilkan halaman Promo (destinasi dan restoran dengan promo).
-     */
-    public function promo()
-    {
-        // Promo destinasi yang valid
-        $promoDestinations = Destination::with('promo')
-            ->whereHas('promo', function ($query) {
-                $query->where('discount', '>', 0)
-                    ->whereDate('valid_from', '<=', now())
-                    ->whereDate('valid_until', '>=', now());
-            })
-            ->get();
-
-        // Promo restoran yang valid
-        $promoPlaces = Place::with('promo')
-            ->whereHas('promo', function ($query) {
-                $query->where('discount', '>', 0)
-                    ->whereDate('valid_from', '<=', now())
-                    ->whereDate('valid_until', '>=', now());
-            })
-            ->get();
-
-        return view('user.home.promo', compact('promoDestinations', 'promoRestaurants'));
+        return view('admin.dashboard.index3');
     }
 }

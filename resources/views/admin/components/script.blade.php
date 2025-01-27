@@ -38,8 +38,8 @@
             }, 5000);
         });
     </script>
-
-
-
+    <script>
+        let table = new DataTable("#dataTable");
+    </script>
 
     <?php echo isset($script) ? $script : ''; ?>

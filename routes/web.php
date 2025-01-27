@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DestinationController;
+use App\Http\Controllers\AdminDestinationController;
 
 // Route::get('/', [HomeController::class, 'index'])->name('home.index');
 // Route::get('/wisata', [HomeController::class, 'wisata'])->name('home.wisata');
@@ -54,5 +55,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/user', [UserController::class, 'store'])->name('user.store');
         Route::put('/user/{id}', [UserController::class, 'update'])->name('user.update');
         Route::delete('/user/{id}', [UserController::class, 'delete'])->name('user.delete');
+
+        Route::resource('destinations', AdminDestinationController::class);
     });
 });
