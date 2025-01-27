@@ -6,10 +6,13 @@
 @endphp
 
 @section('content')
+    <a href="{{ route('admin.destinations.create') }}">
+        <button type="button"
+            class="btn rounded-pill btn-primary-600 radius-8 px-20 py-11 my-3 d-flex align-items-center gap-2">
+            <iconify-icon icon="mingcute:plus-fill" class="text-xl"></iconify-icon> Tambah Data
+        </button>
+    </a>
     <div class="card basic-data-table">
-        {{--  <div class="card-header">
-            <h5 class="card-title mb-0">Tabel {{ $tableTitle }}</h5>
-        </div>  --}}
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table bordered-table mb-0" id="dataTable" data-page-length='10'>
