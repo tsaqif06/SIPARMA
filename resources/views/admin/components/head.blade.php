@@ -29,7 +29,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/lib/prism.css') }}">
     <!-- file upload css -->
     <link rel="stylesheet" href="{{ asset('assets/css/lib/file-upload.css') }}">
-
+    <!-- audioplayer -->
     <link rel="stylesheet" href="{{ asset('assets/css/lib/audioplayer.css') }}">
     <!-- main css -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">

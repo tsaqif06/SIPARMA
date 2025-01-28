@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Place;
 use App\Models\AdminPlace;
+use App\Models\Destination;
 use Illuminate\Http\Request;
 use App\Models\AdminDestination;
 
@@ -38,7 +40,20 @@ class AdminUserController extends Controller
      */
     public function create()
     {
-        return view('admin.users.create');
+        $managedItems = null;
+        $destinations = null;
+        $places = null;
+
+        // if ($user->role === 'admin_wisata') {
+        //     $managedItems = AdminDestination::where('user_id', $user->id)->get();
+        //     $destinations = Destination::whereNotIn('id', AdminDestination::pluck('destination_id'))->get();
+        // } elseif ($user->role === 'admin_tempat') {
+        //     $managedItems = AdminPlace::where('user_id', $user->id)->get();
+        //     $places = Place::whereNotIn('id', AdminPlace::pluck('place_id'))->get();
+        // }
+
+        // Kirim data ke view
+        return view('admin.users.create', compact('user', 'managedItems', 'destinations', 'places'));
     }
 
     /**
@@ -62,78 +77,118 @@ class AdminUserController extends Controller
      */
     public function show(User $user)
     {
+        if (!$user) {
+            $message = 'Halaman yang Anda cari tidak ditemukan.';
+            return response()->view('admin.error', [
+                'status_code' => 404,
+                'error' => 'Page Not Found',
+                'message' => $message
+            ], 404);
+        }
+
+        if ($user->adminPlace && $user->adminPlace->approval_status !== 'approved') {
+            $message = 'Halaman yang Anda cari tidak ditemukan.';
+            return response()->view('admin.error', [
+                'status_code' => 404,
+                'error' => 'Page Not Found',
+                'message' => $message
+            ], 404);
+        }
+
         $managedItems = null;
 
-        // Cek role user dan ambil data sesuai role
         if ($user->role === 'admin_wisata') {
             $managedItems = AdminDestination::with('destination.gallery')
-                // ->where('user_id', 2)
                 ->where('user_id', $user->id)
-                ->get()
-                ->map(function ($item) {
-                    return $item->destination;
-                });
+                ->first();
         } elseif ($user->role === 'admin_tempat') {
             $managedItems = AdminPlace::with('place.gallery')
                 ->where('user_id', $user->id)
-                ->get()
-                ->map(function ($item) {
-                    return $item->place;
-                });
+                ->first();
         }
 
         return view('admin.users.show', compact('user', 'managedItems'));
     }
 
-    public function showUserDetails($id)
-    {
-        $user = User::findOrFail($id);
-
-        $managedItems = null;
-
-        // Cek role user dan ambil data sesuai role
-        if ($user->role === 'admin_wisata') {
-            $managedItems = AdminDestination::with('destination')
-                ->where('user_id', $user->id)
-                ->get()
-                ->map(function ($item) {
-                    return $item->destination;
-                });
-        } elseif ($user->role === 'admin_tempat') {
-            $managedItems = AdminPlace::with('place')
-                ->where('user_id', $user->id)
-                ->get()
-                ->map(function ($item) {
-                    return $item->place;
-                });
-        }
-
-        return view('users.details', compact('user', 'managedItems'));
-    }
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(User $user)
     {
-        return view('admin.users.edit', compact('user'));
+        if (!$user) {
+            $message = 'Halaman yang Anda cari tidak ditemukan.';
+            return response()->view('admin.error', [
+                'status_code' => 404,
+                'error' => 'Page Not Found',
+                'message' => $message
+            ], 404);
+        }
+
+        if ($user->adminPlace && $user->adminPlace->approval_status !== 'approved') {
+            $message = 'Halaman yang Anda cari tidak ditemukan.';
+            return response()->view('admin.error', [
+                'status_code' => 404,
+                'error' => 'Page Not Found',
+                'message' => $message
+            ], 404);
+        }
+
+        $managedItems = null;
+        $destinations = null;
+        $places = null;
+
+        if ($user->role === 'admin_wisata') {
+            $managedItems = AdminDestination::where('user_id', $user->id)->first();
+
+            $destinationsWithoutAdmin = Destination::whereNotIn('id', AdminDestination::pluck('destination_id')->toArray())->pluck('id')->toArray();
+            $destinations = Destination::whereIn('id', array_merge([$managedItems->destination_id], $destinationsWithoutAdmin))->get();
+        } elseif ($user->role === 'admin_tempat') {
+            $managedItems = AdminPlace::where('user_id', $user->id)->first();
+
+            $placesWithoutAdmin = Place::whereNotIn('id', AdminPlace::pluck('place_id')->toArray())->pluck('id')->toArray();
+            $places = Place::whereIn('id', array_merge([$managedItems->place_id], $placesWithoutAdmin))->get();
+        }
+
+        return view('admin.users.edit', compact('user', 'managedItems', 'destinations', 'places'));
     }
+
+
+
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, User $user)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'location' => 'required|string|max:255',
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'role' => 'required',
+            'admin_destinations' => 'nullable|exists:destinations,id',
+            'admin_places' => 'nullable|exists:places,id',
         ]);
 
-        $user->update($request->all());
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone_number' => $request->phone_number,
+            'role' => $request->role,
+        ]);
 
-        return redirect()->route('admin.users.index')->with('success', 'User telah berhasil diupdate.');
+        if ($user->role === 'admin_wisata' && $request->has('admin_destinations')) {
+            $user->adminDestination()->associate($request->admin_destinations);
+        }
+
+        if ($user->role === 'admin_tempat' && $request->has('admin_places')) {
+            $user->adminPlace()->associate($request->admin_places);
+        }
+
+        $user->save();
+
+        return redirect()->route('admin.users.index')->with('success', 'User updated successfully');
     }
+
 
     /**
      * Remove the specified resource from storage.
