@@ -12,7 +12,7 @@
                     class="w-100 object-fit-cover" style="height: 150px">
                 <div class="pb-24 ms-16 mb-24 me-16  mt--100">
                     <div class="text-center border border-top-0 border-start-0 border-end-0">
-                        <img src="{{ $user->profile_picture }}" alt="{{ $user->name }}"
+                        <img src="{{ asset($user->profile_picture) }}" alt="{{ $user->name }}"
                             class="border br-white border-width-2-px w-200-px h-200-px rounded-circle object-fit-cover">
                         <h6 class="mb-0 mt-16">{{ $user->name }}</h6>
                         <span class="text-secondary-light mb-16">{{ $user->email }}</span>
