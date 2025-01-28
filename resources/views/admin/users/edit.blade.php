@@ -10,6 +10,7 @@
                 reader.onload = function(e) {
                     $("#imagePreview").css("background-image", "url(" + e.target.result + ")");
                     $("#imagePreview").hide();
+                    $("#imagePreview img").css("visibility", "hidden");
                     $("#imagePreview").fadeIn(650);
                 }
                 reader.readAsDataURL(input.files[0]);
@@ -66,14 +67,16 @@
                             aria-labelledby="pills-edit-profile-tab" tabindex="0">
                             <h6 class="text-md text-primary-light mb-16">Foto Profil</h6>
                             <!-- Upload Image Start -->
-                            <form action="{{ route('admin.users.update', $user->id) }}" method="POST">
+                            <form action="{{ route('admin.users.update', $user->id) }}" method="POST"
+                                enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <div class="mb-24 mt-16">
                                     <div class="avatar-upload">
                                         <div
                                             class="avatar-edit position-absolute bottom-0 end-0 me-24 mt-16 z-1 cursor-pointer">
-                                            <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" hidden>
+                                            <input type='file' id="imageUpload" name="profile_picture"
+                                                accept=".png, .jpg, .jpeg" hidden>
                                             <label for="imageUpload"
                                                 class="w-32-px h-32-px d-flex justify-content-center align-items-center bg-primary-50 text-primary-600 border border-primary-600 bg-hover-primary-100 text-lg rounded-circle">
                                                 <iconify-icon icon="solar:camera-outline" class="icon"></iconify-icon>
@@ -83,7 +86,8 @@
                                             <div id="imagePreview">
                                                 @if ($user->profile_picture)
                                                     <img src="{{ asset($user->profile_picture) }}" alt="Profile Image"
-                                                        class="img-fluid rounded-circle" width="150" height="150">
+                                                        class="img-fluid rounded-circle"
+                                                        style="height: 150px; width: 150px; object-fit: cover;">
                                                 @endif
                                             </div>
                                         </div>
@@ -116,42 +120,45 @@
                                         <div class="mb-20">
                                             <label for="phone_number"
                                                 class="form-label fw-semibold text-primary-light text-sm mb-8">Nomor
-                                                Telepon</label>
+                                                Telepon<span class="text-danger-600">*</span></label>
                                             <input type="text" class="form-control radius-8" id="phone_number"
                                                 name="phone_number" placeholder="Masukkan Nomor Telepon"
-                                                value="{{ old('phone_number', $user->phone_number) }}">
+                                                value="{{ old('phone_number', $user->phone_number) }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="mb-20">
+                                            <label for="role"
+                                                class="form-label fw-semibold text-primary-light text-sm mb-8">
+                                                Role
+                                            </label>
+                                            @php
+                                                if ($user->role == 'user') {
+                                                    $roleFront = 'User';
+                                                } elseif ($user->role == 'superadmin') {
+                                                    $roleFront = 'Super Admin';
+                                                } else {
+                                                    $roleFront =
+                                                        $user->role == 'admin_wisata' ? 'Admin Wisata' : 'Admin Tempat';
+                                                }
+                                            @endphp
+                                            <input type="text" class="form-control radius-8" id="role"
+                                                name="role" value="{{ old('role', $roleFront) }}" readonly required>
                                         </div>
                                     </div>
                                     @if ($user->role !== 'superadmin')
-                                        <div class="col-sm-6">
-                                            <div class="mb-20">
-                                                <label for="role"
-                                                    class="form-label fw-semibold text-primary-light text-sm mb-8">Role
-                                                    <span class="text-danger-600">*</span></label>
-                                                <select class="form-control radius-8 form-select" id="role"
-                                                    name="role" required>
-                                                    <option value="admin_wisata"
-                                                        {{ old('role', $user->role) == 'admin_wisata' ? 'selected' : '' }}>
-                                                        Admin Wisata</option>
-                                                    <option value="admin_tempat"
-                                                        {{ old('role', $user->role) == 'admin_tempat' ? 'selected' : '' }}>
-                                                        Admin Tempat</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
                                         @if ($user->role === 'admin_wisata')
                                             <div class="col-sm-6">
                                                 <div class="mb-20">
-                                                    <label for="admin_destinations"
+                                                    <label for="destination_id"
                                                         class="form-label fw-semibold text-primary-light text-sm mb-8">Destinasi
-                                                        Wisata</label>
-                                                    <select class="form-control radius-8 form-select" id="admin_destination"
-                                                        name="admin_destinations">
-                                                        <option value="">Pilih Destinasi</option>
+                                                        Wisata<span class="text-danger-600">*</span></label>
+                                                    <select class="form-control radius-8 form-select" id="destination_id"
+                                                        name="destination_id">
+                                                        <option value="" required>Pilih Destinasi</option>
                                                         @foreach ($destinations as $destination)
                                                             <option value="{{ $destination->id }}"
-                                                                {{ old('admin_destinations', $managedItems->destination_id ?? '') == $destination->id ? 'selected' : '' }}>
+                                                                {{ old('destination_id', $managedItems->destination_id ?? '') == $destination->id ? 'selected' : '' }}>
                                                                 {{ $destination->id }} - {{ $destination->name }}
                                                             </option>
                                                         @endforeach
@@ -161,14 +168,15 @@
                                         @elseif ($user->role === 'admin_tempat')
                                             <div class="col-sm-6">
                                                 <div class="mb-20">
-                                                    <label for="admin_places"
-                                                        class="form-label fw-semibold text-primary-light text-sm mb-8">Tempat</label>
-                                                    <select class="form-control radius-8 form-select" id="admin_place"
-                                                        name="admin_places">
+                                                    <label for="place_id"
+                                                        class="form-label fw-semibold text-primary-light text-sm mb-8">Tempat<span
+                                                            class="text-danger-600">*</span></label>
+                                                    <select class="form-control radius-8 form-select" id="place_id"
+                                                        name="place_id" required>
                                                         <option value="">Pilih Tempat</option>
                                                         @foreach ($places as $place)
                                                             <option value="{{ $place->id }}"
-                                                                {{ old('admin_places', $managedItems->place_id ?? '') == $place->id ? 'selected' : '' }}>
+                                                                {{ old('place_id', $managedItems->place_id ?? '') == $place->id ? 'selected' : '' }}>
                                                                 {{ $place->id }} - {{ $place->name }}
                                                             </option>
                                                         @endforeach

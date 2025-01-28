@@ -77,22 +77,25 @@ class AdminUserController extends Controller
      */
     public function show(User $user)
     {
-        if (!$user) {
-            $message = 'Halaman yang Anda cari tidak ditemukan.';
-            return response()->view('admin.error', [
-                'status_code' => 404,
-                'error' => 'Page Not Found',
-                'message' => $message
-            ], 404);
-        }
+        if ($user->role == 'admin_tempat') {
+            $userWithAdminPlace = User::with('adminPlaces')->find($user->id);
+            if (!$user) {
+                $message = 'Halaman yang Anda cari tidak ditemukan.';
+                return response()->view('admin.error', [
+                    'status_code' => 404,
+                    'error' => 'Page Not Found',
+                    'message' => $message
+                ], 404);
+            }
 
-        if ($user->adminPlace && $user->adminPlace->approval_status !== 'approved') {
-            $message = 'Halaman yang Anda cari tidak ditemukan.';
-            return response()->view('admin.error', [
-                'status_code' => 404,
-                'error' => 'Page Not Found',
-                'message' => $message
-            ], 404);
+            if ($userWithAdminPlace->adminPlaces && $userWithAdminPlace->adminPlaces[0]->approval_status !== 'approved') {
+                $message = 'Halaman yang Anda cari tidak ditemukan.';
+                return response()->view('admin.error', [
+                    'status_code' => 404,
+                    'error' => 'Page Not Found',
+                    'message' => $message
+                ], 404);
+            }
         }
 
         $managedItems = null;
@@ -116,22 +119,25 @@ class AdminUserController extends Controller
      */
     public function edit(User $user)
     {
-        if (!$user) {
-            $message = 'Halaman yang Anda cari tidak ditemukan.';
-            return response()->view('admin.error', [
-                'status_code' => 404,
-                'error' => 'Page Not Found',
-                'message' => $message
-            ], 404);
-        }
+        if ($user->role == 'admin_tempat') {
+            $userWithAdminPlace = User::with('adminPlaces')->find($user->id);
+            if (!$user) {
+                $message = 'Halaman yang Anda cari tidak ditemukan.';
+                return response()->view('admin.error', [
+                    'status_code' => 404,
+                    'error' => 'Page Not Found',
+                    'message' => $message
+                ], 404);
+            }
 
-        if ($user->adminPlace && $user->adminPlace->approval_status !== 'approved') {
-            $message = 'Halaman yang Anda cari tidak ditemukan.';
-            return response()->view('admin.error', [
-                'status_code' => 404,
-                'error' => 'Page Not Found',
-                'message' => $message
-            ], 404);
+            if ($userWithAdminPlace->adminPlaces && $userWithAdminPlace->adminPlaces[0]->approval_status !== 'approved') {
+                $message = 'Halaman yang Anda cari tidak ditemukan.';
+                return response()->view('admin.error', [
+                    'status_code' => 404,
+                    'error' => 'Page Not Found',
+                    'message' => $message
+                ], 404);
+            }
         }
 
         $managedItems = null;
@@ -162,26 +168,56 @@ class AdminUserController extends Controller
     public function update(Request $request, User $user)
     {
         $validated = $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email',
-            'role' => 'required',
-            'admin_destinations' => 'nullable|exists:destinations,id',
-            'admin_places' => 'nullable|exists:places,id',
+            'name' => 'required|string|max:100',
+            'email' => 'required|email|max:100',
+            'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'phone_number' => 'required|string|max:30',
+            'destination_id' => 'nullable|exists:tbl_destinations,id',
+            'place_id' => 'nullable|exists:tbl_places,id',
         ]);
+
+        $picturePath = $user->profile_picture;
+
+        if ($request->hasFile('profile_picture')) {
+            if ($user->profile_picture) {
+                $oldFilePath = public_path($user->profile_picture);
+                if (file_exists($oldFilePath)) {
+                    unlink($oldFilePath);
+                }
+            }
+
+            $profilePicture = $request->file('profile_picture');
+
+            $fileName = time() . '_' . $profilePicture->getClientOriginalName();
+
+            $profilePicture->storeAs('public/profilepicture', $fileName);
+
+            $picturePath = "storage/profilepicture/{$fileName}";
+        }
 
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
             'phone_number' => $request->phone_number,
-            'role' => $request->role,
+            'profile_picture' => $picturePath,
         ]);
 
-        if ($user->role === 'admin_wisata' && $request->has('admin_destinations')) {
-            $user->adminDestination()->associate($request->admin_destinations);
+        if ($user->role === 'admin_wisata' && $request->has('destination_id')) {
+            $adminDestination = AdminDestination::where('user_id', $user->id)->first();
+
+            if ($adminDestination) {
+                $adminDestination->destination_id = $request->destination_id;
+                $adminDestination->save();
+            }
         }
 
-        if ($user->role === 'admin_tempat' && $request->has('admin_places')) {
-            $user->adminPlace()->associate($request->admin_places);
+        if ($user->role === 'admin_tempat' && $request->has('place_id')) {
+            $adminPlace = AdminPlace::where('user_id', $user->id)->first();
+
+            if ($adminPlace) {
+                $adminPlace->place_id = $request->place_id;
+                $adminPlace->save();
+            }
         }
 
         $user->save();

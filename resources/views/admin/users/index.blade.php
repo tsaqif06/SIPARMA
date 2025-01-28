@@ -49,7 +49,7 @@
                                 </td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <img src="{{ $data->profile_picture }}" alt="$data->name"
+                                        <img src="{{ asset($data->profile_picture) }}" alt="{{ $data->name }}"
                                             class="flex-shrink-0 me-12 radius-8" width="50">
                                         {{--  <img src="{{ asset(`storage/profilepicture/{$data->profile_picture}`) }}"
                                             alt="" class="flex-shrink-0 me-12 radius-8">  --}}

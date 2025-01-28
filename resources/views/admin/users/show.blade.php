@@ -69,23 +69,56 @@
                             <li>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <h6 class="mb-0 fw-semibold text-primary-light">
-                                            {{ $managedItems->destination->name }}</h6>
-                                        <small class="text-secondary-light">
-                                            Lokasi: {{ $managedItems->destination->location }}
-                                        </small>
-                                        <p class="text-secondary-light mb-0">Tipe:
-                                            {{ ucfirst($managedItems->destination->type) }}</p>
-                                        <p class="text-secondary-light">Status:
-                                            {{ ucfirst($managedItems->destination->operational_status) }}</p>
+                                        @if ($user->role === 'Admin Wisata' && $managedItems->destination)
+                                            <!-- Menampilkan destinasi wisata -->
+                                            <h6 class="mb-0 fw-semibold text-primary-light">
+                                                {{ $managedItems->destination->name }}</h6>
+                                            <small class="text-secondary-light">
+                                                Lokasi: {{ $managedItems->destination->location }}
+                                            </small>
+                                            <p class="text-secondary-light mb-0">Tipe:
+                                                {{ ucfirst($managedItems->destination->type) }}</p>
+                                            <p class="text-secondary-light">Status:
+                                                {{ ucfirst($managedItems->destination->operational_status) }}</p>
+                                        @elseif ($user->role === 'Admin Tempat' && $managedItems->place)
+                                            <!-- Menampilkan tempat -->
+                                            <h6 class="mb-0 fw-semibold text-primary-light">
+                                                {{ $managedItems->place->name }}</h6>
+                                            <small class="text-secondary-light">
+                                                Lokasi: {{ $managedItems->place->location }}
+                                            </small>
+                                            <p class="text-secondary-light mb-0">Tipe:
+                                                {{ ucfirst($managedItems->place->type) }}</p>
+                                            <p class="text-secondary-light">Status:
+                                                {{ ucfirst($managedItems->place->operational_status) }}</p>
+                                        @else
+                                            <p>Data tidak tersedia.</p>
+                                        @endif
                                     </div>
                                 </div>
 
                                 <div class="mt-4">
                                     <h6 class="text-lg text-primary">Galeri</h6>
-                                    @if ($managedItems->destination->gallery && $managedItems->destination->gallery->isNotEmpty())
+                                    @if (
+                                        $user->role === 'Admin Wisata' &&
+                                            $managedItems->destination &&
+                                            $managedItems->destination->gallery &&
+                                            $managedItems->destination->gallery->isNotEmpty())
                                         <div class="row">
                                             @foreach ($managedItems->destination->gallery as $image)
+                                                <div class="col-md-4">
+                                                    <img src="{{ asset($image->image_url) }}" alt="Gallery Image"
+                                                        class="img-fluid rounded mb-3">
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @elseif (
+                                        $user->role === 'Admin Tempat' &&
+                                            $managedItems->place &&
+                                            $managedItems->place->gallery &&
+                                            $managedItems->place->gallery->isNotEmpty())
+                                        <div class="row">
+                                            @foreach ($managedItems->place->gallery as $image)
                                                 <div class="col-md-4">
                                                     <img src="{{ asset($image->image_url) }}" alt="Gallery Image"
                                                         class="img-fluid rounded mb-3">
@@ -99,7 +132,7 @@
                             </li>
                         </ul>
                     @else
-                        <p>Tidak ada tempat yang diurus oleh admin ini.</p>
+                        <p>Tidak ada tempat yang diurus oleh pengguna ini.</p>
                     @endif
                 </div>
             </div>
