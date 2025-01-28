@@ -8,6 +8,7 @@ use App\Models\AdminPlace;
 use App\Models\Destination;
 use Illuminate\Http\Request;
 use App\Models\AdminDestination;
+use Illuminate\Support\Facades\Hash;
 
 class AdminUserController extends Controller
 {
@@ -40,20 +41,10 @@ class AdminUserController extends Controller
      */
     public function create()
     {
-        $managedItems = null;
-        $destinations = null;
-        $places = null;
+        $destinations = Destination::whereNotIn('id', AdminDestination::pluck('destination_id'))->get();
+        $places = Place::whereNotIn('id', AdminPlace::pluck('place_id'))->get();
 
-        // if ($user->role === 'admin_wisata') {
-        //     $managedItems = AdminDestination::where('user_id', $user->id)->get();
-        //     $destinations = Destination::whereNotIn('id', AdminDestination::pluck('destination_id'))->get();
-        // } elseif ($user->role === 'admin_tempat') {
-        //     $managedItems = AdminPlace::where('user_id', $user->id)->get();
-        //     $places = Place::whereNotIn('id', AdminPlace::pluck('place_id'))->get();
-        // }
-
-        // Kirim data ke view
-        return view('admin.users.create', compact('user', 'managedItems', 'destinations', 'places'));
+        return view('admin.users.create', compact('destinations', 'places'));
     }
 
     /**
@@ -61,15 +52,48 @@ class AdminUserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'location' => 'required|string|max:255',
+        $validated = $request->validate([
+            'name' => 'required|string|max:100',
+            'email' => 'required|email|unique:tbl_users,email|max:100',
+            'password' => 'required|min:6',
+            'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'phone_number' => 'required|string|max:30',
+            'role' => 'required|string|in:admin_wisata,admin_tempat',
+            'destination_id' => 'nullable|exists:tbl_destinations,id',
+            'place_id' => 'nullable|exists:tbl_places,id',
         ]);
 
-        User::create($request->all());
+        $picturePath = null;
 
-        return redirect()->route('admin.users.index')->with('success', 'User telah berhasil dibuat.');
+        if ($request->hasFile('profile_picture')) {
+            $profilePicture = $request->file('profile_picture');
+            $fileName = time() . '_' . $profilePicture->getClientOriginalName();
+            $profilePicture->storeAs('public/profilepicture', $fileName);
+            $picturePath = "storage/profilepicture/{$fileName}";
+        }
+
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'profile_picture' => $picturePath,
+            'phone_number' => $validated['phone_number'],
+            'role' => $validated['role'],
+        ]);
+
+        if ($validated['role'] === 'admin_wisata' && $request->destination_id) {
+            AdminDestination::create([
+                'user_id' => $user->id,
+                'destination_id' => $request->destination_id,
+            ]);
+        } elseif ($validated['role'] === 'admin_tempat' && $request->place_id) {
+            AdminPlace::create([
+                'user_id' => $user->id,
+                'place_id' => $request->place_id,
+            ]);
+        }
+
+        return redirect()->route('admin.users.index')->with('success', 'User telah ditambahkan');
     }
 
     /**
@@ -167,9 +191,14 @@ class AdminUserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        $emailValidation = 'required|email|max:100';
+        if ($request->email !== $user->email) {
+            $emailValidation .= '|unique:tbl_users,email';
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:100',
-            'email' => 'required|email|max:100',
+            'email' => $emailValidation,
             'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'phone_number' => 'required|string|max:30',
             'destination_id' => 'nullable|exists:tbl_destinations,id',
@@ -222,7 +251,7 @@ class AdminUserController extends Controller
 
         $user->save();
 
-        return redirect()->route('admin.users.index')->with('success', 'User updated successfully');
+        return redirect()->route('admin.users.index')->with('success', 'User telah diupdate');
     }
 
 
@@ -231,8 +260,21 @@ class AdminUserController extends Controller
      */
     public function destroy(User $user)
     {
+        if ($user->profile_picture) {
+            $oldFilePath = public_path($user->profile_picture);
+            if (file_exists($oldFilePath)) {
+                unlink($oldFilePath);
+            }
+        }
+
+        if ($user->role === 'admin_wisata') {
+            AdminDestination::where('user_id', $user->id)->delete();
+        } elseif ($user->role === 'admin_tempat') {
+            AdminPlace::where('user_id', $user->id)->delete();
+        }
+
         $user->delete();
 
-        return redirect()->route('admin.users.index')->with('success', 'User telah berhasil dihapus.');
+        return redirect()->route('admin.users.index')->with('success', 'User telah dihapus');
     }
 }

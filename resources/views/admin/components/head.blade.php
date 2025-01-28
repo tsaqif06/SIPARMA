@@ -31,6 +31,10 @@
     <link rel="stylesheet" href="{{ asset('assets/css/lib/file-upload.css') }}">
     <!-- audioplayer -->
     <link rel="stylesheet" href="{{ asset('assets/css/lib/audioplayer.css') }}">
+    <!-- sweetalert2 -->
+    <link rel="stylesheet" href="{{ asset('assets/css/lib/sweetalert2.min.css') }}">
     <!-- main css -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <!-- custom css -->
+    <style></style>
 </head>

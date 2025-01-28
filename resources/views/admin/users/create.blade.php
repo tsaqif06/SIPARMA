@@ -10,6 +10,7 @@
                 reader.onload = function(e) {
                     $("#imagePreview").css("background-image", "url(" + e.target.result + ")");
                     $("#imagePreview").hide();
+                    $("#imagePreview img").css("visibility", "hidden");
                     $("#imagePreview").fadeIn(650);
                 }
                 reader.readAsDataURL(input.files[0]);
@@ -35,7 +36,25 @@
         // Call the function
         initializePasswordToggle(".toggle-password");
         // ========================= Password Show Hide Js End ===========================
-    </script>';
+
+        // ========================= Handle Destination/Place ===========================
+        $("#role").on("change", function() {
+            var role = $(this).val();
+
+            $("#destination-field").hide();
+            $("#place-field").hide();
+
+            if (role === "admin_wisata") {
+                $("#destination-field").show();
+            } else if (role === "admin_tempat") {
+                $("#place-field").show();
+            }
+        });
+
+        $("#role").trigger("change");
+        // ========================= Handle Destination/Place End ===========================
+    </script>
+    ';
 @endphp
 
 @section('content')
@@ -65,24 +84,26 @@
                             aria-labelledby="pills-edit-profile-tab" tabindex="0">
                             <h6 class="text-md text-primary-light mb-16">Foto Profil</h6>
                             <!-- Upload Image Start -->
-                            <div class="mb-24 mt-16">
-                                <div class="avatar-upload">
-                                    <div
-                                        class="avatar-edit position-absolute bottom-0 end-0 me-24 mt-16 z-1 cursor-pointer">
-                                        <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" hidden>
-                                        <label for="imageUpload"
-                                            class="w-32-px h-32-px d-flex justify-content-center align-items-center bg-primary-50 text-primary-600 border border-primary-600 bg-hover-primary-100 text-lg rounded-circle">
-                                            <iconify-icon icon="solar:camera-outline" class="icon"></iconify-icon>
-                                        </label>
-                                    </div>
-                                    <div class="avatar-preview">
-                                        <div id="imagePreview">
+                            <form action="{{ route('admin.users.store') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <div class="mb-24 mt-16">
+                                    <div class="avatar-upload">
+                                        <div
+                                            class="avatar-edit position-absolute bottom-0 end-0 me-24 mt-16 z-1 cursor-pointer">
+                                            <input type='file' id="imageUpload" name="profile_picture"
+                                                accept=".png, .jpg, .jpeg" hidden>
+                                            <label for="imageUpload"
+                                                class="w-32-px h-32-px d-flex justify-content-center align-items-center bg-primary-50 text-primary-600 border border-primary-600 bg-hover-primary-100 text-lg rounded-circle">
+                                                <iconify-icon icon="solar:camera-outline" class="icon"></iconify-icon>
+                                            </label>
+                                        </div>
+                                        <div class="avatar-preview">
+                                            <div id="imagePreview"></div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- Upload Image End -->
-                            <form action="#">
+                                <!-- Upload Image End -->
+
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="mb-20">
@@ -90,7 +111,8 @@
                                                 class="form-label fw-semibold text-primary-light text-sm mb-8">Nama
                                                 <span class="text-danger-600">*</span></label>
                                             <input type="text" class="form-control radius-8" id="name"
-                                                placeholder="Enter Full Name">
+                                                name="name" placeholder="Masukkan Nama" value="{{ old('name') }}"
+                                                required>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -99,68 +121,96 @@
                                                 class="form-label fw-semibold text-primary-light text-sm mb-8">Email <span
                                                     class="text-danger-600">*</span></label>
                                             <input type="email" class="form-control radius-8" id="email"
-                                                placeholder="Enter email address">
+                                                name="email" placeholder="Masukkan Email" value="{{ old('email') }}"
+                                                required>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="mb-20">
-                                            <label for="number"
-                                                class="form-label fw-semibold text-primary-light text-sm mb-8">Phone</label>
-                                            <input type="email" class="form-control radius-8" id="number"
-                                                placeholder="Enter phone number">
+                                            <label for="password"
+                                                class="form-label fw-semibold text-primary-light text-sm mb-8">Password
+                                                <span class="text-danger-600">*</span></label>
+                                            <div class="position-relative">
+                                                <input type="password" class="form-control radius-8" id="password"
+                                                    name="password" placeholder="Masukkan Password*">
+                                                <span
+                                                    class="toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light"
+                                                    data-toggle="#password"></span>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="mb-20">
-                                            <label for="depart"
-                                                class="form-label fw-semibold text-primary-light text-sm mb-8">Department
-                                                <span class="text-danger-600">*</span> </label>
-                                            <select class="form-control radius-8 form-select" id="depart">
-                                                <option>Enter Event Title </option>
-                                                <option>Enter Event Title One </option>
-                                                <option>Enter Event Title Two</option>
+                                            <label for="phone_number"
+                                                class="form-label fw-semibold text-primary-light text-sm mb-8">Nomor
+                                                Telepon<span class="text-danger-600">*</span></label>
+                                            <input type="text" class="form-control radius-8" id="phone_number"
+                                                name="phone_number" placeholder="Masukkan Nomor Telepon"
+                                                value="{{ old('phone_number') }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="mb-20">
+                                            <label for="role"
+                                                class="form-label fw-semibold text-primary-light text-sm mb-8">
+                                                Role<span class="text-danger-600">*</span>
+                                            </label>
+                                            <select class="form-control radius-8 form-select" id="role" name="role"
+                                                required>
+                                                <option value="">Pilih Role</option>
+                                                <option value="admin_wisata"
+                                                    {{ old('role') == 'admin_wisata' ? 'selected' : '' }}>Admin Wisata
+                                                </option>
+                                                <option value="admin_tempat"
+                                                    {{ old('role') == 'admin_tempat' ? 'selected' : '' }}>Admin Tempat
+                                                </option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6">
+
+                                    <!-- Destination Field (only show for admin_wisata) -->
+                                    <div class="col-sm-6" id="destination-field" style="display: none;">
                                         <div class="mb-20">
-                                            <label for="desig"
-                                                class="form-label fw-semibold text-primary-light text-sm mb-8">Designation
-                                                <span class="text-danger-600">*</span> </label>
-                                            <select class="form-control radius-8 form-select" id="desig">
-                                                <option>Enter Designation Title </option>
-                                                <option>Enter Designation Title One </option>
-                                                <option>Enter Designation Title Two</option>
+                                            <label for="destination_id"
+                                                class="form-label fw-semibold text-primary-light text-sm mb-8">
+                                                Destinasi Wisata<span class="text-danger-600">*</span>
+                                            </label>
+                                            <select class="form-control radius-8 form-select" id="destination_id"
+                                                name="destination_id">
+                                                <option value="">Pilih Destinasi</option>
+                                                @foreach ($destinations as $destination)
+                                                    <option value="{{ $destination->id }}"
+                                                        {{ old('destination_id') == $destination->id ? 'selected' : '' }}>
+                                                        {{ $destination->id }} - {{ $destination->name }}
+                                                    </option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6">
+
+                                    <!-- Place Field (only show for admin_tempat) -->
+                                    <div class="col-sm-6" id="place-field" style="display: none;">
                                         <div class="mb-20">
-                                            <label for="Language"
-                                                class="form-label fw-semibold text-primary-light text-sm mb-8">Language
-                                                <span class="text-danger-600">*</span> </label>
-                                            <select class="form-control radius-8 form-select" id="Language">
-                                                <option> English</option>
-                                                <option> Bangla </option>
-                                                <option> Hindi</option>
-                                                <option> Arabic</option>
+                                            <label for="place_id"
+                                                class="form-label fw-semibold text-primary-light text-sm mb-8">
+                                                Tempat<span class="text-danger-600">*</span>
+                                            </label>
+                                            <select class="form-control radius-8 form-select" id="place_id"
+                                                name="place_id">
+                                                <option value="">Pilih Tempat</option>
+                                                @foreach ($places as $place)
+                                                    <option value="{{ $place->id }}"
+                                                        {{ old('place_id') == $place->id ? 'selected' : '' }}>
+                                                        {{ $place->id }} - {{ $place->name }}
+                                                    </option>
+                                                @endforeach
                                             </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <div class="mb-20">
-                                            <label for="desc"
-                                                class="form-label fw-semibold text-primary-light text-sm mb-8">Description</label>
-                                            <textarea name="#0" class="form-control radius-8" id="desc" placeholder="Write description..."></textarea>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="d-flex align-items-center justify-content-center gap-3">
-                                    <button type="button"
-                                        class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-md px-56 py-11 radius-8">
-                                        Cancel
-                                    </button>
-                                    <button type="button"
+                                    <button type="submit"
                                         class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8">
                                         Save
                                     </button>

@@ -23,23 +23,17 @@
     <script src="{{ asset('assets/js/lib/file-upload.js') }}"></script>
     <!-- audioplayer -->
     <script src="{{ asset('assets/js/lib/audioplayer.js') }}"></script>
+    <!-- sweetalert2 -->
+    <script src="{{ asset('assets/js/lib/sweetalert2.min.js') }}"></script>
 
     <!-- main js -->
     <script src="{{ asset('assets/js/app.js') }}"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(() => {
-                const alerts = document.querySelectorAll('.alert');
-                alerts.forEach(alert => {
-                    alert.classList.remove('show');
-                    setTimeout(() => alert.remove(), 500);
-                });
-            }, 5000);
+        $(document).ready(function() {
+            // Inisialisasi DataTable
+            let table = new DataTable("#dataTable");
         });
-    </script>
-    <script>
-        let table = new DataTable("#dataTable");
     </script>
 
     <?php echo isset($script) ? $script : ''; ?>
