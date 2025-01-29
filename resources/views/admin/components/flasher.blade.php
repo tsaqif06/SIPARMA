@@ -5,7 +5,7 @@
             title: 'Berhasil!',
             text: '{{ session('success') }}',
             confirmButtonText: 'Tutup',
-            timer: 3000
+            timer: 1000
         });
     </script>
 @endif
@@ -17,7 +17,7 @@
             title: 'Gagal!',
             text: '{{ session('error') }}',
             confirmButtonText: 'Tutup',
-            timer: 3000
+            timer: 1000
         });
     </script>
 @endif

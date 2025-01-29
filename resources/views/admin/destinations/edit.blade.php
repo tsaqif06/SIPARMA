@@ -1,7 +1,7 @@
 @extends('admin.layout.layout')
 @php
-    $title = 'Tambah Wisata';
-    $subTitle = 'Wisata - Tambah';
+    $title = 'Edit Wisata';
+    $subTitle = 'Wisata - Edit';
 @endphp
 
 @section('content')
@@ -13,8 +13,10 @@
                         <div class="tab-pane fade show active" id="pills-edit-profile" role="tabpanel"
                             aria-labelledby="pills-edit-profile-tab" tabindex="0">
                             <!-- Upload Image Start -->
-                            <form action="{{ route('admin.destinations.store') }}" method="POST">
+                            <form action="{{ route('admin.destinations.update', $destination->id) }}" method="POST"
+                                enctype="multipart/form-data">
                                 @csrf
+                                @method('PUT')
                                 <div class="row">
                                     <!-- Nama Destinasi -->
                                     <div class="col-sm-6">
@@ -25,7 +27,7 @@
                                             <input type="text"
                                                 class="form-control radius-8 @error('name') is-invalid @enderror"
                                                 id="name" name="name" placeholder="Masukkan Nama Destinasi"
-                                                value="{{ old('name') }}" required>
+                                                value="{{ old('name', $destination->name) }}" required>
                                             @error('name')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -41,9 +43,11 @@
                                             <select class="form-control radius-8 @error('type') is-invalid @enderror"
                                                 id="type" name="type" required>
                                                 <option value="">Pilih Tipe</option>
-                                                <option value="alam" {{ old('type') == 'alam' ? 'selected' : '' }}>Alam
+                                                <option value="alam"
+                                                    {{ old('type', $destination->type) == 'alam' ? 'selected' : '' }}>Alam
                                                 </option>
-                                                <option value="wahana" {{ old('type') == 'wahana' ? 'selected' : '' }}>
+                                                <option value="wahana"
+                                                    {{ old('type', $destination->type) == 'wahana' ? 'selected' : '' }}>
                                                     Wahana</option>
                                             </select>
                                             @error('type')
@@ -61,7 +65,7 @@
                                             <input type="text"
                                                 class="form-control radius-8 @error('location') is-invalid @enderror"
                                                 id="location" name="location" placeholder="Masukkan Lokasi"
-                                                value="{{ old('location') }}" required>
+                                                value="{{ old('location', $destination->location) }}" required>
                                             @error('location')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -75,7 +79,7 @@
                                                 class="form-label fw-semibold text-primary-light text-sm mb-8">Jam Buka</label>
                                             <input type="time"
                                                 class="form-control radius-8 @error('open_time') is-invalid @enderror"
-                                                id="open_time" name="open_time" value="{{ old('open_time') }}">
+                                                id="open_time" name="open_time" value="{{ old('open_time', $destination->open_time) }}">
                                             @error('open_time')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -90,7 +94,7 @@
                                                 Tutup</label>
                                             <input type="time"
                                                 class="form-control radius-8 @error('close_time') is-invalid @enderror"
-                                                id="close_time" name="close_time" value="{{ old('close_time') }}">
+                                                id="close_time" name="close_time" value="{{ old('close_time', $destination->close_time) }}">
                                             @error('close_time')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -106,7 +110,7 @@
                                             <input type="number" step="0.01"
                                                 class="form-control radius-8 @error('price') is-invalid @enderror"
                                                 id="price" name="price" placeholder="Masukkan Harga Tiket"
-                                                value="{{ old('price') }}">
+                                                value="{{ old('price', $destination->price) }}">
                                             @error('price')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -123,7 +127,7 @@
                                                 class="form-control radius-8 @error('weekend_price') is-invalid @enderror"
                                                 id="weekend_price" name="weekend_price"
                                                 placeholder="Masukkan Harga Tiket Akhir Pekan"
-                                                value="{{ old('weekend_price') }}">
+                                                value="{{ old('weekend_price', $destination->weekend_price) }}">
                                             @error('weekend_price')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -140,7 +144,7 @@
                                                 class="form-control radius-8 @error('children_price') is-invalid @enderror"
                                                 id="children_price" name="children_price"
                                                 placeholder="Masukkan Harga Tiket Anak-anak"
-                                                value="{{ old('children_price') }}">
+                                                value="{{ old('children_price', $destination->children_price) }}">
                                             @error('children_price')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -156,7 +160,7 @@
                                             <input type="text"
                                                 class="form-control radius-8 @error('account_number') is-invalid @enderror"
                                                 id="account_number" name="account_number"
-                                                placeholder="Masukkan Nomor Rekening" value="{{ old('account_number') }}"
+                                                placeholder="Masukkan Nomor Rekening" value="{{ old('account_number', $destination->account_number) }}"
                                                 >
                                             @error('account_number')
                                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -171,7 +175,7 @@
                                                 class="form-label fw-semibold text-primary-light text-sm mb-8">Nama
                                                 Bank</label>
                                             <input type="text"
-                                                class="form-control radius-8 @error('bank_name') is-invalid @enderror"
+                                                class="form-control radius-8 @error('bank_name', $destination->bank_name) is-invalid @enderror"
                                                 id="bank_name" name="bank_name" placeholder="Masukkan Nama Bank"
                                                 value="{{ old('bank_name') }}">
                                             @error('bank_name')
@@ -187,7 +191,7 @@
                                                 class="form-label fw-semibold text-primary-light text-sm mb-8">Nama Pemilik
                                                 Rekening</label>
                                             <input type="text"
-                                                class="form-control radius-8 @error('account_name') is-invalid @enderror"
+                                                class="form-control radius-8 @error('account_name', $destination->account_name) is-invalid @enderror"
                                                 id="account_name" name="account_name"
                                                 placeholder="Masukkan Nama Pemilik Rekening"
                                                 value="{{ old('account_name') }}">
@@ -203,7 +207,7 @@
                                             <label for="description"
                                                 class="form-label fw-semibold text-primary-light text-sm mb-8">Deskripsi</label>
                                             <textarea class="form-control radius-8 @error('description') is-invalid @enderror" id="description"
-                                                name="description" rows="4" placeholder="Masukkan Deskripsi Destinasi">{{ old('description') }}</textarea>
+                                                name="description" rows="4" placeholder="Masukkan Deskripsi Destinasi">{{ old('description', $destination->description) }}</textarea>
                                             @error('description')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror

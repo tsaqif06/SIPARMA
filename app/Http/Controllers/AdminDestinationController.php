@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Destination;
-use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Models\Destination;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 
 class AdminDestinationController extends Controller
@@ -44,15 +46,22 @@ class AdminDestinationController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
+        $validated = $request->validate([
+            'name' => 'required|string|max:100',
+            'type' => 'required|string|in:alam,wahana',
             'location' => 'required|string|max:255',
         ]);
 
-        Destination::create($request->all());
+        $validated['slug'] = Str::slug($validated['name']);
 
-        return redirect()->route('admin.destinations.index')->with('success', 'Destination created successfully.');
+        Destination::create([
+            'name' => $validated['name'],
+            'slug' => $validated['slug'],
+            'type' => $validated['type'],
+            'location' => $validated['location'],
+        ]);
+
+        return redirect()->route('admin.destinations.index')->with('success', 'Wisata telah ditambahkan.');
     }
 
     /**
@@ -76,15 +85,17 @@ class AdminDestinationController extends Controller
      */
     public function update(Request $request, Destination $destination)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
+        $validated = $request->validate([
+            'name' => 'required|string|max:100',
+            'type' => 'required|string|in:alam,wahana',
             'location' => 'required|string|max:255',
         ]);
 
-        $destination->update($request->all());
+        $validated['slug'] = Str::slug($validated['name']);
 
-        return redirect()->route('admin.destinations.index')->with('success', 'Destination updated successfully.');
+        $destination->update($validated);
+
+        return redirect()->route('admin.destinations.index')->with('success', 'Wisata telah diupdate.');
     }
 
     /**
@@ -92,8 +103,15 @@ class AdminDestinationController extends Controller
      */
     public function destroy(Destination $destination)
     {
+        foreach ($destination->gallery as $image) {
+            $imagePath = public_path($image->image_url);
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+        }
+
         $destination->delete();
 
-        return redirect()->route('admin.destinations.index')->with('success', 'Destination deleted successfully.');
+        return redirect()->route('admin.destinations.index')->with('success', 'Wisata telah dihapus.');
     }
 }

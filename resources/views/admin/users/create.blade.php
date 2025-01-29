@@ -1,7 +1,7 @@
 @extends('admin.layout.layout')
 @php
-    $title = 'Edit Profil';
-    $subTitle = 'Profil - Edit';
+    $title = 'Tambah User';
+    $subTitle = 'User - Tambah';
     $script = '<script>
         // ======================== Upload Image Start =====================
         function readURL(input) {

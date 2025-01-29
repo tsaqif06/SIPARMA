@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('name', 100);
             $table->string('slug', 255);
-            $table->text('description');
-            $table->time('open_time');
-            $table->time('close_time');
-            $table->enum('operational_status', ['open', 'closed']);
+            $table->text('description')->nullable();
+            $table->time('open_time')->nullable();
+            $table->time('close_time')->nullable();
+            $table->enum('operational_status', ['open', 'closed'])->nullable();
             $table->string('location', 255);
             $table->string('type', 100);
             $table->foreignId('destination_id')->nullable()->constrained('tbl_destinations')->nullOnDelete();
