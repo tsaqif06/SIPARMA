@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\AdminPlaceController;
 use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\AdminDestinationController;
 
@@ -59,5 +60,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::resource('users', AdminUserController::class);
         Route::resource('destinations', AdminDestinationController::class);
+        Route::resource('places', AdminPlaceController::class);
     });
 });

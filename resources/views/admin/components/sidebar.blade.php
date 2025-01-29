@@ -82,6 +82,12 @@
                     <span>Wisata</span>
                 </a>
             </li>
+            <li>
+                <a href="{{ route('admin.places.index') }}">
+                    <iconify-icon icon="material-symbols:file-map-outline" class="menu-icon"></iconify-icon>
+                    <span>Tempat</span>
+                </a>
+            </li>
             {{-- <li>
                 <a href="{{ route('email') }}">
                     <iconify-icon icon="mage:email" class="menu-icon"></iconify-icon>

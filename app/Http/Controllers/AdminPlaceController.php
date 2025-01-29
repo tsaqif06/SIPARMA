@@ -3,34 +3,30 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Place;
 use App\Models\Destination;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 
-class AdminDestinationController extends Controller
+class AdminPlaceController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $destinations = Destination::all();
-
-        foreach ($destinations as $destination) {
+        $places = Place::all();
+        foreach ($places as $place) {
             $current_time = Carbon::now('Asia/Jakarta')->format('H:i:s');
 
-            if ($destination->operational_status === 'holiday') {
-                $destination->status = 'Holiday';
-            } else {
-                $destination->status = ($current_time >= $destination->open_time && $current_time <= $destination->close_time)
-                    ? 'Buka'
-                    : 'Tutup';
-            }
+            $place->status = ($current_time >= $place->open_time && $current_time <= $place->close_time)
+                ? 'Buka'
+                : 'Tutup';
         }
 
-        return view('admin.destinations.index', compact('destinations'));
+        return view('admin.places.index', compact('places'));
     }
 
     /**
@@ -38,7 +34,9 @@ class AdminDestinationController extends Controller
      */
     public function create()
     {
-        return view('admin.destinations.create');
+        $destinations = Destination::all();
+
+        return view('admin.places.create', compact('destinations'));
     }
 
     /**
@@ -48,70 +46,75 @@ class AdminDestinationController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:100',
-            'type' => 'required|string|in:alam,wahana',
+            'type' => 'required|string|max:100',
             'location' => 'required|string|max:255',
+            'destination_id' => 'required|exists:tbl_destinations,id',
         ]);
 
         $validated['slug'] = Str::slug($validated['name']);
 
-        Destination::create([
+        Place::create([
             'name' => $validated['name'],
             'slug' => $validated['slug'],
             'type' => $validated['type'],
             'location' => $validated['location'],
+            'destination_id' => $validated['destination_id'],
         ]);
 
-        return redirect()->route('admin.destinations.index')->with('success', 'Wisata telah ditambahkan.');
+        return redirect()->route('admin.places.index')->with('success', 'Tempat telah ditambahkan.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Destination $destination)
+    public function show(Place $place)
     {
-        return view('admin.destinations.show', compact('destination'));
+        return view('admin.places.show', compact('place'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Destination $destination)
+    public function edit(Place $place)
     {
-        return view('admin.destinations.edit', compact('destination'));
+        $destinations = Destination::all();
+
+        return view('admin.places.edit', compact('place', 'destinations'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Destination $destination)
+    public function update(Request $request, Place $place)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:100',
-            'type' => 'required|string|in:alam,wahana',
+            'type' => 'required|string|max:100',
             'location' => 'required|string|max:255',
+            'destination_id' => 'required|exists:tbl_destinations,id',
         ]);
 
         $validated['slug'] = Str::slug($validated['name']);
 
-        $destination->update($validated);
+        $place->update($validated);
 
-        return redirect()->route('admin.destinations.index')->with('success', 'Wisata telah diupdate.');
+        return redirect()->route('admin.places.index')->with('success', 'Tempat telah diupdate.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Destination $destination)
+    public function destroy(Place $place)
     {
-        foreach ($destination->gallery as $image) {
+        foreach ($place->gallery as $image) {
             $imagePath = public_path($image->image_url);
             if (file_exists($imagePath)) {
                 unlink($imagePath);
             }
         }
 
-        $destination->delete();
+        $place->delete();
 
-        return redirect()->route('admin.destinations.index')->with('success', 'Wisata telah dihapus.');
+        return redirect()->route('admin.places.index')->with('success', 'Tempat telah dihapus.');
     }
 }
