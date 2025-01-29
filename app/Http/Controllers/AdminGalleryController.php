@@ -4,44 +4,29 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Destination;
+use App\Models\Place;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 
-class AdminDestinationController extends Controller
+class AdminGalleryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        if (Auth::user()->role !== 'superadmin') {
-            return redirect()->route('admin.destinations.show', auth()->user()->adminDestinations[0]->destination_id)->with('error', 'Akses ditolak!');
-        }
+        $destination = auth()->user()->adminDestinations[0]->destination;
 
-        $destinations = Destination::all();
+        $allImages = $destination->gallery;
 
-        foreach ($destinations as $destination) {
-            $current_time = Carbon::now('Asia/Jakarta')->format('H:i:s');
+        $placeImages = $destination->gallery()->where('image_type', 'place')->get();
+        $promoImages = $destination->gallery()->where('image_type', 'promo')->get();
 
-            if ($destination->operational_status === 'holiday') {
-                $destination->status = 'Libur';
-            } else {
-                $destination->status = ($current_time >= $destination->open_time && $current_time <= $destination->close_time)
-                    ? 'Buka'
-                    : 'Tutup';
-            }
-        }
-
-        return view('admin.destinations.index', compact('destinations'));
-    }
-
-    public function gallery(Destination $destination)
-    {
-        $gallery = $destination->gallery;
-        return view('admin.gallery.index', compact('destination', 'gallery'));
+        // Kirim data ke view
+        return view('admin.gallery.index', compact('destination', 'allImages', 'placeImages', 'promoImages'));
     }
 
     public function facilities(Destination $destination)

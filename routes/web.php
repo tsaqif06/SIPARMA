@@ -10,6 +10,9 @@ use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdminPlaceController;
 use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\AdminDestinationController;
+use App\Http\Controllers\AdminGalleryController;
+use App\Http\Controllers\AdminFacilityController;
+use App\Http\Controllers\AdminRideController;
 
 // Route::get('/', [HomeController::class, 'index'])->name('home.index');
 // Route::get('/wisata', [HomeController::class, 'wisata'])->name('home.wisata');
@@ -55,10 +58,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::resource('users', AdminUserController::class);
 
-        Route::get('destinations/{destination}/gallery', [AdminDestinationController::class, 'gallery'])->name('destinations.gallery');
         Route::get('destinations/{destination}/facilities', [AdminDestinationController::class, 'facilities'])->name('destinations.facilities');
         Route::get('destinations/{destination}/rides', [AdminDestinationController::class, 'rides'])->name('destinations.rides');
         Route::resource('destinations', AdminDestinationController::class);
+        Route::resource('gallery', AdminGalleryController::class);
+        Route::resource('facilities', AdminFacilityController::class);
+        Route::resource('rides', AdminRideController::class);
 
         Route::get('/places/manage', [AdminPlaceController::class, 'manage'])->name('places.manage');
         Route::resource('places', AdminPlaceController::class);

@@ -104,20 +104,20 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.destinations.gallery', $user->adminDestinations[0]->destination_id) }}">
+                    <a href="{{ route('admin.gallery.index') }}">
                         <iconify-icon icon="material-symbols:gallery-thumbnail-outline-rounded"
                             class="menu-icon"></iconify-icon>
                         <span>Galeri</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.destinations.facilities', $user->adminDestinations[0]->destination_id) }}">
+                    <a href="{{ route('admin.facilities.index') }}">
                         <iconify-icon icon="material-symbols:museum-outline-rounded" class="menu-icon"></iconify-icon>
                         <span>Fasilitas</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.destinations.rides', $user->adminDestinations[0]->destination_id) }}">
+                    <a href="{{ route('admin.rides.index') }}">
                         <iconify-icon icon="material-symbols:pool-rounded" class="menu-icon"></iconify-icon>
                         <span>Wahana</span>
                     </a>

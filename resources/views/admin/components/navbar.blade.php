@@ -146,7 +146,16 @@
                             <div>
                                 <h6 class="text-lg text-primary-light fw-semibold mb-2">{{ auth()->user()->name }}
                                 </h6>
-                                <span class="text-secondary-light fw-medium text-sm">{{ auth()->user()->role }}</span>
+                                @php
+                                    if (auth()->user()->role === 'superadmin') {
+                                        $roleShow = 'Super Admin';
+                                    } elseif (auth()->user()->role === 'admin_wisata') {
+                                        $roleShow = 'Admin Wisata';
+                                    } elseif (auth()->user()->role === 'admin_tempat') {
+                                        $roleShow = 'Admin Tempat';
+                                    }
+                                @endphp
+                                <span class="text-secondary-light fw-medium text-sm">{{ $roleShow }}</span>
                             </div>
                             <button type="button" class="hover-text-danger">
                                 <iconify-icon icon="radix-icons:cross-1" class="icon text-xl"></iconify-icon>
