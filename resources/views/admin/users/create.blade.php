@@ -101,6 +101,9 @@
                                             <div id="imagePreview"></div>
                                         </div>
                                     </div>
+                                    @error('profile_picture')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <!-- Upload Image End -->
 
@@ -108,11 +111,15 @@
                                     <div class="col-sm-6">
                                         <div class="mb-20">
                                             <label for="name"
-                                                class="form-label fw-semibold text-primary-light text-sm mb-8">Nama
-                                                <span class="text-danger-600">*</span></label>
-                                            <input type="text" class="form-control radius-8" id="name"
-                                                name="name" placeholder="Masukkan Nama" value="{{ old('name') }}"
-                                                required>
+                                                class="form-label fw-semibold text-primary-light text-sm mb-8">Nama <span
+                                                    class="text-danger-600">*</span></label>
+                                            <input type="text"
+                                                class="form-control radius-8 @error('name') is-invalid @enderror"
+                                                id="name" name="name" placeholder="Masukkan Nama"
+                                                value="{{ old('name') }}" required>
+                                            @error('name')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -120,9 +127,13 @@
                                             <label for="email"
                                                 class="form-label fw-semibold text-primary-light text-sm mb-8">Email <span
                                                     class="text-danger-600">*</span></label>
-                                            <input type="email" class="form-control radius-8" id="email"
-                                                name="email" placeholder="Masukkan Email" value="{{ old('email') }}"
-                                                required>
+                                            <input type="email"
+                                                class="form-control radius-8 @error('email') is-invalid @enderror"
+                                                id="email" name="email" placeholder="Masukkan Email"
+                                                value="{{ old('email') }}" required>
+                                            @error('email')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -131,11 +142,15 @@
                                                 class="form-label fw-semibold text-primary-light text-sm mb-8">Password
                                                 <span class="text-danger-600">*</span></label>
                                             <div class="position-relative">
-                                                <input type="password" class="form-control radius-8" id="password"
-                                                    name="password" placeholder="Masukkan Password*">
+                                                <input type="password"
+                                                    class="form-control radius-8 @error('password') is-invalid @enderror"
+                                                    id="password" name="password" placeholder="Masukkan Password*">
                                                 <span
                                                     class="toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light"
                                                     data-toggle="#password"></span>
+                                                @error('password')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
@@ -144,19 +159,23 @@
                                             <label for="phone_number"
                                                 class="form-label fw-semibold text-primary-light text-sm mb-8">Nomor
                                                 Telepon<span class="text-danger-600">*</span></label>
-                                            <input type="text" class="form-control radius-8" id="phone_number"
-                                                name="phone_number" placeholder="Masukkan Nomor Telepon"
+                                            <input type="text"
+                                                class="form-control radius-8 @error('phone_number') is-invalid @enderror"
+                                                id="phone_number" name="phone_number" placeholder="Masukkan Nomor Telepon"
                                                 value="{{ old('phone_number') }}" required>
+                                            @error('phone_number')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="mb-20">
                                             <label for="role"
-                                                class="form-label fw-semibold text-primary-light text-sm mb-8">
-                                                Role<span class="text-danger-600">*</span>
-                                            </label>
-                                            <select class="form-control radius-8 form-select" id="role" name="role"
-                                                required>
+                                                class="form-label fw-semibold text-primary-light text-sm mb-8">Role<span
+                                                    class="text-danger-600">*</span></label>
+                                            <select
+                                                class="form-control radius-8 form-select @error('role') is-invalid @enderror"
+                                                id="role" name="role" required>
                                                 <option value="">Pilih Role</option>
                                                 <option value="admin_wisata"
                                                     {{ old('role') == 'admin_wisata' ? 'selected' : '' }}>Admin Wisata
@@ -165,6 +184,9 @@
                                                     {{ old('role') == 'admin_tempat' ? 'selected' : '' }}>Admin Tempat
                                                 </option>
                                             </select>
+                                            @error('role')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
 
@@ -172,19 +194,21 @@
                                     <div class="col-sm-6" id="destination-field" style="display: none;">
                                         <div class="mb-20">
                                             <label for="destination_id"
-                                                class="form-label fw-semibold text-primary-light text-sm mb-8">
-                                                Destinasi Wisata<span class="text-danger-600">*</span>
-                                            </label>
-                                            <select class="form-control radius-8 form-select" id="destination_id"
-                                                name="destination_id">
+                                                class="form-label fw-semibold text-primary-light text-sm mb-8">Destinasi
+                                                Wisata<span class="text-danger-600">*</span></label>
+                                            <select
+                                                class="form-control radius-8 form-select @error('destination_id') is-invalid @enderror"
+                                                id="destination_id" name="destination_id">
                                                 <option value="">Pilih Destinasi</option>
                                                 @foreach ($destinations as $destination)
                                                     <option value="{{ $destination->id }}"
                                                         {{ old('destination_id') == $destination->id ? 'selected' : '' }}>
-                                                        {{ $destination->id }} - {{ $destination->name }}
-                                                    </option>
+                                                        {{ $destination->id }} - {{ $destination->name }}</option>
                                                 @endforeach
                                             </select>
+                                            @error('destination_id')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
 
@@ -192,32 +216,31 @@
                                     <div class="col-sm-6" id="place-field" style="display: none;">
                                         <div class="mb-20">
                                             <label for="place_id"
-                                                class="form-label fw-semibold text-primary-light text-sm mb-8">
-                                                Tempat<span class="text-danger-600">*</span>
-                                            </label>
-                                            <select class="form-control radius-8 form-select" id="place_id"
-                                                name="place_id">
+                                                class="form-label fw-semibold text-primary-light text-sm mb-8">Tempat<span
+                                                    class="text-danger-600">*</span></label>
+                                            <select
+                                                class="form-control radius-8 form-select @error('place_id') is-invalid @enderror"
+                                                id="place_id" name="place_id">
                                                 <option value="">Pilih Tempat</option>
                                                 @foreach ($places as $place)
                                                     <option value="{{ $place->id }}"
                                                         {{ old('place_id') == $place->id ? 'selected' : '' }}>
-                                                        {{ $place->id }} - {{ $place->name }}
-                                                    </option>
+                                                        {{ $place->id }} - {{ $place->name }}</option>
                                                 @endforeach
                                             </select>
+                                            @error('place_id')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="d-flex align-items-center justify-content-center gap-3">
                                     <button type="submit"
-                                        class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8">
-                                        Save
-                                    </button>
+                                        class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8">Save</button>
                                 </div>
                             </form>
                         </div>
-
                         {{--  <div class="tab-pane fade" id="pills-change-passwork" role="tabpanel"
                             aria-labelledby="pills-change-passwork-tab" tabindex="0">
                             <div class="mb-20">

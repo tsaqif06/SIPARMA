@@ -92,6 +92,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @error('profile_picture')
+                                        <div class="text-danger text-sm mt-8">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <!-- Upload Image End -->
 
@@ -99,11 +102,15 @@
                                     <div class="col-sm-6">
                                         <div class="mb-20">
                                             <label for="name"
-                                                class="form-label fw-semibold text-primary-light text-sm mb-8">Nama
-                                                <span class="text-danger-600">*</span></label>
-                                            <input type="text" class="form-control radius-8" id="name"
-                                                name="name" placeholder="Masukkan Nama"
+                                                class="form-label fw-semibold text-primary-light text-sm mb-8">Nama <span
+                                                    class="text-danger-600">*</span></label>
+                                            <input type="text"
+                                                class="form-control radius-8 @error('name') is-invalid @enderror"
+                                                id="name" name="name" placeholder="Masukkan Nama"
                                                 value="{{ old('name', $user->name) }}" required>
+                                            @error('name')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -111,9 +118,13 @@
                                             <label for="email"
                                                 class="form-label fw-semibold text-primary-light text-sm mb-8">Email <span
                                                     class="text-danger-600">*</span></label>
-                                            <input type="email" class="form-control radius-8" id="email"
-                                                name="email" placeholder="Masukkan Email"
+                                            <input type="email"
+                                                class="form-control radius-8 @error('email') is-invalid @enderror"
+                                                id="email" name="email" placeholder="Masukkan Email"
                                                 value="{{ old('email', $user->email) }}" required>
+                                            @error('email')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -121,17 +132,19 @@
                                             <label for="phone_number"
                                                 class="form-label fw-semibold text-primary-light text-sm mb-8">Nomor
                                                 Telepon<span class="text-danger-600">*</span></label>
-                                            <input type="text" class="form-control radius-8" id="phone_number"
-                                                name="phone_number" placeholder="Masukkan Nomor Telepon"
+                                            <input type="text"
+                                                class="form-control radius-8 @error('phone_number') is-invalid @enderror"
+                                                id="phone_number" name="phone_number" placeholder="Masukkan Nomor Telepon"
                                                 value="{{ old('phone_number', $user->phone_number) }}" required>
+                                            @error('phone_number')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="mb-20">
                                             <label for="role"
-                                                class="form-label fw-semibold text-primary-light text-sm mb-8">
-                                                Role
-                                            </label>
+                                                class="form-label fw-semibold text-primary-light text-sm mb-8">Role</label>
                                             @php
                                                 if ($user->role == 'user') {
                                                     $roleFront = 'User';
@@ -153,9 +166,10 @@
                                                     <label for="destination_id"
                                                         class="form-label fw-semibold text-primary-light text-sm mb-8">Destinasi
                                                         Wisata<span class="text-danger-600">*</span></label>
-                                                    <select class="form-control radius-8 form-select" id="destination_id"
-                                                        name="destination_id">
-                                                        <option value="" required>Pilih Destinasi</option>
+                                                    <select
+                                                        class="form-control radius-8 form-select @error('destination_id') is-invalid @enderror"
+                                                        id="destination_id" name="destination_id">
+                                                        <option value="">Pilih Destinasi</option>
                                                         @foreach ($destinations as $destination)
                                                             <option value="{{ $destination->id }}"
                                                                 {{ old('destination_id', $managedItems->destination_id ?? '') == $destination->id ? 'selected' : '' }}>
@@ -163,6 +177,9 @@
                                                             </option>
                                                         @endforeach
                                                     </select>
+                                                    @error('destination_id')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                             </div>
                                         @elseif ($user->role === 'admin_tempat')
@@ -171,8 +188,9 @@
                                                     <label for="place_id"
                                                         class="form-label fw-semibold text-primary-light text-sm mb-8">Tempat<span
                                                             class="text-danger-600">*</span></label>
-                                                    <select class="form-control radius-8 form-select" id="place_id"
-                                                        name="place_id" required>
+                                                    <select
+                                                        class="form-control radius-8 form-select @error('place_id') is-invalid @enderror"
+                                                        id="place_id" name="place_id" required>
                                                         <option value="">Pilih Tempat</option>
                                                         @foreach ($places as $place)
                                                             <option value="{{ $place->id }}"
@@ -181,6 +199,9 @@
                                                             </option>
                                                         @endforeach
                                                     </select>
+                                                    @error('place_id')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                             </div>
                                         @endif
@@ -188,9 +209,7 @@
                                 </div>
                                 <div class="d-flex align-items-center justify-content-center gap-3">
                                     <button type="submit"
-                                        class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8">
-                                        Save
-                                    </button>
+                                        class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8">Save</button>
                                 </div>
                             </form>
                         </div>
