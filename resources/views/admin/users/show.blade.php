@@ -55,6 +55,11 @@
                         @endif
                         </ul>
                     </div>
+                    <div class="mt-24 text-center">
+                        <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-primary">
+                            Edit Profil
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

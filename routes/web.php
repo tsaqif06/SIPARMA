@@ -52,14 +52,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::middleware(['auth', 'is_admin'])->group(function () {
         Route::get('/', [HomeController::class, 'indexAdmin'])->name('dashboard');
-        Route::get('/users', [UserController::class, 'index'])->name('users.index');
-        Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');
-        Route::post('/user', [UserController::class, 'store'])->name('user.store');
-        Route::put('/user/{id}', [UserController::class, 'update'])->name('user.update');
-        Route::delete('/user/{id}', [UserController::class, 'delete'])->name('user.delete');
 
         Route::resource('users', AdminUserController::class);
+
+        Route::get('destinations/{destination}/gallery', [AdminDestinationController::class, 'gallery'])->name('destinations.gallery');
+        Route::get('destinations/{destination}/facilities', [AdminDestinationController::class, 'facilities'])->name('destinations.facilities');
+        Route::get('destinations/{destination}/rides', [AdminDestinationController::class, 'rides'])->name('destinations.rides');
         Route::resource('destinations', AdminDestinationController::class);
+
+        Route::get('/places/manage', [AdminPlaceController::class, 'manage'])->name('places.manage');
         Route::resource('places', AdminPlaceController::class);
     });
 });

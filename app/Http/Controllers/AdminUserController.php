@@ -8,6 +8,7 @@ use App\Models\AdminPlace;
 use App\Models\Destination;
 use Illuminate\Http\Request;
 use App\Models\AdminDestination;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AdminUserController extends Controller
@@ -41,6 +42,10 @@ class AdminUserController extends Controller
      */
     public function create()
     {
+        if (Auth::user()->role !== 'superadmin') {
+            return redirect()->route('admin.dashboard')->with('error', 'Akses ditolak!');
+        }
+
         $destinations = Destination::whereNotIn('id', AdminDestination::pluck('destination_id'))->get();
         $places = Place::whereNotIn('id', AdminPlace::pluck('place_id'))->get();
 
@@ -101,40 +106,37 @@ class AdminUserController extends Controller
      */
     public function show(User $user)
     {
-        if ($user->role == 'admin_tempat') {
-            $userWithAdminPlace = User::with('adminPlaces')->find($user->id);
-            if (!$user) {
-                $message = 'Halaman yang Anda cari tidak ditemukan.';
-                return response()->view('admin.error', [
-                    'status_code' => 404,
-                    'error' => 'Page Not Found',
-                    'message' => $message
-                ], 404);
+        $currentUser = Auth::user();
+
+        if ($currentUser->role === 'superadmin' || $currentUser->id === $user->id) {
+            $managedItems = null;
+
+            if ($user->role === 'admin_wisata') {
+                $managedItems = AdminDestination::with('destination.gallery')
+                    ->where('user_id', $user->id)
+                    ->first();
+            } elseif ($user->role === 'admin_tempat') {
+                $managedItems = AdminPlace::with('place.gallery')
+                    ->where('user_id', $user->id)
+                    ->first();
+
+                if ($managedItems && $managedItems->approval_status !== 'approved') {
+                    return response()->view('admin.error', [
+                        'status_code' => 404,
+                        'error' => 'Page Not Found',
+                        'message' => 'Halaman yang Anda cari tidak ditemukan.'
+                    ], 404);
+                }
             }
 
-            if ($userWithAdminPlace->adminPlaces && $userWithAdminPlace->adminPlaces[0]->approval_status !== 'approved') {
-                $message = 'Halaman yang Anda cari tidak ditemukan.';
-                return response()->view('admin.error', [
-                    'status_code' => 404,
-                    'error' => 'Page Not Found',
-                    'message' => $message
-                ], 404);
-            }
+            return view('admin.users.show', compact('user', 'managedItems'));
         }
 
-        $managedItems = null;
-
-        if ($user->role === 'admin_wisata') {
-            $managedItems = AdminDestination::with('destination.gallery')
-                ->where('user_id', $user->id)
-                ->first();
-        } elseif ($user->role === 'admin_tempat') {
-            $managedItems = AdminPlace::with('place.gallery')
-                ->where('user_id', $user->id)
-                ->first();
-        }
-
-        return view('admin.users.show', compact('user', 'managedItems'));
+        return response()->view('admin.error', [
+            'status_code' => 404,
+            'error' => 'Page Not Found',
+            'message' => 'Halaman yang Anda cari tidak ditemukan.'
+        ], 404);
     }
 
 
@@ -143,25 +145,14 @@ class AdminUserController extends Controller
      */
     public function edit(User $user)
     {
-        if ($user->role == 'admin_tempat') {
-            $userWithAdminPlace = User::with('adminPlaces')->find($user->id);
-            if (!$user) {
-                $message = 'Halaman yang Anda cari tidak ditemukan.';
-                return response()->view('admin.error', [
-                    'status_code' => 404,
-                    'error' => 'Page Not Found',
-                    'message' => $message
-                ], 404);
-            }
+        $currentUser = Auth::user();
 
-            if ($userWithAdminPlace->adminPlaces && $userWithAdminPlace->adminPlaces[0]->approval_status !== 'approved') {
-                $message = 'Halaman yang Anda cari tidak ditemukan.';
-                return response()->view('admin.error', [
-                    'status_code' => 404,
-                    'error' => 'Page Not Found',
-                    'message' => $message
-                ], 404);
-            }
+        if ($currentUser->role !== 'superadmin' && $currentUser->id !== $user->id) {
+            return response()->view('admin.error', [
+                'status_code' => 404,
+                'error' => 'Page Not Found',
+                'message' => 'Halaman yang Anda cari tidak ditemukan.'
+            ], 404);
         }
 
         $managedItems = null;
@@ -171,20 +162,17 @@ class AdminUserController extends Controller
         if ($user->role === 'admin_wisata') {
             $managedItems = AdminDestination::where('user_id', $user->id)->first();
 
-            $destinationsWithoutAdmin = Destination::whereNotIn('id', AdminDestination::pluck('destination_id')->toArray())->pluck('id')->toArray();
-            $destinations = Destination::whereIn('id', array_merge([$managedItems->destination_id], $destinationsWithoutAdmin))->get();
+            $destinationsWithoutAdmin = Destination::whereNotIn('id', AdminDestination::pluck('destination_id'))->pluck('id');
+            $destinations = Destination::whereIn('id', $destinationsWithoutAdmin->push(optional($managedItems)->destination_id))->get();
         } elseif ($user->role === 'admin_tempat') {
             $managedItems = AdminPlace::where('user_id', $user->id)->first();
 
-            $placesWithoutAdmin = Place::whereNotIn('id', AdminPlace::pluck('place_id')->toArray())->pluck('id')->toArray();
-            $places = Place::whereIn('id', array_merge([$managedItems->place_id], $placesWithoutAdmin))->get();
+            $placesWithoutAdmin = Place::whereNotIn('id', AdminPlace::pluck('place_id'))->pluck('id');
+            $places = Place::whereIn('id', $placesWithoutAdmin->push(optional($managedItems)->place_id))->get();
         }
 
         return view('admin.users.edit', compact('user', 'managedItems', 'destinations', 'places'));
     }
-
-
-
 
     /**
      * Update the specified resource in storage.

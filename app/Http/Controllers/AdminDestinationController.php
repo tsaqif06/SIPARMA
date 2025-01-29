@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Destination;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -16,13 +17,17 @@ class AdminDestinationController extends Controller
      */
     public function index()
     {
+        if (Auth::user()->role !== 'superadmin') {
+            return redirect()->route('admin.destinations.show', auth()->user()->adminDestinations[0]->destination_id)->with('error', 'Akses ditolak!');
+        }
+
         $destinations = Destination::all();
 
         foreach ($destinations as $destination) {
             $current_time = Carbon::now('Asia/Jakarta')->format('H:i:s');
 
             if ($destination->operational_status === 'holiday') {
-                $destination->status = 'Holiday';
+                $destination->status = 'Libur';
             } else {
                 $destination->status = ($current_time >= $destination->open_time && $current_time <= $destination->close_time)
                     ? 'Buka'
@@ -33,11 +38,33 @@ class AdminDestinationController extends Controller
         return view('admin.destinations.index', compact('destinations'));
     }
 
+    public function gallery(Destination $destination)
+    {
+        $gallery = $destination->gallery;
+        return view('admin.destinations.galeri', compact('destination', 'gallery'));
+    }
+
+    public function facilities(Destination $destination)
+    {
+        $facilities = $destination->facilities;
+        return view('admin.destinations.fasilitas', compact('destination', 'facilities'));
+    }
+
+    public function rides(Destination $destination)
+    {
+        $rides = $destination->rides;
+        return view('admin.destinations.wahana', compact('destination', 'rides'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
+        if (Auth::user()->role !== 'superadmin') {
+            return redirect()->route('admin.destinations.show', auth()->user()->adminDestinations[0]->destination_id)->with('error', 'Akses ditolak!');
+        }
+
         return view('admin.destinations.create');
     }
 
@@ -69,15 +96,40 @@ class AdminDestinationController extends Controller
      */
     public function show(Destination $destination)
     {
-        return view('admin.destinations.show', compact('destination'));
+        $user = auth()->user();
+
+        if ($user->role === 'superadmin' || $user->adminDestinations->contains('destination_id', $destination->id)) {
+            $current_time = Carbon::now('Asia/Jakarta')->format('H:i:s');
+
+            if ($destination->operational_status === 'holiday') {
+                $destination->status = 'Libur';
+            } else {
+                $destination->status = ($current_time >= $destination->open_time && $current_time <= $destination->close_time)
+                    ? 'Buka'
+                    : 'Tutup';
+            }
+
+            return view('admin.destinations.show', compact('destination'));
+        }
+
+        return redirect()->route('admin.destinations.show', $user->adminDestinations[0]->destination_id)->with('error', 'Akses ditolak!');
     }
+
+
+
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Destination $destination)
     {
-        return view('admin.destinations.edit', compact('destination'));
+        $user = auth()->user();
+
+        if ($user->role === 'superadmin' || $user->adminDestinations->contains('destination_id', $destination->id)) {
+            return view('admin.destinations.edit', compact('destination'));
+        }
+
+        return redirect()->route('admin.destinations.edit', $user->adminDestinations[0]->destination_id)->with('error', 'Akses ditolak!');
     }
 
     /**
@@ -89,13 +141,28 @@ class AdminDestinationController extends Controller
             'name' => 'required|string|max:100',
             'type' => 'required|string|in:alam,wahana',
             'location' => 'required|string|max:255',
+            'open_time' => 'nullable',
+            'close_time' => 'nullable',
+            'price' => 'nullable|numeric|min:0',
+            'weekend_price' => 'nullable|numeric|min:0',
+            'children_price' => 'nullable|numeric|min:0',
+            'account_number' => 'nullable|string|max:50',
+            'bank_name' => 'nullable|string|max:100',
+            'account_name' => 'nullable|string|max:100',
+            'operational_status' => 'nullable|in:open,holiday',
+            'description' => 'nullable|string|max:1000',
         ]);
 
         $validated['slug'] = Str::slug($validated['name']);
 
         $destination->update($validated);
 
-        return redirect()->route('admin.destinations.index')->with('success', 'Wisata telah diupdate.');
+        if (auth()->user()->role === 'superadmin') {
+            return redirect()->route('admin.destinations.index')->with('success', 'Wisata telah diupdate.');
+        } else {
+            return redirect()->route('admin.destinations.show', $destination->id)
+                ->with('success', 'Wisata telah diupdate.');
+        }
     }
 
     /**

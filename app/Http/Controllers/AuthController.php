@@ -61,6 +61,10 @@ class AuthController extends Controller
                 return redirect()
                     ->route('admin.dashboard')
                     ->with('success', 'Login berhasil! Selamat datang, ' . $user->name);
+            } else {
+                return redirect()
+                    ->route('admin.dashboard')
+                    ->with('error', 'Email atau password salah.');
             }
         }
 

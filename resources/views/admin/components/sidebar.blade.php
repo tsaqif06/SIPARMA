@@ -1,3 +1,13 @@
+@php
+    $user = auth()->user();
+
+    if ($user === 'admin_wisata') {
+        $user->load('adminDestinations');
+    } elseif ($user === 'admin_tempat') {
+        $user->load('adminPlaces');
+    }
+@endphp
+
 <aside class="sidebar">
     <button type="button" class="sidebar-close-btn">
         <iconify-icon icon="radix-icons:cross-2"></iconify-icon>
@@ -70,24 +80,66 @@
                 </ul>
             </li> --}}
             <li class="sidebar-menu-group-title">Data</li>
-            <li>
-                <a href="{{ route('admin.users.index') }}">
-                    <iconify-icon icon="flowbite:users-group-outline" class="menu-icon"></iconify-icon>
-                    <span>Users</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('admin.destinations.index') }}">
-                    <iconify-icon icon="material-symbols:map-outline" class="menu-icon"></iconify-icon>
-                    <span>Wisata</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('admin.places.index') }}">
-                    <iconify-icon icon="material-symbols:file-map-outline" class="menu-icon"></iconify-icon>
-                    <span>Tempat</span>
-                </a>
-            </li>
+            @if ($user->role === 'superadmin')
+                <li>
+                    <a href="{{ route('admin.users.index') }}">
+                        <iconify-icon icon="flowbite:users-group-outline-rounded" class="menu-icon"></iconify-icon>
+                        <span>Users</span>
+                    </a>
+                </li>
+            @endif
+
+            @if ($user->role === 'superadmin')
+                <li>
+                    <a href="{{ route('admin.destinations.index') }}">
+                        <iconify-icon icon="material-symbols:map-outline-rounded" class="menu-icon"></iconify-icon>
+                        <span>Wisata</span>
+                    </a>
+                </li>
+            @elseif ($user->role === 'admin_wisata')
+                <li>
+                    <a href="{{ route('admin.destinations.show', $user->adminDestinations[0]->destination_id) }}">
+                        <iconify-icon icon="material-symbols:map-outline-rounded" class="menu-icon"></iconify-icon>
+                        <span>Wisata Anda</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.destinations.gallery', $user->adminDestinations[0]->destination_id) }}">
+                        <iconify-icon icon="material-symbols:gallery-thumbnail-outline-rounded"
+                            class="menu-icon"></iconify-icon>
+                        <span>Galeri</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.destinations.facilities', $user->adminDestinations[0]->destination_id) }}">
+                        <iconify-icon icon="material-symbols:museum-outline-rounded" class="menu-icon"></iconify-icon>
+                        <span>Fasilitas</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.destinations.rides', $user->adminDestinations[0]->destination_id) }}">
+                        <iconify-icon icon="material-symbols:pool-rounded" class="menu-icon"></iconify-icon>
+                        <span>Wahana</span>
+                    </a>
+                </li>
+            @endif
+
+            @if ($user->role === 'superadmin' || $user->role === 'admin_tempat')
+                <li>
+                    @if ($user->role === 'superadmin')
+                        <a href="{{ route('admin.places.index') }}">
+                            <iconify-icon icon="material-symbols:file-map-outline" class="menu-icon"></iconify-icon>
+                            <span>Tempat</span>
+                        </a>
+                    @elseif ($user->role === 'admin_tempat')
+                        <a href="{{ route('admin.places.show') }}">
+                            <iconify-icon icon="material-symbols:file-map-outline" class="menu-icon"></iconify-icon>
+                            <span>Tempat Anda</span>
+                        </a>
+                    @endif
+                </li>
+            @endif
+
             {{-- <li>
                 <a href="{{ route('email') }}">
                     <iconify-icon icon="mage:email" class="menu-icon"></iconify-icon>
