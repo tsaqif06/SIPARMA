@@ -2,168 +2,151 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\Destination;
-use App\Models\Place;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\GalleryDestination;
+use App\Models\GalleryPlace;
+use App\Models\GalleryRide;
 use Illuminate\Support\Facades\Storage;
-
 
 class AdminGalleryController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Menampilkan daftar gambar berdasarkan jenis galeri (destination, place, ride).
      */
-    public function index()
+    public function index($type)
     {
-        $destination = auth()->user()->adminDestinations[0]->destination;
+        // auth()->user()->adminDestinations[0]->destination;
+        $galleryModel = $this->getGalleryModel($type);
 
-        $allImages = $destination->gallery;
-
-        $placeImages = $destination->gallery()->where('image_type', 'place')->get();
-        $promoImages = $destination->gallery()->where('image_type', 'promo')->get();
-
-        // Kirim data ke view
-        return view('admin.gallery.index', compact('destination', 'allImages', 'placeImages', 'promoImages'));
-    }
-
-    public function facilities(Destination $destination)
-    {
-        $facilities = $destination->facilities;
-        return view('admin.destinations.fasilitas', compact('destination', 'facilities'));
-    }
-
-    public function rides(Destination $destination)
-    {
-        $rides = $destination->rides;
-        return view('admin.destinations.wahana', compact('destination', 'rides'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        if (Auth::user()->role !== 'superadmin') {
-            return redirect()->route('admin.destinations.show', auth()->user()->adminDestinations[0]->destination_id)->with('error', 'Akses ditolak!');
+        if (!$galleryModel) {
+            return redirect()->back()->with('error', 'Jenis galeri tidak valid.');
         }
 
-        return view('admin.destinations.create');
+        $allImages = $galleryModel->gallery()->get();
+        $placeImages = $galleryModel->gallery()->where('image_type', 'place')->get();
+        $promoImages = $galleryModel->gallery()->where('image_type', 'promo')->get();
+
+        $menuImages = null;
+
+        if ($type === 'place') $menuImages = $galleryModel->gallery()->where('image_type', 'menu')->get();
+
+        return view('admin.gallery.index', compact('type', 'allImages', 'placeImages', 'promoImages', 'menuImages'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function create($type)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:100',
-            'type' => 'required|string|in:alam,wahana',
-            'location' => 'required|string|max:255',
+        $galleryModel = $this->getGalleryModel($type);
+
+        if (!$galleryModel) {
+            return redirect()->back()->with('error', 'Jenis galeri tidak valid.');
+        }
+
+        return view('admin.gallery.create', compact('type'));
+    }
+
+
+    /**
+     * Menyimpan gambar ke galeri yang sesuai.
+     */
+    public function store(Request $request, $type)
+    {
+        $request->validate([
+            'image_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image_type' => 'nullable|in:place,promo,menu',
         ]);
 
-        $validated['slug'] = Str::slug($validated['name']);
+        $galleryModel = $this->getModel($type);
+        if (!$galleryModel) {
+            return redirect()->back()->with('error', 'Jenis galeri tidak valid.');
+        }
 
-        Destination::create([
-            'name' => $validated['name'],
-            'slug' => $validated['slug'],
-            'type' => $validated['type'],
-            'location' => $validated['location'],
+        if ($request->hasFile('image_url')) {
+            $file = $request->file('image_url');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('public/gallery/' . $type, $fileName);
+            $picturePath = "storage/gallery/{$type}/{$fileName}";
+        }
+
+        $foreignKey = $this->getForeignKey($type);
+        $relatedId = $this->getRelatedId($type);
+
+        $galleryModel::create([
+            $foreignKey => $relatedId,
+            'image_url' => $picturePath,
+            'image_type' => $request->image_type ?? null,
         ]);
 
-        return redirect()->route('admin.destinations.index')->with('success', 'Wisata telah ditambahkan.');
+        return redirect()->route('admin.gallery.index', ['type' => $type])->with('success', 'Gambar telah ditambahkan.');
     }
 
     /**
-     * Display the specified resource.
+     * Menghapus gambar dari galeri yang sesuai.
      */
-    public function show(Destination $destination)
+    public function destroy($type, $id)
     {
-        $user = auth()->user();
-
-        if ($user->role === 'superadmin' || $user->adminDestinations->contains('destination_id', $destination->id)) {
-            $current_time = Carbon::now('Asia/Jakarta')->format('H:i:s');
-
-            if ($destination->operational_status === 'holiday') {
-                $destination->status = 'Libur';
-            } else {
-                $destination->status = ($current_time >= $destination->open_time && $current_time <= $destination->close_time)
-                    ? 'Buka'
-                    : 'Tutup';
-            }
-
-            return view('admin.destinations.show', compact('destination'));
+        $galleryModel = $this->getModel($type);
+        if (!$galleryModel) {
+            return redirect()->back()->with('error', 'Jenis galeri tidak valid.');
         }
 
-        return redirect()->route('admin.destinations.show', $user->adminDestinations[0]->destination_id)->with('error', 'Akses ditolak!');
-    }
+        $image = $galleryModel::findOrFail($id);
 
-
-
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Destination $destination)
-    {
-        $user = auth()->user();
-
-        if ($user->role === 'superadmin' || $user->adminDestinations->contains('destination_id', $destination->id)) {
-            return view('admin.destinations.edit', compact('destination'));
+        // Hapus file gambar dari storage
+        $imagePath = public_path($image->image_url);
+        if (file_exists($imagePath)) {
+            unlink($imagePath);
         }
 
-        return redirect()->route('admin.destinations.edit', $user->adminDestinations[0]->destination_id)->with('error', 'Akses ditolak!');
+        // Hapus data dari database
+        $image->delete();
+
+        return redirect()->route('admin.gallery.index', ['type' => $type])->with('success', 'Gambar telah dihapus.');
     }
 
     /**
-     * Update the specified resource in storage.
+     * Fungsi helper untuk menentukan model berdasarkan jenis galeri.
      */
-    public function update(Request $request, Destination $destination)
+    private function getModel($type)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:100',
-            'type' => 'required|string|in:alam,wahana',
-            'location' => 'required|string|max:255',
-            'open_time' => 'nullable',
-            'close_time' => 'nullable',
-            'price' => 'nullable|numeric|min:0',
-            'weekend_price' => 'nullable|numeric|min:0',
-            'children_price' => 'nullable|numeric|min:0',
-            'account_number' => 'nullable|string|max:50',
-            'bank_name' => 'nullable|string|max:100',
-            'account_name' => 'nullable|string|max:100',
-            'operational_status' => 'nullable|in:open,holiday',
-            'description' => 'nullable|string|max:1000',
-        ]);
-
-        $validated['slug'] = Str::slug($validated['name']);
-
-        $destination->update($validated);
-
-        if (auth()->user()->role === 'superadmin') {
-            return redirect()->route('admin.destinations.index')->with('success', 'Wisata telah diupdate.');
-        } else {
-            return redirect()->route('admin.destinations.show', $destination->id)
-                ->with('success', 'Wisata telah diupdate.');
-        }
+        return match ($type) {
+            'destination' => GalleryDestination::class,
+            'place' => GalleryPlace::class,
+            'ride' => GalleryRide::class,
+            default => null,
+        };
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Destination $destination)
+    private function getGalleryModel($type)
     {
-        foreach ($destination->gallery as $image) {
-            $imagePath = public_path($image->image_url);
-            if (file_exists($imagePath)) {
-                unlink($imagePath);
-            }
-        }
+        return match ($type) {
+            'destination' => auth()->user()->adminDestinations[0]->destination,
+            'place' => auth()->user()->adminPlace[0]->place,
+            'ride' => GalleryRide::class,
+            default => null,
+        };
+    }
 
-        $destination->delete();
+    private function getRelatedId($type)
+    {
+        return match ($type) {
+            'destination' => auth()->user()->adminDestinations[0]->destination_id ?? null,
+            'place' => auth()->user()->adminPlaces[0]->place_id ?? null,
+            'ride' => auth()->user()->adminRides[0]->ride_id ?? null,
+            default => null,
+        };
+    }
 
-        return redirect()->route('admin.destinations.index')->with('success', 'Wisata telah dihapus.');
+
+    /**
+     * Fungsi helper untuk mendapatkan foreign key berdasarkan jenis galeri.
+     */
+    private function getForeignKey($type)
+    {
+        return match ($type) {
+            'destination' => 'destination_id',
+            'place' => 'place_id',
+            'ride' => 'ride_id',
+            default => null,
+        };
     }
 }

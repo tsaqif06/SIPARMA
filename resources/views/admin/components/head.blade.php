@@ -33,6 +33,9 @@
     <link rel="stylesheet" href="{{ asset('assets/css/lib/audioplayer.css') }}">
     <!-- sweetalert2 -->
     <link rel="stylesheet" href="{{ asset('assets/css/lib/sweetalert2.min.css') }}">
+    <!-- fancybox -->
+    <link rel="stylesheet" href="{{ asset('assets/css/lib/fancybox.css.css') }}">
+
     <!-- main css -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <!-- custom css -->

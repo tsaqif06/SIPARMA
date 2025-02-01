@@ -25,6 +25,8 @@
     <script src="{{ asset('assets/js/lib/audioplayer.js') }}"></script>
     <!-- sweetalert2 -->
     <script src="{{ asset('assets/js/lib/sweetalert2.min.js') }}"></script>
+    <!-- fancybox -->
+    <script src="{{ asset('assets/js/lib/fancybox.js') }}"></script>
 
     <!-- main js -->
     <script src="{{ asset('assets/js/app.js') }}"></script>

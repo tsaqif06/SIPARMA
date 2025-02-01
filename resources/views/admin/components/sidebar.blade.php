@@ -104,7 +104,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.gallery.index') }}">
+                    <a href="{{ route('admin.gallery.index', 'destination') }}">
                         <iconify-icon icon="material-symbols:gallery-thumbnail-outline-rounded"
                             class="menu-icon"></iconify-icon>
                         <span>Galeri</span>
