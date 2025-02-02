@@ -62,11 +62,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('destinations/{destination}/rides', [AdminDestinationController::class, 'rides'])->name('destinations.rides');
         Route::resource('destinations', AdminDestinationController::class);
 
-        // Route::get('destinations/gallery', [AdminGalleryDestinationController::class, 'index'])->name('gallery.index');
-        // Route::get('destinations/gallery/create', [AdminGalleryDestinationController::class, 'create'])->name('gallery.create');
-        // Route::post('destinations/gallery', [AdminGalleryDestinationController::class, 'store'])->name('gallery.store');
-        // Route::delete('destinations/gallery/{id}', [AdminGalleryDestinationController::class, 'destroy'])->name('gallery.destroy');
-
         Route::prefix('gallery')->group(function () {
             Route::get('{type}', [AdminGalleryController::class, 'index'])->name('gallery.index');
             Route::get('{type}/create', [AdminGalleryController::class, 'create'])->name('gallery.create');
@@ -75,9 +70,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::delete('{type}/{gallery}', [AdminGalleryController::class, 'destroy'])->name('gallery.destroy');
         });
 
+        Route::prefix('facility')->group(function () {
+            Route::get('{type}', [AdminFacilityController::class, 'index'])->name('facility.index');
+            Route::get('{type}/create', [AdminFacilityController::class, 'create'])->name('facility.create');
 
-        Route::resource('gallerydestination', AdminGalleryDestinationController::class);
-        Route::resource('facilities', AdminFacilityController::class);
+            Route::post('{type}', [AdminFacilityController::class, 'store'])->name('facility.store');
+            Route::delete('{type}/{facility}', [AdminFacilityController::class, 'destroy'])->name('facility.destroy');
+        });
+
         Route::resource('rides', AdminRideController::class);
 
         Route::get('/places/manage', [AdminPlaceController::class, 'manage'])->name('places.manage');

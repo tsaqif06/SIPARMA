@@ -38,24 +38,6 @@ class AdminDestinationController extends Controller
         return view('admin.destinations.index', compact('destinations'));
     }
 
-    public function gallery(Destination $destination)
-    {
-        $gallery = $destination->gallery;
-        return view('admin.gallery.index', compact('destination', 'gallery'));
-    }
-
-    public function facilities(Destination $destination)
-    {
-        $facilities = $destination->facilities;
-        return view('admin.destinations.fasilitas', compact('destination', 'facilities'));
-    }
-
-    public function rides(Destination $destination)
-    {
-        $rides = $destination->rides;
-        return view('admin.destinations.wahana', compact('destination', 'rides'));
-    }
-
     /**
      * Show the form for creating a new resource.
      */
