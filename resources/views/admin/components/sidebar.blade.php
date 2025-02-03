@@ -130,6 +130,12 @@
                         <span>Review</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('admin.promo.index') }}">
+                        <iconify-icon icon="material-symbols:money-off-rounded" class="menu-icon"></iconify-icon>
+                        <span>Promo</span>
+                    </a>
+                </li>
             @endif
 
             @if ($user->role === 'superadmin' || $user->role === 'admin_tempat')
