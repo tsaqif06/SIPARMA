@@ -95,27 +95,4 @@ class AdminFacilityController extends Controller
             default => null,
         };
     }
-
-    private function getRelatedId($type)
-    {
-        return match ($type) {
-            'destination' => auth()->user()->adminDestinations[0]->destination->facilites->id ?? null,
-            'place' => auth()->user()->adminPlaces[0]->place->facilites->id ?? null,
-            default => null,
-        };
-    }
-
-
-    /**
-     * Fungsi helper untuk mendapatkan foreign key berdasarkan jenis galeri.
-     */
-    private function getForeignKey($type)
-    {
-        return match ($type) {
-            'destination' => 'destination_id',
-            'place' => 'place_id',
-            'ride' => 'ride_id',
-            default => null,
-        };
-    }
 }

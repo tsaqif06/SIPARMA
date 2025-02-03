@@ -24,7 +24,7 @@ class AdminDestinationController extends Controller
         $destinations = Destination::all();
 
         foreach ($destinations as $destination) {
-            $current_time = Carbon::now('Asia/Jakarta')->format('H:i:s');
+         $current_time = Carbon::now('Asia/Jakarta')->format('H:i:s');
 
             if ($destination->operational_status === 'holiday') {
                 $destination->status = 'Libur';
@@ -96,9 +96,6 @@ class AdminDestinationController extends Controller
 
         return redirect()->route('admin.destinations.show', $user->adminDestinations[0]->destination_id)->with('error', 'Akses ditolak!');
     }
-
-
-
 
     /**
      * Show the form for editing the specified resource.
