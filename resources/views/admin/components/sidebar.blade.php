@@ -122,6 +122,14 @@
                         <span>Wahana</span>
                     </a>
                 </li>
+
+                <li class="sidebar-menu-group-title">Lainnya</li>
+                <li>
+                    <a href="{{ route('admin.reviews.index') }}">
+                        <iconify-icon icon="material-symbols:kid-star-outline" class="menu-icon"></iconify-icon>
+                        <span>Review</span>
+                    </a>
+                </li>
             @endif
 
             @if ($user->role === 'superadmin' || $user->role === 'admin_tempat')

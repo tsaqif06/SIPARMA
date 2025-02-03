@@ -13,6 +13,7 @@ use App\Http\Controllers\AdminDestinationController;
 use App\Http\Controllers\AdminGalleryController;
 use App\Http\Controllers\AdminFacilityController;
 use App\Http\Controllers\AdminRideController;
+use App\Http\Controllers\AdminReviewController;
 
 // Route::get('/', [HomeController::class, 'index'])->name('home.index');
 // Route::get('/wisata', [HomeController::class, 'wisata'])->name('home.wisata');
@@ -81,6 +82,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         });
 
         Route::resource('rides', AdminRideController::class);
+
+        Route::get('reviews', [AdminReviewController::class, 'index'])->name('reviews.index');
+        Route::get('reviews/{review}', [AdminReviewController::class, 'show'])->name('reviews.show');
+
 
         Route::get('/places/manage', [AdminPlaceController::class, 'manage'])->name('places.manage');
         Route::resource('places', AdminPlaceController::class);
