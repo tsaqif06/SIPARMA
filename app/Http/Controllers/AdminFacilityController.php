@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\GalleryDestination;
-use App\Models\GalleryPlace;
-use App\Models\GalleryRide;
+use App\Models\Facility;
 use Illuminate\Support\Facades\Storage;
 
 class AdminFacilityController extends Controller
@@ -15,113 +13,85 @@ class AdminFacilityController extends Controller
      */
     public function index($type)
     {
-        // auth()->user()->adminDestinations[0]->destination;
-        $galleryModel = $this->getGalleryModel($type);
+        $facilities = $this->getFacilityModel($type);
 
-        if (!$galleryModel) {
-            return redirect()->back()->with('error', 'Jenis galeri tidak valid.');
+        if (!$facilities) {
+            return redirect()->back()->with('error', 'Jenis fasilitas tidak valid.');
         }
 
-        $allImages = $galleryModel->gallery()->get();
-        $placeImages = $galleryModel->gallery()->where('image_type', 'place')->get();
-        $promoImages = $galleryModel->gallery()->where('image_type', 'promo')->get();
+        $nama = $type == 'destination' ? auth()->user()->adminDestinations[0]->destination->name : auth()->user()->adminPlaces[0]->place->name;
 
-        $menuImages = null;
-
-        if ($type === 'place') $menuImages = $galleryModel->gallery()->where('image_type', 'menu')->get();
-
-        return view('admin.facility.index', compact('type', 'allImages', 'placeImages', 'promoImages', 'menuImages'));
+        return view('admin.facility.index', compact('type', 'facilities', 'nama'));
     }
 
     public function create($type)
     {
-        $galleryModel = $this->getGalleryModel($type);
+        $facilityModel = $this->getFacilityModel($type);
 
-        if (!$galleryModel) {
-            return redirect()->back()->with('error', 'Jenis galeri tidak valid.');
+        if (!$facilityModel) {
+            return redirect()->back()->with('error', 'Jenis fasilitas tidak valid.');
         }
 
-        return view('admin.facility.create', compact('type'));
+        $destinationId = auth()->user()->adminDestinations[0]->destination_id;
+
+        return view('admin.facility.create', compact('type', 'destinationId'));
     }
 
-
-    /**
-     * Menyimpan gambar ke galeri yang sesuai.
-     */
     public function store(Request $request, $type)
     {
         $request->validate([
-            'image_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'image_type' => 'nullable|in:place,promo,menu',
+            'item_type' => 'required|in:destination,place',
+            'item_id' => 'required|integer',
+            'name' => 'required|string|max:100',
+            'description' => 'nullable|string',
         ]);
 
-        $galleryModel = $this->getModel($type);
-        if (!$galleryModel) {
-            return redirect()->back()->with('error', 'Jenis galeri tidak valid.');
-        }
+        Facility::create($request->all());
 
-        if ($request->hasFile('image_url')) {
-            $file = $request->file('image_url');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->storeAs('public/gallery/' . $type, $fileName);
-            $picturePath = "storage/gallery/{$type}/{$fileName}";
-        }
-
-        $foreignKey = $this->getForeignKey($type);
-        $relatedId = $this->getRelatedId($type);
-
-        $galleryModel::create([
-            $foreignKey => $relatedId,
-            'image_url' => $picturePath,
-            'image_type' => $request->image_type ?? null,
-        ]);
-
-        return redirect()->route('admin.facility.index', ['type' => $type])->with('success', 'Gambar telah ditambahkan.');
+        return redirect()->route('admin.facility.index', ['type' => $type])
+            ->with('success', 'Fasilitas telah ditambahkan.');
     }
 
-    /**
-     * Menghapus gambar dari galeri yang sesuai.
-     */
-    public function destroy($type, $id)
+    // Menampilkan form untuk mengedit fasilitas
+    public function edit($type, Facility $facility)
     {
-        $galleryModel = $this->getModel($type);
-        if (!$galleryModel) {
-            return redirect()->back()->with('error', 'Jenis galeri tidak valid.');
-        }
+        return view('admin.facility.edit', compact('facility', 'type'));
+    }
 
-        $image = $galleryModel::findOrFail($id);
 
-        // Hapus file gambar dari storage
-        $imagePath = public_path($image->image_url);
-        if (file_exists($imagePath)) {
-            unlink($imagePath);
-        }
+    public function update(Request $request, $type, Facility $facility)
+    {
+        $request->validate([
+            'name' => 'required|string|max:100',
+            'description' => 'nullable|string',
+        ]);
 
-        // Hapus data dari database
-        $image->delete();
+        $facility->update([
+            'name' => $request->name,
+            'description' => $request->description,
+        ]);
 
-        return redirect()->route('admin.facility.index', ['type' => $type])->with('success', 'Gambar telah dihapus.');
+        return redirect()->route('admin.facility.index', ['type' => $type])
+            ->with('success', 'Fasilitas berhasil diperbarui.');
+    }
+
+    // Menghapus fasilitas dari database
+    public function destroy($type, Facility $facility)
+    {
+        $facility->delete();
+
+        return redirect()->route('admin.facility.index', $type)
+            ->with('success', 'Fasilitas telah dihapus.');
     }
 
     /**
      * Fungsi helper untuk menentukan model berdasarkan jenis galeri.
      */
-    private function getModel($type)
+    private function getFacilityModel($type)
     {
         return match ($type) {
-            'destination' => GalleryDestination::class,
-            'place' => GalleryPlace::class,
-            'ride' => GalleryRide::class,
-            default => null,
-        };
-    }
-
-    private function getGalleryModel($type)
-    {
-        return match ($type) {
-            'destination' => auth()->user()->adminDestinations[0]->destination,
-            'place' => auth()->user()->adminPlace[0]->place,
-            'ride' => GalleryRide::class,
+            'destination' => auth()->user()->adminDestinations[0]->destination->facilities,
+            'place' => auth()->user()->adminPlace[0]->place->facilites,
             default => null,
         };
     }
@@ -129,9 +99,8 @@ class AdminFacilityController extends Controller
     private function getRelatedId($type)
     {
         return match ($type) {
-            'destination' => auth()->user()->adminDestinations[0]->destination_id ?? null,
-            'place' => auth()->user()->adminPlaces[0]->place_id ?? null,
-            'ride' => auth()->user()->adminRides[0]->ride_id ?? null,
+            'destination' => auth()->user()->adminDestinations[0]->destination->facilites->id ?? null,
+            'place' => auth()->user()->adminPlaces[0]->place->facilites->id ?? null,
             default => null,
         };
     }

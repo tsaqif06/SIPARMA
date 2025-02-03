@@ -111,7 +111,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.facility.index') }}">
+                    <a href="{{ route('admin.facility.index', 'destination') }}">
                         <iconify-icon icon="material-symbols:museum-outline-rounded" class="menu-icon"></iconify-icon>
                         <span>Fasilitas</span>
                     </a>

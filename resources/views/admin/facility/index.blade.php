@@ -1,8 +1,8 @@
 @extends('admin.layout.layout')
 
 @php
-    $title = 'Data Wisata';
-    $subTitle = 'Wisata';
+    $title = 'Fasilitas ' . $nama;
+    $subTitle = 'Fasilitas';
     $script = '<script>
         $(".remove-item-btn").on("click", function() {
             $(this).closest("tr").addClass("d-none")
@@ -27,7 +27,7 @@
 @endphp
 
 @section('content')
-    <a href="{{ route('admin.destinations.create') }}">
+    <a href="{{ route('admin.facility.create', $type) }}">
         <button type="button"
             class="btn rounded-pill btn-primary-600 radius-8 px-20 py-11 my-3 d-flex align-items-center gap-2">
             <iconify-icon icon="mingcute:plus-fill" class="text-xl"></iconify-icon> Tambah Data
@@ -47,15 +47,13 @@
                                 </div>
                             </th>
                             <th scope="col">Nama</th>
-                            <th scope="col">Lokasi</th>
-                            <th scope="col">Tipe</th>
-                            <th scope="col">Status</th>
+                            <th scope="col">Deskripsi</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @php $i = 1; @endphp
-                        @foreach ($destinations as $data)
+                        @foreach ($facilities as $data)
                             <tr>
                                 <td>
                                     <div class="form-check style-check d-flex align-items-center">
@@ -65,25 +63,15 @@
                                     </div>
                                 </td>
                                 <td>{{ $data->name }}</td>
-                                <td>{{ $data->location }}</td>
-                                <td>{{ ucfirst($data->type) }}</td>
+                                <td>{{ $data->description }}</td>
                                 <td>
-                                    @php $bg = $data->status == 'Buka' ? 'success' : 'danger'; @endphp
-                                    <span
-                                        class="bg-{{ $bg }}-focus text-{{ $bg }}-main px-24 py-4 rounded-pill fw-medium text-sm">{{ $data->status }}</span>
-                                </td>
-                                <td>
-                                    <a href="{{ route('admin.destinations.show', $data->id) }}"
-                                        class="w-32-px h-32-px bg-primary-light text-primary-600 rounded-circle d-inline-flex align-items-center justify-content-center">
-                                        <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
-                                    </a>
-                                    <a href="{{ route('admin.destinations.edit', $data->id) }}"
+                                    <a href="{{ route('admin.facility.edit', ['facility' => $data->id, 'type' => $type]) }}"
                                         class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center">
                                         <iconify-icon icon="lucide:edit"></iconify-icon>
                                     </a>
                                     <form id="deleteForm{{ $data->id }}"
-                                        action="{{ route('admin.destinations.destroy', $data->id) }}" method="POST"
-                                        style="display: inline">
+                                        action="{{ route('admin.facility.destroy', ['facility' => $data->id, 'type' => $type]) }}"
+                                        method="POST" style="display: inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="button"

@@ -73,8 +73,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::prefix('facility')->group(function () {
             Route::get('{type}', [AdminFacilityController::class, 'index'])->name('facility.index');
             Route::get('{type}/create', [AdminFacilityController::class, 'create'])->name('facility.create');
+            Route::get('{type}/{facility}/edit', [AdminFacilityController::class, 'edit'])->name('facility.edit');
 
             Route::post('{type}', [AdminFacilityController::class, 'store'])->name('facility.store');
+            Route::put('{type}/{facility}', [AdminFacilityController::class, 'update'])->name('facility.update');
             Route::delete('{type}/{facility}', [AdminFacilityController::class, 'destroy'])->name('facility.destroy');
         });
 
