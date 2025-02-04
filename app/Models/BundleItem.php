@@ -15,13 +15,24 @@ class BundleItem extends Model
         return $this->belongsTo(Bundle::class);
     }
 
-    public function destination()
-    {
-        return $this->belongsTo(Destination::class, 'item_id');
-    }
+    // public function destination()
+    // {
+    //     return $this->belongsTo(Destination::class, 'item_id');
+    // }
 
-    public function ride()
+    // public function ride()
+    // {
+    //     return $this->belongsTo(Ride::class, 'item_id');
+    // }
+
+    public function item()
     {
-        return $this->belongsTo(Ride::class, 'item_id');
+        if ($this->item_type == 'destination') {
+            return $this->belongsTo(Destination::class, 'item_id');
+        } elseif ($this->item_type == 'ride') {
+            return $this->belongsTo(Ride::class, 'item_id');
+        }
+
+        return null;
     }
 }

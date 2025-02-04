@@ -111,13 +111,16 @@
                                                 <label for="price"
                                                     class="form-label fw-semibold text-primary-light text-sm mb-8">Harga
                                                     Tiket</label>
-                                                <input type="number" step="0.01"
-                                                    class="form-control radius-8 @error('price') is-invalid @enderror"
-                                                    id="price" name="price" placeholder="Masukkan Harga Tiket"
-                                                    value="{{ old('price', $destination->price) }}">
-                                                @error('price')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-base"> Rp </span>
+                                                    <input type="number" step="0.01"
+                                                        class="form-control radius-8 @error('price') is-invalid @enderror"
+                                                        id="price" name="price" placeholder="Masukkan Harga Tiket"
+                                                        value="{{ old('price', $destination->price) }}">
+                                                    @error('price')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
                                             </div>
                                         </div>
 
@@ -128,14 +131,17 @@
                                                     class="form-label fw-semibold text-primary-light text-sm mb-8">Harga
                                                     Tiket
                                                     Akhir Pekan</label>
-                                                <input type="number" step="0.01"
-                                                    class="form-control radius-8 @error('weekend_price') is-invalid @enderror"
-                                                    id="weekend_price" name="weekend_price"
-                                                    placeholder="Masukkan Harga Tiket Akhir Pekan"
-                                                    value="{{ old('weekend_price', $destination->weekend_price) }}">
-                                                @error('weekend_price')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-base"> Rp </span>
+                                                    <input type="number" step="0.01"
+                                                        class="form-control radius-8 @error('weekend_price') is-invalid @enderror"
+                                                        id="weekend_price" name="weekend_price"
+                                                        placeholder="Masukkan Harga Tiket Akhir Pekan"
+                                                        value="{{ old('weekend_price', $destination->weekend_price) }}">
+                                                    @error('weekend_price')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
                                             </div>
                                         </div>
 
@@ -146,14 +152,17 @@
                                                     class="form-label fw-semibold text-primary-light text-sm mb-8">Harga
                                                     Tiket
                                                     Anak-anak</label>
-                                                <input type="number" step="0.01"
-                                                    class="form-control radius-8 @error('children_price') is-invalid @enderror"
-                                                    id="children_price" name="children_price"
-                                                    placeholder="Masukkan Harga Tiket Anak-anak"
-                                                    value="{{ old('children_price', $destination->children_price) }}">
-                                                @error('children_price')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-base"> Rp </span>
+                                                    <input type="number" step="0.01"
+                                                        class="form-control radius-8 @error('children_price') is-invalid @enderror"
+                                                        id="children_price" name="children_price"
+                                                        placeholder="Masukkan Harga Tiket Anak-anak"
+                                                        value="{{ old('children_price', $destination->children_price) }}">
+                                                    @error('children_price')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
                                             </div>
                                         </div>
 

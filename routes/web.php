@@ -6,25 +6,17 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdminRideController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdminPlaceController;
+use App\Http\Controllers\AdminPromoController;
+use App\Http\Controllers\AdminBundleController;
+use App\Http\Controllers\AdminReviewController;
 use App\Http\Controllers\DestinationController;
-use App\Http\Controllers\AdminDestinationController;
 use App\Http\Controllers\AdminGalleryController;
 use App\Http\Controllers\AdminFacilityController;
-use App\Http\Controllers\AdminRideController;
-use App\Http\Controllers\AdminReviewController;
-use App\Http\Controllers\AdminPromoController;
-
-// Route::get('/', [HomeController::class, 'index'])->name('home.index');
-// Route::get('/wisata', [HomeController::class, 'wisata'])->name('home.wisata');
-// Route::get('/tempat', [HomeController::class, 'tempat'])->name('home.tempat');
-
-// Route::prefix('home')->middleware('auth')->controller(HomeController::class)->group(function () {
-//     Route::get('/', 'index')->name('home.index');
-//     Route::get('/wisata', 'wisata')->name('home.wisata');
-//     Route::get('/tempat', 'tempat')->name('home.tempat');
-// });
+use App\Http\Controllers\AdminBundleItemController;
+use App\Http\Controllers\AdminDestinationController;
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
@@ -89,6 +81,24 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::resource('promo', AdminPromoController::class);
 
+        Route::prefix('bundle')->group(function () {
+            Route::get('', [AdminBundleController::class, 'index'])->name('bundle.index');
+            Route::get('create', [AdminBundleController::class, 'create'])->name('bundle.create');
+            Route::post('', [AdminBundleController::class, 'store'])->name('bundle.store');
+            Route::get('{bundle}/edit', [AdminBundleController::class, 'edit'])->name('bundle.edit');
+            Route::put('{bundle}', [AdminBundleController::class, 'update'])->name('bundle.update');
+            Route::delete('{bundle}', [AdminBundleController::class, 'destroy'])->name('bundle.destroy');
+
+            Route::prefix('items/{bundle}')->group(function () {
+                Route::get('', [AdminBundleItemController::class, 'index'])->name('bundle.items.index');
+                Route::get('getrides', [AdminBundleItemController::class, 'getRides'])->name('bundle.items.getrides');
+                Route::get('create', [AdminBundleItemController::class, 'create'])->name('bundle.items.create');
+                Route::post('', [AdminBundleItemController::class, 'store'])->name('bundle.items.store');
+                Route::get('{item}/edit', [AdminBundleItemController::class, 'edit'])->name('bundle.items.edit');
+                Route::put('{item}', [AdminBundleItemController::class, 'update'])->name('bundle.items.update');
+                Route::delete('{item}', [AdminBundleItemController::class, 'destroy'])->name('bundle.items.destroy');
+            });
+        });
 
         Route::get('/places/manage', [AdminPlaceController::class, 'manage'])->name('places.manage');
         Route::resource('places', AdminPlaceController::class);

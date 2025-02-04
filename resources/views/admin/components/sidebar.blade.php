@@ -80,7 +80,7 @@
                 </ul>
             </li> --}}
             <li class="sidebar-menu-group-title">Data</li>
-            @if ($user->role === 'superadmin')
+            @if ($user && $user->role === 'superadmin')
                 <li>
                     <a href="{{ route('admin.users.index') }}">
                         <iconify-icon icon="flowbite:users-group-outline-rounded" class="menu-icon"></iconify-icon>
@@ -89,14 +89,14 @@
                 </li>
             @endif
 
-            @if ($user->role === 'superadmin')
+            @if ($user && $user->role === 'superadmin')
                 <li>
                     <a href="{{ route('admin.destinations.index') }}">
                         <iconify-icon icon="material-symbols:map-outline-rounded" class="menu-icon"></iconify-icon>
                         <span>Wisata</span>
                     </a>
                 </li>
-            @elseif ($user->role === 'admin_wisata')
+            @elseif ($user && $user->role === 'admin_wisata')
                 <li>
                     <a href="{{ route('admin.destinations.show', $user->adminDestinations[0]->destination_id) }}">
                         <iconify-icon icon="material-symbols:map-outline-rounded" class="menu-icon"></iconify-icon>
@@ -136,16 +136,22 @@
                         <span>Promo</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('admin.bundle.index') }}">
+                        <iconify-icon icon="material-symbols:ad-group-outline-rounded" class="menu-icon"></iconify-icon>
+                        <span>Bundle</span>
+                    </a>
+                </li>
             @endif
 
-            @if ($user->role === 'superadmin' || $user->role === 'admin_tempat')
+            @if ($user && ($user->role === 'superadmin' || $user->role === 'admin_tempat'))
                 <li>
-                    @if ($user->role === 'superadmin')
+                    @if ($user && $user->role === 'superadmin')
                         <a href="{{ route('admin.places.index') }}">
                             <iconify-icon icon="material-symbols:file-map-outline" class="menu-icon"></iconify-icon>
                             <span>Tempat</span>
                         </a>
-                    @elseif ($user->role === 'admin_tempat')
+                    @elseif ($user && $user->role === 'admin_tempat')
                         <a href="{{ route('admin.places.show') }}">
                             <iconify-icon icon="material-symbols:file-map-outline" class="menu-icon"></iconify-icon>
                             <span>Tempat Anda</span>
