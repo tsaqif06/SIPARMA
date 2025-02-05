@@ -46,6 +46,12 @@
                         <span>Wisata</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('admin.places.index') }}">
+                        <iconify-icon icon="material-symbols:file-map-outline" class="menu-icon"></iconify-icon>
+                        <span>Tempat</span>
+                    </a>
+                </li>
             @elseif ($user && $user->role === 'admin_wisata')
                 <li>
                     <a href="{{ route('admin.destinations.show', $user->adminDestinations[0]->destination_id) }}">
@@ -92,21 +98,39 @@
                         <span>Bundle</span>
                     </a>
                 </li>
-            @endif
-
-            @if ($user && ($user->role === 'superadmin' || $user->role === 'admin_tempat'))
+            @elseif ($user && $user->role === 'admin_tempat')
                 <li>
-                    @if ($user && $user->role === 'superadmin')
-                        <a href="{{ route('admin.places.index') }}">
-                            <iconify-icon icon="material-symbols:file-map-outline" class="menu-icon"></iconify-icon>
-                            <span>Tempat</span>
-                        </a>
-                    @elseif ($user && $user->role === 'admin_tempat')
-                        <a href="{{ route('admin.places.show', $user->adminPlaces[0]->place_id) }}">
-                            <iconify-icon icon="material-symbols:file-map-outline" class="menu-icon"></iconify-icon>
-                            <span>Tempat Anda</span>
-                        </a>
-                    @endif
+                    <a href="{{ route('admin.places.show', $user->adminPlaces[0]->place_id) }}">
+                        <iconify-icon icon="material-symbols:file-map-outline" class="menu-icon"></iconify-icon>
+                        <span>Tempat Anda</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.gallery.index', 'place') }}">
+                        <iconify-icon icon="material-symbols:gallery-thumbnail-outline-rounded"
+                            class="menu-icon"></iconify-icon>
+                        <span>Galeri</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.facility.index', 'place') }}">
+                        <iconify-icon icon="material-symbols:museum-outline-rounded" class="menu-icon"></iconify-icon>
+                        <span>Fasilitas</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-menu-group-title">Lainnya</li>
+                <li>
+                    <a href="{{ route('admin.reviews.index') }}">
+                        <iconify-icon icon="material-symbols:kid-star-outline" class="menu-icon"></iconify-icon>
+                        <span>Review</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.promo.index') }}">
+                        <iconify-icon icon="material-symbols:money-off-rounded" class="menu-icon"></iconify-icon>
+                        <span>Promo</span>
+                    </a>
                 </li>
             @endif
 

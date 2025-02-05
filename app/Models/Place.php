@@ -22,7 +22,7 @@ class Place extends Model
 
     public function facilities()
     {
-        return $this->hasMany(Facility::class, 'item_id')->where('item_type', 'restaurant');
+        return $this->hasMany(Facility::class, 'item_id')->where('item_type', 'place');
     }
 
     public function gallery()

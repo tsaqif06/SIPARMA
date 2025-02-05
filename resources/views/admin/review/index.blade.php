@@ -14,14 +14,13 @@
                             <th scope="col">#</th>
                             <th scope="col">Nama User</th>
                             <th scope="col" style="width: 130px">Rating</th>
-                            <th scope="col">Tempat</th>
                             <th scope="col">Tanggal</th>
-                            <th scope="col">Action</th>
+                            <th scope="col">Detail</th>
                         </tr>
                     </thead>
                     <tbody>
                         @php $i = 1; @endphp
-                        @forelse ($reviews as $review)
+                        @foreach ($reviews as $review)
                             <tr>
                                 <td>{{ $i }}</td>
                                 <td>{{ $review->user->name }}</td>
@@ -30,13 +29,6 @@
                                         <iconify-icon icon="bi:star-fill"
                                             class="{{ $j <= $review->rating ? 'text-warning' : 'text-secondary-light' }} d-inline-block"></iconify-icon>
                                     @endfor
-                                </td>
-                                <td>
-                                    @if ($review->destination)
-                                        {{ $review->destination->name }}
-                                    @elseif($review->place)
-                                        {{ $review->place->name }}
-                                    @endif
                                 </td>
                                 <td>{{ $review->created_at->format('d M Y, H:i') }}</td>
                                 <td>
@@ -47,13 +39,7 @@
                                 </td>
                             </tr>
                             @php $i++; @endphp
-                        @empty
-                            <tr>
-                                <td colspan="8" class="text-center text-secondary py-4">
-                                    Belum ada review tersedia.
-                                </td>
-                            </tr>
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
             </div>

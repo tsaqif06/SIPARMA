@@ -17,7 +17,7 @@
                                 @csrf
                                 <div class="row">
                                     <input type="hidden" name="item_type" value="{{ $type }}">
-                                    <input type="hidden" name="item_id" value="{{ $destinationId }}">
+                                    <input type="hidden" name="item_id" value="{{ $itemId }}">
                                     <!-- Nama Fasilitas -->
                                     <div class="col-sm-12">
                                         <div class="mb-20">

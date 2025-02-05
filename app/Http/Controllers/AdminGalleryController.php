@@ -120,7 +120,7 @@ class AdminGalleryController extends Controller
     {
         return match ($type) {
             'destination' => auth()->user()->adminDestinations[0]->destination,
-            'place' => auth()->user()->adminPlace[0]->place,
+            'place' => auth()->user()->adminPlaces[0]->place,
             'ride' => GalleryRide::class,
             default => null,
         };

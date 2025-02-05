@@ -23,7 +23,7 @@
                                         <div class="mb-20">
                                             <label for="name"
                                                 class="form-label fw-semibold text-primary-light text-sm mb-8">Nama
-                                                Wisata<span class="text-danger-600">*</span></label>
+                                                Tempat<span class="text-danger-600">*</span></label>
                                             <input type="text"
                                                 class="form-control radius-8 @error('name') is-invalid @enderror"
                                                 id="name" name="name" placeholder="Masukkan Nama Tempat"
@@ -39,7 +39,7 @@
                                         <div class="mb-20">
                                             <label for="type"
                                                 class="form-label fw-semibold text-primary-light text-sm mb-8">Tipe
-                                                Destinasi<span class="text-danger-600">*</span></label>
+                                                Tempat<span class="text-danger-600">*</span></label>
                                             <input type="text"
                                                 class="form-control radius-8 @error('type') is-invalid @enderror"
                                                 id="type" name="type" placeholder="Cth: Restoran, Penginapan, dll."

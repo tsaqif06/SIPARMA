@@ -11,8 +11,8 @@ class AdminReviewController extends Controller
 {
     public function index()
     {
-        $reviews = auth()->user()->adminDestinations[0]->destination->reviews;
-
+        $reviews = auth()->user()->adminDestinations[0]->destination->reviews ?? auth()->user()->adminPlaces[0]->place->reviews;
+// dd($reviews);die;
         return view('admin.review.index', compact('reviews'));
     }
 
@@ -20,5 +20,4 @@ class AdminReviewController extends Controller
     {
         return view('admin.review.show', compact('review'));
     }
-
 }

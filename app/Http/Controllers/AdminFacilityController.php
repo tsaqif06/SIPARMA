@@ -14,7 +14,6 @@ class AdminFacilityController extends Controller
     public function index($type)
     {
         $facilities = $this->getFacilityModel($type);
-
         if (!$facilities) {
             return redirect()->back()->with('error', 'Jenis fasilitas tidak valid.');
         }
@@ -27,14 +26,13 @@ class AdminFacilityController extends Controller
     public function create($type)
     {
         $facilityModel = $this->getFacilityModel($type);
-
         if (!$facilityModel) {
             return redirect()->back()->with('error', 'Jenis fasilitas tidak valid.');
         }
 
-        $destinationId = auth()->user()->adminDestinations[0]->destination_id;
+        $itemId = $this->getRelatedId($type);
 
-        return view('admin.facility.create', compact('type', 'destinationId'));
+        return view('admin.facility.create', compact('type', 'itemId'));
     }
 
     public function store(Request $request, $type)
@@ -91,7 +89,16 @@ class AdminFacilityController extends Controller
     {
         return match ($type) {
             'destination' => auth()->user()->adminDestinations[0]->destination->facilities,
-            'place' => auth()->user()->adminPlace[0]->place->facilites,
+            'place' => auth()->user()->adminPlaces[0]->place->facilities,
+            default => null,
+        };
+    }
+
+    private function getRelatedId($type)
+    {
+        return match ($type) {
+            'destination' => auth()->user()->adminDestinations[0]->destination_id ?? null,
+            'place' => auth()->user()->adminPlaces[0]->place_id ?? null,
             default => null,
         };
     }
