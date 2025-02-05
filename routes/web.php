@@ -23,7 +23,6 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
 Route::name('home.')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('index');
     Route::get('/wisata', [HomeController::class, 'wisata'])->name('wisata');
@@ -56,6 +55,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('destinations/{destination}/rides', [AdminDestinationController::class, 'rides'])->name('destinations.rides');
         Route::resource('destinations', AdminDestinationController::class);
 
+        Route::get('places/approval', [AdminPlaceController::class, 'approval'])->name('places.approval');
+        Route::post('places/{adminplace}/update-status', [AdminPlaceController::class, 'updateStatus'])->name('places.updateStatus');
+
+        Route::resource('places', AdminPlaceController::class);
+
+        // Admin Wisata
         Route::prefix('gallery')->group(function () {
             Route::get('{type}', [AdminGalleryController::class, 'index'])->name('gallery.index');
             Route::get('{type}/create', [AdminGalleryController::class, 'create'])->name('gallery.create');
@@ -99,8 +104,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
                 Route::delete('{item}', [AdminBundleItemController::class, 'destroy'])->name('bundle.items.destroy');
             });
         });
-
-        Route::get('/places/manage', [AdminPlaceController::class, 'manage'])->name('places.manage');
-        Route::resource('places', AdminPlaceController::class);
+        // End Admin Wisata
     });
 });

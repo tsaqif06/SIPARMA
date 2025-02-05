@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Place;
+use App\Models\AdminPlace;
 use App\Models\Destination;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -28,6 +29,29 @@ class AdminPlaceController extends Controller
 
         return view('admin.places.index', compact('places'));
     }
+
+    public function approval()
+    {
+        $adminplaces = AdminPlace::where('approval_status', 'pending')->get();
+
+        return view('admin.places.approval', compact('adminplaces'));
+    }
+
+    public function getPlace($id)
+    {
+        $place = AdminPlace::with('user', 'place.destination')->findOrFail($id);
+
+        return response()->json($place);
+    }
+
+    public function updateStatus(Request $request, AdminPlace $adminplace)
+    {
+        $adminplace->approval_status = $request->status;
+        $adminplace->save();
+
+        return redirect()->back()->with('success', 'Status berhasil diperbarui!');
+    }
+
 
     /**
      * Show the form for creating a new resource.
