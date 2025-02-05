@@ -1,91 +1,58 @@
 @extends('admin.layout.layout')
 
 @php
-    $title = 'Detail Tempat';
-    $subTitle = 'Tempat - Detail';
+    $title = 'Lihat Tempat';
+    $subTitle = 'Tempat - Lihat';
 @endphp
 
 @section('content')
-    <div class="row gy-4">
-        <div class="col-lg-12">
-            <div class="card h-100">
-                <div class="card-body p-24">
-                    <h4 class="fw-bold text-primary">{{ $place->name }}</h4>
-                    <div class="row">
-                        <!-- Nama Destinasi -->
-                        <div class="col-sm-6">
-                            <p><strong>Nama Tempat:</strong> {{ $place->name }}</p>
-                        </div>
+    <div class="container">
+        <div class="user-grid-card position-relative border radius-16 overflow-hidden bg-base" style="padding: 20px 30px">
 
-                        <!-- Tipe Destinasi -->
-                        <div class="col-sm-6">
-                            <p><strong>Tipe Destinasi:</strong> {{ ucfirst($place->type) }}</p>
-                        </div>
-
-                        <!-- Lokasi -->
-                        <div class="col-sm-6">
-                            <p><strong>Lokasi:</strong> {{ $place->location }}</p>
-                        </div>
-
-                        <!-- Jam Operasional -->
-                        <div class="col-sm-6">
-                            <p><strong>Jam Operasional:</strong> {{ $place->open_time }} -
-                                {{ $place->close_time }}</p>
-                        </div>
-
-                        <!-- Wisata Terdekat -->
-                        <div class="col-sm-6">
-                            <p><strong>Wisata Terdekat:</strong> {{ $place->destination->name }}</p>
-                        </div>
-
-                        <!-- Harga Tiket -->
-                        <div class="col-sm-6">
-                            <p><strong>Harga Tiket:</strong> Rp {{ number_format($place->price, 0, ',', '.') }}</p>
-                        </div>
-
-                        <!-- Harga Tiket Akhir Pekan -->
-                        <div class="col-sm-6">
-                            <p><strong>Harga Akhir Pekan:</strong> Rp
-                                {{ number_format($place->weekend_price, 0, ',', '.') }}</p>
-                        </div>
-
-                        <!-- Harga Tiket Anak-anak -->
-                        <div class="col-sm-6">
-                            <p><strong>Harga Anak-anak:</strong> Rp
-                                {{ number_format($place->children_price, 0, ',', '.') }}</p>
-                        </div>
-
-                        <!-- Informasi Pembayaran -->
-                        <div class="col-sm-6">
-                            <p><strong>Rekening:</strong> {{ $place->account_number }}
-                                ({{ $place->bank_name }})</p>
-                            <p><strong>Atas Nama:</strong> {{ $place->account_name }}</p>
-                        </div>
-
-                        <!-- Deskripsi -->
-                        <div class="col-sm-12" style="margin-top: 20px">
-                            <p><strong>Deskripsi:</strong></p>
-                            <p>{{ $place->description }}</p>
-                        </div>
-
-                        <!-- Galeri -->
-                        <div class="col-sm-12">
-                            <p><strong>Galeri:</strong></p>
-                            <div class="d-flex flex-wrap gap-2">
-                                @foreach ($place->gallery as $image)
-                                    <img src="{{ asset('storage/' . $image) }}" alt="Gambar Wisata"
-                                        class="rounded shadow-sm" width="150">
-                                @endforeach
-                            </div>
-                        </div>
-
-                        <!-- Tombol Aksi -->
-                        <div class="col-sm-12 mt-3">
-                            <a href="{{ route('admin.places.index') }}" class="btn btn-secondary">Kembali</a>
-                            <a href="{{ route('admin.places.edit', $place->id) }}" class="btn btn-primary">Edit</a>
-                        </div>
+            <!-- Header Tempat -->
+            <div class="place-header mb-5">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h1 class="fw-bold">{{ $place->name }}</h1>
+                        <p>{{ $place->location }}</p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        @php $bg = $place->operational_status == 'open' ? 'success' : 'danger'; @endphp
+                        <span
+                            class="bg-{{ $bg }}-focus text-{{ $bg }}-main px-24 py-4 rounded-pill fw-medium text-sm">
+                            {{ ucfirst($place->operational_status) }}
+                        </span>
                     </div>
                 </div>
+            </div>
+
+            <!-- Informasi Utama -->
+            <div class="place-info mb-5">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 class="fw-bold">Deskripsi</h3>
+                        <p>{{ $place->description }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h3 class="fw-bold">Detail</h3>
+                        <ul class="list-unstyled">
+                            <li><strong>Tipe:</strong> {{ ucfirst($place->type) }}</li>
+                            <li><strong>Jam Operasional:</strong> {{ $place->open_time }} - {{ $place->close_time }}</li>
+                            <li><strong>Harga Tiket:</strong> Rp {{ number_format($place->price, 0, ',', '.') }}</li>
+                            <li><strong>Destinasi Terdekat:</strong>
+                                {{ $place->destination ? $place->destination->name : '-' }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tombol Aksi -->
+            <div class="place-actions">
+                @if (auth()->user()->role === 'superadmin')
+                    <a href="{{ route('admin.places.index') }}" class="btn btn-secondary">Kembali</a>
+                @endif
+                <a href="{{ route('admin.places.edit', $place->id) }}" class="btn btn-primary">Edit</a>
             </div>
         </div>
     </div>

@@ -8,6 +8,7 @@ use App\Models\AdminPlace;
 use App\Models\Destination;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -58,6 +59,10 @@ class AdminPlaceController extends Controller
      */
     public function create()
     {
+        if (Auth::user()->role !== 'superadmin') {
+            return redirect()->route('admin.places.show', auth()->user()->adminDestinations[0]->destination_id)->with('error', 'Akses ditolak!');
+        }
+
         $destinations = Destination::all();
 
         return view('admin.places.create', compact('destinations'));
@@ -93,7 +98,19 @@ class AdminPlaceController extends Controller
      */
     public function show(Place $place)
     {
-        return view('admin.places.show', compact('place'));
+        $user = auth()->user();
+
+        if ($user->role === 'superadmin' || $user->adminPlaces->contains('place_id', $place->id)) {
+            $current_time = Carbon::now('Asia/Jakarta')->format('H:i:s');
+
+            $place->status = ($current_time >= $place->open_time && $current_time <= $place->close_time)
+                ? 'Buka'
+                : 'Tutup';
+
+            return view('admin.places.show', compact('place'));
+        }
+
+        return redirect()->route('admin.places.show', $user->adminPlaces[0]->place_id)->with('error', 'Akses ditolak!');
     }
 
     /**
@@ -101,9 +118,14 @@ class AdminPlaceController extends Controller
      */
     public function edit(Place $place)
     {
-        $destinations = Destination::all();
+        $user = auth()->user();
 
-        return view('admin.places.edit', compact('place', 'destinations'));
+        if ($user->role === 'superadmin' || $user->adminPlaces->contains('place_id', $place->id)) {
+            $destinations = Destination::all();
+            return view('admin.places.edit', compact('place', 'destinations'));
+        }
+
+        return redirect()->route('admin.places.edit', $user->adminPlaces[0]->place_id)->with('error', 'Akses ditolak!');
     }
 
     /**

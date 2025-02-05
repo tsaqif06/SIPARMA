@@ -102,7 +102,7 @@
                             <span>Tempat</span>
                         </a>
                     @elseif ($user && $user->role === 'admin_tempat')
-                        <a href="{{ route('admin.places.show') }}">
+                        <a href="{{ route('admin.places.show', $user->adminPlaces[0]->place_id) }}">
                             <iconify-icon icon="material-symbols:file-map-outline" class="menu-icon"></iconify-icon>
                             <span>Tempat Anda</span>
                         </a>
@@ -110,6 +110,7 @@
                 </li>
             @endif
 
+            {{-- Persetujuan --}}
             @if ($user && $user->role === 'superadmin')
                 <li class="sidebar-menu-group-title">Persetujuan</li>
                 <li>

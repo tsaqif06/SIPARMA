@@ -60,7 +60,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::resource('places', AdminPlaceController::class);
 
-        // Admin Wisata
         Route::prefix('gallery')->group(function () {
             Route::get('{type}', [AdminGalleryController::class, 'index'])->name('gallery.index');
             Route::get('{type}/create', [AdminGalleryController::class, 'create'])->name('gallery.create');
@@ -79,13 +78,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::delete('{type}/{facility}', [AdminFacilityController::class, 'destroy'])->name('facility.destroy');
         });
 
-        Route::resource('rides', AdminRideController::class);
-
         Route::get('reviews', [AdminReviewController::class, 'index'])->name('reviews.index');
         Route::get('reviews/{review}', [AdminReviewController::class, 'show'])->name('reviews.show');
 
         Route::resource('promo', AdminPromoController::class);
 
+        // Admin Wisata
+        Route::resource('rides', AdminRideController::class);
         Route::prefix('bundle')->group(function () {
             Route::get('', [AdminBundleController::class, 'index'])->name('bundle.index');
             Route::get('create', [AdminBundleController::class, 'create'])->name('bundle.create');
