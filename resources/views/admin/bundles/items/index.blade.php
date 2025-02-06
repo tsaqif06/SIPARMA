@@ -1,7 +1,22 @@
 @extends('admin.layout.layout')
 
 @php
-    $title = 'Data Item Bundle ' . $bundle->name . ' - Rp. ' . number_format($bundle->total_price, 0, ',', '.');
+    $discountedPrice =
+        $bundle->discount > 0
+            ? $bundle->total_price - $bundle->total_price * ($bundle->discount / 100)
+            : $bundle->total_price;
+
+    $title = 'Data Item Bundle ' . $bundle->name . ' - ';
+    if ($bundle->discount > 0) {
+        $title .=
+            '<del class="text-secondary" style="text-decoration: line-through;">Rp. ' .
+            number_format($bundle->total_price, 0, ',', '.') .
+            '</del> ';
+        $title .= '<span>Rp. ' . number_format($discountedPrice, 0, ',', '.') . '</span>';
+    } else {
+        $title .= 'Rp. ' . number_format($bundle->total_price, 0, ',', '.');
+    }
+
     $subTitle = 'Item Bundle';
     $script = '<script>
         $(".remove-item-btn").on("click", function() {

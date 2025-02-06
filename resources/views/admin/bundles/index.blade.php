@@ -58,7 +58,7 @@
                                 <td>{{ $data->name }}</td>
                                 <td>{{ $data->description }}</td>
                                 <td>Rp {{ number_format($data->total_price, 0, ',', '.') }}</td>
-                                <td>{{ $data->discount ? 'Rp ' . number_format($data->discount, 0, ',', '.') : '-' }}</td>
+                                <td>{{ $data->discount ? number_format($data->discount, 0, ',', '.') : '-' }}%</td>
                                 <td>
                                     {{--  @dd(
                                         $data->items->map(function ($item) {

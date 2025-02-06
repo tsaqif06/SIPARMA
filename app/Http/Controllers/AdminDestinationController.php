@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Ride;
+use App\Models\Promo;
+use App\Models\Bundle;
+use App\Models\BundleItem;
 use App\Models\Destination;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Promo;
 
 
 class AdminDestinationController extends Controller
@@ -142,6 +145,8 @@ class AdminDestinationController extends Controller
 
         $destination->update($validated);
 
+        $this->updateBundlesContainingItem($destination->id, 'destination');
+
         if (auth()->user()->role === 'superadmin') {
             return redirect()->route('admin.destinations.index')->with('success', 'Wisata telah diupdate.');
         } else {
@@ -165,5 +170,38 @@ class AdminDestinationController extends Controller
         $destination->delete();
 
         return redirect()->route('admin.destinations.index')->with('success', 'Wisata telah dihapus.');
+    }
+
+    private function updateBundlesContainingItem($itemId, $itemType)
+    {
+        $bundleItems = BundleItem::where('item_id', $itemId)
+            ->where('item_type', $itemType)
+            ->get();
+
+        foreach ($bundleItems as $bundleItem) {
+            $this->updateBundleTotalPrice($bundleItem->bundle_id);
+        }
+    }
+
+    private function updateBundleTotalPrice($bundleId)
+    {
+        $bundleItems = BundleItem::where('bundle_id', $bundleId)->get();
+
+        $totalPrice = 0;
+
+        foreach ($bundleItems as $bundleItem) {
+            $quantity = json_decode($bundleItem->quantity, true);
+            if ($bundleItem->item_type === 'destination') {
+                $item = Destination::find($bundleItem->item_id);
+            } else {
+                $item = Ride::find($bundleItem->item_id);
+            }
+
+            if ($item) {
+                $totalPrice += ($item->price * $quantity['adults']) + ($item->children_price * $quantity['children']);
+            }
+        }
+
+        Bundle::where('id', $bundleId)->update(['total_price' => $totalPrice]);
     }
 }
