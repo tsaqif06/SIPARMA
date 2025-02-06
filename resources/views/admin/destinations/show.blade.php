@@ -62,13 +62,58 @@
                         <ul class="list-unstyled">
                             <li><strong>Tipe:</strong> {{ ucfirst($destination->type) }}</li>
                             <li><strong>Jam Operasional:</strong> {{ $destination->open_time }} -
-                                {{ $destination->close_time }}
+                                {{ $destination->close_time }}</li>
+
+                            @php
+                                $diskonPersen = $promo->discount;
+                                $hargaDiskon = $destination->price - ($destination->price * $diskonPersen) / 100;
+                                $hargaAkhirPekanDiskon =
+                                    $destination->weekend_price - ($destination->weekend_price * $diskonPersen) / 100;
+                                $hargaAnakDiskon =
+                                    $destination->children_price - ($destination->children_price * $diskonPersen) / 100;
+                            @endphp
+
+                            @if ($promo)
+                                <li><strong>Total Diskon Berlaku:</strong>
+                                    {{ number_format($promo->discount, 0, ',', '.') }}%
+                                </li>
+                                <li><strong>Diskon Berlaku Hingga:</strong>
+                                    {{ \Carbon\Carbon::parse($promo->valid_until)->translatedFormat('d F Y') }}
+                                </li>
+                            @endif
+
+                            <li><strong>Harga Tiket:</strong>
+                                @if ($promo)
+                                    <del class="text-secondary" style="text-decoration: line-through;">Rp
+                                        {{ number_format($destination->price, 0, ',', '.') }}</del>
+                                    <span class="fw-bold">Rp
+                                        {{ number_format($hargaDiskon, 0, ',', '.') }}</span>
+                                @else
+                                    Rp {{ number_format($destination->price, 0, ',', '.') }}
+                                @endif
                             </li>
-                            <li><strong>Harga Tiket:</strong> Rp {{ number_format($destination->price, 0, ',', '.') }}</li>
-                            <li><strong>Harga Akhir Pekan:</strong> Rp
-                                {{ number_format($destination->weekend_price, 0, ',', '.') }}</li>
-                            <li><strong>Harga Anak-anak:</strong> Rp
-                                {{ number_format($destination->children_price, 0, ',', '.') }}</li>
+
+                            <li><strong>Harga Akhir Pekan:</strong>
+                                @if ($promo)
+                                    <del class="text-secondary" style="text-decoration: line-through;">Rp
+                                        {{ number_format($destination->weekend_price, 0, ',', '.') }}</del>
+                                    <span class="fw-bold">Rp
+                                        {{ number_format($hargaAkhirPekanDiskon, 0, ',', '.') }}</span>
+                                @else
+                                    Rp {{ number_format($destination->weekend_price, 0, ',', '.') }}
+                                @endif
+                            </li>
+
+                            <li><strong>Harga Anak-anak:</strong>
+                                @if ($promo)
+                                    <del class="text-secondary" style="text-decoration: line-through;">Rp
+                                        {{ number_format($destination->children_price, 0, ',', '.') }}</del>
+                                    <span class="fw-bold">Rp
+                                        {{ number_format($hargaAnakDiskon, 0, ',', '.') }}</span>
+                                @else
+                                    Rp {{ number_format($destination->children_price, 0, ',', '.') }}
+                                @endif
+                            </li>
                         </ul>
                     </div>
                 </div>

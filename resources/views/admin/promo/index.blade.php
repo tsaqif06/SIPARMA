@@ -29,12 +29,14 @@
 @endphp
 
 @section('content')
-    <a href="{{ route('admin.promo.create') }}">
-        <button type="button"
-            class="btn rounded-pill btn-primary-600 radius-8 px-20 py-11 my-3 d-flex align-items-center gap-2">
-            <iconify-icon icon="mingcute:plus-fill" class="text-xl"></iconify-icon> Tambah Data
-        </button>
-    </a>
+    @if (!$promo)
+        <a href="{{ route('admin.promo.create') }}">
+            <button type="button"
+                class="btn rounded-pill btn-primary-600 radius-8 px-20 py-11 my-3 d-flex align-items-center gap-2">
+                <iconify-icon icon="mingcute:plus-fill" class="text-xl"></iconify-icon> Tambah Data
+            </button>
+        </a>
+    @endif
     <div class="card basic-data-table">
         <div class="card-body">
             <div class="table-responsive scroll-sm">

@@ -126,12 +126,12 @@
                         <span>Review</span>
                     </a>
                 </li>
-                <li>
+                {{--  <li>
                     <a href="{{ route('admin.promo.index') }}">
                         <iconify-icon icon="material-symbols:money-off-rounded" class="menu-icon"></iconify-icon>
                         <span>Promo</span>
                     </a>
-                </li>
+                </li>  --}}
             @endif
 
             {{-- Persetujuan --}}

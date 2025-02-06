@@ -7,6 +7,7 @@ use App\Models\Destination;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Promo;
 
 
 class AdminDestinationController extends Controller
@@ -23,7 +24,7 @@ class AdminDestinationController extends Controller
         $destinations = Destination::all();
 
         foreach ($destinations as $destination) {
-         $current_time = Carbon::now('Asia/Jakarta')->format('H:i:s');
+            $current_time = Carbon::now('Asia/Jakarta')->format('H:i:s');
 
             if ($destination->operational_status === 'holiday') {
                 $destination->status = 'Libur';
@@ -90,7 +91,13 @@ class AdminDestinationController extends Controller
                     : 'Tutup';
             }
 
-            return view('admin.destinations.show', compact('destination'));
+            $today = now()->toDateString();
+            $promo = Promo::where('destination_id', $destination->id)
+                ->whereDate('valid_from', '<=', $today)
+                ->whereDate('valid_until', '>=', $today)
+                ->first();
+
+            return view('admin.destinations.show', compact('destination', 'promo'));
         }
 
         return redirect()->route('admin.destinations.show', $user->adminDestinations[0]->destination_id)->with('error', 'Akses ditolak!');
