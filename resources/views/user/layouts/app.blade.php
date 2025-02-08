@@ -1,35 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'SIPARMA')</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
-    @stack('styles')
-</head>
+@include('user.components.head')
 
 <body>
-    @include('user.partials.header')
+    {{--  @include('user.components.sidebar')  --}}
 
-    <div class="container mt-4">
-        @yield('content')
-    </div>
+    <main class="dashboard-main">
+        @include('user.components.navbar')
+        <div class="dashboard-main-body">
+            @yield('content')
+        </div>
+        @include('user.components.footer')
+    </main>
 
-    @include('user.partials.footer')
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-    @stack('scripts')
+    @include('user.components.script', ['script' => $script ?? ''])
+    @include('user.components.flasher')
 </body>
 
 </html>
