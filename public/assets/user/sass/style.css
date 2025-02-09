@@ -9222,3 +9222,9 @@ input[type="checkbox"]:checked:disabled + label:before {
 .error-404-section .error-message p {
     margin-bottom: 1.8em;
 } /*# sourceMappingURL=style.css.map */
+
+.reveal6.btn:hover,
+.reveal6.btn:focus,
+.reveal6.btn:active {
+    color: #273958 !important;
+}

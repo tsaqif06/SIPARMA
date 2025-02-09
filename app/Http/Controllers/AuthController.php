@@ -77,7 +77,7 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:tbl_users,email',
             'password' => 'required|min:6|confirmed',
-            'phone_number' => 'nullable|regex:/^[0-9]{10,15}$/',
+            'phone_number' => 'required|regex:/^[0-9]{10,30}$/|max:30',
         ]);
 
         $user = User::create([
@@ -87,7 +87,7 @@ class AuthController extends Controller
             'phone_number' => $validated['phone_number'],
         ]);
 
-        return redirect('/login');
+        return redirect('/login')->with('success', 'Daftar berhasil! Silahkan login dengan akun anda.');
     }
 
     public function logout()
