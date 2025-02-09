@@ -7,7 +7,9 @@
     {{--  @include('user.components.sidebar')  --}}
 
     <main class="dashboard-main">
-        @include('user.components.navbar')
+        @if (!isset($withoutNavbar))
+            @include('user.components.navbar')
+        @endif
         <div class="dashboard-main-body">
             @yield('content')
         </div>

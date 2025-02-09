@@ -36,13 +36,13 @@ class AuthController extends Controller
             'password' => 'required|min:6',
         ]);
 
-        if (Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']])) {
-            return redirect()->intended('/');
+        $remember = $request->has('remember');
+
+        if (Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']], $remember)) {
+            return redirect()->route('home.index')->with('success', 'Login berhasil! Selamat datang');
         }
 
-        return back()->withErrors([
-            'email' => 'Email atau password salah.',
-        ]);
+        return back()->with('error', 'Email atau password salah.');
     }
 
     public function loginAdmin(Request $request)
