@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
+use Midtrans\Config;
+use Midtrans\Snap;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
@@ -26,19 +28,29 @@ class PaymentController extends Controller
         return view('user.payment.show', compact('transaction'));
     }
 
-    public function processPayment(Request $request, $transaction_id)
+    public function process(Request $request)
     {
-        $transaction = Transaction::findOrFail($transaction_id);
+        $transaction = Transaction::findOrFail($request->transaction_id);
 
-        $transaction->status = 'paid';
-        $transaction->save();
+        Config::$serverKey = config('services.midtrans.server_key');
+        Config::$isProduction = config('services.midtrans.is_production');
+        Config::$isSanitized = true;
+        Config::$is3ds = true;
 
-        return redirect()->route('payment.success', ['transaction' => $transaction_id]);
-    }
+        $params = [
+            'transaction_details' => [
+                'order_id' => $transaction->transaction_code,
+                'gross_amount' => $transaction->amount,
+            ],
+            'customer_details' => [
+                'first_name' => auth()->user()->name,
+                'email' => auth()->user()->email,
+                'phone' => auth()->user()->phone_number,
+            ],
+        ];
 
-    public function success($transaction_id)
-    {
-        $transaction = Transaction::findOrFail($transaction_id);
-        return view('payment.success', compact('transaction'));
+        $snapToken = Snap::getSnapToken($params);
+
+        return response()->json(['snapToken' => $snapToken]);
     }
 }
