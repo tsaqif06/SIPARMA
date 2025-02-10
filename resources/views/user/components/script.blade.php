@@ -45,8 +45,6 @@
                 success: function(response) {
                     window.snap.pay(response.snapToken, {
                         onSuccess: function(result) {
-                            alert("Pembayaran Berhasil!");
-
                             $.ajax({
                                 url: "/payment/callback",
                                 type: "POST",
@@ -59,8 +57,9 @@
                                     transaction_status: 'settlement'
                                 }),
                                 success: function() {
-                                    window.location.href = "/invoice/" + result
-                                        .order_id;
+                                    alert("Pembayaran Berhasil!");
+                                    window.location.href = "/invoice/" +
+                                        result.order_id;
                                 }
                             });
                         },

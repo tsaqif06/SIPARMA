@@ -60,7 +60,7 @@ class PaymentController extends Controller
 
         if ($transaction) {
             if ($request->transaction_status == 'settlement' || $request->transaction_status == 'capture') {
-                $transaction->status = 'success';
+                $transaction->status = 'paid';
             } elseif ($request->transaction_status == 'pending') {
                 $transaction->status = 'pending';
             } elseif ($request->transaction_status == 'expire' || $request->transaction_status == 'cancel') {
