@@ -88,10 +88,10 @@
                                                         height="24"></iconify-icon>
                                                 </button>
                                             </span>
+                                            @error('password')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
-                                        @error('password')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
                                     </div>
                                 </div>
 
@@ -100,8 +100,7 @@
                                     <div class="form-group">
                                         <label class="text-secondary">Konfirmasi Password</label>
                                         <div class="input-group">
-                                            <input
-                                                class="pwd6 form-control @error('password_confirmation') is-invalid @enderror"
+                                            <input class="pwd6 form-control @error('password') is-invalid @enderror"
                                                 type="password" placeholder="Konfirmasi Password"
                                                 name="password_confirmation">
                                             <span class="input-group-btn">
@@ -111,10 +110,10 @@
                                                         height="24"></iconify-icon>
                                                 </button>
                                             </span>
+                                            @error('password')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
-                                        @error('password_confirmation')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
                                     </div>
                                 </div>
 

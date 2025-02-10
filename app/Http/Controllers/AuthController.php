@@ -36,9 +36,9 @@ class AuthController extends Controller
             'password' => 'required|min:6',
         ]);
 
-        $remember = $request->has('remember');
+        // $remember = $request->has('remember');
 
-        if (Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']], $remember)) {
+        if (Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']])) {
             return redirect()->route('home.index')->with('success', 'Login berhasil! Selamat datang');
         }
 
@@ -55,9 +55,7 @@ class AuthController extends Controller
         $user = User::where('email', $validated['email'])->first();
 
         if ($user && in_array($user->role, ['superadmin', 'admin_wisata', 'admin_tempat'])) {
-            $remember = $request->has('remember');
-
-            if (Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']], $remember)) {
+            if (Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']])) {
                 return redirect()
                     ->route('admin.dashboard')
                     ->with('success', 'Login berhasil! Selamat datang, ' . $user->name);

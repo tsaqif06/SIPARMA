@@ -10,7 +10,7 @@
         @if (!isset($withoutNavbar))
             @include('user.components.navbar')
         @endif
-        <div class="dashboard-main-body">
+        <div class="dashboard-main-body" style="margin-top: 150px">
             @yield('content')
         </div>
         @include('user.components.footer')

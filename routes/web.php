@@ -5,7 +5,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PlaceController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\AdminRideController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdminPlaceController;
@@ -33,12 +35,18 @@ Route::get('/destinations/{slug}', [DestinationController::class, 'show'])->name
 
 Route::get('/places/{slug}', [PlaceController::class, 'show'])->name('place.show');
 
-Route::get('/complain', function () {
-    return view('complain.index');
-});
-
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'is_user'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::get('/destinations/checkout/{slug}', [DestinationController::class, 'checkout'])->name('destination.checkout');
+    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+
+    Route::get('/payment/{transaction}', [PaymentController::class, 'show'])->name('payment.show');
+    Route::post('/payment/{transaction}/process', [PaymentController::class, 'processPayment'])->name('payment.process');
+    Route::get('/payment/{transaction}/success', [PaymentController::class, 'success'])->name('payment.success');
+
+    Route::get('/complain', function () {
+        return view('complain.index');
+    });
 });
 
 

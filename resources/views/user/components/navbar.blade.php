@@ -35,12 +35,25 @@
                     <div class="col-lg-3 col-md-4 col-4">
                         <div class="header-right">
                             <div class="close-form">
-                                <a href="{{ route('login') }}" class="btn px-4 py-2 rounded-pill"
-                                    style="border: 2px solid #1D3557; color: white; background-color: #1D3557; transition: 0.3s;"
-                                    onmouseover="this.style.backgroundColor='white'; this.style.color='#1D3557';"
-                                    onmouseout="this.style.backgroundColor='#1D3557'; this.style.color='white';">Masuk</a>
+                                @guest
+                                    <!-- Jika belum login, tampilkan "Masuk" -->
+                                    <a href="{{ route('login') }}" class="btn px-4 py-2 rounded-pill"
+                                        style="border: 2px solid #1D3557; color: white; background-color: #1D3557; transition: 0.3s;"
+                                        onmouseover="this.style.backgroundColor='white'; this.style.color='#1D3557';"
+                                        onmouseout="this.style.backgroundColor='#1D3557'; this.style.color='white';">
+                                        Masuk
+                                    </a>
+                                @endguest
 
-                                {{--  <a class="theme-btn" href="login.html">sign up</a>  --}}
+                                @auth
+                                    <!-- Jika sudah login, tampilkan "Akun Saya" -->
+                                    <a href="{{ route('profile') }}" class="btn px-4 py-2 rounded-pill"
+                                        style="border: 2px solid #1D3557; color: white; background-color: #1D3557; transition: 0.3s;"
+                                        onmouseover="this.style.backgroundColor='white'; this.style.color='#1D3557';"
+                                        onmouseout="this.style.backgroundColor='#1D3557'; this.style.color='white';">
+                                        Akun Saya
+                                    </a>
+                                @endauth
                             </div>
                         </div>
                     </div>
