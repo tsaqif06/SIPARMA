@@ -9301,3 +9301,20 @@ input[type="checkbox"]:checked:disabled + label:before {
     margin-bottom: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.btn-custom {
+    background: #1D3557;
+    border: 2px solid #1D3557;
+    color: white;
+    transition: all 0.3s ease;
+}
+.btn-custom:hover {
+    background: white;
+    color: #1D3557;
+    border: 2px solid #1D3557;
+}
+.ticket-image {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+}

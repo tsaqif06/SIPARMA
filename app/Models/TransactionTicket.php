@@ -14,4 +14,17 @@ class TransactionTicket extends Model
     {
         return $this->belongsTo(Transaction::class, 'transaction_id');
     }
+
+    public function item()
+    {
+        if ($this->item_type == 'destination') {
+            return $this->belongsTo(Destination::class, 'item_id');
+        } elseif ($this->item_type == 'ride') {
+            return $this->belongsTo(Ride::class, 'item_id');
+        } elseif ($this->item_type == 'bundle') {
+            return $this->belongsTo(Bundle::class, 'item_id');
+        }
+
+        return null;
+    }
 }

@@ -13,6 +13,16 @@ class PaymentController extends Controller
             ->where('transaction_code', $transaction_code)
             ->firstOrFail();
 
+        $type_translation = [
+            'destination' => 'Tiket Wisata',
+            'ride' => 'Tiket Wahana',
+            'bundle' => 'Tiket Paket'
+        ];
+
+        foreach ($transaction->tickets as $ticket) {
+            $ticket->translated_type = $type_translation[$ticket->item_type] ?? 'Tiket';
+        }
+
         return view('user.payment.show', compact('transaction'));
     }
 

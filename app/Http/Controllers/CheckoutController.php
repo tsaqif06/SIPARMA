@@ -40,6 +40,6 @@ class CheckoutController extends Controller
             'visit_date' => $request->visit_date,
         ]);
 
-        return redirect()->route('payment.show', ['transaction' => $transaction->id]);
+        return redirect()->route('payment.show', ['transaction' => $transaction->transaction_code]);
     }
 }
