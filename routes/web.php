@@ -41,8 +41,9 @@ Route::middleware(['auth', 'is_user'])->group(function () {
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 
     Route::get('/payment/{transaction}', [PaymentController::class, 'show'])->name('payment.show');
-    Route::post('/payment/{transaction}/process', [PaymentController::class, 'processPayment'])->name('payment.process');
-    Route::get('/payment/{transaction}/success', [PaymentController::class, 'success'])->name('payment.success');
+    Route::post('/payment/{transaction}/process', [PaymentController::class, 'process'])->name('payment.process');
+    Route::post('/payment/callback', [PaymentController::class, 'callback'])->name('payment.callback');
+    Route::get('/invoice/{order_id}', [PaymentController::class, 'invoice'])->name('payment.invoice');
 
     Route::get('/complain', function () {
         return view('complain.index');

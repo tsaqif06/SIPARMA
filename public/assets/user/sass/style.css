@@ -9318,3 +9318,55 @@ input[type="checkbox"]:checked:disabled + label:before {
     height: 60px;
     object-fit: cover;
 }
+
+.invoice-container {
+    background-color: #ffffff;
+    border: 1px solid #9DB2BF;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #000000; /* Font color set to black */
+}
+
+.invoice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Playfair Display', serif;
+    color: #000000; /* Font color set to black */
+}
+
+.invoice-header img {
+    height: 150px; /* Larger logo size for invoice */
+}
+
+.invoice-container table {
+    width: 100%;
+    margin-top: 20px;
+    font-family: 'Sora', Arial, sans-serif;
+    font-size: 1rem;
+    border-collapse: collapse;
+    color: #3f3f3f;
+}
+
+.invoice-container table th,
+.invoice-container table td {
+    padding: 10px;
+    text-align: left;
+    color:#707070;
+}
+
+.invoice-container table th {
+    background-color: #F5F5F5;
+    font-weight: bold;
+    border-bottom: 2px solid #9DB2BF; /* Add bottom border for header */
+}
+
+.invoice-container table tbody td {
+    border: none; /* No border for table body */
+}
+
+.invoice-container table tfoot td {
+    border-top: 2px solid #9DB2BF; /* Add top border for footer */
+    font-weight: bold;
+}

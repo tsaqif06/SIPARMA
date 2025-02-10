@@ -6,7 +6,8 @@
             <div class="col-lg-6">
                 <div class="card p-4">
                     <h5 class="mb-3">Data Pemesan</h5>
-                    <form>
+                    <form id="checkout-form">
+                        @csrf
                         <div class="mb-3">
                             <label class="form-label">Nama</label>
                             <input type="text" class="form-control" value="{{ old('name', auth()->user()->name) }}"
@@ -86,7 +87,7 @@
                         <p><strong>Total</strong></p>
                         <p><strong>IDR {{ number_format($transaction->amount, 0, ',', '.') }}</strong></p>
                     </div>
-                    <button class="btn btn-custom w-100 mt-3">Bayar</button>
+                    <button class="btn btn-custom w-100 mt-3" id="pay-button">Bayar</button>
                 </div>
             </div>
         </div>

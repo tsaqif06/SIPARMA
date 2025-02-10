@@ -43,14 +43,42 @@ class PaymentController extends Controller
                 'gross_amount' => $transaction->amount,
             ],
             'customer_details' => [
-                'first_name' => auth()->user()->name,
-                'email' => auth()->user()->email,
-                'phone' => auth()->user()->phone_number,
+                'first_name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone_number,
             ],
         ];
 
         $snapToken = Snap::getSnapToken($params);
 
         return response()->json(['snapToken' => $snapToken]);
+    }
+
+    public function callback(Request $request)
+    {
+        $transaction = Transaction::where('transaction_code', $request->order_id)->first();
+
+        if ($transaction) {
+            if ($request->transaction_status == 'settlement' || $request->transaction_status == 'capture') {
+                $transaction->status = 'success';
+            } elseif ($request->transaction_status == 'pending') {
+                $transaction->status = 'pending';
+            } elseif ($request->transaction_status == 'expire' || $request->transaction_status == 'cancel') {
+                $transaction->status = 'failed';
+            }
+
+            $transaction->save();
+        }
+
+        return response()->json(['message' => 'Transaction status updated']);
+    }
+
+    public function invoice($order_id)
+    {
+        $transaction = Transaction::where('transaction_code', $order_id)
+            ->where('status', 'paid')
+            ->firstOrFail();
+
+        return view('user.payment.invoice', compact('transaction'));
     }
 }

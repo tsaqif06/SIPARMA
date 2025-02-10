@@ -46,10 +46,8 @@
                     }
                 }
 
-                // Panggil fungsi saat halaman pertama kali dimuat
                 populateItemId();
 
-                // Panggil fungsi saat item_type diubah
                 $("#item_type").change(function() {
                     populateItemId();
                 });
