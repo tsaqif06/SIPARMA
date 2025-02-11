@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Transaction;
-use Midtrans\Config;
 use Midtrans\Snap;
+use Midtrans\Config;
+use App\Models\Balance;
+use App\Models\BalanceLog;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
@@ -13,6 +16,8 @@ class PaymentController extends Controller
     {
         $transaction = Transaction::with('destination')
             ->where('transaction_code', $transaction_code)
+            ->where('status', 'pending')
+            ->where('user_id', auth()->user()->id)
             ->firstOrFail();
 
         $type_translation = [
@@ -60,14 +65,34 @@ class PaymentController extends Controller
 
         if ($transaction) {
             if ($request->transaction_status == 'settlement' || $request->transaction_status == 'capture') {
+                Balance::updateOrCreate(
+                    ['destination_id' => $transaction->destination_id],
+                    [
+                        'balance' => DB::raw('balance + ' . $transaction->amount),
+                        'total_profit' => DB::raw('total_profit + ' . $transaction->amount)
+                    ]
+                );
+
+                BalanceLog::updateOrCreate(
+                    [
+                        'destination_id' => $transaction->destination_id,
+                        'period_year' => now()->year,
+                        'period_month' => now()->month,
+                    ],
+                    [
+                        'profit' => DB::raw('profit + ' . $transaction->amount),
+                    ]
+                );
+
                 $transaction->status = 'paid';
+                $transaction->save();
             } elseif ($request->transaction_status == 'pending') {
                 $transaction->status = 'pending';
+                $transaction->save();
             } elseif ($request->transaction_status == 'expire' || $request->transaction_status == 'cancel') {
                 $transaction->status = 'failed';
+                $transaction->save();
             }
-
-            $transaction->save();
         }
 
         return response()->json(['message' => 'Transaction status updated']);
@@ -77,6 +102,7 @@ class PaymentController extends Controller
     {
         $transaction = Transaction::where('transaction_code', $order_id)
             ->where('status', 'paid')
+            ->where('user_id', auth()->user()->id)
             ->firstOrFail();
 
         return view('user.payment.invoice', compact('transaction'));
