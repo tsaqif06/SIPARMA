@@ -1,6 +1,6 @@
 <header id="header">
     <div class="wpo-site-header">
-        <nav class="navigation navbar navbar-expand-lg navbar-light">
+        <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-md-3 col-3 d-lg-none dl-block">
@@ -16,8 +16,7 @@
                     <div class="col-lg-2 col-md-4 col-4">
                         <div class="navbar-header">
                             <a class="navbar-brand" href="{{ route('home.index') }}"><img
-                                    src="{{ asset('assets/user/images/LOGO_SIPARMA_.png') }}" alt="logo"
-                                    width="100"></a>
+                                    src="{{ asset('assets/user/images/LOGO_SIPARMA_.png') }}" alt="logo"></a>
                         </div>
                     </div>
                     <div class="col-lg-7 col-md-1 col-1">

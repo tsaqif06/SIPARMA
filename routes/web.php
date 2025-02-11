@@ -37,6 +37,10 @@ Route::get('/places/{slug}', [PlaceController::class, 'show'])->name('place.show
 
 Route::middleware(['auth', 'is_user'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::put('/profile/update', [ProfileController::class, 'profileUpdate'])->name('profile.update');
+    Route::get('/transactions/history', [ProfileController::class, 'transactionHistory'])->name('transactions.history');
+    Route::get('/adminplace/verification', [ProfileController::class, 'adminPlaceVerification'])->name('admin.verification');
+
     Route::get('/destinations/checkout/{slug}', [DestinationController::class, 'checkout'])->name('destination.checkout');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 
