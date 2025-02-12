@@ -9224,9 +9224,9 @@ input[type="checkbox"]:checked:disabled + label:before {
 } /*# sourceMappingURL=style.css.map */
 
 .navbar {
-    background-color: #f8f9fa;
+    top: -20px;
+    /* background-color: #f8f9fa;
     position: fixed;
-    top: 20px;
     left: 50%;
     transform: translateX(-50%);
     width: 90%;
@@ -9235,7 +9235,7 @@ input[type="checkbox"]:checked:disabled + label:before {
     height: 80px;
     border-radius: 10px;
     overflow: hidden;
-    transition: top 0.3s;
+    transition: top 0.3s; */
 }
 
 /* .navbar.hide {
@@ -9355,6 +9355,7 @@ input[type="checkbox"]:checked:disabled + label:before {
     border: 1px solid #9db2bf;
     border-radius: 10px;
     padding: 20px;
+    /* max-width: 100px; */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     color: #000000; /* Font color set to black */
 }
@@ -9363,7 +9364,7 @@ input[type="checkbox"]:checked:disabled + label:before {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-family: "Playfair Display", serif;
+    font-family: "Sora", Arial, serif;
     color: #000000; /* Font color set to black */
 }
 
@@ -9493,4 +9494,12 @@ input[type="checkbox"]:checked:disabled + label:before {
     .profile-details {
         width: 100%;
     }
+}
+
+.card-custom {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    color: black;
 }

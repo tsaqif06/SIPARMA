@@ -1,9 +1,13 @@
 @extends('user.layouts.app')
 
+@php
+    \Carbon\Carbon::setLocale('id');
+@endphp
+
 @section('content')
-    <div class="invoice-container p-3 p-md-4 mx-2 mx-md-5">
+    <div class="invoice-container p-3 p-md-4 mx-5 mx-md-5">
         <div class="invoice-header mb-4 d-flex flex-column flex-md-row justify-content-between align-items-center">
-            <h4 class="text-center text-md-start mb-3 mb-md-0">INVOICE | PEMBAYARAN BERHASIL</h4>
+            <h4 class="text-center text-md-start my-3 mb-md-0">INVOICE | PEMBAYARAN BERHASIL</h4>
             <img src="{{ asset('assets/user/images/LOGO_SIPARMA_.png') }}" alt="Logo" class="img-fluid"
                 style="max-width: 150px;">
         </div>

@@ -13,7 +13,9 @@
         <div class="dashboard-main-body" style="margin-top: 150px">
             @yield('content')
         </div>
-        @include('user.components.footer')
+        @if (!isset($withoutFooter))
+            @include('user.components.footer')
+        @endif
     </main>
 
     @include('user.components.script', ['script' => $script ?? ''])

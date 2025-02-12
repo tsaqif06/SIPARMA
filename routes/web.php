@@ -48,6 +48,7 @@ Route::middleware(['auth', 'is_user'])->group(function () {
     Route::post('/payment/{transaction}/process', [PaymentController::class, 'process'])->name('payment.process');
     Route::post('/payment/callback', [PaymentController::class, 'callback'])->name('payment.callback');
     Route::get('/invoice/{order_id}', [PaymentController::class, 'invoice'])->name('payment.invoice');
+    Route::get('/invoice/download/{order_id}', [PaymentController::class, 'downloadInvoice'])->name('payment.invoice.download');
 
     Route::get('/complain', function () {
         return view('complain.index');

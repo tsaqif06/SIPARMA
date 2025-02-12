@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -55,5 +56,16 @@ class ProfileController extends Controller
         Auth::setUser($user);
 
         return redirect()->route('profile')->with('success', 'Profil berhasil diperbarui!');
+    }
+
+    public function transactionHistory()
+    {
+        $user = auth()->user();
+
+        $transactions = Transaction::where('user_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('user.profile.riwayat', compact('transactions'));
     }
 }

@@ -20,7 +20,7 @@
             <div class="col-md-3">
                 <div class="sidebar">
                     <div class="sidebar-title text-secondary">Menu</div>
-                    <a href="{{ route('profile') }}"><i class="fas fa-user"></i> Profil</a>
+                    <a href="{{ route('profile') }}" style="color: black;"><i class="fas fa-user"></i> Profil</a>
                     <a href="{{ route('transactions.history') }}"><i class="fas fa-list"></i> Riwayat Transaksi</a>
                     <a href="{{ route('admin.verification') }}"><i class="fas fa-check-circle"></i> Verifikasi Admin</a>
                 </div>

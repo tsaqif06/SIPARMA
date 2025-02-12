@@ -9,6 +9,7 @@ use App\Models\BalanceLog;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PaymentController extends Controller
 {
@@ -106,5 +107,16 @@ class PaymentController extends Controller
             ->firstOrFail();
 
         return view('user.payment.invoice', compact('transaction'));
+    }
+
+    public function downloadInvoice($order_id)
+    {
+        $transaction = Transaction::where('transaction_code', $order_id)
+            ->where('status', 'paid')
+            ->where('user_id', auth()->user()->id)
+            ->firstOrFail();
+
+        $pdf = Pdf::loadView('user.payment.invoice-pdf', compact('transaction'))->setPaper('A4', 'portrait');
+        return $pdf->download("Invoice_{$transaction->transaction_code}.pdf");
     }
 }
