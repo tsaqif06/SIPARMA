@@ -111,7 +111,7 @@ h4,
 h5,
 h6 {
     color: #273958;
-    font-family: 'Sora', Arial, sans-serif;
+    font-family: "Sora", Arial, sans-serif;
     font-weight: 600;
 }
 
@@ -708,9 +708,9 @@ a.ui-button:active,
 .preloader {
     background-color: #fff;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     position: fixed;
-    z-index: 1000;
+    z-index: 999999;
     overflow: hidden;
 }
 .preloader .vertical-centered-box {
@@ -3439,10 +3439,12 @@ a.ui-button:active,
 4. wpo-footer
 --------------------------------------------------------------*/
 .wpo-site-footer {
-    background: url(../images/footer_bg.jpg);
+    /* background: url(../images/footer_bg.jpg);
     background-repeat: no-repeat;
     background-position: center;
-    background-size: cover;
+    background-size: cover; */
+    margin-top: 10%;
+    background-color: #fff;
     position: relative;
     font-size: 15px;
     overflow: hidden;
@@ -3556,9 +3558,9 @@ a.ui-button:active,
     text-transform: capitalize;
 }
 .wpo-site-footer .link-widget ul li a:hover {
-    color: #1d3557;
+    color: #0b60d7;
 }
-.wpo-site-footer .link-widget ul li a::before {
+/* .wpo-site-footer .link-widget ul li a::before {
     position: absolute;
     left: 0;
     top: 20px;
@@ -3567,10 +3569,10 @@ a.ui-button:active,
     font-size: 15px;
     color: #273958;
     transition: all 0.3s ease-in-out;
-}
-.wpo-site-footer .link-widget ul li a:hover::before {
-    color: #1d3557;
-}
+} */
+/* .wpo-site-footer .link-widget ul li a:hover::before {
+    color: #1b66cf;
+} */
 .wpo-site-footer .link-widget ul li:first-child a::before {
     top: 0;
 }
@@ -3578,7 +3580,7 @@ a.ui-button:active,
     padding-top: 20px;
 }
 .wpo-site-footer .address-widget {
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 @media screen and (min-width: 1400px) {
     .wpo-site-footer .address-widget {
@@ -3599,7 +3601,7 @@ a.ui-button:active,
     font-size: 14px;
     font-weight: 400;
     line-height: 32px;
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
     display: flex;
 }
 .wpo-site-footer .address-widget ul li .icon {
@@ -9225,6 +9227,7 @@ input[type="checkbox"]:checked:disabled + label:before {
 
 .navbar {
     top: -20px;
+    z-index: 13;
     /* background-color: #f8f9fa;
     position: fixed;
     left: 50%;

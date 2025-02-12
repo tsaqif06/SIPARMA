@@ -4,7 +4,7 @@
 @include('user.components.head')
 
 <body>
-    {{--  @include('user.components.sidebar')  --}}
+    {{--  @include('user.components.loading')  --}}
 
     <main class="dashboard-main">
         @if (!isset($withoutNavbar))
