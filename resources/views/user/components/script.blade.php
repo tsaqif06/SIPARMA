@@ -13,6 +13,7 @@
 <script src="{{ asset('assets/user/js/jquery.dlmenu.js') }}"></script>
 <script src="{{ asset('assets/user/js/jquery-plugin-collection.js') }}"></script>
 <script src="{{ asset('assets/js/lib/sweetalert2.min.js') }}"></script>
+<script src="{{ asset('assets/js/lib/leaflet.js') }}"></script>
 
 <script src="{{ asset('assets/user/js/script.js') }}"></script>
 
@@ -20,6 +21,10 @@
     $(document).ready(function() {
         // Inisialisasi DataTable
         let table = new DataTable("#dataTable");
+        let flag = $(".leaflet-attribution-flag");
+        if (flag) {
+            flag.remove();
+        }
     });
 </script>
 

@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Place;
+use App\Models\AdminPlace;
+use App\Models\Destination;
 use App\Models\Transaction;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -67,5 +71,56 @@ class ProfileController extends Controller
             ->get();
 
         return view('user.profile.riwayat', compact('transactions'));
+    }
+
+    public function adminPlaceVerification()
+    {
+        $destinations = Destination::all();
+        return view('user.profile.adminverification', compact('destinations'));
+    }
+
+    public function storeVerification(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:100',
+            'type' => 'required|string|max:100',
+            'address' => 'required|string',
+            'destination_id' => 'nullable|integer|exists:tbl_destinations,id',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+            'ownership_docs' => 'required|file|mimes:pdf,jpg,png,jpeg|max:5000',
+        ]);
+
+        // Simpan dokumen kepemilikan
+        $docPath = $request->file('ownership_docs')->store('ownership_docs', 'public');
+
+        $location = [
+            'address' => $request->address,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
+        ];
+
+        // Simpan data tempat
+        $place = Place::create([
+            'name' => $request->name,
+            'slug' => Str::slug($request->name),
+            'description' => '',
+            'open_time' => '00:00:00',
+            'close_time' => '23:59:59',
+            'operational_status' => 'closed',
+            'location' => json_encode($location),
+            'type' => $request->type,
+            'destination_id' => $request->destination_id,
+        ]);
+
+        // Simpan data admin tempat
+        AdminPlace::create([
+            'user_id' => auth()->user()->id,
+            'place_id' => $place->id,
+            'approval_status' => 'pending',
+            'ownership_docs' => "storage/$docPath"
+        ]);
+
+        return redirect()->back()->with('success', 'Pengajuan verifikasi berhasil dikirim.');
     }
 }

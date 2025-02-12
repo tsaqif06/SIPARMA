@@ -9506,3 +9506,7 @@ input[type="checkbox"]:checked:disabled + label:before {
     padding: 20px;
     color: black;
 }
+
+.leaflet-attribution-flag {
+    display: none !important;
+}
