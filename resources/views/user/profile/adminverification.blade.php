@@ -190,7 +190,7 @@
                                         <span class="text-muted">Silakan pilih titik lokasi tempat Anda di peta</span>
                                         <div id="map"
                                             class="border @error('latitude') border-danger @enderror @error('longitude') border-danger @enderror"
-                                            style="height: 300px; width: 100%;"></div>
+                                            style="height: 300px; width: 100%; border-radius: 7px;"></div>
 
                                         <!-- Input Hidden untuk Latitude & Longitude -->
                                         <input type="hidden" name="latitude" id="latitude"

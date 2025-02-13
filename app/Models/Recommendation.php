@@ -9,7 +9,7 @@ class Recommendation extends Model
 {
     use HasFactory;
 
-    protected $table = 'tbl_recommendation';
+    protected $table = 'tbl_recommendations';
     protected $fillable = ['user_id', 'destination_name', 'description', 'location', 'status'];
     public function user()
     {

@@ -27,6 +27,7 @@ Route::post('/register', [AuthController::class, 'register'])->name('register.po
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::name('home.')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('index');
+    Route::post('/recommendation/submit', [HomeController::class, 'submitRecommendation'])->name('recommendation.store');
     Route::get('/wisata', [HomeController::class, 'wisata'])->name('wisata');
     Route::get('/tempat', [HomeController::class, 'tempat'])->name('tempat');
 });
