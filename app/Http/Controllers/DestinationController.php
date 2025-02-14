@@ -11,8 +11,9 @@ class DestinationController extends Controller
     public function show($slug)
     {
         $destination = Destination::where('slug', $slug)->firstOrFail();
+        $reviews = $destination->reviews()->paginate(5);
 
-        return view('user.destinations.show', compact('destination'));
+        return view('user.destinations.show', compact('destination', 'reviews'));
     }
 
     public function checkout($slug, $type = 'destination')

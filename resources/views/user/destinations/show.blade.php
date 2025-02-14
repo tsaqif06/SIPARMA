@@ -18,6 +18,27 @@
                 $(this).hide();
             }
         });
+
+        //---------------------------
+        $(".remove-item-btn").on("click", function() {
+            $(this).closest("tr").addClass("d-none")
+        });
+
+        function confirmDelete(userId) {
+            Swal.fire({
+                title: "Apakah Anda yakin?",
+                text: "Data ini akan dihapus secara permanen!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Hapus",
+                cancelButtonText: "Batal",
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $("#deleteForm" + userId).submit();
+                }
+            });
+        }
     </script>';
 @endphp
 
@@ -154,125 +175,173 @@
                             <a href="#" class="load-more">Lihat Lebih Banyak</a>
                         @endif
                     </div>
-                </div>
-                <div class="room-review">
-                    <div class="room-title">
-                        <h2>Ulasan</h2>
-                    </div>
-                    <div class="review-item">
-                        <div class="review-img">
-                            <img src="assets/images/room/user1.png" alt="">
+                    <div class="room-review">
+                        <div class="room-title">
+                            <h2>Ulasan</h2>
                         </div>
-                        <div class="review-text">
-                            <div class="r-title">
-                                <h2>Sultan</h2>
-                                <ul>
-                                    <li><i class="ti-star"></i></li>
-                                    <li><i class="ti-star"></i></li>
-                                    <li><i class="ti-star"></i></li>
-                                    <li><i class="ti-star"></i></li>
-                                    <li><i class="ti-star"></i></li>
-                                </ul>
-                            </div>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices
-                                gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. </p>
-                        </div>
-                    </div>
-                    <div class="review-item">
-                        <div class="review-img">
-                            <img src="assets/images/room/user1.png" alt="">
-                        </div>
-                        <div class="review-text">
-                            <div class="r-title">
-                                <h2>Manggali</h2>
-                                <ul>
-                                    <li><i class="ti-star"></i></li>
-                                    <li><i class="ti-star"></i></li>
-                                    <li><i class="ti-star"></i></li>
-                                    <li><i class="ti-star"></i></li>
-                                    <li><i class="ti-star"></i></li>
-                                </ul>
-                            </div>
-                            <p> Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan
-                                lacus vel facilisis. </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="add-review">
-                    <div class="room-title">
-                        <h2>Berikan Ulasan</h2>
-                    </div>
-                    <div class="wpo-blog-single-section review-form ">
-                        <div class="give-rat-sec">
-                            <div class="give-rating">
-                                <label>
-                                    <input type="radio" name="stars" value="1" />
-                                    <span class="icon">★</span>
-                                </label>
-                                <label>
-                                    <input type="radio" name="stars" value="2" />
-                                    <span class="icon">★</span>
-                                    <span class="icon">★</span>
-                                </label>
-                                <label>
-                                    <input type="radio" name="stars" value="3" />
-                                    <span class="icon">★</span>
-                                    <span class="icon">★</span>
-                                    <span class="icon">★</span>
-                                </label>
-                                <label>
-                                    <input type="radio" name="stars" value="4" />
-                                    <span class="icon">★</span>
-                                    <span class="icon">★</span>
-                                    <span class="icon">★</span>
-                                    <span class="icon">★</span>
-                                </label>
-                                <label>
-                                    <input type="radio" name="stars" value="5" />
-                                    <span class="icon">★</span>
-                                    <span class="icon">★</span>
-                                    <span class="icon">★</span>
-                                    <span class="icon">★</span>
-                                    <span class="icon">★</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="review-add">
-                            <div class="comment-respond">
-                                <form id="commentform" class="comment-form">
-                                    <div class="form-textarea">
-                                        <textarea id="comment" placeholder="Ketik Ulasan"></textarea>
+
+                        @foreach ($reviews as $review)
+                            <div class="review-item">
+                                <div class="review-img">
+                                    <div class="img"
+                                        style="background-image: url('../{{ file_exists(public_path($review->user->profile_picture)) ? $review->user->profile_picture : 'assets/images/default-avatar.jpg' }}');">
                                     </div>
-                                    <div class="form-submit">
-                                        <button type="submit" class="btn btn-primary" style="font-size: 16px;">Kirim
-                                            Ulasan</button>
+                                </div>
+                                <div class="review-text">
+                                    <div class="r-title">
+                                        <h2>{{ $review->user->name }}</h2>
+                                        <span class="ms-2">{{ $review->created_at }}</span>
+                                        <ul>
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <li>
+                                                    <i class="ti-star {{ $i <= $review->rating ? 'filled' : '' }}"></i>
+                                                </li>
+                                            @endfor
+                                        </ul>
                                     </div>
-                                </form>
+                                    <p>{{ $review->comment }}</p>
+                                </div>
                             </div>
+                        @endforeach
+                        <div class="pagination mt-4">
+                            {{ $reviews->links() }}
                         </div>
-                        <!--Start Room area-->
+                    </div>
+
+                    @php
+                        $userReview = \App\Models\Review::where('user_id', auth()->id())
+                            ->when(isset($destination), function ($query) use ($destination) {
+                                return $query->where('destination_id', $destination->id);
+                            })
+                            ->first();
+                    @endphp
+
+                    <div class="add-review">
+
+                        @if ($userReview)
+                            <div class="room-title">
+                                <h2>Ulasan Anda</h2>
+                            </div>
+                            <div class="review-item">
+                                <div class="review-img">
+                                    <div class="img"
+                                        style="background-image: url('../{{ file_exists(public_path($userReview->user->profile_picture)) ? $userReview->user->profile_picture : 'assets/images/default-avatar.jpg' }}');">
+                                    </div>
+                                </div>
+                                <div class="review-text">
+                                    <div class="r-title">
+                                        <h2>{{ $userReview->user->name }}</h2>
+                                        <span class="ms-2">{{ $userReview->created_at }}</span>
+                                        <ul>
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <li>
+                                                    <i class="ti-star $i <= $userReview->rating ? 'filled' : '' }}"></i>
+                                                </li>
+                                            @endfor
+                                        </ul>
+                                    </div>
+                                    <p>{{ $userReview->comment }}</p>
+                                </div>
+
+                                <div class="review-actions">
+                                    <form id="deleteForm{{ $userReview->id }}"
+                                        action="{{ route('reviews.destroy', $userReview->id) }}" method="POST"
+                                        style="display: inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" class="btn btn-danger"
+                                            onclick="confirmDelete({{ $userReview->id }})"><iconify-icon icon="mdi:trash"
+                                                width="24" height="24"></iconify-icon></button>
+                                    </form>
+                                </div>
+                            </div>
+                        @else
+                            <div class="room-title">
+                                <h2>Berikan Ulasan</h2>
+                            </div>
+
+                            <form action="{{ route('reviews.store') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="destination_id" value="{{ $destination->id }}">
+                                <div class="wpo-blog-single-section review-form">
+                                    <div class="give-rat-sec">
+                                        <div class="give-rating">
+                                            <label>
+                                                <input type="radio" name="rating" value="1"
+                                                    {{ old('rating') == 1 ? 'checked' : '' }} required />
+                                                <span class="icon">★</span>
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="rating" value="2"
+                                                    {{ old('rating') == 2 ? 'checked' : '' }} />
+                                                <span class="icon">★</span><span class="icon">★</span>
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="rating" value="3"
+                                                    {{ old('rating') == 3 ? 'checked' : '' }} />
+                                                <span class="icon">★</span><span class="icon">★</span><span
+                                                    class="icon">★</span>
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="rating" value="4"
+                                                    {{ old('rating') == 4 ? 'checked' : '' }} />
+                                                <span class="icon">★</span><span class="icon">★</span><span
+                                                    class="icon">★</span><span class="icon">★</span>
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="rating" value="5"
+                                                    {{ old('rating') == 5 ? 'checked' : '' }} />
+                                                <span class="icon">★</span><span class="icon">★</span><span
+                                                    class="icon">★</span><span class="icon">★</span><span
+                                                    class="icon">★</span>
+                                            </label>
+                                            @error('rating')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="review-add">
+                                        <div class="comment-respond">
+                                            <div id="commentform" class="comment-form">
+                                                <div class="form">
+                                                    <textarea id="comment" name="comment" placeholder="Ketik Ulasan" required>{{ old('comment') }}</textarea>
+                                                    @error('comment')
+                                                        <div class="text-danger">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+
+                                                <!-- Submit Button -->
+                                                <div class="form-submit">
+                                                    <button type="submit" class="btn btn-primary"
+                                                        style="font-size: 16px;">Kirim
+                                                        Ulasan</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        @endif
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-4 col-12">
-                <div class="blog-sidebar room-sidebar">
-                    <div class="widget-maps">
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15806.180865305978!2d112.94269097883297!3d-7.9424720707752865!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd637aaab794a41%3A0xada40d36ecd2a5dd!2sGn.%20Bromo!5e0!3m2!1sid!2sus!4v1739258663084!5m2!1sid!2sus"
-                            style="border:0; width: 100%; height: 100%; border-radius: 10px;" allowfullscreen=""
-                            loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                        </iframe>
-                    </div>
-                    <div class="wpo-contact-widget widget">
-                        <h4>Mengalami Masalah?</h4>
-                        <p>Laporkan tempat ini jika tempat ini mengalami masalah</p>
-                        <a href="#">Laporkan</a>
+                <div class="col-lg-4 col-12">
+                    <div class="blog-sidebar room-sidebar">
+                        <div class="widget-maps">
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15806.180865305978!2d112.94269097883297!3d-7.9424720707752865!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd637aaab794a41%3A0xada40d36ecd2a5dd!2sGn.%20Bromo!5e0!3m2!1sid!2sus!4v1739258663084!5m2!1sid!2sus"
+                                style="border:0; width: 100%; height: 100%; border-radius: 10px;" allowfullscreen=""
+                                loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                        </div>
+                        <div class="wpo-contact-widget widget">
+                            <h4>Mengalami Masalah?</h4>
+                            <p>Laporkan tempat ini jika tempat ini mengalami masalah</p>
+                            <a href="#">Laporkan</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
 
     <section class="blog-section section-padding">

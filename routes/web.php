@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PlaceController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CheckoutController;
@@ -43,6 +44,8 @@ Route::middleware(['auth', 'is_user'])->group(function () {
     Route::get('/adminplace/verification', [ProfileController::class, 'adminPlaceVerification'])->name('admin.verification');
     Route::post('/adminplace/verification', [ProfileController::class, 'storeVerification'])->name('admin.verification.store');
 
+    Route::post('/reviews/store', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::delete('/reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 
     Route::get('/destinations/checkout/{slug}/{type?}', [DestinationController::class, 'checkout'])->name('destination.checkout');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
