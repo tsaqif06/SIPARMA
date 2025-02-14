@@ -11,6 +11,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\AdminRideController;
 use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\AdminPlaceController;
 use App\Http\Controllers\AdminPromoController;
 use App\Http\Controllers\AdminBundleController;
@@ -30,6 +31,7 @@ Route::name('home.')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('index');
     Route::post('/recommendation/submit', [HomeController::class, 'submitRecommendation'])->name('recommendation.store');
     Route::get('/wisata', [HomeController::class, 'wisata'])->name('wisata');
+   
     Route::get('/tempat', [HomeController::class, 'tempat'])->name('tempat');
 });
 
@@ -46,6 +48,7 @@ Route::middleware(['auth', 'is_user'])->group(function () {
 
     Route::post('/reviews/store', [ReviewController::class, 'store'])->name('reviews.store');
     Route::delete('/reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+    Route::post('/complaints', [ComplaintController::class, 'store'])->name('complaints.store');
 
     Route::get('/destinations/checkout/{slug}/{type?}', [DestinationController::class, 'checkout'])->name('destination.checkout');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
