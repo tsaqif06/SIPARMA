@@ -87,24 +87,8 @@
     <div class="container">
         <!-- Title: Beli Tiket -->
         <div class="text-center mb-4">
-            <h2>Beli Tiket</h2>
+            <h2>Beli Tiket {{ $item->name }}</h2>
         </div>
-
-        {{--  @error('destination_id')
-            <div class="text-danger mt-1">{{ $message }}</div>
-        @enderror
-        @error('visit_date')
-            <div class="text-danger mt-1">{{ $message }}</div>
-        @enderror
-        @error('adult_count')
-            <div class="text-danger mt-1">{{ $message }}</div>
-        @enderror
-        @error('children_count')
-            <div class="text-danger mt-1">{{ $message }}</div>
-        @enderror
-        @error('total_price')
-            <div class="text-danger mt-1">{{ $message }}</div>
-        @enderror  --}}
 
         <!-- Date Picker -->
         <div class="card p-3 mb-4">
@@ -123,20 +107,19 @@
             </div>
         </div>
 
-
         <div class="container mt-5">
             <div class="row">
                 <div class="col-md-7">
-                    <div class="ticket-card">
+                    <div class="ticket-card-checkout">
                         <h5>Tiket Dewasa</h5>
                         <div class="d-flex align-items-center">
-                            <img src="{{ asset($destination->gallery[0]->image_url) }}" alt="Ticket Image" class="me-3"
-                                style="width: 50px; height: 50px; object-fit: cover;">
+                            <img src="{{ asset($item->gallery[0]->image_url ?? 'assets/images/default.png') }}"
+                                alt="Ticket Image" class="me-3" style="width: 50px; height: 50px; object-fit: cover;">
                             <div>
-                                <p class="text-muted">{{ $destination->name }}</p>
-                                <p class="text-danger">IDR <span id="adult-price" data-weekday="{{ $destination->price }}"
-                                        data-weekend="{{ $destination->weekend_price }}">
-                                        {{ number_format($destination->price, 0, ',', '.') }}</span>
+                                <p class="text-muted">{{ $item->name }}</p>
+                                <p class="text-danger">IDR <span id="adult-price" data-weekday="{{ $item->price }}"
+                                        data-weekend="{{ $item->weekend_price }}">
+                                        {{ number_format($item->price, 0, ',', '.') }}</span>
                                 </p>
                                 <div class="quantity-controls">
                                     <button class="qty-btn" data-type="adult" data-change="-1">-</button>
@@ -146,16 +129,15 @@
                             </div>
                         </div>
                     </div>
-                    <div class="ticket-card">
+                    <div class="ticket-card-checkout">
                         <h5>Tiket Anak-Anak</h5>
                         <div class="d-flex align-items-center">
-                            <img src="{{ asset($destination->gallery[0]->image_url) }}" alt="Ticket Image" class="me-3"
-                                style="width: 50px; height: 50px; object-fit: cover;">
+                            <img src="{{ asset($item->gallery[0]->image_url ?? 'assets/images/default.png') }}"
+                                alt="Ticket Image" class="me-3" style="width: 50px; height: 50px; object-fit: cover;">
                             <div>
-                                <p class="text-muted">{{ $destination->name }}</p>
-                                <p class="text-danger">IDR <span id="child-price"
-                                        data-price="{{ $destination->children_price }}">
-                                        {{ number_format($destination->children_price, 0, ',', '.') }}</span>
+                                <p class="text-muted">{{ $item->name }}</p>
+                                <p class="text-danger">IDR <span id="child-price" data-price="{{ $item->children_price }}">
+                                        {{ number_format($item->children_price, 0, ',', '.') }}</span>
                                 </p>
                                 <div class="quantity-controls">
                                     <button class="qty-btn" data-type="child" data-change="-1">-</button>
@@ -170,8 +152,8 @@
                     <div class="card p-3">
                         <h5 class="mb-3">Tujuan Wisata</h5>
                         <div class="d-flex flex-column justify-content-center align-items-center">
-                            <img src="{{ asset($destination->gallery[0]->image_url) }}" alt="Tujuan Wisata"
-                                class="img-fluid mb-3"
+                            <img src="{{ asset($item->gallery[0]->image_url ?? 'assets/images/default.png') }}"
+                                alt="Tujuan Wisata" class="img-fluid mb-3"
                                 style="width: 100%; max-width: 200px; height: auto; object-fit: cover; border-radius: 10px;">
                             <div class="text-center">
                                 <p class="h6">Harga Total</p>
@@ -181,7 +163,9 @@
                                 @enderror
                                 <form id="checkout-form" action="{{ route('checkout.store') }}" method="POST">
                                     @csrf
-                                    <input type="hidden" name="destination_id" value="{{ $destination->id }}">
+                                    <input type="hidden" name="destination_id" value="{{ $item->destination->id }}">
+                                    <input type="hidden" name="item_id" value="{{ $item->id }}">
+                                    <input type="hidden" name="item_type" value="{{ $type }}">
                                     <input type="hidden" id="visit-date-input" name="visit_date">
                                     <input type="hidden" id="adult-count-input" name="adult_count">
                                     <input type="hidden" id="children-count-input" name="children_count">
@@ -202,7 +186,7 @@
                 <div class="col-12">
                     <h3>Syarat & Ketentuan</h3>
                     <p><strong>Informasi Umum</strong></p>
-                    <ul>
+                    <ul class="ms-4">
                         <li>Pastikan informasi yang diisi sesuai.</li>
                         <li>Tiket tidak dapat dikembalikan atau dibatalkan.</li>
                         <li>Segala bentuk perubahan harus disesuaikan dengan kebijakan operator.</li>

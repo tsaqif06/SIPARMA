@@ -37,8 +37,8 @@
                             <div class="d-flex align-items-center">
                                 <img src="{{ asset(
                                     $ticket->item_type === 'bundle'
-                                        ? $ticket->item->items[0]->item->gallery[0]->image_url
-                                        : $ticket->item->gallery[0]->image_url,
+                                        ? $ticket->item->items[0]->item->gallery[0]->image_url ?? 'assets/images/default.png'
+                                        : $ticket->item->gallery[0]->image_url ?? 'assets/images/default.png',
                                 ) }}"
                                     class="rounded me-3 ticket-image" alt="Tiket">
 

@@ -82,8 +82,8 @@ html {
 
 body {
     font-family: "Sora", sans-serif;
-    color: #f5f5f5;
-    background-color: #f5f5f5;
+    color: #687693;
+    background-color: #fff;
     font-size: 15px;
     font-size: 1rem;
     overflow-x: hidden;
@@ -3441,6 +3441,46 @@ a.ui-button:active,
     }
 }
 
+.wpo-room-area-s2 {
+    margin-top: 50px;
+}
+
+.wpo-room-area-s2 .carousel-inner img {
+    height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+.wpo-room-area-s2 .carousel-item .col-md-4 img {
+    height: 195px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.wpo-room-area-s2 .carousel-control-prev,
+.wpo-room-area-s2 .carousel-control-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+}
+
+.wpo-room-area-s2 .carousel-control-prev {
+    left: 50px;
+    top: 20rem;
+}
+
+.wpo-room-area-s2 .carousel-control-next {
+    right: 50px;
+    top: 20rem;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    filter: invert(1);
+}
 /*--------------------------------------------------------------
 4. wpo-footer
 --------------------------------------------------------------*/
@@ -4874,6 +4914,7 @@ a.ui-button:active,
     padding-bottom: 100px;
     overflow: hidden;
     overflow: hidden;
+    background: #f5f5f5;
 }
 @media (max-width: 991px) {
     .blog-section {
@@ -6412,11 +6453,29 @@ a.ui-button:active,
 .room-title h2 {
     margin-top: 0;
     font-size: 35px;
-    color: #283a5e;
+    color: #000;
     padding-bottom: 20px;
     border-bottom: 1px solid #ebebeb;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
     font-weight: 700;
+    font-family: "Sora", sans-serif;
+}
+
+.fasilitas-list {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 100px;
+}
+
+.fasilitas-item {
+    padding: 6px 12px;
+    border: 1px solid #000000;
+    color: #000000;
+    border-radius: 6px;
+    background-color: #fff;
+    font-size: 16px;
+    display: inline-block;
 }
 
 .room-description p {
@@ -6471,6 +6530,104 @@ a.ui-button:active,
     font-weight: 600;
 }
 
+/* .pricing-area {
+    max-width: 700px;
+  } */
+
+  .ticket-card {
+	display: flex;
+	align-items: center;
+	border: 2px solid transparent;
+	border-radius: 10px;
+	padding: 12px;
+	margin-bottom: 20px;
+	background-color: #f5f5f5;
+}
+
+.ticket-card .img {
+    width: 120px;
+    height: 120px;
+    border-radius: 8px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-right: 20px;
+}
+
+.ticket-info {
+    flex-grow: 1;
+}
+
+.ticket-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #000000;
+}
+
+.ticket-desc {
+    font-size: 14px;
+    color: #000000;
+    margin-bottom: 10px;
+}
+
+.ticket-price-button {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.ticket-price-button .price-old {
+    color: #424740;
+    font-family: Sora;
+    font-size: 16px;
+    font-weight: 400;
+    text-transform: capitalize;
+    text-decoration: line-through;
+}
+
+.ticket-price {
+    font-size: 16px;
+    font-weight: bold;
+    color: #ff8000;
+    margin-bottom: 20px;
+}
+
+.buy-button {
+    background-color: #0d6efd;
+    color: white;
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.buy-button:hover {
+    background-color: #0262c9;
+    color: white;
+}
+
+.hidden-ride {
+    display: none; /* Sembunyikan item tambahan secara default */
+}
+
+.load-more {
+    display: block;
+    text-align: center;
+    background-color: #0d6efd;
+    color: white;
+    padding: 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 16px;
+    margin-top: 30px;
+    width: 200px;
+    cursor: pointer;
+}
+
+.load-more:hover {
+    background-color: #0262c9;
+    color: white;
+}
 .map-area {
     margin-top: 60px;
 }
@@ -9370,7 +9527,7 @@ input[type="checkbox"]:checked:disabled + label:before {
     }
 }
 
-.ticket-card {
+.ticket-card-checkout {
     background-color: #ffffff;
     border: 1px solid #e0e0e0;
     border-radius: 10px;

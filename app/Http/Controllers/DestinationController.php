@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ride;
 use App\Models\Destination;
 use Illuminate\Http\Request;
 
@@ -14,12 +15,19 @@ class DestinationController extends Controller
         return view('user.destinations.show', compact('destination'));
     }
 
-    public function checkout($slug)
+    public function checkout($slug, $type = 'destination')
     {
-        $destination = Destination::where('slug', $slug)->firstOrFail();
+        if ($type === 'destination') {
+            $item = Destination::where('slug', $slug)->firstOrFail();
+        } elseif ($type === 'ride') {
+            $item = Ride::where('slug', $slug)->firstOrFail();
+        } else {
+            abort(404);
+        }
 
         return view('user.destinations.checkout', [
-            'destination' => $destination
+            'item' => $item,
+            'type' => $type
         ]);
     }
 }

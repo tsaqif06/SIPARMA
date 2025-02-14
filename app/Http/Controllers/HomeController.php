@@ -70,7 +70,6 @@ class HomeController extends Controller
         ];
 
         $topRatedDestinations = Destination::withAvg('reviews', 'rating')
-
             ->orderBy('reviews_avg_rating', 'desc')
             ->limit(8)
             ->get();

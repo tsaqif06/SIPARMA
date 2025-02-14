@@ -14,6 +14,8 @@ class CheckoutController extends Controller
         // Validasi input
         $request->validate([
             'destination_id' => 'required|exists:tbl_destinations,id',
+            'item_id' => 'required',
+            'item_type' => 'required',
             'visit_date' => 'required|date|after_or_equal:today',
             'adult_count' => 'required|integer|min:0',
             'children_count' => 'required|integer|min:0',
@@ -32,7 +34,7 @@ class CheckoutController extends Controller
         // Simpan tiket transaksi
         TransactionTicket::create([
             'transaction_id' => $transaction->id,
-            'item_type' => 'destination',
+            'item_type' => $request->item_type,
             'item_id' => $request->destination_id,
             'adult_count' => $request->adult_count,
             'children_count' => $request->children_count,
