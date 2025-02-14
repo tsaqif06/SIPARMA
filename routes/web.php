@@ -22,18 +22,17 @@ use App\Http\Controllers\AdminFacilityController;
 use App\Http\Controllers\AdminBundleItemController;
 use App\Http\Controllers\AdminDestinationController;
 
+// user auth
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::name('home.')->group(function () {
-    Route::get('/', [HomeController::class, 'index'])->name('index');
-    Route::post('/recommendation/submit', [HomeController::class, 'submitRecommendation'])->name('recommendation.store');
-    Route::get('/wisata', [HomeController::class, 'wisata'])->name('wisata');
-   
-    Route::get('/tempat', [HomeController::class, 'tempat'])->name('tempat');
-});
+
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
+Route::post('/recommendation/submit', [HomeController::class, 'submitRecommendation'])->name('home.recommendation.store');
+Route::get('/destinations', [DestinationController::class, 'browse'])->name('destination.browse');
+Route::get('/places', [PlaceController::class, 'browse'])->name('place.browse');
 
 Route::get('/destinations/{slug}', [DestinationController::class, 'show'])->name('destination.show');
 

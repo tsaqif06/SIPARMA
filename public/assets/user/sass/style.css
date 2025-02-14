@@ -30,7 +30,7 @@ Version:        1.0.0
 	3.9 places-section
 	3.10 blog-section
 
-4. wpo-footer
+4. po-footer
 
 5. Home-style-2
    5.1 service-section-s2
@@ -387,7 +387,7 @@ a.ui-button:active,
 }
 .wpo-section-title h2 {
     color: #120d2b;
-    font-family: "Playfair Display", serif;
+    font-family: "Sora", Arial, serif;
     font-size: 45px;
     font-weight: 600;
     line-height: 60px;
@@ -859,7 +859,7 @@ a.ui-button:active,
     margin: 0 0 1.3em;
     position: relative;
     text-transform: capitalize;
-    font-family: "Playfair Display", serif;
+    font-family: "Sora", Arial, serif;
     padding-bottom: 20px;
     font-weight: 700;
 }
@@ -977,7 +977,7 @@ a.ui-button:active,
     margin-bottom: 1.2em;
 }
 .blog-sidebar .about-widget a {
-    font-family: "Playfair Display", serif;
+    font-family: "Sora", Arial, serif;
     font-size: 14px;
     font-size: 0.9333333333rem;
     color: #273958;
@@ -2731,7 +2731,7 @@ a.ui-button:active,
 }
 .hero-wraper .item h2 {
     color: #273958;
-    font-family: "Playfair Display", serif;
+    font-family: "Sora", Arial, serif;
     font-size: 60px;
     font-weight: 600;
     text-transform: uppercase;
@@ -2755,7 +2755,7 @@ a.ui-button:active,
 }
 .hero-wraper .item p {
     color: var(--Black-2, #273958);
-    font-family: "Sora", sans-serif;
+    font-family: "Sora", Arial, sans-serif;
     font-size: 16px;
     font-weight: 400;
     line-height: 34px;
@@ -3109,7 +3109,7 @@ a.ui-button:active,
 }
 .header-booking .title h3 {
     color: #273958;
-    font-family: "Playfair Display", serif;
+    font-family: "Sora", Arial, serif;
     font-size: 22px;
     font-weight: 700;
     text-transform: uppercase;
@@ -3343,7 +3343,7 @@ a.ui-button:active,
 .hero-slider .wpo-hero-title-top span {
     font-size: 22px;
     color: #e4e4e4;
-    font-family: "Playfair Display", serif;
+    font-family: "Sora", Arial, serif;
 }
 @media (max-width: 767px) {
     .hero-slider .wpo-hero-title-top span {
@@ -3549,7 +3549,7 @@ a.ui-button:active,
 }
 .wpo-site-footer .widget-title h3 {
     color: #273958;
-    font-family: "Playfair Display", serif;
+    font-family: "Sora", Arial, serif;
     font-size: 22px;
     font-weight: 700;
     text-transform: uppercase;
@@ -3890,7 +3890,7 @@ a.ui-button:active,
     }
 }
 .service-card .right h2 {
-    font-family: "Playfair Display", serif;
+    font-family: "Sora", Arial, serif;
     font-size: 20px;
     font-weight: 700;
     line-height: 33px;
@@ -4070,7 +4070,7 @@ a.ui-button:active,
 }
 .popular-slider .places-item .content h2 a {
     color: #120d2b;
-    font-family: "Playfair Display", serif;
+    font-family: "Sora", Arial, serif;
     font-size: 20px;
     font-weight: 700;
     text-transform: uppercase;
@@ -4480,7 +4480,7 @@ a.ui-button:active,
     color: #fff;
 }
 .featured-card .content h2 {
-    font-family: "Playfair Display", serif;
+    font-family: "Sora", Arial, serif;
     font-size: 17px;
     font-weight: 700;
     line-height: 33px;
@@ -4488,7 +4488,7 @@ a.ui-button:active,
     margin-top: 20px;
 }
 .featured-card .content h2 a {
-    color: #273958;
+    color: #000;
 }
 .featured-card .content span {
     color: #797c80;
@@ -4640,7 +4640,7 @@ a.ui-button:active,
 }
 .auth-card .content h2 {
     color: #273958;
-    font-family: "Playfair Display", serif;
+    font-family: "Sora", Arial, serif;
     font-size: 17px;
     font-weight: 700;
     text-transform: uppercase;
@@ -4708,7 +4708,7 @@ a.ui-button:active,
 }
 .testimonial-card .top-content .text h3 {
     color: #273958;
-    font-family: "Playfair Display", serif;
+    font-family: "Sora", Arial, serif;
     font-size: 22px;
     font-weight: 700;
     text-transform: uppercase;
@@ -4883,7 +4883,7 @@ a.ui-button:active,
 }
 .places-wraper .places-item .content h2 a {
     color: #120d2b;
-    font-family: "Playfair Display", serif;
+    font-family: "Sora", Arial, serif;
     font-size: 20px;
     font-weight: 700;
     text-transform: uppercase;
@@ -4994,7 +4994,7 @@ a.ui-button:active,
 }
 .blog-card .content .text h2 {
     margin: 27px 0 20px;
-    font-family: "Playfair Display", serif;
+    font-family: "Sora", Arial, serif;
     font-size: 20px;
     font-weight: 700;
     line-height: 35px;
@@ -5171,7 +5171,7 @@ a.ui-button:active,
 }
 .videos-section .content h3 {
     color: #fff;
-    font-family: Playfair Display;
+    font-family: Sora;
     font-size: 45px;
     font-weight: 600;
     line-height: 60px;
@@ -5387,7 +5387,7 @@ a.ui-button:active,
     .places-single-content-des
     h2 {
     font-size: 33px;
-    font-family: "Playfair Display", serif;
+    font-family: "Sora", Arial, serif;
     margin-bottom: 30px;
     font-weight: 700;
 }
@@ -5444,7 +5444,7 @@ a.ui-button:active,
 }
 .places-single .places-single-wrap .wpo-related-section h2 {
     font-size: 30px;
-    font-family: "Playfair Display", serif;
+    font-family: "Sora", Arial, serif;
     margin-bottom: 30px;
     font-weight: 700;
 }
@@ -5531,7 +5531,7 @@ a.ui-button:active,
 }
 .places-single .places-single-wrap .wpo-benefits-section h2 {
     font-size: 30px;
-    font-family: "Playfair Display", serif;
+    font-family: "Sora", Arial, serif;
     margin-bottom: 30px;
     font-weight: 700;
 }
@@ -5642,7 +5642,7 @@ a.ui-button:active,
 }
 .wpo-single-sidebar .widget h2 {
     font-size: 25px;
-    font-family: "Playfair Display", serif;
+    font-family: "Sora", Arial, serif;
     padding-bottom: 20px;
     position: relative;
     font-weight: 700;
@@ -7349,10 +7349,6 @@ input[type="checkbox"] + label {
     padding: 0.2em;
 }
 
-input[type="checkbox"] {
-    display: none;
-}
-
 input[type="checkbox"] + label:before {
     content: "✔";
     border: 1px solid #e5e5e5;
@@ -8304,7 +8300,7 @@ input[type="checkbox"]:checked:disabled + label:before {
     line-height: 1.2em;
     font-weight: 700;
     margin: -0.27em 0 0.7em;
-    font-family: "Playfair Display", serif;
+    font-family: "Sora", Arial, serif;
 }
 @media (max-width: 991px) {
     .wpo-blog-pg-section .post h3 {
@@ -8614,7 +8610,7 @@ input[type="checkbox"]:checked:disabled + label:before {
     font-size: 2.3333333333rem;
     margin: -0.22em 0 0.7em;
     line-height: 1.3em;
-    font-family: "Playfair Display", serif;
+    font-family: "Sora", Arial, serif;
 }
 @media (max-width: 991px) {
     .wpo-blog-single-section .post h2 {
@@ -8744,7 +8740,7 @@ input[type="checkbox"]:checked:disabled + label:before {
 }
 .wpo-blog-single-section .tag-share .tag > span,
 .wpo-blog-single-section .tag-share-s2 .tag > span {
-    font-family: "Playfair Display", serif;
+    font-family: "Sora", Arial, serif;
     color: #273958;
     font-weight: 600;
     display: inline-block;
@@ -8825,7 +8821,7 @@ input[type="checkbox"]:checked:disabled + label:before {
     margin-bottom: 20px;
 }
 .wpo-blog-single-section .author-box .author-name {
-    font-family: "Playfair Display", serif;
+    font-family: "Sora", Arial, serif;
     font-size: 24px;
     font-size: 1.6rem;
     font-weight: 600;
@@ -9032,7 +9028,7 @@ input[type="checkbox"]:checked:disabled + label:before {
     margin-bottom: 20px;
 }
 .wpo-blog-single-section .comments-area .comments-meta h4 {
-    font-family: "Playfair Display", serif;
+    font-family: "Sora", Arial, serif;
     font-size: 20px;
     font-size: 1.3333333333rem;
     color: #273958;
@@ -9055,7 +9051,7 @@ input[type="checkbox"]:checked:disabled + label:before {
     }
 }
 .wpo-blog-single-section .comments-area .comment-reply-link {
-    font-family: "Playfair Display", serif;
+    font-family: "Sora", Arial, serif;
     font-size: 13px;
     font-size: 0.8666666667rem;
     font-weight: 600;
@@ -9150,7 +9146,7 @@ input[type="checkbox"]:checked:disabled + label:before {
     }
 }
 .wpo-blog-single-section .comment-respond .form-submit input {
-    font-family: "Playfair Display", serif;
+    font-family: "Sora", Arial, serif;
     max-width: 180px;
     background-color: #1e2845;
     color: #fff;
@@ -9170,6 +9166,153 @@ input[type="checkbox"]:checked:disabled + label:before {
     .wpo-blog-single-left-sidebar-section .blog-sidebar {
         padding-right: 45px;
         padding-left: 0;
+    }
+}
+
+/* verifikasi-section */
+.verifikasi-section {
+    background: #f5f5f5;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.verifikasi-section .sidebar {
+    width: 250px;
+    height: 200px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.verifikasi-section .sidebar a {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+.verifikasi-section .sidebar a:hover {
+    background: #007bff;
+    color: #fff;
+}
+.verifikasi-section .container-form {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.verifikasi-section .container-form h3 {
+    font-family: Arial, Helvetica, sans-serif;
+}
+.verifikasi-section .container-form .preview-box {
+    width: 300px;
+    height: 300px;
+    margin-left: 50px;
+    background: #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+.sidebar-filter {
+    width: 250px;
+    height: 450px;
+    background: #fff;
+    padding: 20px;
+    margin-right: 22px;
+    margin-bottom: 22px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-filter h4 {
+    color: #000000;
+    font-family: "Sora", sans-serif;
+}
+
+.search-box {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.filter-section {
+    margin-bottom: 15px;
+}
+
+.filter-title {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+    color: #000000;
+    font-family: "Sora", sans-serif;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #000000;
+    font-family: "Sora", sans-serif;
+    cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"] {
+    -webkit-appearance: checkbox; /* Untuk Safari */
+    -moz-appearance: checkbox; /* Untuk Firefox */
+    appearance: checkbox; /* Untuk browser modern */
+    accent-color: #007bff;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"]:checked {
+    background-color: #007bff;
+}
+
+.price-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.dropdown {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.dropdown button {
+    margin-right: 25px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+@media (max-width: 767px) {
+    .sidebar-filter {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 15px;
+        height: auto;
+    }
+
+    .container-form {
+        width: 100%;
+    }
+
+    .gallery-container {
+        display: flex;
+        flex-direction: column;
     }
 }
 

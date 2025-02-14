@@ -212,7 +212,7 @@
                             <div class="featured-card">
                                 <div class="image">
                                     <div class="img"
-                                        style="background-image: url('{{ $destination->gallery[0]->image_url ?? 'https://picsum.photos/200.webp' }}');">
+                                        style="background-image: url('{{ $destination->gallery[0]->image_url ?? 'assets/images/default.png' }}');">
                                     </div>
                                     {{--  <img src="{{ $destination->gallery[0]->image_url ?? 'https://picsum.photos/200.webp' }}"
                                         alt="{{ $destination->name }}">  --}}
@@ -277,7 +277,7 @@
                                         </div>
                                         <div class="image">
                                             <div class="img"
-                                                style="background-image: url('{{ $destination->gallery[0]->image_url ?? 'https://picsum.photos/200.webp' }}');">
+                                                style="background-image: url('{{ $destination->gallery[0]->image_url ?? 'assets/images/default.png' }}');">
                                             </div>
                                             {{--  <img src="{{ $destination->gallery[0]->image_url ?? 'https://picsum.photos/200.webp' }}"
                                                 alt="{{ $destination->name }}">  --}}

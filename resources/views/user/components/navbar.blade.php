@@ -25,8 +25,8 @@
                                     height="30"></iconify-icon></button>
                             <ul class="nav navbar-nav mb-2 mb-lg-0">
                                 <li><a href="{{ route('home.index') }}">Beranda</a></li>
-                                <li><a href="{{ route('home.wisata') }}">Wisata</a></li>
-                                <li><a href="{{ route('home.tempat') }}">Tempat</a></li>
+                                <li><a href="{{ route('destination.browse') }}">Wisata</a></li>
+                                <li><a href="{{ route('place.browse') }}">Tempat</a></li>
                             </ul>
 
                         </div><!-- end of nav-collapse -->
