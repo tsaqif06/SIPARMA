@@ -132,9 +132,13 @@
                             <h2>Fasilitas</h2>
                         </div>
                         <div class="fasilitas-list">
-                            @foreach ($destination->facilities as $facility)
-                                <span class="fasilitas-item">{{ ucfirst($facility->name) }}</span>
-                            @endforeach
+                            @if ($destination->facilities->isEmpty())
+                                <p>Belum ada fasilitas yang tersedia.</p>
+                            @else
+                                @foreach ($destination->facilities as $facility)
+                                    <span class="fasilitas-item">{{ ucfirst($facility->name) }}</span>
+                                @endforeach
+                            @endif
                         </div>
                     </div>
                     <div class="pricing-area">
@@ -210,32 +214,36 @@
                             <h2>Ulasan</h2>
                         </div>
 
-                        @foreach ($reviews as $review)
-                            <div class="review-item">
-                                <div class="review-img">
-                                    <div class="img"
-                                        style="background-image: url('../{{ file_exists(public_path($review->user->profile_picture)) ? $review->user->profile_picture : 'assets/images/default-avatar.jpg' }}');">
+                        @if ($reviews->isEmpty())
+                            <p>Belum ada ulasan.</p>
+                        @else
+                            @foreach ($reviews as $review)
+                                <div class="review-item">
+                                    <div class="review-img">
+                                        <div class="img"
+                                            style="background-image: url('../{{ file_exists(public_path($review->user->profile_picture)) ? $review->user->profile_picture : 'assets/images/default-avatar.jpg' }}');">
+                                        </div>
+                                    </div>
+                                    <div class="review-text">
+                                        <div class="r-title">
+                                            <h2>{{ $review->user->name }}</h2>
+                                            <span class="ms-2">{{ $review->created_at }}</span>
+                                            <ul>
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    <li>
+                                                        <i class="ti-star {{ $i <= $review->rating ? 'filled' : '' }}"></i>
+                                                    </li>
+                                                @endfor
+                                            </ul>
+                                        </div>
+                                        <p>{{ $review->comment }}</p>
                                     </div>
                                 </div>
-                                <div class="review-text">
-                                    <div class="r-title">
-                                        <h2>{{ $review->user->name }}</h2>
-                                        <span class="ms-2">{{ $review->created_at }}</span>
-                                        <ul>
-                                            @for ($i = 1; $i <= 5; $i++)
-                                                <li>
-                                                    <i class="ti-star {{ $i <= $review->rating ? 'filled' : '' }}"></i>
-                                                </li>
-                                            @endfor
-                                        </ul>
-                                    </div>
-                                    <p>{{ $review->comment }}</p>
-                                </div>
+                            @endforeach
+                            <div class="pagination mt-4">
+                                {{ $reviews->links() }}
                             </div>
-                        @endforeach
-                        <div class="pagination mt-4">
-                            {{ $reviews->links() }}
-                        </div>
+                        @endif
                     </div>
 
                     @php
