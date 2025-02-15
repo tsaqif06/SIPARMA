@@ -1,6 +1,7 @@
 @extends('user.layouts.app')
 @php
     $withoutNavbar = true;
+    $withoutFooter = true;
     $script = '<script>
         $(".reveal6").click(function() {
             let pwdInput = $(".pwd6");
