@@ -231,7 +231,7 @@
                                                 <span class="date">Harga</span>
                                             </li>
                                             <li>
-                                                <span>{{ $destination->reviews_count ?? '0' }}</span>
+                                                <span>{{ number_format($destination->reviews->count() ?? '0', 0, ',', '.') }}</span>
                                                 <span class="date">Ulasan</span>
                                             </li>
                                             <li>
@@ -279,8 +279,6 @@
                                             <div class="img"
                                                 style="background-image: url('{{ $destination->gallery[0]->image_url ?? 'assets/images/default.png' }}');">
                                             </div>
-                                            {{--  <img src="{{ $destination->gallery[0]->image_url ?? 'https://picsum.photos/200.webp' }}"
-                                                alt="{{ $destination->name }}">  --}}
                                         </div>
                                         <div class="content">
                                             <div class="rating">
@@ -319,7 +317,8 @@
                 </div>
                 <div class="offset-xl-2 col-xl-6 col-12">
                     <div class="container-form">
-                        <form action="{{ route('home.recommendation.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('home.recommendation.store') }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                                 <div class="col-md-6 mt-4">

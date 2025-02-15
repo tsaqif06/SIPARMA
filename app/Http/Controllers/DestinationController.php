@@ -27,32 +27,33 @@ class DestinationController extends Controller
             });
 
         if ($request->has('jenis_wisata')) {
-            $query->whereIn('jenis_wisata', $request->jenis_wisata);
+            $query->whereIn('type', $request->jenis_wisata);
         }
 
-        if ($request->has('harga_min')) {
-            $query->where('harga', '>=', $request->harga_min);
+        if ($request->has('harga_min') && $request->harga_min !== null) {
+            $query->where('price', '>=', $request->harga_min);
         }
-        if ($request->has('harga_max')) {
-            $query->where('harga', '<=', $request->harga_max);
+
+        if ($request->has('harga_max') && $request->harga_max !== null) {
+            $query->where('price', '<=', $request->harga_max);
         }
 
         if ($request->has('search')) {
-            $query->where('nama', 'like', '%' . $request->search . '%');
+            $query->where('name', 'like', '%' . $request->search . '%');
         }
 
         if ($request->has('sort')) {
             switch ($request->sort) {
                 case 'populer':
-                    $query->orderBy('jumlah_review', 'desc');
+                    $query->orderBy('reviews_avg_rating', 'desc');
                     break;
                 case 'harga_tertinggi':
-                    $query->orderBy('harga', 'desc');
+                    $query->orderBy('price', 'desc');
                     break;
                 case 'harga_terendah':
-                    $query->orderBy('harga', 'asc');
+                    $query->orderBy('price', 'asc');
                     break;
-                case 'ulasan_tertinggi':
+                case 'rating_tertinggi':
                     $query->orderBy('reviews_avg_rating', 'desc');
                     break;
                 default:
