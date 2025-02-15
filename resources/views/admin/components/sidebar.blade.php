@@ -105,6 +105,27 @@
                     </a>
                 </li>
 
+                <li class="sidebar-menu-group-title">Keuangan</li>
+                <li>
+                    <a href="{{ route('admin.transactions.index') }}">
+                        <iconify-icon icon="uil:transaction" class="menu-icon"></iconify-icon>
+                        <span>Transaksi</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.balance.index') }}">
+                        <iconify-icon icon="material-symbols:account-balance-wallet-outline"
+                            class="menu-icon"></iconify-icon>
+                        <span>Saldo Keuangan</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.withdrawal.index') }}">
+                        <iconify-icon icon="hugeicons:reverse-withdrawal-01" class="menu-icon"></iconify-icon>
+                        <span>Pencairan Saldo</span>
+                    </a>
+                </li>
+
                 <li class="sidebar-menu-group-title">Lainnya</li>
                 <li>
                     <a href="{{ route('admin.reviews.index') }}">

@@ -18,17 +18,10 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="mb-20">
-                                    <label class="form-label fw-semibold text-primary-light text-sm mb-8">ID Saldo</label>
-                                    <input type="text" class="form-control radius-8" value="{{ $balance->id }}"
-                                        readonly>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="mb-20">
-                                    <label class="form-label fw-semibold text-primary-light text-sm mb-8">ID
+                                    <label class="form-label fw-semibold text-primary-light text-sm mb-8">Nama
                                         Destinasi</label>
                                     <input type="text" class="form-control radius-8"
-                                        value="{{ $balance->destination_id }}" readonly>
+                                        value="{{ $balance->destination->name }}" readonly>
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -42,56 +35,9 @@
                             <div class="col-sm-6">
                                 <div class="mb-20">
                                     <label class="form-label fw-semibold text-primary-light text-sm mb-8">Total
-                                        Profit</label>
+                                        Profit Keseluruhan</label>
                                     <input type="text" class="form-control radius-8"
                                         value="Rp {{ number_format($balance->total_profit, 0, ',', '.') }}" readonly>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="mb-20">
-                                    <label class="form-label fw-semibold text-primary-light text-sm mb-8">Dibuat
-                                        Pada</label>
-                                    <input type="text" class="form-control radius-8" value="{{ $balance->created_at }}"
-                                        readonly>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="mb-20">
-                                    <label class="form-label fw-semibold text-primary-light text-sm mb-8">Diperbarui
-                                        Pada</label>
-                                    <input type="text" class="form-control radius-8" value="{{ $balance->updated_at }}"
-                                        readonly>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Informasi Destinasi (Opsional) -->
-                        <h4 class="mt-40">Informasi Destinasi</h4>
-                        <div class="row">
-                            <div class="col-md-12 mb-20">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="mb-20">
-                                                    <label
-                                                        class="form-label fw-semibold text-primary-light text-sm mb-8">Nama
-                                                        Destinasi</label>
-                                                    <input type="text" class="form-control radius-8"
-                                                        value="{{ $balance->destination->name }}" readonly>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="mb-20">
-                                                    <label
-                                                        class="form-label fw-semibold text-primary-light text-sm mb-8">Lokasi
-                                                        Destinasi</label>
-                                                    <input type="text" class="form-control radius-8"
-                                                        value="{{ $balance->destination->location }}" readonly>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>

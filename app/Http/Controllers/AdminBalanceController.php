@@ -25,13 +25,6 @@ class AdminBalanceController extends Controller
      */
     public function index()
     {
-        if (Auth::user()->role !== 'superadmin') {
-            if (Auth::user()->role === 'admin_wisata') {
-                return redirect()->route('admin.destinations.show', auth()->user()->adminDestinations[0]->destination_id)->with('error', 'Akses ditolak!');
-            }
-            return redirect()->route('admin.places.show', auth()->user()->adminPlaces[0]->place_id)->with('error', 'Akses ditolak!');
-        }
-
         if (Auth::user()->role === 'superadmin') {
             $balances = Balance::all();
         }

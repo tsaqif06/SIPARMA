@@ -108,9 +108,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('balance/{id}', [AdminBalanceController::class, 'show'])->name('balance.show');
 
         Route::get('withdrawal/approval', [AdminWithdrawalController::class, 'approval'])->name('withdrawal.approval');
-        Route::get('withdrawals/{withdrawal}/approve-form', [AdminWithdrawalController::class, 'approveForm'])->name('withdrawal.approveForm');
+        Route::get('withdrawal/{withdrawal}/approve-form', [AdminWithdrawalController::class, 'approveForm'])->name('withdrawal.approveForm');
         Route::post('withdrawal/{withdrawal}/update-status', [AdminWithdrawalController::class, 'updateStatus'])->name('withdrawal.updateStatus');
-
+        Route::get('withdrawal', [AdminWithdrawalController::class, 'index'])->name('withdrawal.index');
+        Route::get('withdrawal/request', [AdminWithdrawalController::class, 'create'])->name('withdrawal.create');
+        Route::post('withdrawal/request', [AdminWithdrawalController::class, 'store'])->name('withdrawal.store');
+        Route::get('withdrawal/{withdrawal}/edit', [AdminWithdrawalController::class, 'edit'])->name('withdrawal.edit');
+        Route::put('withdrawal/{withdrawal}', [AdminWithdrawalController::class, 'update'])->name('withdrawal.update');
+        Route::delete('withdrawal/{withdrawal}', [AdminWithdrawalController::class, 'destroy'])->name('withdrawal.destroy');
+        
         // Admin Wisata
         Route::resource('promo', AdminPromoController::class);
         Route::resource('rides', AdminRideController::class);
