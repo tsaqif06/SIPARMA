@@ -177,7 +177,12 @@ class AdminPlaceController extends Controller
 
         $place->update($validated);
 
-        return redirect()->route('admin.places.index')->with('success', 'Tempat telah diupdate.');
+        if (auth()->user()->role === 'superadmin') {
+            return redirect()->route('admin.places.index')->with('success', 'Tempat telah diupdate.');
+        } else {
+            return redirect()->route('admin.places.show', $place->id)
+                ->with('success', 'Tempat telah diupdate.');
+        }
     }
 
     /**
