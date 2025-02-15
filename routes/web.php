@@ -21,6 +21,8 @@ use App\Http\Controllers\AdminGalleryController;
 use App\Http\Controllers\AdminFacilityController;
 use App\Http\Controllers\AdminBundleItemController;
 use App\Http\Controllers\AdminDestinationController;
+use App\Http\Controllers\AdminTransactionController;
+use App\Http\Controllers\AdminBalanceController;
 
 // user auth
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -60,7 +62,6 @@ Route::middleware(['auth', 'is_user'])->group(function () {
     Route::get('/invoice/download/{order_id}', [PaymentController::class, 'downloadInvoice'])->name('payment.invoice.download');
 });
 
-
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginFormAdmin'])->name('login');
     Route::post('/login', [AuthController::class, 'loginAdmin'])->name('login.post');
@@ -76,7 +77,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('places/approval', [AdminPlaceController::class, 'approval'])->name('places.approval');
         Route::post('places/{adminplace}/update-status', [AdminPlaceController::class, 'updateStatus'])->name('places.updateStatus');
-
         Route::resource('places', AdminPlaceController::class);
 
         Route::prefix('gallery')->group(function () {
@@ -100,9 +100,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('reviews', [AdminReviewController::class, 'index'])->name('reviews.index');
         Route::get('reviews/{review}', [AdminReviewController::class, 'show'])->name('reviews.show');
 
-        Route::resource('promo', AdminPromoController::class);
+        Route::get('transactions', [AdminTransactionController::class, 'index'])->name('transactions.index');
+        Route::get('transactions/{code}', [AdminTransactionController::class, 'show'])->name('transactions.show');
+
+        Route::get('balance', [AdminBalanceController::class, 'index'])->name('balance.index');
+        Route::get('balance/{id}', [AdminBalanceController::class, 'show'])->name('balance.show');
 
         // Admin Wisata
+        Route::resource('promo', AdminPromoController::class);
         Route::resource('rides', AdminRideController::class);
         Route::prefix('bundle')->group(function () {
             Route::get('', [AdminBundleController::class, 'index'])->name('bundle.index');

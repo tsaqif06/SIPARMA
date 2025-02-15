@@ -41,10 +41,10 @@
                         <h1 class="fw-bold">{{ $place->name }}</h1>
                     </div>
                     <div class="col-md-4 text-end">
-                        @php $bg = $place->operational_status == 'open' ? 'success' : 'danger'; @endphp
+                        @php $bg = $place->status == 'Buka' ? 'success' : 'danger'; @endphp
                         <span
                             class="bg-{{ $bg }}-focus text-{{ $bg }}-main px-24 py-4 rounded-pill fw-medium text-sm">
-                            {{ ucfirst($place->operational_status) }}
+                            {{ ucfirst($place->status) }}
                         </span>
                     </div>
                 </div>
@@ -72,7 +72,6 @@
                         <ul class="list-unstyled">
                             <li><strong>Tipe:</strong> {{ ucfirst($place->type) }}</li>
                             <li><strong>Jam Operasional:</strong> {{ $place->open_time }} - {{ $place->close_time }}</li>
-                            <li><strong>Harga Tiket:</strong> Rp {{ number_format($place->price, 0, ',', '.') }}</li>
                             <li><strong>Destinasi Terdekat:</strong>
                                 {{ $place->destination ? $place->destination->name : '-' }}
                             </li>

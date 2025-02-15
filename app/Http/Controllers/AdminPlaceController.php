@@ -165,6 +165,10 @@ class AdminPlaceController extends Controller
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'destination_id' => 'required|exists:tbl_destinations,id',
+            'open_time' => 'nullable',
+            'close_time' => 'nullable',
+            'operational_status' => 'nullable|in:open,closed',
+            'description' => 'nullable|string|max:1000',
         ]);
 
         $validated['slug'] = Str::slug($validated['name']);

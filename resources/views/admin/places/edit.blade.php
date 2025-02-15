@@ -185,162 +185,74 @@
                                         </div>
                                     </div>
 
-                                    {{--  <!-- Jam Buka -->
-                                    <div class="col-sm-6">
-                                        <div class="mb-20">
-                                            <label for="open_time"
-                                                class="form-label fw-semibold text-primary-light text-sm mb-8">Jam Buka</label>
-                                            <input type="time"
-                                                class="form-control radius-8 @error('open_time') is-invalid @enderror"
-                                                id="open_time" name="open_time" value="{{ old('open_time', $place->open_time) }}">
-                                            @error('open_time')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
+                                    @if (auth()->user()->role === 'admin_tempat')
+                                        <!-- Jam Buka -->
+                                        <div class="col-sm-6">
+                                            <div class="mb-20">
+                                                <label for="open_time"
+                                                    class="form-label fw-semibold text-primary-light text-sm mb-8">Jam
+                                                    Buka</label>
+                                                <input type="time"
+                                                    class="form-control radius-8 @error('open_time') is-invalid @enderror"
+                                                    id="open_time" name="open_time"
+                                                    value="{{ old('open_time', $place->open_time) }}">
+                                                @error('open_time')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <!-- Jam Tutup -->
-                                    <div class="col-sm-6">
-                                        <div class="mb-20">
-                                            <label for="close_time"
-                                                class="form-label fw-semibold text-primary-light text-sm mb-8">Jam
-                                                Tutup</label>
-                                            <input type="time"
-                                                class="form-control radius-8 @error('close_time') is-invalid @enderror"
-                                                id="close_time" name="close_time" value="{{ old('close_time', $place->close_time) }}">
-                                            @error('close_time')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
+                                        <!-- Jam Tutup -->
+                                        <div class="col-sm-6">
+                                            <div class="mb-20">
+                                                <label for="close_time"
+                                                    class="form-label fw-semibold text-primary-light text-sm mb-8">Jam
+                                                    Tutup</label>
+                                                <input type="time"
+                                                    class="form-control radius-8 @error('close_time') is-invalid @enderror"
+                                                    id="close_time" name="close_time"
+                                                    value="{{ old('close_time', $place->close_time) }}">
+                                                @error('close_time')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <!-- Harga Tiket -->
-                                    <div class="col-sm-6">
-                                        <div class="mb-20">
-                                            <label for="price"
-                                                class="form-label fw-semibold text-primary-light text-sm mb-8">Harga
-                                                Tiket</label>
-                                            <input type="number" step="0.01"
-                                                class="form-control radius-8 @error('price') is-invalid @enderror"
-                                                id="price" name="price" placeholder="Masukkan Harga Tiket"
-                                                value="{{ old('price', $place->price) }}">
-                                            @error('price')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
+                                        <!-- Operational Status -->
+                                        <div class="col-sm-6">
+                                            <div class="mb-20">
+                                                <label for="operational_status"
+                                                    class="form-label fw-semibold text-primary-light text-sm mb-8">Status
+                                                    Operasional</label>
+                                                <select
+                                                    class="form-control radius-8 @error('operational_status') is-invalid @enderror"
+                                                    id="operational_status" name="operational_status">
+                                                    <option value="open"
+                                                        {{ old('operational_status', $destination->operational_status) == 'open' ? 'selected' : '' }}>
+                                                        Buka</option>
+                                                    <option value="closed"
+                                                        {{ old('operational_status', $destination->operational_status) == 'closed' ? 'selected' : '' }}>
+                                                        Tutup</option>
+                                                </select>
+                                                @error('operational_status')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <!-- Harga Tiket Akhir Pekan -->
-                                    <div class="col-sm-6">
-                                        <div class="mb-20">
-                                            <label for="weekend_price"
-                                                class="form-label fw-semibold text-primary-light text-sm mb-8">Harga Tiket
-                                                Akhir Pekan</label>
-                                            <input type="number" step="0.01"
-                                                class="form-control radius-8 @error('weekend_price') is-invalid @enderror"
-                                                id="weekend_price" name="weekend_price"
-                                                placeholder="Masukkan Harga Tiket Akhir Pekan"
-                                                value="{{ old('weekend_price', $place->weekend_price) }}">
-                                            @error('weekend_price')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
+                                        <!-- Deskripsi -->
+                                        <div class="col-sm-12">
+                                            <div class="mb-20">
+                                                <label for="description"
+                                                    class="form-label fw-semibold text-primary-light text-sm mb-8">Deskripsi</label>
+                                                <textarea class="form-control radius-8 @error('description') is-invalid @enderror" id="description"
+                                                    name="description" rows="4" placeholder="Masukkan Deskripsi Destinasi">{{ old('description', $place->description) }}</textarea>
+                                                @error('description')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    <!-- Harga Tiket Anak-anak -->
-                                    <div class="col-sm-6">
-                                        <div class="mb-20">
-                                            <label for="children_price"
-                                                class="form-label fw-semibold text-primary-light text-sm mb-8">Harga Tiket
-                                                Anak-anak</label>
-                                            <input type="number" step="0.01"
-                                                class="form-control radius-8 @error('children_price') is-invalid @enderror"
-                                                id="children_price" name="children_price"
-                                                placeholder="Masukkan Harga Tiket Anak-anak"
-                                                value="{{ old('children_price', $place->children_price) }}">
-                                            @error('children_price')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <!-- Nomor Rekening -->
-                                    <div class="col-sm-6">
-                                        <div class="mb-20">
-                                            <label for="account_number"
-                                                class="form-label fw-semibold text-primary-light text-sm mb-8">Nomor
-                                                Rekening</label>
-                                            <input type="text"
-                                                class="form-control radius-8 @error('account_number') is-invalid @enderror"
-                                                id="account_number" name="account_number"
-                                                placeholder="Masukkan Nomor Rekening" value="{{ old('account_number', $place->account_number) }}"
-                                                >
-                                            @error('account_number')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <!-- Nama Bank -->
-                                    <div class="col-sm-6">
-                                        <div class="mb-20">
-                                            <label for="bank_name"
-                                                class="form-label fw-semibold text-primary-light text-sm mb-8">Nama
-                                                Bank</label>
-                                            <input type="text"
-                                                class="form-control radius-8 @error('bank_name', $place->bank_name) is-invalid @enderror"
-                                                id="bank_name" name="bank_name" placeholder="Masukkan Nama Bank"
-                                                value="{{ old('bank_name') }}">
-                                            @error('bank_name')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <!-- Nama Pemilik Rekening -->
-                                    <div class="col-sm-6">
-                                        <div class="mb-20">
-                                            <label for="account_name"
-                                                class="form-label fw-semibold text-primary-light text-sm mb-8">Nama Pemilik
-                                                Rekening</label>
-                                            <input type="text"
-                                                class="form-control radius-8 @error('account_name', $place->account_name) is-invalid @enderror"
-                                                id="account_name" name="account_name"
-                                                placeholder="Masukkan Nama Pemilik Rekening"
-                                                value="{{ old('account_name') }}">
-                                            @error('account_name')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <!-- Deskripsi -->
-                                    <div class="col-sm-12">
-                                        <div class="mb-20">
-                                            <label for="description"
-                                                class="form-label fw-semibold text-primary-light text-sm mb-8">Deskripsi</label>
-                                            <textarea class="form-control radius-8 @error('description') is-invalid @enderror" id="description"
-                                                name="description" rows="4" placeholder="Masukkan Deskripsi Destinasi">{{ old('description', $place->description) }}</textarea>
-                                            @error('description')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <!-- Upload Gambar Galeri -->
-                                    <div class="col-sm-12">
-                                        <div class="mb-20">
-                                            <label for="gallery_images"
-                                                class="form-label fw-semibold text-primary-light text-sm mb-8">Gambar
-                                                Galeri</label>
-                                            <input type="file"
-                                                class="form-control radius-8 @error('gallery_images') is-invalid @enderror"
-                                                id="gallery_images" name="gallery_images[]" multiple accept="image/*">
-                                            @error('gallery_images')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>  --}}
+                                    @endif
                                 </div>
 
                                 <!-- Tombol Submit -->
