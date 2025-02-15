@@ -23,6 +23,7 @@ use App\Http\Controllers\AdminBundleItemController;
 use App\Http\Controllers\AdminDestinationController;
 use App\Http\Controllers\AdminTransactionController;
 use App\Http\Controllers\AdminBalanceController;
+use App\Http\Controllers\AdminWithdrawalController;
 
 // user auth
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -105,6 +106,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('balance', [AdminBalanceController::class, 'index'])->name('balance.index');
         Route::get('balance/{id}', [AdminBalanceController::class, 'show'])->name('balance.show');
+
+        Route::get('withdrawal/approval', [AdminWithdrawalController::class, 'approval'])->name('withdrawal.approval');
+        Route::get('withdrawals/{withdrawal}/approve-form', [AdminWithdrawalController::class, 'approveForm'])->name('withdrawal.approveForm');
+        Route::post('withdrawal/{withdrawal}/update-status', [AdminWithdrawalController::class, 'updateStatus'])->name('withdrawal.updateStatus');
 
         // Admin Wisata
         Route::resource('promo', AdminPromoController::class);

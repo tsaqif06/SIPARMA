@@ -1,15 +1,16 @@
 @extends('admin.layout.layout')
 
 @php
-    $title = 'Data Request Admin Tempat';
-    $subTitle = 'Request Admin Tempat';
+    $title = 'Data Request Pencairan Saldo';
+    $subTitle = 'Request Pencairan Saldo';
+
     $script = '<script>
-        $(".approve-btn, .decline-btn").click(function() {
+        $(".decline-btn").click(function() {
             let id = $(this).data("id");
             let status = $(this).data("status");
-            let actionText = status === "approved" ? "menyetujui" : "menolak";
-            let confirmButton = status === "approved" ? "Ya, Setujui!" : "Ya, Tolak!";
-            let iconType = status === "approved" ? "success" : "error";
+            let actionText = status === "completed" ? "menyetujui" : "menolak";
+            let confirmButton = status === "completed" ? "Ya, Setujui!" : "Ya, Tolak!";
+            let iconType = status === "completed" ? "success" : "error";
 
             Swal.fire({
                 title: "Apakah Anda yakin?",
@@ -43,16 +44,16 @@
                                     </label>
                                 </div>
                             </th>
-                            <th scope="col">Nama User</th>
-                            <th scope="col">Nama Tempat</th>
-                            <th scope="col">Detail Tempat</th>
-                            <th scope="col">Tanda Kepemilikan</th>
+                            <th>Nama Wisata</th>
+                            <th>Jumlah</th>
+                            <th>Tanggal Pengajuan</th>
+                            <th>Status</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @php $i = 1; @endphp
-                        @foreach ($adminplaces as $data)
+                        @foreach ($withdrawals as $data)
                             <tr>
                                 <td>
                                     <div class="form-check style-check d-flex align-items-center">
@@ -61,8 +62,12 @@
                                         </label>
                                     </div>
                                 </td>
-                                <td>{{ $data->user->name }}</td>
-                                <td>{{ $data->place->name }}</td>
+                                <td>{{ $data->balance->destination->name }}</td>
+                                <td>Rp {{ number_format($withdrawal->amount, 0, ',', '.') }}
+                                <td>{{ $withdrawal->created_at->format('d-m-Y') }}</td>
+                                <td><span
+                                        class="bg-{{ $data->status == 'completed' ? 'success' : ($data->status == 'pending' ? 'warning' : 'danger') }}-focus text-{{ $data->status == 'completed' ? 'success' : ($data->status == 'pending' ? 'warning' : 'danger') }}-main px-24 py-4 rounded-pill fw-medium text-sm">{{ ucfirst($data->status) }}</span>
+                                </td>
                                 <td>
                                     <a href="{{ route('admin.places.show', $data->place->id) }}" target="_blank"
                                         class="w-32-px h-32-px bg-primary-light text-primary-600 rounded-circle d-inline-flex align-items-center justify-content-center">
@@ -70,30 +75,15 @@
                                     </a>
                                 </td>
 
-                                <td>
-                                    @if ($data->ownership_docs)
-                                        {{--  <button class="btn btn-info btn-sm view-pdf"
-                                            data-pdf="{{ asset($data->ownership_docs) }}">
-                                            Pratinjau PDF
-                                        </button>  --}}
-                                        <a href="{{ asset($data->ownership_docs) }}">
-                                            <button class="btn btn-info btn-sm view-pdf">
-                                                Pratinjau PDF
-                                            </button>
-                                        </a>
-                                    @else
-                                        <span>Tidak ada dokumen</span>
-                                    @endif
-                                </td>
+
 
                                 <td>
                                     <!-- Tombol Approve -->
-                                    <button type="button"
-                                        class="approve-btn w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center"
-                                        data-id="{{ $data->id }}" data-status="approved">
+                                    <a href="{{ route('withdrawals.approveForm', $data->id) }}"
+                                        class="approve-btn w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center">
                                         <iconify-icon icon="lucide:check-circle" class="text-success" width="24"
                                             height="24"></iconify-icon>
-                                    </button>
+                                    </a>
 
                                     <!-- Tombol Decline -->
                                     <button type="button"
@@ -105,7 +95,7 @@
 
                                     <!-- Form untuk submit status -->
                                     <form id="statusForm{{ $data->id }}"
-                                        action="{{ route('admin.places.updateStatus', $data->id) }}" method="POST"
+                                        action="{{ route('admin.withdrawal.updateStatus', $data->id) }}" method="POST"
                                         style="display: none;">
                                         @csrf
                                         <input type="hidden" name="status" id="statusInput{{ $data->id }}">

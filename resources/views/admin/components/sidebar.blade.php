@@ -37,9 +37,6 @@
                         <span>Users</span>
                     </a>
                 </li>
-            @endif
-
-            @if ($user && $user->role === 'superadmin')
                 <li>
                     <a href="{{ route('admin.destinations.index') }}">
                         <iconify-icon icon="material-symbols:map-outline-rounded" class="menu-icon"></iconify-icon>
@@ -65,6 +62,20 @@
                         <iconify-icon icon="material-symbols:account-balance-wallet-outline"
                             class="menu-icon"></iconify-icon>
                         <span>Saldo Keuangan</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-menu-group-title">Persetujuan</li>
+                <li>
+                    <a href="{{ route('admin.places.approval') }}">
+                        <iconify-icon icon="material-symbols:ad-group-outline-rounded" class="menu-icon"></iconify-icon>
+                        <span>Admin Tempat</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.withdrawal.approval') }}">
+                        <iconify-icon icon="hugeicons:reverse-withdrawal-01" class="menu-icon"></iconify-icon>
+                        <span>Pencairan Saldo</span>
                     </a>
                 </li>
             @elseif ($user && $user->role === 'admin_wisata')
@@ -139,16 +150,6 @@
                     <a href="{{ route('admin.reviews.index') }}">
                         <iconify-icon icon="material-symbols:kid-star-outline" class="menu-icon"></iconify-icon>
                         <span>Review</span>
-                    </a>
-                </li>
-            @endif
-
-            @if ($user && $user->role === 'superadmin')
-                <li class="sidebar-menu-group-title">Persetujuan</li>
-                <li>
-                    <a href="{{ route('admin.places.approval') }}">
-                        <iconify-icon icon="material-symbols:ad-group-outline-rounded" class="menu-icon"></iconify-icon>
-                        <span>Admin Tempat</span>
                     </a>
                 </li>
             @endif
