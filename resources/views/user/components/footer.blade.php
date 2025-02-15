@@ -103,22 +103,23 @@
                             <h4>Kategori</h4>
                         </div>
                         <ul>
-                            <li><a href="places-single.html">Wisata</a></li>
-                            <li><a href="places-single.html">Wahana</a></li>
-                            <li><a href="places-single.html">Tempat</a></li>
+                            <li><a href="{{ route('destination.browse') }}">Wisata</a></li>
+                            <li><a href="{{ route('place.browse') }}">Tempat</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="col col-xl-2 col-lg-4 col-md-6 col-sm-12 col-12 footer-info">
                     <div class="widget link-widget">
                         <div class="widget-title">
-                            <h4>Tempat Populer</h4>
+                            <h4>Wisata Populer</h4>
                         </div>
                         <ul>
-                            <li><a href="places-single.html">Gunung Bromo</a></li>
-                            <li><a href="places-single.html">Hawaii Waterpark</a></li>
-                            <li><a href="places-single.html">Pantai Goa China</a></li>
-                            <li><a href="places-single.html">Sengkaling</a></li>
+                            @foreach ($popularDestinations as $destination)
+                                <li>
+                                    <a
+                                        href="{{ route('destination.show', $destination->slug) }}">{{ $destination->name }}</a>
+                                </li>
+                            @endforeach
                         </ul>
                     </div>
                 </div>

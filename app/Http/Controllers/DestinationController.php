@@ -6,6 +6,7 @@ use App\Models\Ride;
 use App\Models\Destination;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class DestinationController extends Controller
 {
@@ -81,5 +82,20 @@ class DestinationController extends Controller
             'item' => $item,
             'type' => $type
         ]);
+    }
+
+    public function getPopularDestinations()
+    {
+        return Cache::remember('popular_destinations', 3600, function () {
+            return Destination::withAvg('reviews', 'rating')
+                ->whereExists(function ($query) {
+                    $query->select(DB::raw(1))
+                        ->from('tbl_admin_destinations')
+                        ->whereColumn('tbl_admin_destinations.destination_id', 'tbl_destinations.id');
+                })
+                ->orderBy('reviews_avg_rating', 'desc')
+                ->take(4)
+                ->get();
+        });
     }
 }
