@@ -20,6 +20,13 @@ class AdminPlaceController extends Controller
      */
     public function index()
     {
+        if (Auth::user()->role !== 'superadmin') {
+            if (Auth::user()->role === 'admin_tempat') {
+                return redirect()->route('admin.places.show', auth()->user()->adminPlaces[0]->place_id)->with('error', 'Akses ditolak!');
+            }
+            return redirect()->route('admin.destinations.show', auth()->user()->adminDestinations[0]->destination_id)->with('error', 'Akses ditolak!');
+        }
+
         $places = Place::whereHas('admin', function ($query) {
             $query->where('approval_status', 'approved'); // Contoh: Filter berdasarkan status
         })->get();
@@ -80,17 +87,25 @@ class AdminPlaceController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:100',
             'type' => 'required|string|max:100',
-            'location' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
             'destination_id' => 'required|exists:tbl_destinations,id',
         ]);
 
         $validated['slug'] = Str::slug($validated['name']);
 
+        $location = [
+            'address' => $validated['address'],
+            'latitude' => $validated['latitude'],
+            'longitude' => $validated['longitude'],
+        ];
+
         Place::create([
             'name' => $validated['name'],
             'slug' => $validated['slug'],
             'type' => $validated['type'],
-            'location' => $validated['location'],
+            'location' => json_encode($location),
             'destination_id' => $validated['destination_id'],
         ]);
 
@@ -114,7 +129,10 @@ class AdminPlaceController extends Controller
             return view('admin.places.show', compact('place'));
         }
 
-        return redirect()->route('admin.places.show', $user->adminPlaces[0]->place_id)->with('error', 'Akses ditolak!');
+        if (Auth::user()->role === 'admin_place') {
+            return redirect()->route('admin.places.show', $user->adminPlaces[0]->place_id)->with('error', 'Akses ditolak!');
+        }
+        return redirect()->route('admin.destinations.show', $user->adminDestinations[0]->destination_id)->with('error', 'Akses ditolak!');
     }
 
     /**
@@ -129,7 +147,10 @@ class AdminPlaceController extends Controller
             return view('admin.places.edit', compact('place', 'destinations'));
         }
 
-        return redirect()->route('admin.places.edit', $user->adminPlaces[0]->place_id)->with('error', 'Akses ditolak!');
+        if (Auth::user()->role === 'admin_place') {
+            return redirect()->route('admin.places.edit', $user->adminPlaces[0]->place_id)->with('error', 'Akses ditolak!');
+        }
+        return redirect()->route('admin.destinations.edit', $user->adminDestinations[0]->destination_id)->with('error', 'Akses ditolak!');
     }
 
     /**
@@ -140,11 +161,19 @@ class AdminPlaceController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:100',
             'type' => 'required|string|max:100',
-            'location' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
             'destination_id' => 'required|exists:tbl_destinations,id',
         ]);
 
         $validated['slug'] = Str::slug($validated['name']);
+
+        $validated['location'] = json_encode([
+            'address' => $validated['address'],
+            'latitude' => $validated['latitude'],
+            'longitude' => $validated['longitude'],
+        ]);
 
         $place->update($validated);
 

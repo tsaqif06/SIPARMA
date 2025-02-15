@@ -1,9 +1,7 @@
 @extends('admin.layout.layout')
 
 @php
-    $title =
-        'Data Bundle ' . auth()->user()->adminDestinations[0]->destination->name ??
-        auth()->user()->adminPlaces[0]->place->name;
+    $title = 'Data Bundle ' . auth()->user()->adminDestinations[0]->destination->name;
     $subTitle = 'Bundle';
     $script = '<script>
         $(".remove-item-btn").on("click", function() {
@@ -57,7 +55,13 @@
                                 <td>{{ $i }}</td>
                                 <td>{{ $data->name }}</td>
                                 <td>{{ $data->description }}</td>
-                                <td>Rp {{ number_format($data->total_price, 0, ',', '.') }}</td>
+                                @php
+                                    $discountedPrice =
+                                        $data->discount > 0
+                                            ? $data->total_price - $data->total_price * ($data->discount / 100)
+                                            : $data->total_price;
+                                @endphp
+                                <td>Rp {{ number_format($discountedPrice, 0, ',', '.') }}</td>
                                 <td>{{ $data->discount ? number_format($data->discount, 0, ',', '.') : '-' }}%</td>
                                 <td>
                                     {{--  @dd(

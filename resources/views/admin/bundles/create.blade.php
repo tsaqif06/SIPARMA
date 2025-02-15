@@ -1,7 +1,7 @@
 @extends('admin.layout.layout')
 
 @php
-    $title = 'Tambah Item Bundle ' . $bundle->name;
+    $title = 'Tambah Item Bundle';
     $subTitle = 'Item Bundle - Tambah';
 @endphp
 
@@ -26,25 +26,6 @@
                                     @error('name')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
-                                </div>
-                            </div>
-
-                            <!-- Harga Total -->
-                            <div class="col-sm-6">
-                                <div class="mb-20">
-                                    <label for="total_price" class="form-label fw-semibold text-primary-light text-sm mb-8">
-                                        Harga Total<span class="text-danger-600">*</span>
-                                    </label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-base"> Rp </span>
-                                        <input type="number" step="0.01"
-                                            class="form-control radius-8 @error('total_price') is-invalid @enderror"
-                                            id="total_price" name="total_price" placeholder="Masukkan Harga Total"
-                                            value="{{ old('total_price') }}" required>
-                                        @error('total_price')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
                                 </div>
                             </div>
 

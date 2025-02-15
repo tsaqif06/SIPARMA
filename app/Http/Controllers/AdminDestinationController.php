@@ -21,7 +21,10 @@ class AdminDestinationController extends Controller
     public function index()
     {
         if (Auth::user()->role !== 'superadmin') {
-            return redirect()->route('admin.destinations.show', auth()->user()->adminDestinations[0]->destination_id)->with('error', 'Akses ditolak!');
+            if (Auth::user()->role === 'admin_wisata') {
+                return redirect()->route('admin.destinations.show', auth()->user()->adminDestinations[0]->destination_id)->with('error', 'Akses ditolak!');
+            }
+            return redirect()->route('admin.places.show', auth()->user()->adminPlaces[0]->place_id)->with('error', 'Akses ditolak!');
         }
 
         $destinations = Destination::all();
@@ -47,7 +50,10 @@ class AdminDestinationController extends Controller
     public function create()
     {
         if (Auth::user()->role !== 'superadmin') {
-            return redirect()->route('admin.destinations.show', auth()->user()->adminDestinations[0]->destination_id)->with('error', 'Akses ditolak!');
+            if (Auth::user()->role === 'admin_wisata') {
+                return redirect()->route('admin.destinations.show', auth()->user()->adminDestinations[0]->destination_id)->with('error', 'Akses ditolak!');
+            }
+            return redirect()->route('admin.places.show', auth()->user()->adminPlaces[0]->place_id)->with('error', 'Akses ditolak!');
         }
 
         return view('admin.destinations.create');
@@ -61,16 +67,24 @@ class AdminDestinationController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:100',
             'type' => 'required|string|in:alam,wahana',
-            'location' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
         ]);
 
         $validated['slug'] = Str::slug($validated['name']);
+
+        $location = [
+            'address' => $validated['address'],
+            'latitude' => $validated['latitude'],
+            'longitude' => $validated['longitude'],
+        ];
 
         Destination::create([
             'name' => $validated['name'],
             'slug' => $validated['slug'],
             'type' => $validated['type'],
-            'location' => $validated['location'],
+            'location' => json_encode($location),
         ]);
 
         return redirect()->route('admin.destinations.index')->with('success', 'Wisata telah ditambahkan.');
@@ -103,7 +117,10 @@ class AdminDestinationController extends Controller
             return view('admin.destinations.show', compact('destination', 'promo'));
         }
 
-        return redirect()->route('admin.destinations.show', $user->adminDestinations[0]->destination_id)->with('error', 'Akses ditolak!');
+        if (Auth::user()->role === 'admin_wisata') {
+            return redirect()->route('admin.destinations.show', $user->adminDestinations[0]->destination_id)->with('error', 'Akses ditolak!');
+        }
+        return redirect()->route('admin.places.show', $user->adminPlaces[0]->place_id)->with('error', 'Akses ditolak!');
     }
 
     /**
@@ -117,7 +134,10 @@ class AdminDestinationController extends Controller
             return view('admin.destinations.edit', compact('destination'));
         }
 
-        return redirect()->route('admin.destinations.edit', $user->adminDestinations[0]->destination_id)->with('error', 'Akses ditolak!');
+        if (Auth::user()->role === 'admin_wisata') {
+            return redirect()->route('admin.destinations.edit', $user->adminDestinations[0]->destination_id)->with('error', 'Akses ditolak!');
+        }
+        return redirect()->route('admin.places.edit', $user->adminPlaces[0]->place_id)->with('error', 'Akses ditolak!');
     }
 
     /**
@@ -128,7 +148,9 @@ class AdminDestinationController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:100',
             'type' => 'required|string|in:alam,wahana',
-            'location' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
             'open_time' => 'nullable',
             'close_time' => 'nullable',
             'price' => 'nullable|numeric|min:0',
@@ -142,6 +164,12 @@ class AdminDestinationController extends Controller
         ]);
 
         $validated['slug'] = Str::slug($validated['name']);
+
+        $validated['location'] = json_encode([
+            'address' => $validated['address'],
+            'latitude' => $validated['latitude'],
+            'longitude' => $validated['longitude'],
+        ]);
 
         $destination->update($validated);
 

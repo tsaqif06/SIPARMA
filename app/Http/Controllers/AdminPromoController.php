@@ -9,6 +9,17 @@ use Illuminate\Support\Str;
 
 class AdminPromoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+        $this->middleware(function ($request, $next) {
+            if (auth()->user()->role !== 'admin_wisata') {
+                return redirect()->route('admin.dashboard')->with('error', 'Akses ditolak!');
+            }
+            return $next($request);
+        });
+    }
     /**
      * Menampilkan daftar Promo berdasarkan destinasi.
      */
