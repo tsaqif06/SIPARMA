@@ -8,6 +8,7 @@ use App\Models\AdminPlace;
 use App\Models\Destination;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -19,7 +20,10 @@ class AdminPlaceController extends Controller
      */
     public function index()
     {
-        $places = Place::all();
+        $places = Place::whereHas('admin', function ($query) {
+            $query->where('approval_status', 'approved'); // Contoh: Filter berdasarkan status
+        })->get();
+
         foreach ($places as $place) {
             $current_time = Carbon::now('Asia/Jakarta')->format('H:i:s');
 

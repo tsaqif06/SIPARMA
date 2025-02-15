@@ -33,6 +33,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/lib/audioplayer.css') }}">
     <!-- sweetalert2 -->
     <link rel="stylesheet" href="{{ asset('assets/css/lib/sweetalert2.min.css') }}">
+    <!-- leaflet -->
+    <link rel="stylesheet" href="{{ asset('assets/css/lib/leaflet.css') }}">
 
     <!-- main css -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">

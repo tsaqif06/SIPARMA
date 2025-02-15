@@ -21,6 +21,9 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
+                if (in_array($guard, ['superadmin', 'admin_wisata', 'admin_tempat'])) {
+                    return redirect('/admin');
+                }
                 return redirect(RouteServiceProvider::HOME);
             }
         }

@@ -9,10 +9,10 @@
                 <button type="button" class="sidebar-mobile-toggle">
                     <iconify-icon icon="heroicons:bars-3-solid" class="icon"></iconify-icon>
                 </button>
-                <form class="navbar-search">
+                {{--  <form class="navbar-search">
                     <input type="text" name="search" placeholder="Search">
                     <iconify-icon icon="ion:search-outline" class="icon"></iconify-icon>
-                </form>
+                </form>  --}}
             </div>
         </div>
         <div class="col-auto">
@@ -20,7 +20,7 @@
                 <button type="button" data-theme-toggle
                     class="w-40-px h-40-px bg-neutral-200 rounded-circle d-flex justify-content-center align-items-center"></button>
 
-                <div class="dropdown">
+                {{--  <div class="dropdown">
                     <button
                         class="has-indicator w-40-px h-40-px bg-neutral-200 rounded-circle d-flex justify-content-center align-items-center"
                         type="button" data-bs-toggle="dropdown">
@@ -132,13 +132,13 @@
                         </div>
 
                     </div>
-                </div><!-- Notification dropdown end -->
+                </div><!-- Notification dropdown end -->  --}}
 
                 <div class="dropdown">
                     <button class="d-flex justify-content-center align-items-center rounded-circle" type="button"
                         data-bs-toggle="dropdown">
-                        <img src="{{ asset(auth()->user()->profile_picture) }}" alt="image"
-                            class="w-40-px h-40-px object-fit-cover rounded-circle">
+                        <img src="{{ asset(auth()->user()->profile_picture ?? 'assets/images/default-avatar.jpg') }}"
+                            alt="image" class="w-40-px h-40-px object-fit-cover rounded-circle">
                     </button>
                     <div class="dropdown-menu to-top dropdown-menu-sm">
                         <div

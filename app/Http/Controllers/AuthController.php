@@ -11,22 +11,38 @@ class AuthController extends Controller
 {
     public function showLoginForm()
     {
+        if (Auth::check()) {
+            if (in_array(Auth::user()->role, ['superadmin', 'admin_wisata', 'admin_tempat'])) {
+                return redirect('/admin');
+            }
+            return redirect('/');
+        }
+
         return view('user.auth.login');
     }
 
     public function showLoginFormAdmin()
     {
+        if (Auth::check()) {
+            if (in_array(Auth::user()->role, ['superadmin', 'admin_wisata', 'admin_tempat'])) {
+                return redirect('/admin');
+            }
+            return redirect('/');
+        }
+
         return view('admin.auth.login');
     }
 
     public function showRegisterForm()
     {
-        return view('user.auth.register');
-    }
+        if (Auth::check()) {
+            if (in_array(Auth::user()->role, ['superadmin', 'admin_wisata', 'admin_tempat'])) {
+                return redirect('/admin');
+            }
+            return redirect('/');
+        }
 
-    public function showRegisterFormAdmin()
-    {
-        return view('admin.auth.register');
+        return view('user.auth.register');
     }
 
     public function login(Request $request)

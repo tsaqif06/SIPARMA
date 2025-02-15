@@ -29,14 +29,15 @@ Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('regi
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/', [HomeController::class, 'index'])->name('home.index');
-Route::post('/recommendation/submit', [HomeController::class, 'submitRecommendation'])->name('home.recommendation.store');
-Route::get('/destinations', [DestinationController::class, 'browse'])->name('destination.browse');
-Route::get('/places', [PlaceController::class, 'browse'])->name('place.browse');
+Route::middleware('no_admin')->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home.index');
+    Route::post('/recommendation/submit', [HomeController::class, 'submitRecommendation'])->name('home.recommendation.store');
+    Route::get('/destinations', [DestinationController::class, 'browse'])->name('destination.browse');
+    Route::get('/places', [PlaceController::class, 'browse'])->name('place.browse');
+    Route::get('/destinations/{slug}', [DestinationController::class, 'show'])->name('destination.show');
+    Route::get('/places/{slug}', [PlaceController::class, 'show'])->name('place.show');
+});
 
-Route::get('/destinations/{slug}', [DestinationController::class, 'show'])->name('destination.show');
-
-Route::get('/places/{slug}', [PlaceController::class, 'show'])->name('place.show');
 
 Route::middleware(['auth', 'is_user'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
@@ -57,10 +58,6 @@ Route::middleware(['auth', 'is_user'])->group(function () {
     Route::post('/payment/callback', [PaymentController::class, 'callback'])->name('payment.callback');
     Route::get('/invoice/{order_id}', [PaymentController::class, 'invoice'])->name('payment.invoice');
     Route::get('/invoice/download/{order_id}', [PaymentController::class, 'downloadInvoice'])->name('payment.invoice.download');
-
-    Route::get('/complain', function () {
-        return view('complain.index');
-    });
 });
 
 

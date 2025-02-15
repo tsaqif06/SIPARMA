@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class IsUser
+class RestrictAdminAccess
 {
     /**
      * Handle an incoming request.
@@ -19,10 +19,7 @@ class IsUser
         if (Auth::check() && in_array(Auth::user()->role, ['superadmin', 'admin_wisata', 'admin_tempat'])) {
             return redirect('/admin');
         }
-        if (Auth::check() && Auth::user()->role === 'user') {
-            return $next($request);
-        }
 
-        return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
+        return $next($request);
     }
 }

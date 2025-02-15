@@ -65,7 +65,7 @@
                                     </div>
                                 </td>
                                 <td>{{ $data->name }}</td>
-                                <td>{{ $data->location }}</td>
+                                <td>{{ json_decode($data->location)->address }}</td>
                                 <td>{{ ucfirst($data->type) }}</td>
                                 <td>
                                     @php $bg = $data->status == 'Buka' ? 'success' : 'danger'; @endphp

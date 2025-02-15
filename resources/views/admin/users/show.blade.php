@@ -2,6 +2,31 @@
 @php
     $title = 'Lihat Profil';
     $subTitle = 'Profil - Lihat';
+    $script = '<script>
+        // Fix marker default yang rusak
+        const defaultIcon = L.icon({
+            iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+            shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+
+        const lat = parseFloat(document.getElementById("latitude").value) || -7.9666;
+        const lng = parseFloat(document.getElementById("longitude").value) || 112.6326;
+
+        const map = L.map("map").setView([lat, lng], 14);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: "© OpenStreetMap contributors"
+        }).addTo(map);
+
+        // Tambahkan marker tanpa draggable
+        L.marker([lat, lng], {
+            icon: defaultIcon
+        }).addTo(map);
+    </script>';
 @endphp
 
 @section('content')
@@ -75,27 +100,75 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
                                         @if ($user->role === 'Admin Wisata' && $managedItems->destination)
+                                            @php
+                                                $location = json_decode($managedItems->destination->location);
+                                            @endphp
                                             <!-- Menampilkan destinasi wisata -->
                                             <h6 class="mb-0 fw-semibold text-primary-light">
                                                 {{ $managedItems->destination->name }}</h6>
                                             <small class="text-secondary-light">
-                                                Lokasi: {{ $managedItems->destination->location }}
+                                                Lokasi: {{ $location->address }}
                                             </small>
+                                            <div class="preview-box text-center w-100">
+                                                <div id="map" class="border"
+                                                    style="height: 300px; width: 500px; border-radius: 7px;">
+                                                </div>
+                                                <input type="hidden" name="latitude" id="latitude"
+                                                    value="{{ $location->latitude }}">
+                                                <input type="hidden" name="longitude" id="longitude"
+                                                    value="{{ $location->longitude }}">
+                                            </div>
                                             <p class="text-secondary-light mb-0">Tipe:
                                                 {{ ucfirst($managedItems->destination->type) }}</p>
-                                            <p class="text-secondary-light">Status:
-                                                {{ ucfirst($managedItems->destination->operational_status) }}</p>
+                                            @php
+                                                $current_time = Carbon\Carbon::now('Asia/Jakarta')->format('H:i:s');
+
+                                                if ($managedItems->destination->operational_status === 'holiday') {
+                                                    $managedItems->destination->status = 'Libur';
+                                                } else {
+                                                    $managedItems->destination->status =
+                                                        $current_time >= $managedItems->destination->open_time &&
+                                                        $current_time <= $managedItems->destination->close_time
+                                                            ? 'Buka'
+                                                            : 'Tutup';
+                                                }
+                                            @endphp
+                                            <p class="text-secondary-light">Status Operasional:
+                                                {{ ucfirst($managedItems->destination->status) }}</p>
                                         @elseif ($user->role === 'Admin Tempat' && $managedItems->place)
+                                            @php
+                                                $location = json_decode($managedItems->place->location);
+                                            @endphp
                                             <!-- Menampilkan tempat -->
                                             <h6 class="mb-0 fw-semibold text-primary-light">
                                                 {{ $managedItems->place->name }}</h6>
                                             <small class="text-secondary-light">
-                                                Lokasi: {{ $managedItems->place->location }}
+                                                Lokasi: {{ $location->address }}
                                             </small>
+                                            <div class="preview-box text-center w-100">
+                                                <div id="map" class="border"
+                                                    style="height: 300px; width: 500px; border-radius: 7px;">
+                                                </div>
+                                                <input type="hidden" name="latitude" id="latitude"
+                                                    value="{{ $location->latitude }}">
+                                                <input type="hidden" name="longitude" id="longitude"
+                                                    value="{{ $location->longitude }}">
+                                            </div>
                                             <p class="text-secondary-light mb-0">Tipe:
                                                 {{ ucfirst($managedItems->place->type) }}</p>
-                                            <p class="text-secondary-light">Status:
-                                                {{ ucfirst($managedItems->place->operational_status) }}</p>
+                                            <p class="text-secondary-light mb-0">Tipe:
+                                                {{ ucfirst($managedItems->place->type) }}</p>
+                                            @php
+                                                $current_time = Carbon\Carbon::now('Asia/Jakarta')->format('H:i:s');
+
+                                                $managedItems->place->status =
+                                                    $current_time >= $managedItems->place->open_time &&
+                                                    $current_time <= $managedItems->place->close_time
+                                                        ? 'Buka'
+                                                        : 'Tutup';
+                                            @endphp
+                                            <p class="text-secondary-light">Status Operasional:
+                                                {{ ucfirst($managedItems->place->status) }}</p>
                                         @else
                                             <p>Data tidak tersedia.</p>
                                         @endif

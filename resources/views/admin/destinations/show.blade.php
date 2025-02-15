@@ -3,6 +3,31 @@
 @php
     $title = 'Lihat Wisata';
     $subTitle = 'Wisata - Lihat';
+    $script = '<script>
+        // Fix marker default yang rusak
+        const defaultIcon = L.icon({
+            iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+            shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+
+        const lat = parseFloat(document.getElementById("latitude").value) || -7.9666;
+        const lng = parseFloat(document.getElementById("longitude").value) || 112.6326;
+
+        const map = L.map("map").setView([lat, lng], 14);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: "© OpenStreetMap contributors"
+        }).addTo(map);
+
+        // Tambahkan marker tanpa draggable
+        L.marker([lat, lng], {
+            icon: defaultIcon
+        }).addTo(map);
+    </script>';
 @endphp
 
 @section('content')
@@ -13,7 +38,6 @@
                 <div class="row align-items-center">
                     <div class="col-md-8">
                         <h1 class="fw-bold">{{ $destination->name }}</h1>
-                        <p>{{ $destination->location }}</p>
                     </div>
                     <div class="col-md-4 text-end">
                         @php $bg = $destination->status == 'Buka' ? 'success' : 'danger'; @endphp
@@ -56,6 +80,16 @@
                     <div class="col-md-6">
                         <h3 class="fw-bold">Deskripsi</h3>
                         <p>{{ $destination->description }}</p>
+                        @php
+                            $location = json_decode($destination->location);
+                        @endphp
+                        <p>{{ $location->address }}</p>
+                        <div class="preview-box text-center w-100">
+                            <div id="map" class="border" style="height: 300px; width: 100%; border-radius: 7px;">
+                            </div>
+                            <input type="hidden" name="latitude" id="latitude" value="{{ $location->latitude }}">
+                            <input type="hidden" name="longitude" id="longitude" value="{{ $location->longitude }}">
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <h3 class="fw-bold">Detail</h3>
