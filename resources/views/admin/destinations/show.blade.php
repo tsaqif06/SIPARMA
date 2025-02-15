@@ -99,7 +99,7 @@
                                 {{ $destination->close_time }}</li>
 
                             @php
-                                $diskonPersen = $promo->discount;
+                                $diskonPersen = $promo->discount ?? null;
                                 $hargaDiskon = $destination->price - ($destination->price * $diskonPersen) / 100;
                                 $hargaAkhirPekanDiskon =
                                     $destination->weekend_price - ($destination->weekend_price * $diskonPersen) / 100;
