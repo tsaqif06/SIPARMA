@@ -35,8 +35,8 @@
                                     <tr>
                                         <td><img src="{{ asset(
                                             $transaction->tickets[0]->item_type === 'bundle'
-                                                ? $transaction->tickets[0]->item->items[0]->item->gallery[0]->image_url
-                                                : $transaction->tickets[0]->item->gallery[0]->image_url,
+                                                ? $transaction->tickets[0]->item->items[0]->item->gallery[0]->image_url ?? 'assets/images/default.png'
+                                                : $transaction->tickets[0]->item->gallery[0]->image_url ?? 'assets/images/default.png',
                                         ) }}"
                                                 class="rounded" alt="Gambar Tiket" style="width: 60px;"></td>
                                         <td>Tiket {{ $transaction->tickets[0]->item->name }}</td>

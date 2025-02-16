@@ -163,7 +163,8 @@
                                 @enderror
                                 <form id="checkout-form" action="{{ route('checkout.store') }}" method="POST">
                                     @csrf
-                                    <input type="hidden" name="destination_id" value="{{ $item->destination->id }}">
+                                    <input type="hidden" name="destination_id"
+                                        value="{{ $item->destination->id ?? $item->id }}">
                                     <input type="hidden" name="item_id" value="{{ $item->id }}">
                                     <input type="hidden" name="item_type" value="{{ $type }}">
                                     <input type="hidden" id="visit-date-input" name="visit_date">

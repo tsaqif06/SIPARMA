@@ -35,7 +35,7 @@ class CheckoutController extends Controller
         TransactionTicket::create([
             'transaction_id' => $transaction->id,
             'item_type' => $request->item_type,
-            'item_id' => $request->destination_id,
+            'item_id' => $request->item_id,
             'adult_count' => $request->adult_count,
             'children_count' => $request->children_count,
             'subtotal' => $request->total_price,

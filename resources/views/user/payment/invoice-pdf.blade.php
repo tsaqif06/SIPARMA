@@ -151,8 +151,12 @@
             </tbody>
             <tfoot>
                 <tr>
+                    <td colspan="3" class="text-end"><strong>Biaya Admin:</strong></td>
+                    <td><strong>IDR {{ number_format(config('app.admin_fee'), 0, ',', '.') }}</strong></td>
+                </tr>
+                <tr>
                     <td colspan="3" class="text-end"><strong>Total:</strong></td>
-                    <td><strong>IDR {{ number_format($transaction->amount, 0, ',', '.') }}</strong></td>
+                    <td><strong>IDR {{ number_format($transaction->total_pay, 0, ',', '.') }}</strong></td>
                 </tr>
             </tfoot>
         </table>

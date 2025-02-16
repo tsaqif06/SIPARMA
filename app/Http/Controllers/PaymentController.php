@@ -7,12 +7,21 @@ use Midtrans\Config;
 use App\Models\Balance;
 use App\Models\BalanceLog;
 use App\Models\Transaction;
+use App\Models\AdminBalance;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\AdminBalanceLog;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
+    private $adminFee;
+
+    public function __construct()
+    {
+        $this->adminFee = config('app.admin_fee');
+    }
+
     public function show($transaction_code)
     {
         $transaction = Transaction::with('destination')
@@ -26,6 +35,8 @@ class PaymentController extends Controller
             'ride' => 'Tiket Wahana',
             'bundle' => 'Tiket Paket'
         ];
+
+        $transaction->total_pay = $transaction->amount + $this->adminFee;
 
         foreach ($transaction->tickets as $ticket) {
             $ticket->translated_type = $type_translation[$ticket->item_type] ?? 'Tiket';
@@ -46,7 +57,7 @@ class PaymentController extends Controller
         $params = [
             'transaction_details' => [
                 'order_id' => $transaction->transaction_code,
-                'gross_amount' => $transaction->amount,
+                'gross_amount' => $transaction->amount + $this->adminFee,
             ],
             'customer_details' => [
                 'first_name' => $request->name,
@@ -66,11 +77,20 @@ class PaymentController extends Controller
 
         if ($transaction) {
             if ($request->transaction_status == 'settlement' || $request->transaction_status == 'capture') {
+                $adminFee = $this->adminFee;
+
                 Balance::updateOrCreate(
                     ['destination_id' => $transaction->destination_id],
                     [
                         'balance' => DB::raw('balance + ' . $transaction->amount),
                         'total_profit' => DB::raw('total_profit + ' . $transaction->amount)
+                    ]
+                );
+
+                AdminBalance::updateOrCreate(
+                    ['id' => 1],
+                    [
+                        'balance' => DB::raw('balance + ' . $adminFee),
                     ]
                 );
 
@@ -82,6 +102,16 @@ class PaymentController extends Controller
                     ],
                     [
                         'profit' => DB::raw('profit + ' . $transaction->amount),
+                    ]
+                );
+
+                AdminBalanceLog::updateOrCreate(
+                    [
+                        'period_year' => now()->year,
+                        'period_month' => now()->month,
+                    ],
+                    [
+                        'profit' => $adminFee,
                     ]
                 );
 
@@ -106,6 +136,8 @@ class PaymentController extends Controller
             ->where('user_id', auth()->user()->id)
             ->firstOrFail();
 
+        $transaction->total_pay = $transaction->amount + $this->adminFee;
+
         return view('user.payment.invoice', compact('transaction'));
     }
 
@@ -115,6 +147,8 @@ class PaymentController extends Controller
             ->where('status', 'paid')
             ->where('user_id', auth()->user()->id)
             ->firstOrFail();
+
+        $transaction->total_pay = $transaction->amount + $this->adminFee;
 
         $pdf = Pdf::loadView('user.payment.invoice-pdf', compact('transaction'))->setPaper('A4', 'portrait');
         return $pdf->download("Invoice_{$transaction->transaction_code}.pdf");

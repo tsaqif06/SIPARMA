@@ -81,11 +81,17 @@
                                 </p>
                             </div>
                         @endif
+                        <div class="d-flex justify-content-between">
+                            <p>Biaya Admin</p>
+                            <p>IDR
+                                {{ number_format(config('app.admin_fee'), 0, ',', '.') }}
+                            </p>
+                        </div>
                     @endforeach
                     <hr>
                     <div class="d-flex justify-content-between">
                         <p><strong>Total</strong></p>
-                        <p><strong>IDR {{ number_format($transaction->amount, 0, ',', '.') }}</strong></p>
+                        <p><strong>IDR {{ number_format($transaction->total_pay, 0, ',', '.') }}</strong></p>
                     </div>
                     <button class="btn btn-custom w-100 mt-3" id="pay-button">Bayar</button>
                 </div>

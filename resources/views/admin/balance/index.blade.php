@@ -2,7 +2,7 @@
 
 @php
     $title = 'Data Saldo';
-    $subTitle = 'Transaksi';
+    $subTitle = 'Saldo';
 @endphp
 
 @section('content')
