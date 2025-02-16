@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Balance;
+use App\Models\BalanceLog;
 use App\Models\AdminDestination;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,8 +28,7 @@ class AdminBalanceController extends Controller
     {
         if (Auth::user()->role === 'superadmin') {
             $balances = Balance::all();
-        }
-        else if (Auth::user()->role === 'admin_wisata') {
+        } else if (Auth::user()->role === 'admin_wisata') {
             $destinationId = auth()->user()->adminDestinations[0]->destination_id;
             $balances = Balance::where('destination_id', $destinationId)->get();
         }
@@ -54,5 +54,19 @@ class AdminBalanceController extends Controller
                 return redirect()->route('admin.dashboard')->with('error', 'Akses ditolak!');
             }
         }
+    }
+
+    public function monthlyRecapIndex()
+    {
+        if (Auth::user()->role === 'superadmin') {
+            return redirect()->route('admin.dashboard');
+        }
+        $destinationId = auth()->user()->adminDestinations[0]->destination_id;
+        $balanceLogs = BalanceLog::where('destination_id', $destinationId)
+            ->orderBy('period_year', 'desc')
+            ->orderBy('period_month', 'desc')
+            ->get();
+
+        return view('admin.balance.recap', compact('balanceLogs'));
     }
 }

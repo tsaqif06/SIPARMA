@@ -105,6 +105,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('transactions/{code}', [AdminTransactionController::class, 'show'])->name('transactions.show');
 
         Route::get('balance', [AdminBalanceController::class, 'index'])->name('balance.index');
+        Route::get('balance/recap', [AdminBalanceController::class, 'monthlyRecapIndex'])->name('balance.recap');
         Route::get('balance/{id}', [AdminBalanceController::class, 'show'])->name('balance.show');
 
         Route::get('withdrawal/approval', [AdminWithdrawalController::class, 'approval'])->name('withdrawal.approval');
@@ -116,7 +117,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('withdrawal/{withdrawal}/edit', [AdminWithdrawalController::class, 'edit'])->name('withdrawal.edit');
         Route::put('withdrawal/{withdrawal}', [AdminWithdrawalController::class, 'update'])->name('withdrawal.update');
         Route::delete('withdrawal/{withdrawal}', [AdminWithdrawalController::class, 'destroy'])->name('withdrawal.destroy');
-        
+
         // Admin Wisata
         Route::resource('promo', AdminPromoController::class);
         Route::resource('rides', AdminRideController::class);

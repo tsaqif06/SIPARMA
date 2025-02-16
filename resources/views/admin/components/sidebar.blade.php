@@ -120,6 +120,13 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('admin.balance.recap') }}">
+                        <iconify-icon icon="material-symbols:account-balance-wallet-outline"
+                            class="menu-icon"></iconify-icon>
+                        <span>Rekap Saldo</span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('admin.withdrawal.index') }}">
                         <iconify-icon icon="hugeicons:reverse-withdrawal-01" class="menu-icon"></iconify-icon>
                         <span>Pencairan Saldo</span>

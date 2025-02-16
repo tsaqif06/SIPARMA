@@ -1,7 +1,7 @@
 @extends('admin.layout.layout')
 
 @php
-    $title = 'Data Transaksi';
+    $title = 'Data Saldo';
     $subTitle = 'Transaksi';
 @endphp
 
