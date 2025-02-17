@@ -119,6 +119,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('withdrawal/{withdrawal}/approve-form', [AdminWithdrawalController::class, 'approveForm'])->name('withdrawal.approveForm');
         Route::post('withdrawal/{withdrawal}/update-status', [AdminWithdrawalController::class, 'updateStatus'])->name('withdrawal.updateStatus');
         Route::get('withdrawal', [AdminWithdrawalController::class, 'index'])->name('withdrawal.index');
+        Route::get('withdrawal/history', [AdminWithdrawalController::class, 'history'])->name('withdrawal.history');
         Route::get('withdrawal/request', [AdminWithdrawalController::class, 'create'])->name('withdrawal.create');
         Route::post('withdrawal/request', [AdminWithdrawalController::class, 'store'])->name('withdrawal.store');
         Route::get('withdrawal/{withdrawal}/edit', [AdminWithdrawalController::class, 'edit'])->name('withdrawal.edit');

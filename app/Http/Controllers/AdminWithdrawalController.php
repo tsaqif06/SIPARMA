@@ -31,9 +31,21 @@ class AdminWithdrawalController extends Controller
 
         $withdrawals = Withdrawal::whereHas('balance', function ($query) use ($destinationId) {
             $query->where('destination_id', $destinationId);
-        })->get();
+        })->orderBy('created_at', 'desc')->get();
+
 
         return view('admin.withdrawal.index', compact('withdrawals'));
+    }
+
+    public function history()
+    {
+        if (auth()->user()->role !== 'superadmin') {
+            return redirect()->route('admin.dashboard');
+        }
+
+        $withdrawals = Withdrawal::where('status', 'completed')->orderBy('created_at', 'desc')->get();
+
+        return view('admin.withdrawal.history', compact('withdrawals'));
     }
     /**
      * Menampilkan daftar withdrawal yang perlu disetujui.
@@ -153,6 +165,7 @@ class AdminWithdrawalController extends Controller
             $balance->save();
         }
 
+        $withdrawal->updated_at = now();
         $withdrawal->save();
 
         return redirect()->route('admin.withdrawal.approval')->with('success', 'Status withdrawal berhasil diperbarui.');

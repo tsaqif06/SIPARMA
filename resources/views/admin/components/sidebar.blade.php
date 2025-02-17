@@ -21,6 +21,7 @@
             {{--  <img src="{{ asset('assets/images/logo-icon.png') }}" alt="site logo" class="logo-icon">  --}}
         </a>
     </div>
+
     <div class="sidebar-menu-area">
         <ul class="sidebar-menu" id="sidebar-menu">
             <li>
@@ -57,13 +58,6 @@
                         <span>Transaksi</span>
                     </a>
                 </li>
-                {{--  <li>
-                    <a href="{{ route('admin.balance.index') }}">
-                        <iconify-icon icon="material-symbols:account-balance-wallet-outline"
-                            class="menu-icon"></iconify-icon>
-                        <span>Saldo Keuangan</span>
-                    </a>
-                </li>  --}}
 
                 <li class="dropdown">
                     <a href="javascript:void(0)">
@@ -96,11 +90,23 @@
                         <span>Admin Tempat</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{ route('admin.withdrawal.approval') }}">
+                <li class="dropdown">
+                    <a href="javascript:void(0)">
                         <iconify-icon icon="hugeicons:reverse-withdrawal-01" class="menu-icon"></iconify-icon>
                         <span>Pencairan Saldo</span>
                     </a>
+                    <ul class="sidebar-submenu">
+                        <li>
+                            <a href="{{ route('admin.withdrawal.approval') }}">
+                                <i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Permintaan
+                                Pencairan</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.withdrawal.history') }}"><i
+                                    class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Riwayat
+                                Pencairan</a>
+                        </li>
+                    </ul>
                 </li>
 
                 <li class="sidebar-menu-group-title">Lainnya</li>
@@ -144,20 +150,26 @@
                         <span>Transaksi</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{ route('admin.balance.index') }}">
+
+                <li class="dropdown">
+                    <a href="javascript:void(0)">
                         <iconify-icon icon="material-symbols:account-balance-wallet-outline"
                             class="menu-icon"></iconify-icon>
                         <span>Saldo Keuangan</span>
                     </a>
+                    <ul class="sidebar-submenu">
+                        <li>
+                            <a href="{{ route('admin.balance.index') }}">
+                                <i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Saldo</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.balance.recap') }}"><i
+                                    class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Rekap Saldo
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-                <li>
-                    <a href="{{ route('admin.balance.recap') }}">
-                        <iconify-icon icon="material-symbols:account-balance-wallet-outline"
-                            class="menu-icon"></iconify-icon>
-                        <span>Rekap Saldo</span>
-                    </a>
-                </li>
+
                 <li>
                     <a href="{{ route('admin.withdrawal.index') }}">
                         <iconify-icon icon="hugeicons:reverse-withdrawal-01" class="menu-icon"></iconify-icon>
