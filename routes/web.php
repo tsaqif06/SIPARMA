@@ -110,7 +110,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('transactions/{code}', [AdminTransactionController::class, 'show'])->name('transactions.show');
 
         Route::get('balance', [AdminBalanceController::class, 'index'])->name('balance.index');
+        Route::get('balanceadmin', [AdminBalanceController::class, 'indexAdmin'])->name('balance.indexAdmin');
         Route::get('balance/recap', [AdminBalanceController::class, 'monthlyRecapIndex'])->name('balance.recap');
+        Route::get('balanceadmin/recap', [AdminBalanceController::class, 'monthlyRecapIndexAdmin'])->name('balance.recapAdmin');
         Route::get('balance/{id}', [AdminBalanceController::class, 'show'])->name('balance.show');
 
         Route::get('withdrawal/approval', [AdminWithdrawalController::class, 'approval'])->name('withdrawal.approval');

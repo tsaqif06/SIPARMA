@@ -57,12 +57,36 @@
                         <span>Transaksi</span>
                     </a>
                 </li>
-                <li>
+                {{--  <li>
                     <a href="{{ route('admin.balance.index') }}">
                         <iconify-icon icon="material-symbols:account-balance-wallet-outline"
                             class="menu-icon"></iconify-icon>
                         <span>Saldo Keuangan</span>
                     </a>
+                </li>  --}}
+
+                <li class="dropdown">
+                    <a href="javascript:void(0)">
+                        <iconify-icon icon="material-symbols:account-balance-wallet-outline"
+                            class="menu-icon"></iconify-icon>
+                        <span>Saldo Keuangan</span>
+                    </a>
+                    <ul class="sidebar-submenu">
+                        <li>
+                            <a href="{{ route('admin.balance.index') }}">
+                                <i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Saldo Wisata</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.balance.indexAdmin') }}"><i
+                                    class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Saldo Biaya
+                                Admin</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.balance.recapAdmin') }}"><i
+                                    class="ri-circle-fill circle-icon text-success-main w-auto"></i> Rekap Saldo Biaya
+                                Admin</a>
+                        </li>
+                    </ul>
                 </li>
 
                 <li class="sidebar-menu-group-title">Persetujuan</li>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Balance;
 use App\Models\BalanceLog;
+use App\Models\AdminBalance;
+use App\Models\AdminBalanceLog;
 use App\Models\AdminDestination;
 use Illuminate\Support\Facades\Auth;
 
@@ -34,6 +36,17 @@ class AdminBalanceController extends Controller
         }
 
         return view('admin.balance.index', compact('balances'));
+    }
+
+    public function indexAdmin()
+    {
+        if (Auth::user()->role !== 'superadmin') {
+            return redirect()->route('admin.dashboard')->with('error', 'Akses ditolak!');
+        }
+
+        $balances = AdminBalance::all();
+
+        return view('admin.balance.indexAdmin', compact('balances'));
     }
 
     /**
@@ -68,5 +81,16 @@ class AdminBalanceController extends Controller
             ->get();
 
         return view('admin.balance.recap', compact('balanceLogs'));
+    }
+
+    public function monthlyRecapIndexAdmin()
+    {
+        if (Auth::user()->role !== 'superadmin') {
+            return redirect()->route('admin.dashboard');
+        }
+
+        $balanceLogs = AdminBalanceLog::all();
+
+        return view('admin.balance.recapAdmin', compact('balanceLogs'));
     }
 }

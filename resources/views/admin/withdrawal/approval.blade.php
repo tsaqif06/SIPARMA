@@ -63,23 +63,14 @@
                                     </div>
                                 </td>
                                 <td>{{ $data->balance->destination->name }}</td>
-                                <td>Rp {{ number_format($withdrawal->amount, 0, ',', '.') }}
-                                <td>{{ $withdrawal->created_at->format('d-m-Y') }}</td>
+                                <td>Rp {{ number_format($data->amount, 0, ',', '.') }}
+                                <td>{{ $data->created_at->format('d-m-Y') }}</td>
                                 <td><span
                                         class="bg-{{ $data->status == 'completed' ? 'success' : ($data->status == 'pending' ? 'warning' : 'danger') }}-focus text-{{ $data->status == 'completed' ? 'success' : ($data->status == 'pending' ? 'warning' : 'danger') }}-main px-24 py-4 rounded-pill fw-medium text-sm">{{ ucfirst($data->status) }}</span>
                                 </td>
                                 <td>
-                                    <a href="{{ route('admin.places.show', $data->place->id) }}" target="_blank"
-                                        class="w-32-px h-32-px bg-primary-light text-primary-600 rounded-circle d-inline-flex align-items-center justify-content-center">
-                                        <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
-                                    </a>
-                                </td>
-
-
-
-                                <td>
                                     <!-- Tombol Approve -->
-                                    <a href="{{ route('withdrawals.approveForm', $data->id) }}"
+                                    <a href="{{ route('admin.withdrawal.approveForm', $data->id) }}"
                                         class="approve-btn w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center">
                                         <iconify-icon icon="lucide:check-circle" class="text-success" width="24"
                                             height="24"></iconify-icon>
