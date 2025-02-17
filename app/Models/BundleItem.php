@@ -15,16 +15,6 @@ class BundleItem extends Model
         return $this->belongsTo(Bundle::class);
     }
 
-    // public function destination()
-    // {
-    //     return $this->belongsTo(Destination::class, 'item_id');
-    // }
-
-    // public function ride()
-    // {
-    //     return $this->belongsTo(Ride::class, 'item_id');
-    // }
-
     public function item()
     {
         if ($this->item_type == 'destination') {

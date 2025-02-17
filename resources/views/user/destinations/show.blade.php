@@ -21,6 +21,7 @@
 
         //---------------------------
         $(".remove-item-btn").on("click", function() {
+
             $(this).closest("tr").addClass("d-none")
         });
 
@@ -209,6 +210,60 @@
                             <a href="#" class="load-more">Lihat Lebih Banyak</a>
                         @endif
                     </div>
+
+                    @if ($destination->bundles->count() > 0)
+                        <div class="pricing-area mt-5">
+                            <div class="room-title">
+                                <h2>Bundling Tiket</h2>
+                            </div>
+                            @foreach ($destination->bundles as $bundle)
+                                <div class="ticket-card">
+                                    <div class="img"
+                                        style="background-image: url('../{{ $bundle->gallery[0]->image_url ?? 'assets/images/default.png' }}');">
+                                    </div>
+                                    <div class="ticket-info">
+                                        <div class="ticket-title">Tiket Bundle - {{ $bundle->name }}</div>
+                                        <div class="ticket-desc">Isi Item Bundle:
+                                            <ul class="list-unstyled mb-0">
+                                                @foreach ($bundle->items as $item)
+                                                    @php
+                                                        $quantities = collect(json_decode($item->quantity, true))
+                                                            ->map(function ($qty, $key) {
+                                                                $label = $key === 'adults' ? 'Dewasa' : 'Anak-anak';
+                                                                return $label . ': ' . $qty;
+                                                            })
+                                                            ->implode(', ');
+                                                    @endphp
+                                                    <li>{{ optional($item->item)->name }}
+                                                        <small class="text-muted">({{ $quantities }})</small>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    @php
+                                        $discountedPrice = $bundle->discount ?? 0;
+                                        $hargaDiskon =
+                                            $bundle->total_price - ($bundle->total_price * $discountedPrice) / 100;
+                                    @endphp
+
+
+                                    <div class="ticket-price-button">
+                                        @if ($discountedPrice > 0)
+                                            <span class="price-old">IDR
+                                                {{ number_format($bundle->total_price, 0, ',', '.') }}</span>
+                                        @endif
+                                        <span class="ticket-price">IDR
+                                            {{ number_format($hargaDiskon, 0, ',', '.') }}</span>
+                                        <a href="{{ route('destination.checkout', ['slug' => $bundle->id, 'type' => 'bundle']) }}"
+                                            class="buy-button">Beli Tiket</a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+
                     <div class="room-review">
                         <div class="room-title">
                             <h2>Ulasan</h2>
@@ -231,7 +286,8 @@
                                             <ul>
                                                 @for ($i = 1; $i <= 5; $i++)
                                                     <li>
-                                                        <i class="ti-star {{ $i <= $review->rating ? 'filled' : '' }}"></i>
+                                                        <i
+                                                            class="ti-star {{ $i <= $review->rating ? 'filled' : '' }}"></i>
                                                     </li>
                                                 @endfor
                                             </ul>

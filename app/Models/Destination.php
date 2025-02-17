@@ -79,4 +79,9 @@ class Destination extends Model
     {
         return $this->hasMany(Promo::class, 'destination_id');
     }
+
+    public function bundles()
+    {
+        return $this->hasMany(Bundle::class, 'destination_id');
+    }
 }
