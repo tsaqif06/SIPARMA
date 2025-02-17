@@ -78,6 +78,14 @@
                         <span>Pencairan Saldo</span>
                     </a>
                 </li>
+
+                <li class="sidebar-menu-group-title">Lainnya</li>
+                <li>
+                    <a href="{{ route('admin.complaints.index') }}">
+                        <iconify-icon icon="hugeicons:complaint" class="menu-icon"></iconify-icon>
+                        <span>Keluhan</span>
+                    </a>
+                </li>
             @elseif ($user && $user->role === 'admin_wisata')
                 <li>
                     <a href="{{ route('admin.destinations.show', $user->adminDestinations[0]->destination_id) }}">

@@ -80,6 +80,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('places/{adminplace}/update-status', [AdminPlaceController::class, 'updateStatus'])->name('places.updateStatus');
         Route::resource('places', AdminPlaceController::class);
 
+        Route::get('/complaints', [ComplaintController::class, 'index'])->name('complaints.index');
+        Route::get('/complaints/{id}', [ComplaintController::class, 'show'])->name('complaints.show');
+        Route::get('/complaints/{id}/edit', [ComplaintController::class, 'edit'])->name('complaints.edit');
+        Route::put('/complaints/{id}', [ComplaintController::class, 'update'])->name('complaints.update');
+
         Route::prefix('gallery')->group(function () {
             Route::get('{type}', [AdminGalleryController::class, 'index'])->name('gallery.index');
             Route::get('{type}/create', [AdminGalleryController::class, 'create'])->name('gallery.create');
