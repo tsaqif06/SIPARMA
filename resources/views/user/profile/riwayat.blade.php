@@ -18,69 +18,58 @@
                 <div class="card-custom">
                     <h4 class="mb-4">Riwayat Transaksi</h4>
                     <!-- Transaction Table -->
-                    <div class="table-responsive">
-                        <table class="table" id="dataTable">
-                            <thead>
-                                <tr>
-                                    <th>Gambar</th>
-                                    <th>Nama Tiket</th>
-                                    <th>ID Transaksi</th>
-                                    <th>Tanggal Transaksi</th>
-                                    <th>Status</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($transactions as $transaction)
-                                    <tr>
-                                        <td><img src="{{ asset(
-                                            $transaction->tickets[0]->item_type === 'bundle'
-                                                ? $transaction->tickets[0]->item->items[0]->item->gallery[0]->image_url ?? 'assets/images/default.png'
-                                                : $transaction->tickets[0]->item->gallery[0]->image_url ?? 'assets/images/default.png',
-                                        ) }}"
-                                                class="rounded" alt="Gambar Tiket" style="width: 60px;"></td>
-                                        <td>Tiket {{ $transaction->tickets[0]->item->name }}</td>
-                                        <td>{{ $transaction->transaction_code }}</td>
-                                        <td>{{ $transaction->created_at->format('d M Y') }}</td>
-                                        <td>
-                                            @php
-                                                $statusBadge = [
-                                                    'pending' => [
-                                                        'text' => 'Menunggu Pembayaran',
-                                                        'class' => 'warning',
-                                                    ],
-                                                    'paid' => ['text' => 'Berhasil', 'class' => 'success'],
-                                                    'failed' => ['text' => 'Gagal', 'class' => 'danger'],
-                                                ];
-                                            @endphp
-
-                                            <span class="badge bg-{{ $statusBadge[$transaction->status]['class'] }}">
-                                                {{ $statusBadge[$transaction->status]['text'] }}
-                                            </span>
-                                        </td>
-
-                                        <td class="d-flex justify-content-center">
-                                            @if ($transaction->status == 'pending')
-                                                <a href="{{ route('payment.show', $transaction->transaction_code) }}"
-                                                    target="_blank" class="btn-transparent">
-                                                    <i class="fas fa-eye"></i>
-                                                </a>
-                                            @elseif ($transaction->status == 'paid')
-                                                <a href="{{ route('payment.invoice', $transaction->transaction_code) }}"
-                                                    target="_blank" class="btn-transparent">
-                                                    <i class="fas fa-eye"></i>
-                                                </a>
-                                                <a class="btn-transparent"
-                                                    href="{{ route('payment.invoice.download', $transaction->transaction_code) }}"
-                                                    class="btn-transparent">
-                                                    <i class="fas fa-download"></i>
-                                                </a>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                    <div class="container mt-4">
+                        <div class="row row-cols-1 g-4">
+                            @foreach ($transactions as $transaction)
+                                <div class="col">
+                                    <div class="card h-100 shadow-sm p-3">
+                                        <div class="row g-0">
+                                            <div class="col-md-2 d-flex align-items-center">
+                                                <img src="{{ asset(
+                                                    $transaction->tickets[0]->item_type === 'bundle'
+                                                        ? $transaction->tickets[0]->item->items[0]->item->gallery[0]->image_url ?? 'assets/images/default.png'
+                                                        : $transaction->tickets[0]->item->gallery[0]->image_url ?? 'assets/images/default.png',
+                                                ) }}"
+                                                    style="width: 100%; border-radius: 8px" alt="Tiket">
+                                            </div>
+                                            <div class="col-md-3 d-flex flex-column justify-content-center ms-md-3 mt-sm-2">
+                                                <h5 class="mb-2">Tiket {{ $transaction->tickets[0]->item->name }}</h5>
+                                                <p class="mb-0">IDR
+                                                    {{ number_format($transaction->tickets[0]->item->price, 0, ',', '.') }}
+                                                </p>
+                                            </div>
+                                            <div class="col-md-2 d-flex align-items-center justify-content-center">
+                                                <p class="mb-0">{{ $transaction->created_at->format('d M Y') }}
+                                                </p>
+                                            </div>
+                                            <div class="col-md-2 d-flex align-items-center justify-content-center my-sm-2">
+                                                @if ($transaction->status == 'pending')
+                                                    <span class="badge bg-warning">Menunggu</span>
+                                                @elseif ($transaction->status == 'paid')
+                                                    <span class="badge bg-success">Berhasil</span>
+                                                @elseif ($transaction->status == 'failed')
+                                                    <span class="badge bg-danger">Gagal</span>
+                                                @endif
+                                            </div>
+                                            <div class="col-md-2 d-flex align-items-center justify-content-center">
+                                                @if ($transaction->status == 'pending')
+                                                    <a href="{{ route('payment.show', $transaction->transaction_code) }}"
+                                                        target="_blank" class="btn btn-outline-primary btn-sm me-1"
+                                                        style="background-color: #27374D"><i class="fas fa-eye"></i></a>
+                                                @elseif ($transaction->status == 'paid')
+                                                    <a href="{{ route('payment.invoice', $transaction->transaction_code) }}"
+                                                        target="_blank" class="btn btn-success btn-sm me-1"
+                                                        style="background-color: #27374D"><i class="fas fa-eye"></i></a>
+                                                    <a href="{{ route('payment.invoice.download', $transaction->transaction_code) }}"
+                                                        class="btn btn-info btn-sm" style="background-color: #2B80F4"><i
+                                                            class="fas fa-download" style="color: white;"></i></a>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>
