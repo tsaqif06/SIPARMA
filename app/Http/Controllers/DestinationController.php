@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bundle;
 use App\Models\Ride;
 use App\Models\Destination;
 use Illuminate\Http\Request;
@@ -74,8 +75,15 @@ class DestinationController extends Controller
             $item = Destination::where('slug', $slug)->firstOrFail();
         } elseif ($type === 'ride') {
             $item = Ride::where('slug', $slug)->firstOrFail();
+        } elseif ($type === 'bundle') {
+            $item = Bundle::where('id', $slug)->firstOrFail();
+
+            return view('user.destinations.checkoutbundle', [
+                'item' => $item,
+                'type' => $type
+            ]);
         } else {
-            abort(404);
+            return redirect('/');
         }
 
         return view('user.destinations.checkout', [
