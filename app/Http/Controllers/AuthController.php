@@ -106,7 +106,9 @@ class AuthController extends Controller
 
     public function logout()
     {
+        $redirect = auth()->user()->role === 'user' ? '/' : '/admin';
+
         Auth::logout();
-        return redirect('/');
+        return redirect($redirect);
     }
 }

@@ -23,6 +23,12 @@
                     <a href="{{ route('profile') }}" style="color: black;"><i class="fas fa-user"></i> Profil</a>
                     <a href="{{ route('transactions.history') }}"><i class="fas fa-list"></i> Riwayat Transaksi</a>
                     <a href="{{ route('admin.verification') }}"><i class="fas fa-check-circle"></i> Verifikasi Admin</a>
+                    <hr>
+                    <form action="{{ route('logout') }}" method="POST" class="mt-2">
+                        @csrf
+                        <button type="submit" class="btn btn-danger w-100"><i class="fas fa-sign-out-alt"></i>
+                            Logout</button>
+                    </form>
                 </div>
             </div>
 
