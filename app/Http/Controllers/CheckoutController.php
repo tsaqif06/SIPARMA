@@ -17,8 +17,8 @@ class CheckoutController extends Controller
             'item_id' => 'required',
             'item_type' => 'required',
             'visit_date' => 'required|date|after_or_equal:today',
-            'adult_count' => 'required|integer|min:0',
-            'children_count' => 'required|integer|min:0',
+            'adult_count' => $request->item_type === 'bundle' ? 'nullable' : 'required|integer|min:0',
+            'children_count' => $request->item_type === 'bundle' ? 'nullable' : 'required|integer|min:0',
             'total_price' => 'required|numeric|min:1',
         ]);
 
@@ -36,8 +36,8 @@ class CheckoutController extends Controller
             'transaction_id' => $transaction->id,
             'item_type' => $request->item_type,
             'item_id' => $request->item_id,
-            'adult_count' => $request->adult_count,
-            'children_count' => $request->children_count,
+            'adult_count' => $request->adult_count ?? null,
+            'children_count' => $request->children_count ?? null,
             'subtotal' => $request->total_price,
             'visit_date' => $request->visit_date,
         ]);

@@ -41,7 +41,7 @@
                                             <div class="col-md-3 d-flex flex-column justify-content-center ms-md-3 mt-sm-2">
                                                 <h5 class="mb-2">Tiket {{ $transaction->tickets[0]->item->name }}</h5>
                                                 <p class="mb-0">IDR
-                                                    {{ number_format($transaction->tickets[0]->item->price, 0, ',', '.') }}
+                                                    {{ number_format($transaction->amount + config('app.admin_fee'), 0, ',', '.') }}
                                                 </p>
                                             </div>
                                             <div class="col-md-2 d-flex align-items-center justify-content-center">

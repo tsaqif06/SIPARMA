@@ -73,7 +73,7 @@
                                                     })
                                                     ->implode(', ');
                                             @endphp
-                                            <li>{{ optional($it->item)->name }}
+                                            <li>Tiket {{ optional($it->item)->name }}
                                                 <small class="text-muted">({{ $quantities }})</small>
                                             </li>
                                         @endforeach

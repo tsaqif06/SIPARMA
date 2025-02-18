@@ -33,7 +33,7 @@ class PaymentController extends Controller
         $type_translation = [
             'destination' => 'Tiket Wisata',
             'ride' => 'Tiket Wahana',
-            'bundle' => 'Tiket Paket'
+            'bundle' => 'Tiket Bundle'
         ];
 
         $transaction->total_pay = $transaction->amount + $this->adminFee;

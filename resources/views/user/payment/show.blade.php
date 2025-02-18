@@ -47,7 +47,11 @@
                                     <small>{{ \Carbon\Carbon::parse($ticket->visit_date)->format('F d, Y') }}</small>
                                 </div>
                             </div>
-                            <span>{{ $ticket->adult_count + $ticket->children_count }} Tiket</span>
+                            @if ($ticket->item_type !== 'bundle')
+                                <span>{{ $ticket->adult_count + $ticket->children_count }} Tiket</span>
+                            @else
+                                <span>1 Tiket</span>
+                            @endif
                         </div>
                     @endforeach
                 </div>
@@ -67,31 +71,67 @@
                 <div class="card p-4">
                     <h5 class="mb-3">Total Pembayaran</h5>
                     @foreach ($transaction->tickets as $ticket)
-                        @if ($ticket->adult_count > 0)
-                            <div class="d-flex justify-content-between">
-                                <p>{{ $ticket->translated_type }} - {{ $ticket->item->name }}
-                                    ({{ $ticket->adult_count }} Dewasa)
-                                </p>
-                                <p>IDR
-                                    {{ number_format(
-                                        (\Carbon\Carbon::parse($ticket->visit_date)->isWeekend() ? $hargaDiskonWeekend : $hargaDiskon) *
-                                            $ticket->adult_count,
-                                        0,
-                                        ',',
-                                        '.',
-                                    ) }}
-                                </p>
-                            </div>
-                        @endif
+                        @if ($ticket->item_type !== 'bundle')
+                            @if ($ticket->adult_count > 0)
+                                <div class="d-flex justify-content-between">
+                                    <p>{{ $ticket->translated_type }} - {{ $ticket->item->name }}
+                                        ({{ $ticket->adult_count }} Dewasa)
+                                    </p>
+                                    <p>IDR
+                                        {{ number_format(
+                                            (\Carbon\Carbon::parse($ticket->visit_date)->isWeekend() ? $hargaDiskonWeekend : $hargaDiskon) *
+                                                $ticket->adult_count,
+                                            0,
+                                            ',',
+                                            '.',
+                                        ) }}
+                                    </p>
+                                </div>
+                            @endif
 
-                        @if ($ticket->children_count > 0)
+                            @if ($ticket->children_count > 0)
+                                <div class="d-flex justify-content-between">
+                                    <p>{{ $ticket->translated_type }} - {{ $ticket->item->name }}
+                                        ({{ $ticket->children_count }} Anak)
+                                    </p>
+                                    <p>IDR
+                                        {{ number_format($hargaDiskonAnak * $ticket->children_count, 0, ',', '.') }}
+                                    </p>
+                                </div>
+                            @endif
+                        @else
+                            @php
+                                $type_translation = [
+                                    'destination' => 'Tiket Wisata',
+                                    'ride' => 'Tiket Wahana',
+                                    'bundle' => 'Tiket Bundle',
+                                ];
+                            @endphp
                             <div class="d-flex justify-content-between">
-                                <p>{{ $ticket->translated_type }} - {{ $ticket->item->name }}
-                                    ({{ $ticket->children_count }} Anak)
-                                </p>
-                                <p>IDR
-                                    {{ number_format($hargaDiskonAnak * $ticket->children_count, 0, ',', '.') }}
-                                </p>
+                                <div class="d-flex flex-column">
+                                    <p class="mb-0">{{ $type_translation[$ticket->item_type] }} -
+                                        {{ $ticket->item->name }}</p>
+                                    <ul class="list-unstyled mb-3">
+                                        @foreach ($ticket->item->items as $it)
+                                            @php
+                                                $quantities = collect(json_decode($it->quantity, true))
+                                                    ->map(function ($qty, $key) {
+                                                        $label = $key === 'adults' ? 'Dewasa' : 'Anak-anak';
+                                                        return $label . ': ' . $qty;
+                                                    })
+                                                    ->implode(', ');
+                                            @endphp
+                                            <li class="text-muted">Tiket {{ optional($it->item)->name }}
+                                                <small class="text-muted">({{ $quantities }})</small>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                <div>
+                                    <p>IDR
+                                        {{ number_format($transaction->amount, 0, ',', '.') }}
+                                    </p>
+                                </div>
                             </div>
                         @endif
                         <div class="d-flex justify-content-between">
