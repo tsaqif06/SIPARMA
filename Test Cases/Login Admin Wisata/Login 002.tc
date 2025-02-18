@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description>Valid Email, Invalid Password</description>
+   <name>Login 002</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>d1cd97dc-1e7b-4547-8af8-4ae080878982</testCaseGuid>
+</TestCaseEntity>

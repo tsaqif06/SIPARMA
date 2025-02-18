@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description>Invalid Eail, Invalid Password</description>
+   <name>Login 004</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>59c21dae-6932-4d5e-884c-461db629e9d2</testCaseGuid>
+</TestCaseEntity>

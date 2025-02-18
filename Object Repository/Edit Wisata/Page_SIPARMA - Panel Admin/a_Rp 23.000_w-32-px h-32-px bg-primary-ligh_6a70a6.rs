@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebElementEntity>
+   <description></description>
+   <name>a_Rp 23.000_w-32-px h-32-px bg-primary-ligh_6a70a6</name>
+   <tag></tag>
+   <elementGuidId>8df281ff-20dd-4ebe-aa8a-3bbe8017557f</elementGuidId>
+   <selectorCollection>
+      <entry>
+         <key>XPATH</key>
+         <value>//table[@id='dataTable']/tbody/tr/td[5]/a</value>
+      </entry>
+      <entry>
+         <key>CSS</key>
+         <value>a.w-32-px.h-32-px.bg-primary-light.text-primary-600.rounded-circle.d-inline-flex.align-items-center.justify-content-center</value>
+      </entry>
+   </selectorCollection>
+   <selectorMethod>XPATH</selectorMethod>
+   <smartLocatorCollection>
+      <entry>
+         <key>SMART_LOCATOR</key>
+         <value>internal:role=row[name=&quot;1 Kolam Ikan Rp 23.000 Rp 23.000&quot;i] >> internal:role=link</value>
+      </entry>
+   </smartLocatorCollection>
+   <smartLocatorEnabled>false</smartLocatorEnabled>
+   <useRalativeImagePath>true</useRalativeImagePath>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>tag</name>
+      <type>Main</type>
+      <value>a</value>
+      <webElementGuid>ddf64735-f103-48fd-bf9f-cb7b092bcc58</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>href</name>
+      <type>Main</type>
+      <value>http://127.0.0.1:8000/admin/balance/1</value>
+      <webElementGuid>af73d25f-314e-4509-8231-a514dd699590</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>class</name>
+      <type>Main</type>
+      <value>w-32-px h-32-px bg-primary-light text-primary-600 rounded-circle d-inline-flex align-items-center justify-content-center</value>
+      <webElementGuid>b5229344-8a6a-43fb-9158-fca288207a19</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath</name>
+      <type>Main</type>
+      <value>id(&quot;dataTable&quot;)/tbody[1]/tr[1]/td[5]/a[@class=&quot;w-32-px h-32-px bg-primary-light text-primary-600 rounded-circle d-inline-flex align-items-center justify-content-center&quot;]</value>
+      <webElementGuid>89e5016c-42ce-4865-843c-d2a90638ab56</webElementGuid>
+   </webElementProperties>
+   <webElementXpaths>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:idRelative</name>
+      <type>Main</type>
+      <value>//table[@id='dataTable']/tbody/tr/td[5]/a</value>
+      <webElementGuid>561c7020-a87a-4a9a-aa47-63c1b4fa41df</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:neighbor</name>
+      <type>Main</type>
+      <value>(.//*[normalize-space(text()) and normalize-space(.)='Rp 23.000'])[2]/following::a[1]</value>
+      <webElementGuid>228f11f6-e9ed-4570-aa5f-3634b0377de4</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:neighbor</name>
+      <type>Main</type>
+      <value>(.//*[normalize-space(text()) and normalize-space(.)='Rp 23.000'])[1]/following::a[1]</value>
+      <webElementGuid>d05b9bf9-b88c-4721-9b36-9301bd14e5bd</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:neighbor</name>
+      <type>Main</type>
+      <value>(.//*[normalize-space(text()) and normalize-space(.)='Showing 1 to 1 of 1 entry'])[1]/preceding::a[1]</value>
+      <webElementGuid>b38b35d0-6ef3-41a8-b6dc-d870082a3e00</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:neighbor</name>
+      <type>Main</type>
+      <value>(.//*[normalize-space(text()) and normalize-space(.)='«'])[1]/preceding::a[1]</value>
+      <webElementGuid>b60f9b71-9e71-4830-8932-f3ece52ddb49</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:href</name>
+      <type>Main</type>
+      <value>//a[@href='http://127.0.0.1:8000/admin/balance/1']</value>
+      <webElementGuid>2641fbed-5e7d-4339-b9f5-8a30ea105acf</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:position</name>
+      <type>Main</type>
+      <value>//td[5]/a</value>
+      <webElementGuid>3f7f0197-4228-48c7-b90a-d85c0da147cc</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:customAttributes</name>
+      <type>Main</type>
+      <value>//a[@href = 'http://127.0.0.1:8000/admin/balance/1']</value>
+      <webElementGuid>da83dd43-db94-4d91-9386-e8a317221eb2</webElementGuid>
+   </webElementXpaths>
+</WebElementEntity>

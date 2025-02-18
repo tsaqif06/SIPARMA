@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>Saldo Keuangan</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>306d0176-3024-4ab6-8215-5abb23db9c64</testCaseGuid>
+</TestCaseEntity>

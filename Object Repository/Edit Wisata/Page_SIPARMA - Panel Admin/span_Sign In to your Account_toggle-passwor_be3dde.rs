@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebElementEntity>
+   <description></description>
+   <name>span_Sign In to your Account_toggle-passwor_be3dde</name>
+   <tag></tag>
+   <elementGuidId>49f27e56-557f-4da0-b53b-aa0f267ef4db</elementGuidId>
+   <selectorCollection>
+      <entry>
+         <key>XPATH</key>
+         <value>//div[2]/span</value>
+      </entry>
+      <entry>
+         <key>CSS</key>
+         <value>span.toggle-password.ri-eye-line.cursor-pointer.position-absolute.end-0.top-50.translate-middle-y.me-16.text-secondary-light</value>
+      </entry>
+   </selectorCollection>
+   <selectorMethod>XPATH</selectorMethod>
+   <smartLocatorCollection>
+      <entry>
+         <key>SMART_LOCATOR</key>
+         <value>span >> nth=2</value>
+      </entry>
+   </smartLocatorCollection>
+   <smartLocatorEnabled>false</smartLocatorEnabled>
+   <useRalativeImagePath>true</useRalativeImagePath>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>tag</name>
+      <type>Main</type>
+      <value>span</value>
+      <webElementGuid>8489cc9f-3a85-4e11-9709-35ef429d495d</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>class</name>
+      <type>Main</type>
+      <value>toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light</value>
+      <webElementGuid>e4c6d22c-761c-4cd8-b3f1-b765f454b935</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>data-toggle</name>
+      <type>Main</type>
+      <value>#password</value>
+      <webElementGuid>c1e94c8b-3d59-4254-9a55-3ed095204a00</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath</name>
+      <type>Main</type>
+      <value>/html[1]/body[1]/section[@class=&quot;auth bg-base d-flex flex-wrap&quot;]/div[@class=&quot;auth-right py-32 px-24 d-flex flex-column justify-content-center&quot;]/div[@class=&quot;max-w-464-px mx-auto w-100&quot;]/form[1]/div[@class=&quot;position-relative mb-20&quot;]/span[@class=&quot;toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light&quot;]</value>
+      <webElementGuid>abcdfcb2-54b5-433f-8290-4823c4b415c5</webElementGuid>
+   </webElementProperties>
+   <webElementXpaths>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:position</name>
+      <type>Main</type>
+      <value>//div[2]/span</value>
+      <webElementGuid>803732e5-a87a-4cbd-b3f0-25d097597f8f</webElementGuid>
+   </webElementXpaths>
+</WebElementEntity>

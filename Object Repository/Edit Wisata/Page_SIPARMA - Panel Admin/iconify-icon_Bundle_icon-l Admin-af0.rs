@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebElementEntity>
+   <description></description>
+   <name>iconify-icon_Bundle_icon-l Admin-af0</name>
+   <tag></tag>
+   <elementGuidId>cb20aa2a-6419-476d-b632-c3eb8dff157b</elementGuidId>
+   <selectorCollection>
+      <entry>
+         <key>XPATH</key>
+         <value>//button[2]/iconify-icon</value>
+      </entry>
+      <entry>
+         <key>CSS</key>
+         <value>button.sidebar-mobile-toggle > iconify-icon.icon</value>
+      </entry>
+   </selectorCollection>
+   <selectorMethod>CSS</selectorMethod>
+   <smartLocatorCollection>
+      <entry>
+         <key>SMART_LOCATOR</key>
+         <value>internal:role=button >> nth=1</value>
+      </entry>
+   </smartLocatorCollection>
+   <smartLocatorEnabled>false</smartLocatorEnabled>
+   <useRalativeImagePath>true</useRalativeImagePath>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>tag</name>
+      <type>Main</type>
+      <value>iconify-icon</value>
+      <webElementGuid>3d1a3082-fedb-4175-97cd-c0189b0bb138</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>icon</name>
+      <type>Main</type>
+      <value>heroicons:bars-3-solid</value>
+      <webElementGuid>6dd8ad1c-584f-481c-8902-fb06bd68e02b</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>class</name>
+      <type>Main</type>
+      <value>icon</value>
+      <webElementGuid>9b629e5b-03db-4c53-bc75-f86e0efaeee6</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath</name>
+      <type>Main</type>
+      <value>/html[1]/body[1]/main[@class=&quot;dashboard-main&quot;]/div[@class=&quot;navbar-header&quot;]/div[@class=&quot;row align-items-center justify-content-between&quot;]/div[@class=&quot;col-auto&quot;]/div[@class=&quot;d-flex flex-wrap align-items-center gap-4&quot;]/button[@class=&quot;sidebar-mobile-toggle&quot;]/iconify-icon[@class=&quot;icon&quot;]</value>
+      <webElementGuid>71e7e358-92ee-4115-9540-9541c76efe3e</webElementGuid>
+   </webElementProperties>
+   <webElementXpaths>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:position</name>
+      <type>Main</type>
+      <value>//button[2]/iconify-icon</value>
+      <webElementGuid>c1a0ad79-f4e6-4d53-a4b4-a09d9bf24926</webElementGuid>
+   </webElementXpaths>
+</WebElementEntity>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebElementEntity>
+   <description></description>
+   <name>a_Saldo</name>
+   <tag></tag>
+   <elementGuidId>d91333b3-b329-4827-ad02-78e30869bdd5</elementGuidId>
+   <selectorCollection>
+      <entry>
+         <key>XPATH</key>
+         <value>//ul[@id='sidebar-menu']/li[9]/ul/li/a</value>
+      </entry>
+      <entry>
+         <key>CSS</key>
+         <value>ul.sidebar-submenu.show > li > a</value>
+      </entry>
+   </selectorCollection>
+   <selectorMethod>XPATH</selectorMethod>
+   <smartLocatorCollection>
+      <entry>
+         <key>SMART_LOCATOR</key>
+         <value>internal:role=link[name=&quot; Saldo&quot;i]</value>
+      </entry>
+   </smartLocatorCollection>
+   <smartLocatorEnabled>false</smartLocatorEnabled>
+   <useRalativeImagePath>true</useRalativeImagePath>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>tag</name>
+      <type>Main</type>
+      <value>a</value>
+      <webElementGuid>095f88ca-f4a4-46ae-bb3b-35cd539705ff</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>href</name>
+      <type>Main</type>
+      <value>http://127.0.0.1:8000/admin/balance</value>
+      <webElementGuid>560fd68f-77c2-45ec-acfc-05324bc794f7</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>text</name>
+      <type>Main</type>
+      <value>
+                                 Saldo</value>
+      <webElementGuid>f575ea33-6e7b-4a04-b68c-308ca6ec85f3</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath</name>
+      <type>Main</type>
+      <value>id(&quot;sidebar-menu&quot;)/li[@class=&quot;dropdown open&quot;]/ul[@class=&quot;sidebar-submenu show&quot;]/li[1]/a[1]</value>
+      <webElementGuid>ed33b8e5-f485-4d04-be4e-8a772a9063e4</webElementGuid>
+   </webElementProperties>
+   <webElementXpaths>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:idRelative</name>
+      <type>Main</type>
+      <value>//ul[@id='sidebar-menu']/li[9]/ul/li/a</value>
+      <webElementGuid>0ec3e304-ca7d-4bed-8799-fb5ab700ed88</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:neighbor</name>
+      <type>Main</type>
+      <value>(.//*[normalize-space(text()) and normalize-space(.)='Saldo Keuangan'])[1]/following::a[1]</value>
+      <webElementGuid>897499a5-c9eb-49b8-b386-5ae20d62e3b9</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:neighbor</name>
+      <type>Main</type>
+      <value>(.//*[normalize-space(text()) and normalize-space(.)='Transaksi'])[1]/following::a[2]</value>
+      <webElementGuid>8af7cf2f-b211-4d8f-b4e2-40475c0c411b</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:neighbor</name>
+      <type>Main</type>
+      <value>(.//*[normalize-space(text()) and normalize-space(.)='Rekap Saldo'])[1]/preceding::a[1]</value>
+      <webElementGuid>77d63b59-4c3b-4b48-8902-c42e1b0f252b</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:neighbor</name>
+      <type>Main</type>
+      <value>(.//*[normalize-space(text()) and normalize-space(.)='Pencairan Saldo'])[1]/preceding::a[2]</value>
+      <webElementGuid>f5cbc268-b5f0-486e-b059-0318d6500518</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:neighbor</name>
+      <type>Main</type>
+      <value>//*/text()[normalize-space(.)='Saldo']/parent::*</value>
+      <webElementGuid>ca008b80-d667-4366-8209-0a38189ed007</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:href</name>
+      <type>Main</type>
+      <value>//a[@href='http://127.0.0.1:8000/admin/balance']</value>
+      <webElementGuid>1653e814-efcd-449c-a36e-bc0964b0e9c2</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:position</name>
+      <type>Main</type>
+      <value>//li[9]/ul/li/a</value>
+      <webElementGuid>48fd6457-d673-4239-8ac2-f78e2c886b95</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:customAttributes</name>
+      <type>Main</type>
+      <value>//a[@href = 'http://127.0.0.1:8000/admin/balance' and (text() = '
+                                 Saldo' or . = '
+                                 Saldo')]</value>
+      <webElementGuid>f21236b5-8ac4-46a8-9ed0-890b8c2a00b5</webElementGuid>
+   </webElementXpaths>
+</WebElementEntity>

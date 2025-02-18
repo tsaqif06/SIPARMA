@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebElementEntity>
+   <description></description>
+   <name>iconify-icon-l Admin-6f5</name>
+   <tag></tag>
+   <elementGuidId>d84e7ff5-0126-4ca0-892d-df6e9f274dc9</elementGuidId>
+   <selectorCollection>
+      <entry>
+         <key>XPATH</key>
+         <value>//table[@id='dataTable']/tbody/tr/td[7]/a/iconify-icon</value>
+      </entry>
+      <entry>
+         <key>CSS</key>
+         <value>a.w-32-px.h-32-px.bg-success-focus.text-success-main.rounded-circle.d-inline-flex.align-items-center.justify-content-center > iconify-icon</value>
+      </entry>
+   </selectorCollection>
+   <selectorMethod>CSS</selectorMethod>
+   <smartLocatorCollection>
+      <entry>
+         <key>SMART_LOCATOR</key>
+         <value>internal:role=row[name=&quot;1 Kolam Ikan Rp 10.000 15-02-2025 - Pending&quot;i] >> internal:role=link</value>
+      </entry>
+   </smartLocatorCollection>
+   <smartLocatorEnabled>false</smartLocatorEnabled>
+   <useRalativeImagePath>true</useRalativeImagePath>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>tag</name>
+      <type>Main</type>
+      <value>iconify-icon</value>
+      <webElementGuid>e63b64a9-60c9-486b-b34c-aa21deb46ac0</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>icon</name>
+      <type>Main</type>
+      <value>lucide:edit</value>
+      <webElementGuid>9668b067-6622-40aa-bb98-4b198c00cd59</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath</name>
+      <type>Main</type>
+      <value>id(&quot;dataTable&quot;)/tbody[1]/tr[1]/td[7]/a[@class=&quot;w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center&quot;]/iconify-icon[1]</value>
+      <webElementGuid>82fd79f0-05b5-4537-897d-85802754557d</webElementGuid>
+   </webElementProperties>
+   <webElementXpaths>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:idRelative</name>
+      <type>Main</type>
+      <value>//table[@id='dataTable']/tbody/tr/td[7]/a/iconify-icon</value>
+      <webElementGuid>1e4804ce-5a3d-44e7-8b8b-e53e155a8c46</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:position</name>
+      <type>Main</type>
+      <value>//td[7]/a/iconify-icon</value>
+      <webElementGuid>4b73030e-5e66-4fa9-b699-37a8753b60fb</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:idRelative</name>
+      <type>Main</type>
+      <value>//form[@id='deleteForm5']/button/iconify-icon</value>
+      <webElementGuid>bad93d03-3d1f-49ea-975c-f6199bfe0305</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:position</name>
+      <type>Main</type>
+      <value>//tr[2]/td[5]/form/button/iconify-icon</value>
+      <webElementGuid>183e897c-8147-4dcd-b568-0f5ec448c97e</webElementGuid>
+   </webElementXpaths>
+</WebElementEntity>
