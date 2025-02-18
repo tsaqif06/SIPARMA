@@ -1,8 +1,8 @@
 <header id="header">
     <div class="wpo-site-header">
-        <nav class="navbar navbar-expand-lg navbar-light">
+        <nav class="navigation navbar navbar-expand-lg navbar-light">
             <div class="container">
-                <div class="row align-items-center">
+                <div class="row row-navbar align-items-center">
                     <div class="col-lg-3 col-md-3 col-3 d-lg-none dl-block">
                         <div class="mobail-menu">
                             <button type="button" class="navbar-toggler open-btn">

@@ -26,6 +26,23 @@
         if (flag) {
             flag.remove();
         }
+
+        var lastScrollTop = 0;
+        var delta = 10; // Threshold untuk scroll atas
+        $(window).scroll(function() {
+            var scrollTop = $(this).scrollTop();
+
+            if (Math.abs(lastScrollTop - scrollTop) <= delta) return;
+
+            if (scrollTop > lastScrollTop) {
+                // Scroll ke bawah
+                $('.navigation').css('top', '-1000px');
+            } else {
+                // Scroll ke atas cukup jauh
+                $('.navigation').css('top', '20px');
+            }
+            lastScrollTop = scrollTop;
+        });
     });
 </script>
 
