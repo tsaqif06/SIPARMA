@@ -100,19 +100,19 @@
             </div>
 
             <div class="right-content">
-                <div class="hero-img-slider">
+                <div class="hero-img">
                     <div class="item">
+                        <img src="{{ asset('assets/user/images/slider/slide-new.jpg') }}" style="object-fit: cover;"
+                            alt="">
+                    </div>
+                    {{--  <div class="item">
                         <img src="{{ asset('assets/user/images/slider/slide-new.jpg') }}" style="object-fit: cover;"
                             alt="">
                     </div>
                     <div class="item">
                         <img src="{{ asset('assets/user/images/slider/slide-new.jpg') }}" style="object-fit: cover;"
                             alt="">
-                    </div>
-                    <div class="item">
-                        <img src="{{ asset('assets/user/images/slider/slide-new.jpg') }}" style="object-fit: cover;"
-                            alt="">
-                    </div>
+                    </div>  --}}
                 </div>
                 <div class="side-img-2">
                     <img src="{{ asset('assets/user/images/slider/side-img-2.jpg') }}" alt="">
@@ -131,7 +131,7 @@
             <div class="row">
                 <div class="col-lg-5 col-12">
                     <div class="wpo-section-title">
-                        <span>// Penawaran Terbaik</span>
+                        <span class="text-start">// Penawaran Terbaik</span>
                         <h2>Penawaran Spesial</h2>
                     </div>
                 </div>
@@ -151,7 +151,8 @@
                                         <a href="{{ route('destination.show', $promo->slug) }}">{{ $promo->name }}</a>
                                     </h2>
                                     <span class="price-old">IDR {{ number_format($promo->price, 0, ',', '.') }}</span><br>
-                                    <span>IDR {{ number_format($hargaDiskon, 0, ',', '.') }}</span>
+                                    <span class="text-price" style="color: #ff8000;">IDR
+                                        {{ number_format($hargaDiskon, 0, ',', '.') }}</span>
                                     <p class="card-text">
                                         Rating: {{ number_format($promo->reviews_avg_rating, 1) }} / 5
                                     </p>

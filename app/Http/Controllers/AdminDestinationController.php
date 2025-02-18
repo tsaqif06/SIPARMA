@@ -10,6 +10,7 @@ use App\Models\BundleItem;
 use App\Models\Destination;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\Recommendation;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -88,6 +89,52 @@ class AdminDestinationController extends Controller
         ]);
 
         return redirect()->route('admin.destinations.index')->with('success', 'Wisata telah ditambahkan.');
+    }
+
+    public function recommendation()
+    {
+        if (Auth::user()->role !== 'superadmin') {
+            return redirect()->route('admin.dashboard')->with('error', 'Akses ditolak!');
+        }
+
+        $recommendations = Recommendation::orderBy('created_at', 'desc')->get();
+
+        return view('admin.destinations.recommendation', compact('recommendations'));
+    }
+
+    // Menampilkan detail rekomendasi beserta gambarnya
+    public function showRecommendation($id)
+    {
+        if (Auth::user()->role !== 'superadmin') {
+            return redirect()->route('admin.dashboard')->with('error', 'Akses ditolak!');
+        }
+
+        $recommendation = Recommendation::with(['user', 'images'])->findOrFail($id);
+        return view('admin.destinations.recommendationshow', compact('recommendation'));
+    }
+
+    public function changeStatus($id)
+    {
+        if (Auth::user()->role !== 'superadmin') {
+            return redirect()->route('admin.dashboard')->with('error', 'Akses ditolak!');
+        }
+
+        $recommendation = Recommendation::with(['user', 'images'])->findOrFail($id);
+        return view('admin.destinations.changestatus', compact('recommendation'));
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:pending,approved,rejected',
+        ]);
+
+        $recommendation = Recommendation::findOrFail($id);
+        $recommendation->status = $request->status;
+        $recommendation->save();
+
+        // Redirect kembali ke halaman daftar rekomendasi dengan pesan sukses
+        return redirect()->route('admin.destinations.recommendation')->with('success', 'Status rekomendasi berhasil diubah!');
     }
 
     /**

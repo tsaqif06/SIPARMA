@@ -72,6 +72,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::resource('users', AdminUserController::class);
 
+        Route::get('destinations/recommendation', [AdminDestinationController::class, 'recommendation'])->name('destinations.recommendation');
+        Route::get('destinations/recommendation/{id}', [AdminDestinationController::class, 'showRecommendation'])->name('recommendations.show');
+        Route::get('destinations/recommendation/change/{id}', [AdminDestinationController::class, 'changeStatus'])->name('recommendations.changeStatus');
+        Route::put('destinations/recommendation/update/{id}', [AdminDestinationController::class, 'updateStatus'])->name('recommendations.updateStatus');
+
         Route::get('destinations/{destination}/facilities', [AdminDestinationController::class, 'facilities'])->name('destinations.facilities');
         Route::get('destinations/{destination}/rides', [AdminDestinationController::class, 'rides'])->name('destinations.rides');
         Route::resource('destinations', AdminDestinationController::class);

@@ -86,8 +86,14 @@
                 <li class="sidebar-menu-group-title">Persetujuan</li>
                 <li>
                     <a href="{{ route('admin.places.approval') }}">
-                        <iconify-icon icon="material-symbols:ad-group-outline-rounded" class="menu-icon"></iconify-icon>
+                        <iconify-icon icon="lsicon:marketplace-outline" class="menu-icon"></iconify-icon>
                         <span>Admin Tempat</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.destinations.recommendation') }}">
+                        <iconify-icon icon="majesticons:map-simple-destination-line" class="menu-icon"></iconify-icon>
+                        <span>Rekomendasi Wisata</span>
                     </a>
                 </li>
                 <li class="dropdown">
@@ -192,7 +198,8 @@
                 </li>
                 <li>
                     <a href="{{ route('admin.bundle.index') }}">
-                        <iconify-icon icon="material-symbols:ad-group-outline-rounded" class="menu-icon"></iconify-icon>
+                        <iconify-icon icon="material-symbols:ad-group-outline-rounded"
+                            class="menu-icon"></iconify-icon>
                         <span>Bundle</span>
                     </a>
                 </li>

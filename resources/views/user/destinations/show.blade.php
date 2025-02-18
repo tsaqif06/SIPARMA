@@ -2,6 +2,20 @@
 
 @php
     $script = '<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const images = document.querySelectorAll(".img-clickable");
+            const modalBackground = document.getElementById("modalBackground");
+            const imageModal = new bootstrap.Modal(document.getElementById("imageModal"));
+
+            images.forEach(img => {
+                img.addEventListener("click", function() {
+                    modalBackground.style.backgroundImage = `url(\'${this.src}\')`;
+                    imageModal.show();
+                });
+            });
+        });
+
+        //---------------------------
         let visibleRides = 2;
         const ridesToShow = 3;
 
@@ -69,6 +83,7 @@
 @endphp
 
 @section('content')
+
     <!-- wpo-room-area-start -->
     <div class="wpo-room-area-s2 section-padding pb-0 position-relative" style="margin-top: -120px">
         @php
@@ -97,13 +112,13 @@
                             <div class="row">
                                 <div class="col-md-8">
                                     <img src="{{ asset($chunk[0]->image_url ?? 'assets/images/default.png') }}"
-                                        class="d-block w-100" alt="{{ $destination->name }}">
+                                        class="d-block w-100 img-clickable" alt="{{ $destination->name }}">
                                 </div>
                                 <div class="col-md-4 d-flex flex-column">
                                     <img src="{{ asset($chunk[1]->image_url ?? ($chunk[0]->image_url ?? 'assets/images/default.png')) }}"
-                                        class="mb-2 w-100" alt="{{ $destination->name }}">
+                                        class="mb-2 w-100 img-clickable" alt="{{ $destination->name }}">
                                     <img src="{{ asset($chunk[2]->image_url ?? ($chunk[0]->image_url ?? 'assets/images/default.png')) }}"
-                                        class="w-100" alt="{{ $destination->name }}">
+                                        class="w-100 img-clickable" alt="{{ $destination->name }}">
                                 </div>
                             </div>
                         </div>
@@ -505,4 +520,18 @@
         </div>
     </section>
     <!--End Room-details area-->
+
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-body p-0 d-flex justify-content-center align-items-center"
+                    style="background-color: black;">
+                    <div class="w-100 h-100" id="modalBackground"
+                        style="background-size: cover; background-position: center;"></div>
+                </div>
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
 @endsection

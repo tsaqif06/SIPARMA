@@ -1,7 +1,7 @@
 <header id="header">
     <div class="wpo-site-header">
-        <nav class="navigation navbar navbar-expand-lg navbar-light">
-            <div class="container">
+        <nav class="navigation navbar navbar-expand-lg navbar-light" style="border-radius: 17px">
+            <div class="container-fluid">
                 <div class="row row-navbar align-items-center">
                     <div class="col-lg-3 col-md-3 col-3 d-lg-none dl-block">
                         <div class="mobail-menu">
