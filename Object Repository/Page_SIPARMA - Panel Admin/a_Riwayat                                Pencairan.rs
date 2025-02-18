@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebElementEntity>
+   <description></description>
+   <name>a_Riwayat                                Pencairan</name>
+   <tag></tag>
+   <elementGuidId>b11a3641-e6b2-4575-80fa-d496ab1c92e8</elementGuidId>
+   <selectorCollection>
+      <entry>
+         <key>XPATH</key>
+         <value>//ul[@id='sidebar-menu']/li[11]/ul/li[2]/a</value>
+      </entry>
+      <entry>
+         <key>CSS</key>
+         <value>ul.sidebar-submenu.show > li:nth-of-type(2) > a</value>
+      </entry>
+   </selectorCollection>
+   <selectorMethod>XPATH</selectorMethod>
+   <smartLocatorCollection>
+      <entry>
+         <key>SMART_LOCATOR</key>
+         <value>internal:role=link[name=&quot; Riwayat Pencairan&quot;i]</value>
+      </entry>
+   </smartLocatorCollection>
+   <smartLocatorEnabled>false</smartLocatorEnabled>
+   <useRalativeImagePath>true</useRalativeImagePath>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>tag</name>
+      <type>Main</type>
+      <value>a</value>
+      <webElementGuid>e484f055-adc2-44a7-b356-06b6ec60ade0</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>href</name>
+      <type>Main</type>
+      <value>http://127.0.0.1:8000/admin/withdrawal/history</value>
+      <webElementGuid>f19b5bc9-3944-49dc-9d99-9e5e6a32081a</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>text</name>
+      <type>Main</type>
+      <value> Riwayat
+                                Pencairan</value>
+      <webElementGuid>0416acb3-2a52-4df6-a5b4-bff9e27c28a7</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath</name>
+      <type>Main</type>
+      <value>id(&quot;sidebar-menu&quot;)/li[@class=&quot;dropdown open&quot;]/ul[@class=&quot;sidebar-submenu show&quot;]/li[2]/a[1]</value>
+      <webElementGuid>1005e4b2-e0fa-46d8-96eb-3bce453020d6</webElementGuid>
+   </webElementProperties>
+   <webElementXpaths>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:idRelative</name>
+      <type>Main</type>
+      <value>//ul[@id='sidebar-menu']/li[11]/ul/li[2]/a</value>
+      <webElementGuid>072e1501-0e33-4070-82c2-f6a0900cbe78</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:link</name>
+      <type>Main</type>
+      <value>//a[contains(text(),'Riwayat
+                                Pencairan')]</value>
+      <webElementGuid>0dedcb57-2512-4ca5-8f4f-c270a74f87ff</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:neighbor</name>
+      <type>Main</type>
+      <value>(.//*[normalize-space(text()) and normalize-space(.)='Pencairan Saldo'])[1]/following::a[2]</value>
+      <webElementGuid>4d88166b-04fc-4d24-b2d3-ab764b61d8da</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:neighbor</name>
+      <type>Main</type>
+      <value>(.//*[normalize-space(text()) and normalize-space(.)='Lainnya'])[1]/preceding::a[1]</value>
+      <webElementGuid>3e736aa3-5a75-469e-9a90-41ce3c79d1b1</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:neighbor</name>
+      <type>Main</type>
+      <value>(.//*[normalize-space(text()) and normalize-space(.)='Keluhan'])[1]/preceding::a[1]</value>
+      <webElementGuid>4d667d1e-f47e-4f52-a979-39c6f85e5b79</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:href</name>
+      <type>Main</type>
+      <value>//a[@href='http://127.0.0.1:8000/admin/withdrawal/history']</value>
+      <webElementGuid>97a3dac4-6b2f-4b76-89d6-26f552fb5f16</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:position</name>
+      <type>Main</type>
+      <value>//li[11]/ul/li[2]/a</value>
+      <webElementGuid>40e720f8-c5c6-4227-9016-cec45b7a64ab</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:customAttributes</name>
+      <type>Main</type>
+      <value>//a[@href = 'http://127.0.0.1:8000/admin/withdrawal/history' and (text() = ' Riwayat
+                                Pencairan' or . = ' Riwayat
+                                Pencairan')]</value>
+      <webElementGuid>cd949332-ea5b-46e6-8156-4338569044ae</webElementGuid>
+   </webElementXpaths>
+</WebElementEntity>

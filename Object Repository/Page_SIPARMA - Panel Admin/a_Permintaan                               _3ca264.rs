@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebElementEntity>
+   <description></description>
+   <name>a_Permintaan                               _3ca264</name>
+   <tag></tag>
+   <elementGuidId>d3526c19-f7f4-40a6-a98a-d705f759637b</elementGuidId>
+   <selectorCollection>
+      <entry>
+         <key>XPATH</key>
+         <value>//ul[@id='sidebar-menu']/li[11]/ul/li/a</value>
+      </entry>
+      <entry>
+         <key>CSS</key>
+         <value>li.dropdown.dropdown-open > ul.sidebar-submenu > li > a</value>
+      </entry>
+   </selectorCollection>
+   <selectorMethod>XPATH</selectorMethod>
+   <smartLocatorCollection>
+      <entry>
+         <key>SMART_LOCATOR</key>
+         <value>internal:role=link[name=&quot; Permintaan Pencairan&quot;i]</value>
+      </entry>
+   </smartLocatorCollection>
+   <smartLocatorEnabled>false</smartLocatorEnabled>
+   <useRalativeImagePath>true</useRalativeImagePath>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>tag</name>
+      <type>Main</type>
+      <value>a</value>
+      <webElementGuid>575e59ef-14c3-45dd-9107-b0ba85b809ae</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>href</name>
+      <type>Main</type>
+      <value>http://127.0.0.1:8000/admin/withdrawal/approval</value>
+      <webElementGuid>6e1d51b5-2b0c-4d62-8f5b-450c477439d3</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>text</name>
+      <type>Main</type>
+      <value>
+                                 Permintaan
+                                Pencairan</value>
+      <webElementGuid>b937f57c-3bbd-46ce-92af-4a112b889098</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath</name>
+      <type>Main</type>
+      <value>id(&quot;sidebar-menu&quot;)/li[@class=&quot;dropdown dropdown-open&quot;]/ul[@class=&quot;sidebar-submenu&quot;]/li[1]/a[1]</value>
+      <webElementGuid>836e772c-308f-4a84-a5bf-1aa61155fbad</webElementGuid>
+   </webElementProperties>
+   <webElementXpaths>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:idRelative</name>
+      <type>Main</type>
+      <value>//ul[@id='sidebar-menu']/li[11]/ul/li/a</value>
+      <webElementGuid>985329bd-3dd3-4e04-a502-be03bb3be771</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:neighbor</name>
+      <type>Main</type>
+      <value>(.//*[normalize-space(text()) and normalize-space(.)='Pencairan Saldo'])[1]/following::a[1]</value>
+      <webElementGuid>c93904ea-c5b7-425a-a864-7fe8b57563b3</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:neighbor</name>
+      <type>Main</type>
+      <value>(.//*[normalize-space(text()) and normalize-space(.)='Admin Tempat'])[1]/following::a[2]</value>
+      <webElementGuid>6de11683-3a02-4328-ab7d-77001a7cef8d</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:neighbor</name>
+      <type>Main</type>
+      <value>(.//*[normalize-space(text()) and normalize-space(.)='Lainnya'])[1]/preceding::a[2]</value>
+      <webElementGuid>ea77d395-0f14-4b20-8ff3-005df5c2afb0</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:href</name>
+      <type>Main</type>
+      <value>//a[@href='http://127.0.0.1:8000/admin/withdrawal/approval']</value>
+      <webElementGuid>155afb01-6b7b-4750-9f05-dd0727b7bdcf</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:position</name>
+      <type>Main</type>
+      <value>//li[11]/ul/li/a</value>
+      <webElementGuid>e16bc672-f1be-4dfd-9fa3-930a7fb90d0a</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:customAttributes</name>
+      <type>Main</type>
+      <value>//a[@href = 'http://127.0.0.1:8000/admin/withdrawal/approval' and (text() = '
+                                 Permintaan
+                                Pencairan' or . = '
+                                 Permintaan
+                                Pencairan')]</value>
+      <webElementGuid>74a80050-5274-435f-9571-cbac9e604e1d</webElementGuid>
+   </webElementXpaths>
+</WebElementEntity>
