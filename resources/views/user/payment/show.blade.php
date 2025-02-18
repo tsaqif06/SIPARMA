@@ -51,6 +51,19 @@
                         </div>
                     @endforeach
                 </div>
+
+                @php
+                    $discountedPrice = $ticket->item->promos[0]->discount ?? 0;
+                    $hargaDiskon = $ticket->item->price - ($ticket->item->price * $discountedPrice) / 100;
+                    $hargaDiskonWeekend =
+                        $ticket->item->weekend_price - ($ticket->item->weekend_price * $discountedPrice) / 100;
+
+                    $discountedPriceChildren = $ticket->item->promos[0]->discount ?? 0;
+                    $hargaDiskonAnak =
+                        $ticket->item->children_price -
+                        ($ticket->item->children_price * $discountedPriceChildren) / 100;
+                @endphp
+
                 <div class="card p-4">
                     <h5 class="mb-3">Total Pembayaran</h5>
                     @foreach ($transaction->tickets as $ticket)
@@ -61,7 +74,7 @@
                                 </p>
                                 <p>IDR
                                     {{ number_format(
-                                        (\Carbon\Carbon::parse($ticket->visit_date)->isWeekend() ? $ticket->item->weekend_price : $ticket->item->price) *
+                                        (\Carbon\Carbon::parse($ticket->visit_date)->isWeekend() ? $hargaDiskonWeekend : $hargaDiskon) *
                                             $ticket->adult_count,
                                         0,
                                         ',',
@@ -77,7 +90,7 @@
                                     ({{ $ticket->children_count }} Anak)
                                 </p>
                                 <p>IDR
-                                    {{ number_format($ticket->item->children_price * $ticket->children_count, 0, ',', '.') }}
+                                    {{ number_format($hargaDiskonAnak * $ticket->children_count, 0, ',', '.') }}
                                 </p>
                             </div>
                         @endif

@@ -90,37 +90,45 @@
             <h2>Beli Tiket {{ $item->name }}</h2>
         </div>
 
-        <!-- Date Picker -->
-        <div class="card p-3 mb-4">
+        <div class="container mt-5">
             <div class="row">
-                <div class="col-12">
+                <div class="col-md-7">
                     <h4>Pilih Tanggal</h4>
+                    <hr>
                     <input type="date" id="visit-date" name="visit_date"
-                        class="form-control w-50 mx-auto @error('visit_date') is-invalid @enderror" required
+                        class="form-control w-100 mt-4 @error('visit_date') is-invalid @enderror" required
                         min="{{ date('Y-m-d') }}" value="{{ old('visit_date') }}">
 
                     <!-- Tampilkan error message jika validasi gagal -->
                     @error('visit_date')
                         <div class="text-danger mt-1">{{ $message }}</div>
                     @enderror
-                </div>
-            </div>
-        </div>
 
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-md-7">
-                    <div class="ticket-card-checkout">
-                        <h5>Tiket Dewasa</h5>
-                        <div class="d-flex align-items-center">
-                            <img src="{{ asset($item->gallery[0]->image_url ?? 'assets/images/default.png') }}"
-                                alt="Ticket Image" class="me-3" style="width: 50px; height: 50px; object-fit: cover;">
-                            <div>
-                                <p class="text-muted">{{ $item->name }}</p>
-                                <p class="text-danger">IDR <span id="adult-price" data-weekday="{{ $item->price }}"
-                                        data-weekend="{{ $item->weekend_price }}">
-                                        {{ number_format($item->price, 0, ',', '.') }}</span>
-                                </p>
+                    <h4 style="margin-top: 40px">Pilih Tiket</h4>
+                    <hr style="margin-bottom: 20px">
+                    <div class="pricing-area">
+                        <div class="ticket-card">
+                            <div class="img"
+                                style="background-image: url('../../../{{ $item->gallery[0]->image_url ?? 'assets/images/default.png' }}');">
+                            </div>
+                            <div class="ticket-info">
+                                <div class="ticket-title">Tiket
+                                    {{ str_replace(['destination', 'ride'], ['Wisata', 'Wahana'], $type) }} -
+                                    {{ $item->name }}</div>
+                                <div class="ticket-desc">Dewasa</div>
+                            </div>
+
+                            @php
+                                $discountedPrice = $item->promos[0]->discount ?? 0;
+                                $hargaDiskon = $item->price - ($item->price * $discountedPrice) / 100;
+                                $hargaDiskonWeekend =
+                                    $item->weekend_price - ($item->weekend_price * $discountedPrice) / 100;
+                            @endphp
+
+                            <div class="ticket-price-button">
+                                <span class="ticket-price" id="adult-price" data-weekday="{{ $hargaDiskon }}"
+                                    data-weekend="{{ $hargaDiskonWeekend }}">IDR
+                                    {{ number_format($hargaDiskon, 0, ',', '.') }}</span>
                                 <div class="quantity-controls">
                                     <button class="qty-btn" data-type="adult" data-change="-1">-</button>
                                     <span id="adult-quantity" class="mx-3 text-secondary">0</span>
@@ -128,8 +136,35 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="ticket-card">
+                            <div class="img"
+                                style="background-image: url('../../../{{ $item->gallery[0]->image_url ?? 'assets/images/default.png' }}');">
+                            </div>
+                            <div class="ticket-info">
+                                <div class="ticket-title">Tiket
+                                    {{ str_replace(['destination', 'ride'], ['Wisata', 'Wahana'], $type) }} -
+                                    {{ $item->name }}</div>
+                                <div class="ticket-desc">Anak-Anak</div>
+                            </div>
+
+                            @php
+                                $discountedPriceChildren = $item->promos[0]->discount ?? 0;
+                                $hargaDiskonAnak =
+                                    $item->children_price - ($item->children_price * $discountedPriceChildren) / 100;
+                            @endphp
+
+                            <div class="ticket-price-button">
+                                <span class="ticket-price" id="child-price" data-price="{{ $hargaDiskonAnak }}">IDR
+                                    {{ number_format($hargaDiskonAnak, 0, ',', '.') }}</span>
+                                <div class="quantity-controls">
+                                    <button class="qty-btn" data-type="child" data-change="-1">-</button>
+                                    <span id="child-quantity" class="mx-3 text-secondary">0</span>
+                                    <button class="qty-btn" data-type="child" data-change="1">+</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="ticket-card-checkout">
+                    {{--  <div class="ticket-card-checkout">
                         <h5>Tiket Anak-Anak</h5>
                         <div class="d-flex align-items-center">
                             <img src="{{ asset($item->gallery[0]->image_url ?? 'assets/images/default.png') }}"
@@ -146,7 +181,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>  --}}
                 </div>
                 <div class="col-md-5">
                     <div class="card p-3">

@@ -115,9 +115,9 @@
         <table>
             <thead>
                 <tr>
-                    <th>Jumlah</th>
                     <th>Nama Tiket</th>
                     <th>Harga</th>
+                    <th>Jumlah</th>
                     <th>Sub Total</th>
                 </tr>
             </thead>
@@ -125,25 +125,36 @@
                 @foreach ($transaction->tickets as $ticket)
                     @php
                         $isWeekend = \Carbon\Carbon::parse($ticket->visit_date)->isWeekend();
-                        $adultPrice = $isWeekend ? $ticket->item->weekend_price : $ticket->item->price;
+
+                        $discountedPrice = $ticket->item->promos[0]->discount ?? 0;
+                        $hargaDiskon = $ticket->item->price - ($ticket->item->price * $discountedPrice) / 100;
+                        $hargaDiskonWeekend =
+                            $ticket->item->weekend_price - ($ticket->item->weekend_price * $discountedPrice) / 100;
+
+                        $adultPrice = $isWeekend ? $hargaDiskonWeekend : $hargaDiskon;
+
+                        $discountedPriceChildren = $ticket->item->promos[0]->discount ?? 0;
+                        $hargaDiskonAnak =
+                            $ticket->item->children_price -
+                            ($ticket->item->children_price * $discountedPriceChildren) / 100;
                     @endphp
 
                     @if ($ticket->adult_count > 0)
                         <tr>
-                            <td>{{ $ticket->adult_count }}</td>
                             <td>{{ $ticket->item->name }} (Dewasa)</td>
                             <td>IDR {{ number_format($adultPrice, 0, ',', '.') }}</td>
+                            <td>{{ $ticket->adult_count }}</td>
                             <td>IDR {{ number_format($ticket->adult_count * $adultPrice, 0, ',', '.') }}</td>
                         </tr>
                     @endif
 
                     @if ($ticket->children_count > 0)
                         <tr>
-                            <td>{{ $ticket->children_count }}</td>
                             <td>{{ $ticket->item->name }} (Anak-anak)</td>
-                            <td>IDR {{ number_format($ticket->item->children_price, 0, ',', '.') }}</td>
+                            <td>IDR {{ number_format($hargaDiskonAnak, 0, ',', '.') }}</td>
+                            <td>{{ $ticket->children_count }}</td>
                             <td>IDR
-                                {{ number_format($ticket->children_count * $ticket->item->children_price, 0, ',', '.') }}
+                                {{ number_format($ticket->children_count * $hargaDiskonAnak, 0, ',', '.') }}
                             </td>
                         </tr>
                     @endif

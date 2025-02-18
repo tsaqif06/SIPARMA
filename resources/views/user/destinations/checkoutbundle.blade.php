@@ -39,26 +39,22 @@
             <h2>Beli Tiket {{ $item->name }}</h2>
         </div>
 
-        <!-- Date Picker -->
-        <div class="card p-3 mb-4">
+        <div class="container mt-5">
             <div class="row">
-                <div class="col-12">
+                <div class="col-md-7">
                     <h4>Pilih Tanggal</h4>
+                    <hr>
                     <input type="date" id="visit-date" name="visit_date"
-                        class="form-control w-50 mx-auto @error('visit_date') is-invalid @enderror" required
+                        class="form-control w-100 mt-4 @error('visit_date') is-invalid @enderror" required
                         min="{{ date('Y-m-d') }}" value="{{ old('visit_date') }}">
 
                     <!-- Tampilkan error message jika validasi gagal -->
                     @error('visit_date')
                         <div class="text-danger mt-1">{{ $message }}</div>
                     @enderror
-                </div>
-            </div>
-        </div>
 
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-md-7">
+                    <h4 style="margin-top: 40px">Pilih Tiket</h4>
+                    <hr style="margin-bottom: 20px">
                     <div class="pricing-area">
                         <div class="ticket-card">
                             <div class="img"
