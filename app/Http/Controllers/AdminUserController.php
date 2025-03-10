@@ -18,7 +18,9 @@ class AdminUserController extends Controller
      */
     public function index()
     {
-        $users = User::with(['adminDestinations', 'adminPlaces'])->get();
+        $users = User::with(['adminDestinations', 'adminPlaces'])
+            ->orderByRaw("FIELD(role, 'superadmin', 'admin_wisata', 'admin_tempat', 'user')")
+            ->get();
 
         $filteredUsers = [];
         foreach ($users as $user) {
@@ -61,7 +63,7 @@ class AdminUserController extends Controller
             'name' => 'required|string|max:100',
             'email' => 'required|email|unique:tbl_users,email|max:100',
             'password' => 'required|min:6',
-            'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png|max:4096',
             'phone_number' => 'required|string|max:30',
             'role' => 'required|string|in:admin_wisata,admin_tempat',
             'destination_id' => 'nullable|exists:tbl_destinations,id',
@@ -187,7 +189,7 @@ class AdminUserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:100',
             'email' => $emailValidation,
-            'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png|max:4096',
             'phone_number' => 'required|string|max:30',
             'destination_id' => 'nullable|exists:tbl_destinations,id',
             'place_id' => 'nullable|exists:tbl_places,id',

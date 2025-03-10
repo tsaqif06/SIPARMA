@@ -8,6 +8,7 @@ use App\Models\AdminPlace;
 use App\Models\Destination;
 use App\Models\Transaction;
 use Illuminate\Support\Str;
+use App\Models\GalleryPlace;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,7 +32,7 @@ class ProfileController extends Controller
             'name' => 'required|string|max:255',
             'email' => $emailValidation,
             'phone_number' => 'nullable|string|max:15',
-            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:4096',
         ]);
 
         $picturePath = $user->profile_picture;
@@ -67,8 +68,8 @@ class ProfileController extends Controller
         $user = auth()->user();
 
         $transactions = Transaction::where('user_id', $user->id)
-        ->orderBy('created_at', 'desc')
-        ->paginate(5);
+            ->orderBy('created_at', 'desc')
+            ->paginate(5);
 
         return view('user.profile.riwayat', compact('transactions'));
     }
@@ -89,6 +90,7 @@ class ProfileController extends Controller
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'ownership_docs' => 'required|file|mimes:pdf,jpg,png,jpeg|max:5000',
+            'gallery_images.*' => 'image|mimes:jpg,png,jpeg|max:5000', // Validasi gambar
         ]);
 
         // Simpan dokumen kepemilikan
@@ -120,6 +122,19 @@ class ProfileController extends Controller
             'approval_status' => 'pending',
             'ownership_docs' => "storage/$docPath"
         ]);
+
+        // Simpan gambar galeri jika ada
+        if ($request->hasFile('gallery_images')) {
+            foreach ($request->file('gallery_images') as $image) {
+                $imagePath = $image->store('gallery/place', 'public'); // Simpan ke storage/public/gallery/place
+
+                GalleryPlace::create([
+                    'place_id' => $place->id,
+                    'image_url' => "storage/$imagePath",
+                    'image_type' => 'place', // Default sebagai gambar tempat
+                ]);
+            }
+        }
 
         return redirect()->back()->with('success', 'Pengajuan verifikasi berhasil dikirim.');
     }

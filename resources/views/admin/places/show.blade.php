@@ -78,6 +78,26 @@
                         </ul>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Galeri Tempat -->
+                        @if ($place->gallery->count() > 0)
+                            <div class="place-gallery mb-5">
+                                <h3 class="fw-bold">Galeri</h3>
+                                <div class="row">
+                                    @foreach ($place->gallery as $image)
+                                        <div class="col-md-4 mb-3">
+                                            <div class="gallery-image">
+                                                <img src="{{ asset($image->image_url) }}" alt="Gambar {{ $place->name }}"
+                                                    class="img-fluid rounded">
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                </div>
             </div>
 
             <!-- Tombol Aksi -->

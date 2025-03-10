@@ -147,7 +147,7 @@ class AdminWithdrawalController extends Controller
         $request->validate([
             'status' => 'required|in:completed,rejected',
             'admin_note' => 'nullable|string',
-            'transfer_proof' => $request->status == 'completed' ? 'required|file|mimes:jpg,jpeg,png,pdf|max:2048' : 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'transfer_proof' => $request->status == 'completed' ? 'required|file|mimes:jpg,jpeg,png,pdf|max:4096' : 'nullable|file|mimes:jpg,jpeg,png,pdf|max:4096',
         ]);
 
         $withdrawal->status = $request->status;

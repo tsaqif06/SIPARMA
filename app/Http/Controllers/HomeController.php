@@ -83,7 +83,7 @@ class HomeController extends Controller
             'name' => 'required|string|max:100',
             'address' => 'required|string|max:255',
             'description' => 'required|string',
-            'image_url.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image_url.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:4096',
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
         ]);

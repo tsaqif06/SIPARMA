@@ -51,7 +51,7 @@ class AdminGalleryController extends Controller
     public function store(Request $request, $type)
     {
         $request->validate([
-            'image_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096',
             'image_type' => 'nullable|in:place,promo,menu',
         ]);
 

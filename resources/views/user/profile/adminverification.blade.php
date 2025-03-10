@@ -188,6 +188,15 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                    <div class="mb-3 mt-1">
+                                        <label for="galleryImages" class="form-label">Unggah Foto Tempat</label>
+                                        <input type="file" name="gallery_images[]"
+                                            class="form-control @error('gallery_images') is-invalid @enderror"
+                                            id="galleryImages" multiple>
+                                        @error('gallery_images')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
 
                                 <!-- Bagian Map -->
