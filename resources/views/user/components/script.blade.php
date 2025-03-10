@@ -15,6 +15,7 @@
 <script src="{{ asset('assets/js/lib/file-upload.js') }}"></script>
 <script src="{{ asset('assets/js/lib/sweetalert2.min.js') }}"></script>
 <script src="{{ asset('assets/js/lib/leaflet.js') }}"></script>
+<script src="{{ asset('assets/js/lib/leaflet-routing-machine.js') }}"></script>
 
 <script src="{{ asset('assets/user/js/script.js') }}"></script>
 

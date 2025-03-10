@@ -47,6 +47,49 @@
         L.marker([lat, lng], {
             icon: defaultIcon
         }).addTo(map);
+
+        // Fungsi untuk menampilkan navigasi rute
+        document.getElementById("showRoute").addEventListener("click", function() {
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    var userLatLng = [position.coords.latitude, position.coords.longitude];
+
+                    // Hapus marker lama kalau ada
+                    if (window.userMarker) {
+                        map.removeLayer(window.userMarker);
+                    }
+
+                    // Tambahkan marker untuk lokasi pengguna
+                    window.userMarker = L.marker(userLatLng, {
+                            icon: defaultIcon
+                        })
+                        .addTo(map)
+                        .bindPopup("Lokasi Anda")
+                        .openPopup();
+
+                    // Zoom ke lokasi pengguna
+                    map.setView(userLatLng, 14);
+
+                    // Lokasi tujuan
+                    var tujuanLatLng = [lat, lng];
+
+                    // Hapus rute lama kalau ada
+                    if (window.routingControl) {
+                        map.removeControl(window.routingControl);
+                    }
+
+                    // Tambahkan navigasi rute dari lokasi pengguna ke tujuan
+                    window.routingControl = L.Routing.control({
+                        waypoints: [L.latLng(userLatLng), L.latLng(tujuanLatLng)],
+                        routeWhileDragging: true,
+                        show: false // Menyembunyikan panel rute
+                    }).addTo(map);
+                },
+                function() {
+                    alert("Gagal mendapatkan lokasi Anda. Pastikan GPS aktif.");
+                }
+            );
+        });
     </script>';
 @endphp
 
@@ -284,6 +327,7 @@
                             </div>
                             <input type="hidden" name="latitude" id="latitude" value="{{ $location->latitude }}">
                             <input type="hidden" name="longitude" id="longitude" value="{{ $location->longitude }}">
+                            <button id="showRoute" class="btn btn-primary mt-3">Tunjukkan Navigasi dari Lokasi Saya</button>
                         </div>
                         <div class="wpo-contact-widget widget mt-5">
                             <h4>Mengalami Masalah?</h4>

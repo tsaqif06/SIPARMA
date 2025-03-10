@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="{{ asset('assets/user/sass/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/lib/sweetalert2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/lib/leaflet.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/lib/leaflet-routing-machine.css') }}">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script src="https://app.sandbox.midtrans.com/snap/snap.js"
