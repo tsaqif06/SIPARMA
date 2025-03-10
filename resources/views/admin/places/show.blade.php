@@ -79,7 +79,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-12 mt-5">
                         <!-- Galeri Tempat -->
                         @if ($place->gallery->count() > 0)
                             <div class="place-gallery mb-5">
