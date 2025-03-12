@@ -1,8 +1,8 @@
 @extends('admin.layout.layout')
 
 @php
-    $title = 'Lihat Keluhan';
-    $subTitle = 'Keluhan - Lihat';
+    $title = 'Detail Artikel';
+    $subTitle = 'Detail Artikel';
 @endphp
 
 @section('content')
@@ -10,78 +10,114 @@
         <div class="col-lg-12">
             <div class="card h-100">
                 <div class="card-body p-24">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="mb-20">
-                                <label for="user_id" class="form-label fw-semibold text-primary-light text-sm mb-8">
-                                    Nama Pelapor
-                                </label>
-                                <input type="text" class="form-control radius-8" id="user_id" name="user_id"
-                                    value="{{ $complaint->user->name }}" readonly>
-                            </div>
-                        </div>
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-show-article" role="tabpanel"
+                            aria-labelledby="pills-show-article-tab" tabindex="0">
+                            <form>
+                                <div class="row">
+                                    <!-- Judul Artikel -->
+                                    <div class="col-sm-12 mb-3">
+                                        <label class="form-label fw-semibold">Judul Artikel</label>
+                                        <input type="text" class="form-control" value="{{ $article->title }}" readonly>
+                                    </div>
 
-                        @if ($complaint->destination)
-                            <div class="col-sm-6">
-                                <div class="mb-20">
-                                    <label for="destination_id"
-                                        class="form-label fw-semibold text-primary-light text-sm mb-8">
-                                        Nama Wisata
-                                    </label>
-                                    <input type="text" class="form-control radius-8" id="destination_id"
-                                        name="destination_id" value="{{ $complaint->destination->name }}" readonly>
+                                    <!-- Kategori -->
+                                    <div class="col-sm-6 mb-3">
+                                        <label class="form-label fw-semibold">Kategori</label>
+                                        <input type="text" class="form-control" value="{{ $article->category->name }}"
+                                            readonly>
+                                    </div>
+
+                                    <!-- Status -->
+                                    <div class="col-sm-6 mb-3">
+                                        <label class="form-label fw-semibold">Status</label>
+                                        <input type="text" class="form-control" value="{{ ucfirst($article->status) }}"
+                                            readonly>
+                                    </div>
+
+                                    <!-- Thumbnail -->
+                                    <div class="col-sm-12 mb-3">
+                                        <label class="form-label fw-semibold">Thumbnail</label>
+                                        <div class="mt-2">
+                                            <img src="{{ asset(str_replace('public/', '', $article->thumbnail)) }}"
+                                                alt="Thumbnail" class="img-fluid" style="max-width: 200px;">
+                                        </div>
+                                    </div>
+
+                                    <!-- Konten Artikel -->
+                                    <div class="col-sm-12 mb-3">
+                                        <label class="form-label fw-semibold">Isi Artikel</label>
+                                        <div class="border p-3 rounded bg-light" style="min-height: 150px;">
+                                            {!! $article->content !!}
+                                        </div>
+                                    </div>
+
+                                    <!-- Tags -->
+                                    <div class="col-sm-12 mb-3">
+                                        <label class="form-label fw-semibold">Tags</label>
+                                        <div>
+                                            @foreach ($article->tags as $tag)
+                                                <span
+                                                    class="bg-primary-light text-primary-600 px-24 py-4 rounded-pill fw-medium text-sm my-3 mx-2">
+                                                    {{ $tag->tag_name }}
+                                                </span>
+                                            @endforeach
+                                        </div>
+                                    </div>
+
+                                    <!-- Statistik Artikel -->
+                                    <div class="col-sm-12 mb-3">
+                                        <label class="form-label fw-semibold">Statistik</label>
+                                        <div class="border p-3 rounded bg-light">
+                                            <p><strong>Likes:</strong> {{ $article->likes->count() }}</p>
+                                            <p><strong>Views:</strong> {{ $article->views->count() }}</p>
+                                            <p><strong>Komentar:</strong> {{ $article->comments->count() }}</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Komentar -->
+                                    <div class="col-sm-12 mb-3">
+                                        <label class="form-label fw-semibold">Komentar</label>
+                                        <div class="border p-3 rounded bg-light">
+                                            @if ($article->comments->isEmpty())
+                                                <p class="text-muted">Belum ada komentar.</p>
+                                            @else
+                                                @foreach ($article->comments as $comment)
+                                                    <div class="mb-3 p-2 border-bottom">
+                                                        <strong>{{ $comment->user->name }}</strong>
+                                                        <span class="text-muted text-sm"> •
+                                                            {{ $comment->created_at->diffForHumans() }}</span>
+                                                        <p class="mt-2">{{ $comment->comment }}</p>
+
+                                                        <!-- Jika ada reply, tampilkan -->
+                                                        @if ($comment->replies->isNotEmpty())
+                                                            <div class="ms-4 border-start ps-3">
+                                                                @foreach ($comment->replies as $reply)
+                                                                    <div class="mb-3 p-2 border-bottom">
+                                                                        <strong>{{ $reply->user->name }}</strong>
+                                                                        <span class="text-muted text-sm"> •
+                                                                            {{ $reply->created_at->diffForHumans() }}</span>
+                                                                        <p class="mt-2">{{ $reply->comment }}</p>
+                                                                    </div>
+                                                                @endforeach
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                @endforeach
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <!-- Tombol Kembali & Edit -->
+                                    <div class="d-flex align-items-center justify-content-center gap-3">
+                                        <a href="{{ route('admin.articles.index') }}"
+                                            class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-md px-56 py-11 radius-8">Kembali</a>
+                                        <a href="{{ route('admin.articles.edit', $article->id) }}"
+                                            class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8">Edit
+                                            Artikel</a>
+                                    </div>
                                 </div>
-                            </div>
-                        @else
-                            <div class="col-sm-6">
-                                <div class="mb-20">
-                                    <label for="place_id" class="form-label fw-semibold text-primary-light text-sm mb-8">
-                                        Nama Tempat
-                                    </label>
-                                    <input type="text" class="form-control radius-8" id="place_id" name="place_id"
-                                        value="{{ $complaint->place->name }}" readonly>
-                                </div>
-                            </div>
-                        @endif
-
-                        <div class="col-sm-6">
-                            <div class="mb-20">
-                                <label for="created_at" class="form-label fw-semibold text-primary-light text-sm mb-8">
-                                    Waktu Dibuat
-                                </label>
-                                <input type="text" class="form-control radius-8" id="created_at" name="created_at"
-                                    value="{{ $complaint->created_at->format('d-m-Y') }}" readonly>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-6">
-                            <div class="mb-20">
-                                <label for="status" class="form-label fw-semibold text-primary-light text-sm mb-8">
-                                    Status Keluhan
-                                </label>
-                                <input type="text" class="form-control radius-8" id="status" name="status"
-                                    value="{{ $complaint->status == 'new' ? 'Baru' : ($complaint->status == 'resolved' ? 'Selesai' : 'Ditutup') }}"
-                                    readonly>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-12">
-                            <div class="mb-20">
-                                <label for="complaint_text" class="form-label fw-semibold text-primary-light text-sm mb-8">
-                                    Isi Keluhan
-                                </label>
-                                <textarea class="form-control radius-8" id="complaint_text" name="complaint_text" readonly>{{ $complaint->complaint_text }}</textarea>
-                            </div>
-                        </div>
-
-                        <div class="d-flex align-items-center justify-content-center gap-3">
-                            <a href="{{ route('admin.complaints.index') }}"
-                                class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-md px-56 py-11 radius-8">Kembali</a>
-                            <a href="{{ route('admin.complaints.edit', $complaint->id) }}">
-                                <button type="button"
-                                    class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8">Ubah
-                                    Status</button>
-                            </a>
+                            </form>
                         </div>
                     </div>
                 </div>

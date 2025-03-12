@@ -25,6 +25,10 @@ class ArticleComment extends Model
 
     public function replies()
     {
-        return $this->hasMany(ArticleComment::class, 'parent_id');
+        return $this->hasMany(ArticleComment::class, 'parent_id')
+            ->with(['replies' => function ($query) {
+                $query->orderBy('created_at', 'asc');
+            }])
+            ->orderBy('created_at', 'asc');
     }
 }

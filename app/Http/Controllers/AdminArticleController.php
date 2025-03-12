@@ -26,11 +26,18 @@ class AdminArticleController extends Controller
     // Tampilkan artikel berdasarkan ID
     public function show($id)
     {
-        $article = Article::with(['category', 'tags', 'comments', 'likes', 'views'])
-            ->findOrFail($id);
+        $article = Article::with([
+            'comments' => function ($query) {
+                $query->whereNull('parent_id')
+                    ->with('replies.user')
+                    ->orderBy('created_at', 'asc');
+            },
+            'comments.user'
+        ])->findOrFail($id);
 
         return view('admin.articles.show', compact('article'));
     }
+
 
     // Form tambah artikel baru
     public function create()
