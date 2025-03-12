@@ -27,6 +27,8 @@
     <script src="{{ asset('assets/js/lib/sweetalert2.min.js') }}"></script>
     <!-- leaflet -->
     <script src="{{ asset('assets/js/lib/leaflet.js') }}"></script>
+    <!-- trix -->
+    <script src="{{ asset('assets/js/lib/trix.js') }}"></script>
 
     <!-- main js -->
     <script src="{{ asset('assets/js/app.js') }}"></script>

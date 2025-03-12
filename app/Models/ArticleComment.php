@@ -9,6 +9,8 @@ class ArticleComment extends Model
 {
     use HasFactory;
 
+    protected $table = 'tbl_article_comments';
+
     protected $fillable = ['article_id', 'user_id', 'comment', 'parent_id'];
 
     public function article()

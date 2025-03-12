@@ -50,6 +50,12 @@
                         <span>Tempat</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('admin.articles.index') }}">
+                        <iconify-icon icon="grommet-icons:article" class="menu-icon"></iconify-icon>
+                        <span>Artikel</span>
+                    </a>
+                </li>
 
                 <li class="sidebar-menu-group-title">Keuangan</li>
                 <li>

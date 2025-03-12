@@ -9,6 +9,8 @@ class ArticleLike extends Model
 {
     use HasFactory;
 
+    protected $table = 'tbl_article_likes';
+
     protected $fillable = ['article_id', 'user_id'];
 
     public function article()

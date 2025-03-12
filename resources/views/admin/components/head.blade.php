@@ -35,6 +35,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/lib/sweetalert2.min.css') }}">
     <!-- leaflet -->
     <link rel="stylesheet" href="{{ asset('assets/css/lib/leaflet.css') }}">
+    <!-- trix -->
+    <link rel="stylesheet" href="{{ asset('assets/css/lib/trix.css') }}">
 
     <!-- main css -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">

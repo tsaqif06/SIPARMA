@@ -17,13 +17,14 @@ use App\Http\Controllers\AdminPromoController;
 use App\Http\Controllers\AdminBundleController;
 use App\Http\Controllers\AdminReviewController;
 use App\Http\Controllers\DestinationController;
+use App\Http\Controllers\AdminBalanceController;
 use App\Http\Controllers\AdminGalleryController;
 use App\Http\Controllers\AdminFacilityController;
 use App\Http\Controllers\AdminBundleItemController;
+use App\Http\Controllers\AdminWithdrawalController;
 use App\Http\Controllers\AdminDestinationController;
 use App\Http\Controllers\AdminTransactionController;
-use App\Http\Controllers\AdminBalanceController;
-use App\Http\Controllers\AdminWithdrawalController;
+use App\Http\Controllers\AdminArticleController;
 
 // user auth
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -84,6 +85,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('places/approval', [AdminPlaceController::class, 'approval'])->name('places.approval');
         Route::post('places/{adminplace}/update-status', [AdminPlaceController::class, 'updateStatus'])->name('places.updateStatus');
         Route::resource('places', AdminPlaceController::class);
+
+        Route::resource('articles', AdminArticleController::class);
 
         Route::get('/complaints', [ComplaintController::class, 'index'])->name('complaints.index');
         Route::get('/complaints/{id}', [ComplaintController::class, 'show'])->name('complaints.show');

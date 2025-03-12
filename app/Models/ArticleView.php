@@ -9,6 +9,8 @@ class ArticleView extends Model
 {
     use HasFactory;
 
+    protected $table = 'tbl_article_views';
+
     protected $fillable = ['article_id', 'ip_address', 'user_id'];
 
     public function article()

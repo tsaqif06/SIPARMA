@@ -31,7 +31,7 @@
     <a href="{{ route('admin.withdrawal.create') }}">
         <button type="button"
             class="btn rounded-pill btn-primary-600 radius-8 px-20 py-11 my-3 d-flex align-items-center gap-2">
-            <iconify-icon icon="mingcute:plus-fill" class="text-xl"></iconify-icon> Tambah Permimtaan
+            <iconify-icon icon="mingcute:plus-fill" class="text-xl"></iconify-icon> Tambah Permintaan
         </button>
     </a>
     <div class="card basic-data-table">
