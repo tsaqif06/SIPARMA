@@ -5,14 +5,17 @@
     $subTitle = 'Tambah Artikel';
 
     $script = '<script>
-        function updateThumbnail() {
-            const url = document.getElementById("thumbnail").value;
-            const preview = document.getElementById("thumbnail-preview");
-            if (url) {
-                preview.src = url;
-                preview.style.display = "block";
-            } else {
-                preview.style.display = "none";
+        function previewThumbnail(event) {
+            let preview = document.getElementById("thumbnail-preview");
+            let file = event.target.files[0];
+
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = "block";
+                };
+                reader.readAsDataURL(file);
             }
         }
 
@@ -30,9 +33,10 @@
                     if (!tags.includes(tagText)) {
                         tags.push(tagText);
                         const tagElement = document.createElement("span");
-                        tagElement.classList.add("badge", "bg-primary", "me-2", "p-2");
+                        tagElement.classList.add("bg-primary-light", "text-primary-600", "px-24", "py-4",
+                            "rounded-pill", "fw-medium", "text-sm", "my-3", "mx-2");
                         tagElement.innerHTML =
-                            `${tagText} <button type="button" class="btn-close btn-sm text-white" aria-label="Close"></button>`;
+                            `${tagText} <button type="button" class="btn-close btn-sm text-white ms-4" aria-label="Close"></button>`;
                         tagContainer.appendChild(tagElement);
 
                         tagElement.querySelector("button").addEventListener("click", function() {
@@ -59,7 +63,7 @@
                     <div class="tab-content" id="pills-tabContent">
                         <div class="tab-pane fade show active" id="pills-add-article" role="tabpanel"
                             aria-labelledby="pills-add-article-tab" tabindex="0">
-                            <form action="{{ route('admin.articles.store') }}" method="POST">
+                            <form action="{{ route('admin.articles.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
                                     <!-- Judul Artikel -->
@@ -108,13 +112,13 @@
 
                                     <!-- Thumbnail -->
                                     <div class="col-sm-12 mb-3">
-                                        <label for="thumbnail" class="form-label fw-semibold">Thumbnail URL</label>
-                                        <input type="url" name="thumbnail" id="thumbnail"
+                                        <label for="thumbnail" class="form-label fw-semibold">Thumbnail</label>
+                                        <input type="file" name="thumbnail" id="thumbnail"
                                             class="form-control @error('thumbnail') is-invalid @enderror"
-                                            value="{{ old('thumbnail') }}" oninput="updateThumbnail()">
+                                            onchange="previewThumbnail(event)">
                                         <div class="mt-2">
-                                            <img id="thumbnail-preview" src="{{ old('thumbnail') }}" alt="Preview"
-                                                class="img-fluid" style="max-width: 200px; display: none;">
+                                            <img id="thumbnail-preview" src="#" alt="Preview" class="img-fluid"
+                                                style="max-width: 200px; display: none;">
                                         </div>
                                         @error('thumbnail')
                                             <div class="invalid-feedback">{{ $message }}</div>
