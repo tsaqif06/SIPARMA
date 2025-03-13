@@ -16,11 +16,32 @@ class AdminArticleController extends Controller
     public function index()
     {
         $articles = Article::with(['category', 'tags', 'comments', 'likes', 'views'])
+            ->where('status', '!=', 'blocked')
             ->latest()
             ->get();
 
         return view('admin.articles.index', compact('articles'));
     }
+
+
+    public function my()
+    {
+        $articles = Article::with(['category', 'tags', 'comments', 'likes', 'views'])
+            ->where('user_id', auth()->user()->id)
+            ->latest()
+            ->get();
+
+        return view('admin.articles.my', compact('articles'));
+    }
+
+    public function block(Article $article)
+    {
+        $article->update(['status' => 'blocked']);
+
+        return redirect()->route('admin.articles.index')->with('success', 'Artikel berhasil diblokir.');
+    }
+
+
 
     // Tampilkan artikel berdasarkan ID
     public function show($id)
@@ -88,7 +109,7 @@ class AdminArticleController extends Controller
 
         DB::commit();
 
-        return redirect()->route('admin.articles.index')->with('success', 'Artikel berhasil ditambahkan');
+        return redirect()->route('admin.articles.my')->with('success', 'Artikel berhasil ditambahkan');
     }
 
     // Upload gambar ke storage dari Trix
@@ -165,7 +186,7 @@ class AdminArticleController extends Controller
 
         DB::commit();
 
-        return redirect()->route('admin.articles.index')->with('success', 'Artikel berhasil diperbarui');
+        return redirect()->route('admin.articles.my')->with('success', 'Artikel berhasil diperbarui');
     }
 
     // Hapus artikel
@@ -189,7 +210,7 @@ class AdminArticleController extends Controller
 
         DB::commit();
 
-        return redirect()->route('admin.articles.index')->with('success', 'Artikel berhasil dihapus');
+        return redirect()->route('admin.articles.my')->with('success', 'Artikel berhasil dihapus');
     }
 
 

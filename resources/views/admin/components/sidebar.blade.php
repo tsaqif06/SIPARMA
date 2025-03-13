@@ -27,7 +27,7 @@
             <li>
                 <a href="{{ route('admin.dashboard') }}">
                     <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
-                    <span>Dasboard</span>
+                    <span>Dashboard</span>
                 </a>
             </li>
             <li class="sidebar-menu-group-title">Data</li>
@@ -50,12 +50,33 @@
                         <span>Tempat</span>
                     </a>
                 </li>
-                <li>
+                <li class="dropdown">
+                    <a href="javascript:void(0)">
+                        <iconify-icon icon="grommet-icons:article" class="menu-icon"></iconify-icon>
+                        <span>Artikel</span>
+                    </a>
+                    <ul class="sidebar-submenu">
+                        <li>
+                            <a href="{{ route('admin.articles.my') }}">
+                                <i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Artikel Saya</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.articles.index') }}"><i
+                                    class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Semua Artikel</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.articles.create') }}"><i
+                                    class="ri-circle-fill circle-icon text-success-main w-auto"></i> Kategori
+                                Artikel</a>
+                        </li>
+                    </ul>
+                </li>
+                {{--  <li>
                     <a href="{{ route('admin.articles.index') }}">
                         <iconify-icon icon="grommet-icons:article" class="menu-icon"></iconify-icon>
                         <span>Artikel</span>
                     </a>
-                </li>
+                </li>  --}}
 
                 <li class="sidebar-menu-group-title">Keuangan</li>
                 <li>

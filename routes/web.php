@@ -86,7 +86,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('places/{adminplace}/update-status', [AdminPlaceController::class, 'updateStatus'])->name('places.updateStatus');
         Route::resource('places', AdminPlaceController::class);
 
-        Route::post('/admin/articles/upload-image', [AdminArticleController::class, 'uploadImage'])->name('articles.upload-image');
+        Route::get('articles/my', [AdminArticleController::class, 'my'])->name('articles.my');
+        Route::put('articles/{article}/block', [AdminArticleController::class, 'block'])->name('articles.block');
+        Route::post('articles/upload-image', [AdminArticleController::class, 'uploadImage'])->name('articles.upload-image');
         Route::resource('articles', AdminArticleController::class);
 
         Route::get('/complaints', [ComplaintController::class, 'index'])->name('complaints.index');
