@@ -109,46 +109,60 @@ class AdminArticleController extends Controller
 
 
     // Update artikel
-    public function update(Request $request, $id)
+    public function edit(Article $article)
     {
-        $article = Article::findOrFail($id);
+        $categories = ArticleCategory::all();
+        return view('admin.articles.edit', compact('article', 'categories'));
+    }
 
+    public function update(Request $request, Article $article)
+    {
         $request->validate([
             'title'       => 'required|string|max:255',
             'content'     => 'required',
             'category_id' => 'required|exists:tbl_article_categories,id',
             'status'      => 'required|in:draft,published',
-            'tags'        => 'array',
-            'tags.*'      => 'string|max:100',
+            'tags'        => 'string|max:100',
             'thumbnail'   => 'nullable|image|max:4096'
         ]);
 
         DB::beginTransaction();
 
-        // Simpan thumbnail baru jika ada
+        preg_match_all('/src=["\']\/storage\/article\/content\/(.*?)["\']/', $article->content, $oldImages);
+        $oldImages = $oldImages[1] ?? [];
+
+        $content = $this->processArticleImages($request->content);
+
+        preg_match_all('/src=["\']\/storage\/article\/content\/(.*?)["\']/', $content, $newImages);
+        $newImages = $newImages[1] ?? [];
+
+        $imagesToDelete = array_diff($oldImages, $newImages);
+
+        foreach ($imagesToDelete as $image) {
+            Storage::disk('public')->delete("article/content/" . $image);
+        }
+
         if ($request->hasFile('thumbnail')) {
             if ($article->thumbnail) {
-                Storage::disk('public')->delete(str_replace('storage/', '', $article->thumbnail));
+                Storage::delete(str_replace('storage/', 'public/', $article->thumbnail));
             }
             $thumbnailPath = $request->file('thumbnail')->store('article/thumbnail', 'public');
             $article->thumbnail = 'storage/' . $thumbnailPath;
         }
 
-        // Proses gambar dalam konten dan hapus yang tidak digunakan
-        $updatedContent = $this->processArticleImages($request->content);
-        $this->deleteUnusedImages($article->content, $updatedContent);
-
-        // Update artikel
         $article->update([
             'title'       => $request->title,
             'slug'        => Str::slug($request->title),
-            'content'     => $updatedContent,
             'category_id' => $request->category_id,
-            'status'      => $request->status
+            'content'     => $content,
+            'status'      => $request->status,
+            'thumbnail'   => $article->thumbnail ?? $article->getOriginal('thumbnail')
         ]);
 
-        // Update tags
-        $this->syncTags($article, $request->tags ?? []);
+        $tagsArray = explode(',', $request->tags ?? '');
+        $tagsArray = array_map('trim', $tagsArray);
+        $tagsArray = array_filter($tagsArray);
+        $this->syncTags($article, $tagsArray);
 
         DB::commit();
 
