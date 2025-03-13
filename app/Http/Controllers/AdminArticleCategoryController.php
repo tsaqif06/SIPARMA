@@ -9,6 +9,17 @@ use Illuminate\Support\Str;
 
 class AdminArticleCategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+        $this->middleware(function ($request, $next) {
+            if (auth()->user()->role !== 'superadmin') {
+                return redirect()->route('admin.dashboard')->with('error', 'Akses ditolak!');
+            }
+            return $next($request);
+        });
+    }
     /**
      * Tampilkan daftar kategori
      */

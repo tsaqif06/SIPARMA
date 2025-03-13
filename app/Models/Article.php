@@ -11,8 +11,19 @@ class Article extends Model
 
     protected $table = 'tbl_articles';
     protected $fillable = [
-        'user_id', 'category_id', 'title', 'slug', 'content', 'thumbnail', 'status'
+        'user_id',
+        'category_id',
+        'title',
+        'slug',
+        'content',
+        'thumbnail',
+        'status'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
     public function category()
     {

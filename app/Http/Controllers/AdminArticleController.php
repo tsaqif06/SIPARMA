@@ -15,7 +15,11 @@ class AdminArticleController extends Controller
     // Tampilkan semua artikel
     public function index()
     {
-        $articles = Article::with(['category', 'tags', 'comments', 'likes', 'views'])
+        if (auth()->user()->role !== 'superadmin') {
+            return redirect()->route('admin.articles.my')->with('error', 'Akses ditolak!');
+        }
+
+        $articles = Article::with(['user', 'category', 'tags', 'comments', 'likes', 'views'])
             ->where('status', '!=', 'blocked')
             ->latest()
             ->get();
@@ -131,6 +135,10 @@ class AdminArticleController extends Controller
     // Update artikel
     public function edit(Article $article)
     {
+        if (auth()->user()->id !== $article->user_id) {
+            return redirect()->route('admin.articles.my')->with('error', 'Anda tidak memiliki izin untuk mengedit artikel ini, karena ini bukanlah artikel milik anda.');
+        }
+
         $categories = ArticleCategory::all();
         return view('admin.articles.edit', compact('article', 'categories'));
     }

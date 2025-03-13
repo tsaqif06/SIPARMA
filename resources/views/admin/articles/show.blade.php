@@ -35,7 +35,13 @@
                                 <!-- Judul Artikel -->
                                 <div class="col-sm-12 mb-3">
                                     <label class="form-label fw-semibold">Judul Artikel</label>
-                                    <input type="text" class="form-control" value="{{ $article->title }}" readonly>
+                                <input type="text" class="form-control" value="{{ $article->title }}" readonly>
+                                </div>
+
+                                <!-- Penulis Artikel -->
+                                <div class="col-sm-12 mb-3">
+                                    <label class="form-label fw-semibold">Penulis Artikel</label>
+                                    <input type="text" class="form-control" value="{{ $article->user->name }}" readonly>
                                 </div>
 
                                 <!-- Kategori -->
@@ -138,12 +144,16 @@
 
                                 <!-- Tombol Kembali & Edit -->
                                 <div class="d-flex align-items-center justify-content-center gap-3">
-                                    <a href="{{ route('admin.articles.index') }}"
-                                        class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-md px-56 py-11 radius-8">Kembali</a>
+                                    <a href="{{ url()->previous() }}"
+                                        class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-md px-56 py-11 radius-8">
+                                        Kembali
+                                     </a>
                                     @if ($article->status !== 'blocked')
-                                        <a href="{{ route('admin.articles.edit', $article->id) }}"
-                                            class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8">Edit
-                                            Artikel</a>
+                                        @if (auth()->user()->id === $article->user_id)
+                                            <a href="{{ route('admin.articles.edit', $article->id) }}"
+                                                class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8">Edit
+                                                Artikel</a>
+                                        @endif
                                     @else
                                         <form id="deleteForm{{ $article->id }}"
                                             action="{{ route('admin.articles.destroy', $article->id) }}" method="POST"

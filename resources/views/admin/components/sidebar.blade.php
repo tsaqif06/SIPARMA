@@ -62,7 +62,8 @@
                         </li>
                         <li>
                             <a href="{{ route('admin.articles.index') }}"><i
-                                    class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Semua Artikel</a>
+                                    class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Semua
+                                Artikel</a>
                         </li>
                         <li>
                             <a href="{{ route('admin.articles.category.index') }}"><i
@@ -71,12 +72,6 @@
                         </li>
                     </ul>
                 </li>
-                {{--  <li>
-                    <a href="{{ route('admin.articles.index') }}">
-                        <iconify-icon icon="grommet-icons:article" class="menu-icon"></iconify-icon>
-                        <span>Artikel</span>
-                    </a>
-                </li>  --}}
 
                 <li class="sidebar-menu-group-title">Keuangan</li>
                 <li>
@@ -175,6 +170,12 @@
                         <span>Wahana</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('admin.articles.my') }}">
+                        <iconify-icon icon="grommet-icons:article" class="menu-icon"></iconify-icon>
+                        <span>Artikel</span>
+                    </a>
+                </li>
 
                 <li class="sidebar-menu-group-title">Keuangan</li>
                 <li>
@@ -248,6 +249,12 @@
                     <a href="{{ route('admin.facility.index', 'place') }}">
                         <iconify-icon icon="material-symbols:museum-outline-rounded" class="menu-icon"></iconify-icon>
                         <span>Fasilitas</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.articles.my') }}">
+                        <iconify-icon icon="grommet-icons:article" class="menu-icon"></iconify-icon>
+                        <span>Artikel</span>
                     </a>
                 </li>
 

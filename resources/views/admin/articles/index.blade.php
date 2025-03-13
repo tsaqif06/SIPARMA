@@ -36,6 +36,7 @@
                         <tr>
                             <th>#</th>
                             <th>Judul Artikel</th>
+                            <th>Penulis Artikel</th>
                             <th>Jumlah Like</th>
                             <th>Jumlah Komentar</th>
                             <th>Jumlah View</th>
@@ -50,6 +51,7 @@
                             <tr>
                                 <td>{{ $i }}</td>
                                 <td>{{ $data->title }}</td>
+                                <td>{{ $data->user->name }}</td>
                                 <td>{{ $data->likes->count() }}</td>
                                 <td>{{ $data->comments->count() + $data->comments->sum(fn($comment) => $comment->replies->count()) }}
                                 </td>
