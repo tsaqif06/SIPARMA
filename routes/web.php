@@ -17,6 +17,7 @@ use App\Http\Controllers\AdminPromoController;
 use App\Http\Controllers\AdminBundleController;
 use App\Http\Controllers\AdminReviewController;
 use App\Http\Controllers\DestinationController;
+use App\Http\Controllers\AdminArticleController;
 use App\Http\Controllers\AdminBalanceController;
 use App\Http\Controllers\AdminGalleryController;
 use App\Http\Controllers\AdminFacilityController;
@@ -24,7 +25,7 @@ use App\Http\Controllers\AdminBundleItemController;
 use App\Http\Controllers\AdminWithdrawalController;
 use App\Http\Controllers\AdminDestinationController;
 use App\Http\Controllers\AdminTransactionController;
-use App\Http\Controllers\AdminArticleController;
+use App\Http\Controllers\AdminArticleCategoryController;
 
 // user auth
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -89,6 +90,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('articles/my', [AdminArticleController::class, 'my'])->name('articles.my');
         Route::put('articles/{article}/block', [AdminArticleController::class, 'block'])->name('articles.block');
         Route::post('articles/upload-image', [AdminArticleController::class, 'uploadImage'])->name('articles.upload-image');
+        Route::resource('articles/category', AdminArticleCategoryController::class)->names([
+            'index'   => 'articles.category.index',
+            'create'  => 'articles.category.create',
+            'store'   => 'articles.category.store',
+            'edit'    => 'articles.category.edit',
+            'update'  => 'articles.category.update',
+            'destroy' => 'articles.category.destroy',
+        ]);
         Route::resource('articles', AdminArticleController::class);
 
         Route::get('/complaints', [ComplaintController::class, 'index'])->name('complaints.index');

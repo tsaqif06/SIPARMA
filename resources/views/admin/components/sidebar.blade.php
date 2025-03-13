@@ -65,7 +65,7 @@
                                     class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Semua Artikel</a>
                         </li>
                         <li>
-                            <a href="{{ route('admin.articles.create') }}"><i
+                            <a href="{{ route('admin.articles.category.index') }}"><i
                                     class="ri-circle-fill circle-icon text-success-main w-auto"></i> Kategori
                                 Artikel</a>
                         </li>

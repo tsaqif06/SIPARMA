@@ -1,8 +1,8 @@
 @extends('admin.layout.layout')
 
 @php
-    $title = 'Data Artikel';
-    $subTitle = 'Artikel';
+    $title = 'Data Artikel Saya';
+    $subTitle = 'Artikel Saya';
 
     $script = '<script>
         $(".remove-item-btn").on("click", function() {
