@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use DOMDocument;
 use App\Models\Article;
-use App\Models\ArticleTag;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\ArticleCategory;
@@ -174,21 +173,25 @@ class AdminArticleController extends Controller
     {
         DB::beginTransaction();
 
-        // Hapus gambar dalam artikel
-        $this->deleteUnusedImages($article->content, '');
+        preg_match_all('/src=["\']\/storage\/article\/content\/(.*?)["\']/', $article->content, $images);
+        $images = $images[1] ?? [];
 
-        // Hapus thumbnail jika ada
-        if ($article->thumbnail) {
-            Storage::disk('public')->delete(str_replace('storage/', '', $article->thumbnail));
+        foreach ($images as $image) {
+            Storage::disk('public')->delete("article/content/" . $image);
         }
 
-        // Hapus artikel dari database
+        if ($article->thumbnail) {
+            $thumbnailPath = str_replace('storage/', '', $article->thumbnail);
+            Storage::disk('public')->delete($thumbnailPath);
+        }
+
         $article->delete();
 
         DB::commit();
 
         return redirect()->route('admin.articles.index')->with('success', 'Artikel berhasil dihapus');
     }
+
 
     // Proses gambar base64 dalam konten
     private function processArticleImages($content)
@@ -209,36 +212,6 @@ class AdminArticleController extends Controller
         }
 
         return $dom->saveHTML();
-    }
-
-    // Hapus gambar yang tidak digunakan
-    private function deleteUnusedImages($oldContent, $newContent)
-    {
-        $oldImages = $this->extractImagePaths($oldContent);
-        $newImages = $this->extractImagePaths($newContent);
-
-        $unusedImages = array_diff($oldImages, $newImages);
-
-        foreach ($unusedImages as $image) {
-            $path = str_replace(asset('storage/'), '', $image);
-            if (!Article::where('content', 'LIKE', "%$image%")->exists()) {
-                Storage::disk('public')->delete($path);
-            }
-        }
-    }
-
-    // Ekstrak URL gambar dari konten artikel
-    private function extractImagePaths($content)
-    {
-        $dom = new DOMDocument();
-        @$dom->loadHTML($content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
-        $images = [];
-        foreach ($dom->getElementsByTagName('img') as $img) {
-            $images[] = $img->getAttribute('src');
-        }
-
-        return $images;
     }
 
     // Kelola tags artikel
