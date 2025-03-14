@@ -210,34 +210,41 @@
                     @foreach ($destinations as $destination)
                         <div class="col-xl-3 col-lg-4 col-md-6 col-12 custom-grid {{ strtolower($type) }} zoomIn"
                             data-wow-duration="2000ms">
-                            <div class="featured-card">
+                            <div class="featured-card d-flex flex-column h-100" style="min-height: 500px;">
                                 <div class="image">
-                                    <div class="img"
-                                        style="background-image: url('{{ $destination->gallery[0]->image_url ?? 'assets/images/default.png' }}');">
+                                    <div class="img bg-cover"
+                                        style="background-image: url('{{ $destination->gallery[0]->image_url ?? asset('assets/images/default.png') }}'); height: 250px;">
                                     </div>
-                                    {{--  <img src="{{ $destination->gallery[0]->image_url ?? 'https://picsum.photos/200.webp' }}"
-                                        alt="{{ $destination->name }}">  --}}
                                 </div>
-                                <div class="content">
-                                    <h2>
+                                <div class="content flex-grow-1 d-flex flex-column">
+                                    <h2 class="fs-5">
                                         <a
                                             href="{{ route('destination.show', $destination->slug) }}">{{ $destination->name }}</a>
                                     </h2>
-                                    <span>{{ Str::limit($destination->description ?? 'Deskripsi tidak tersedia.', 100, '...') }}</span>
-                                    <div class="top-content">
-                                        <ul>
-                                            <li>
-                                                <span>
-                                                    {{ $destination->price ? number_format($destination->price, 0, ',', '.') : 'N/A' }}</span>
-                                                <span class="date">Harga</span>
+                                    <div class="description flex-grow-1 d-flex align-items-start"
+                                        style="min-height: 100px;">
+                                        <span class="overflow-hidden"
+                                            style="
+                                            display: -webkit-box;
+                                            -webkit-line-clamp: 3;
+                                            -webkit-box-orient: vertical;
+                                        ">
+                                            {{ $destination->description ?? 'Deskripsi tidak tersedia.' }}
+                                        </span>
+                                    </div>
+                                    <div class="top-content mt-auto">
+                                        <ul class="list-unstyled d-flex justify-content-between gap-2">
+                                            <li class="text-center">
+                                                <span>{{ $destination->price ? number_format($destination->price, 0, ',', '.') : 'N/A' }}</span>
+                                                <span class="text-muted d-block small">Harga</span>
                                             </li>
-                                            <li>
+                                            <li class="text-center">
                                                 <span>{{ number_format($destination->reviews->count() ?? '0', 0, ',', '.') }}</span>
-                                                <span class="date">Ulasan</span>
+                                                <span class="text-muted d-block small">Ulasan</span>
                                             </li>
-                                            <li>
+                                            <li class="text-center">
                                                 <span>{{ number_format($destination->reviews_avg_rating, 1) ?? '0.0' }}</span>
-                                                <span class="date">Rating</span>
+                                                <span class="text-muted d-block small">Rating</span>
                                             </li>
                                         </ul>
                                     </div>
