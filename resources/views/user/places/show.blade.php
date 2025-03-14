@@ -180,17 +180,23 @@
                                 <div class="review-item">
                                     <div class="review-img">
                                         <div class="img"
-                                            style="background-image: url('../{{ file_exists(public_path($review->user->profile_picture)) ? $review->user->profile_picture : 'assets/images/default-avatar.jpg' }}');">
+                                            style="background-image: url('{{ asset(file_exists(public_path($review->user->profile_picture)) && $review->user->profile_picture 
+                                                ? $review->user->profile_picture 
+                                                : 'assets/images/default-avatar.jpg') }}');">
                                         </div>
                                     </div>
                                     <div class="review-text">
                                         <div class="r-title">
                                             <h2>{{ $review->user->name }}</h2>
                                             <span class="ms-2">{{ $review->created_at }}</span>
-                                            <ul>
+                                            <ul style="display: flex;">
                                                 @for ($i = 1; $i <= 5; $i++)
                                                     <li>
-                                                        <i class="ti-star {{ $i <= $review->rating ? 'filled' : '' }}"></i>
+                                                        <iconify-icon 
+                                                            icon="{{ $i <= $review->rating ? 'material-symbols:star' : 'material-symbols:star-outline' }}" 
+                                                            class="menu-icon"
+                                                            style="font-size: 24px; color: gold;">
+                                                        </iconify-icon>
                                                     </li>
                                                 @endfor
                                             </ul>
@@ -221,17 +227,23 @@
                             <div class="review-item">
                                 <div class="review-img">
                                     <div class="img"
-                                        style="background-image: url('../{{ file_exists(public_path($userReview->user->profile_picture)) ? $userReview->user->profile_picture : 'assets/images/default-avatar.jpg' }}');">
+                                        style="background-image: url('{{ asset(file_exists(public_path($review->user->profile_picture)) && $review->user->profile_picture 
+                                            ? $review->user->profile_picture 
+                                            : 'assets/images/default-avatar.jpg') }}');">
                                     </div>
                                 </div>
                                 <div class="review-text">
                                     <div class="r-title">
                                         <h2>{{ $userReview->user->name }}</h2>
                                         <span class="ms-2">{{ $userReview->created_at }}</span>
-                                        <ul>
+                                        <ul style="display: flex;">
                                             @for ($i = 1; $i <= 5; $i++)
                                                 <li>
-                                                    <i class="ti-star $i <= $userReview->rating ? 'filled' : '' }}"></i>
+                                                    <iconify-icon 
+                                                        icon="{{ $i <= $review->rating ? 'material-symbols:star' : 'material-symbols:star-outline' }}" 
+                                                        class="menu-icon"
+                                                        style="font-size: 24px; color: gold;">
+                                                    </iconify-icon>
                                                 </li>
                                             @endfor
                                         </ul>
