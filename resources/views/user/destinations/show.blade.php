@@ -153,7 +153,7 @@
                     @foreach ($galleryChunks as $key => $chunk)
                         <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
                             <div class="row">
-                                <div class="col-md-8">
+                                <div class="col-md-8 mb-sm-2">
                                     <img src="{{ asset($chunk[0]->image_url ?? 'assets/images/default.png') }}"
                                         class="d-block w-100 img-clickable" alt="{{ $destination->name }}">
                                 </div>

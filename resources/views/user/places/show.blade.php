@@ -120,7 +120,7 @@
                     @foreach ($galleryChunks as $key => $chunk)
                         <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
                             <div class="row">
-                                <div class="col-md-8">
+                                <div class="col-md-8 mb-sm-2">
                                     <img src="{{ asset($chunk[0]->image_url ?? 'assets/images/default.png') }}"
                                         class="d-block w-100" alt="{{ $place->name }}">
                                 </div>
@@ -180,9 +180,11 @@
                                 <div class="review-item">
                                     <div class="review-img">
                                         <div class="img"
-                                            style="background-image: url('{{ asset(file_exists(public_path($review->user->profile_picture)) && $review->user->profile_picture 
-                                                ? $review->user->profile_picture 
-                                                : 'assets/images/default-avatar.jpg') }}');">
+                                            style="background-image: url('{{ asset(
+                                                file_exists(public_path($review->user->profile_picture)) && $review->user->profile_picture
+                                                    ? $review->user->profile_picture
+                                                    : 'assets/images/default-avatar.jpg',
+                                            ) }}');">
                                         </div>
                                     </div>
                                     <div class="review-text">
@@ -192,10 +194,9 @@
                                             <ul style="display: flex;">
                                                 @for ($i = 1; $i <= 5; $i++)
                                                     <li>
-                                                        <iconify-icon 
-                                                            icon="{{ $i <= $review->rating ? 'material-symbols:star' : 'material-symbols:star-outline' }}" 
-                                                            class="menu-icon"
-                                                            style="font-size: 24px; color: gold;">
+                                                        <iconify-icon
+                                                            icon="{{ $i <= $review->rating ? 'material-symbols:star' : 'material-symbols:star-outline' }}"
+                                                            class="menu-icon" style="font-size: 24px; color: gold;">
                                                         </iconify-icon>
                                                     </li>
                                                 @endfor
@@ -227,9 +228,11 @@
                             <div class="review-item">
                                 <div class="review-img">
                                     <div class="img"
-                                        style="background-image: url('{{ asset(file_exists(public_path($review->user->profile_picture)) && $review->user->profile_picture 
-                                            ? $review->user->profile_picture 
-                                            : 'assets/images/default-avatar.jpg') }}');">
+                                        style="background-image: url('{{ asset(
+                                            file_exists(public_path($review->user->profile_picture)) && $review->user->profile_picture
+                                                ? $review->user->profile_picture
+                                                : 'assets/images/default-avatar.jpg',
+                                        ) }}');">
                                     </div>
                                 </div>
                                 <div class="review-text">
@@ -239,10 +242,9 @@
                                         <ul style="display: flex;">
                                             @for ($i = 1; $i <= 5; $i++)
                                                 <li>
-                                                    <iconify-icon 
-                                                        icon="{{ $i <= $review->rating ? 'material-symbols:star' : 'material-symbols:star-outline' }}" 
-                                                        class="menu-icon"
-                                                        style="font-size: 24px; color: gold;">
+                                                    <iconify-icon
+                                                        icon="{{ $i <= $review->rating ? 'material-symbols:star' : 'material-symbols:star-outline' }}"
+                                                        class="menu-icon" style="font-size: 24px; color: gold;">
                                                     </iconify-icon>
                                                 </li>
                                             @endfor
@@ -339,7 +341,8 @@
                             </div>
                             <input type="hidden" name="latitude" id="latitude" value="{{ $location->latitude }}">
                             <input type="hidden" name="longitude" id="longitude" value="{{ $location->longitude }}">
-                            <button id="showRoute" class="btn btn-primary mt-3">Tunjukkan Navigasi dari Lokasi Saya</button>
+                            <button id="showRoute" class="btn btn-primary mt-3">Tunjukkan Navigasi dari Lokasi
+                                Saya</button>
                         </div>
                         <div class="wpo-contact-widget widget mt-5">
                             <h4>Mengalami Masalah?</h4>
