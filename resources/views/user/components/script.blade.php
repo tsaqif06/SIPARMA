@@ -28,6 +28,37 @@
             flag.remove();
         }
 
+        var navbarMobile = $(".navigation-holder-mobile");
+        var openBtn = $(".mobail-menu .navbar-toogler");
+        var closeBtn = $(".menu-close");
+
+        console.log(navbarMobile)
+        console.log(openBtn)
+        console.log(closeBtn)
+
+        // Buka menu
+        openBtn.on("click", function(e) {
+            console.log("offnen")
+            e.preventDefault();
+            navbarMobile.addClass("slideInn");
+            $("body").addClass("menu-open");
+        });
+
+        // Tutup menu
+        closeBtn.on("click", function(e) {
+            e.preventDefault();
+            navbarMobile.removeClass("slideInn");
+            $("body").removeClass("menu-open");
+        });
+
+        // Tutup jika klik di luar menu
+        $(document).on("click", function(e) {
+            if (!$(e.target).closest(".navigation-holder-mobile, .open-btn").length) {
+                navbarMobile.removeClass("slideInn");
+                $("body").removeClass("menu-open");
+            }
+        });
+
         var lastScrollTop = 0;
 
         $(window).on("scroll", function() {

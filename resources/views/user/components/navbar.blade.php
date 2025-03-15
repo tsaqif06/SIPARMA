@@ -19,7 +19,7 @@
                                     src="{{ asset('assets/user/images/LOGO_SIPARMA_.png') }}" alt="logo"></a>
                         </div>
                     </div>
-                    <div class="col-lg-7 col-md-1 col-1">
+                    <div class="col-lg-7 col-md-1 col-1 d-none d-lg-block">
                         <div id="navbar" class="collapse navbar-collapse navigation-holder">
                             <button class="menu-close"><iconify-icon icon="bxs:x-circle" width="30"
                                     height="30"></iconify-icon></button>
@@ -61,3 +61,15 @@
         </nav>
     </div>
 </header>
+
+<!-- Navigation Mobile (Pisahkan dari Header) -->
+<div class="navigation-holder-mobile">
+    <button class="menu-close">
+        <iconify-icon icon="bxs:x-circle" width="30" height="30"></iconify-icon>
+    </button>
+    <ul class="nav navbar-nav">
+        <li><a href="{{ route('home.index') }}">Beranda</a></li>
+        <li><a href="{{ route('destination.browse') }}">Wisata</a></li>
+        <li><a href="{{ route('place.browse') }}">Tempat</a></li>
+    </ul>
+</div>

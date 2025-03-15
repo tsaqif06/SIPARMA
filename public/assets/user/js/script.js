@@ -7,63 +7,89 @@
 
     // Toggle mobile navigation
     function toggleMobileNavigation() {
-        var navbar = $(".navigation-holder");
+        var mobileNav = $(".navigation-holder-mobile");
         var openBtn = $(".mobail-menu .open-btn");
-        var xbutton = $(".mobail-menu .navbar-toggler");
+        var closeBtn = $(".menu-close");
 
         openBtn.on("click", function (e) {
-            e.stopImmediatePropagation();
-            navbar.toggleClass("slideInn");
-            xbutton.toggleClass("x-close");
-            return false;
+            e.stopPropagation();
+            mobileNav.addClass("slideInn");
+            $("body").addClass("menu-open"); // Tambah overlay
         });
+
+        closeBtn.on("click", function () {
+            mobileNav.removeClass("slideInn");
+            $("body").removeClass("menu-open");
+        });
+
+        $(document).on("click", function (e) {
+            if (
+                !$(e.target).closest(".navigation-holder-mobile, .open-btn")
+                    .length
+            ) {
+                mobileNav.removeClass("slideInn");
+                $("body").removeClass("menu-open");
+            }
+        });
+
+        $(".navigation-holder-mobile .menu-item-has-children > a").on(
+            "click",
+            function (e) {
+                e.preventDefault();
+                $(this).siblings(".sub-menu").slideToggle();
+                $(this).toggleClass("rotate");
+            }
+        );
     }
 
     toggleMobileNavigation();
 
     // Function for toggle class for small menu
-    function toggleClassForSmallNav() {
-        var windowWidth = window.innerWidth;
-        var mainNav = $("#navbar > ul");
+    // function toggleClassForSmallNav() {
+    //     var windowWidth = window.innerWidth;
+    //     var mainNav = $("#navbar > ul");
 
-        if (windowWidth <= 991) {
-            mainNav.addClass("small-nav");
-        } else {
-            mainNav.removeClass("small-nav");
-        }
-    }
+    //     if (windowWidth <= 991) {
+    //         mainNav.addClass("small-nav");
+    //     } else {
+    //         mainNav.removeClass("small-nav");
+    //     }
+    // }
 
-    toggleClassForSmallNav();
+    // toggleClassForSmallNav();
 
-    // Function for small menu
-    function smallNavFunctionality() {
-        var windowWidth = window.innerWidth;
-        var mainNav = $(".navigation-holder");
-        var smallNav = $(".navigation-holder > .small-nav");
-        var subMenu = smallNav.find(".sub-menu");
-        var megamenu = smallNav.find(".mega-menu");
-        var menuItemWidthSubMenu = smallNav.find(".menu-item-has-children > a");
+    // // Function for small menu
+    // function smallNavFunctionality() {
+    //     var windowWidth = window.innerWidth;
+    //     var mainNav = $(".navigation-holder");
+    //     var smallNav = $(".navigation-holder > .small-nav");
+    //     var subMenu = smallNav.find(".sub-menu");
+    //     var megamenu = smallNav.find(".mega-menu");
+    //     var menuItemWidthSubMenu = smallNav.find(".menu-item-has-children > a");
 
-        if (windowWidth <= 991) {
-            subMenu.hide();
-            megamenu.hide();
-            menuItemWidthSubMenu.on("click", function (e) {
-                var $this = $(this);
-                $this.siblings().slideToggle();
-                e.preventDefault();
-                e.stopImmediatePropagation();
-                $this.toggleClass("rotate");
-            });
-        } else if (windowWidth > 991) {
-            mainNav.find(".sub-menu").show();
-            mainNav.find(".mega-menu").show();
-        }
-    }
+    //     if (windowWidth <= 991) {
+    //         subMenu.hide();
+    //         megamenu.hide();
+    //         menuItemWidthSubMenu.on("click", function (e) {
+    //             var $this = $(this);
+    //             $this.siblings().slideToggle();
+    //             e.preventDefault();
+    //             e.stopImmediatePropagation();
+    //             $this.toggleClass("rotate");
+    //         });
+    //     } else if (windowWidth > 991) {
+    //         mainNav.find(".sub-menu").show();
+    //         mainNav.find(".mega-menu").show();
+    //     }
+    // }
 
-    smallNavFunctionality();
+    // smallNavFunctionality();
 
     $("body").on("click", function () {
         $(".navigation-holder").removeClass("slideInn");
+    });
+    $("body").on("click", function () {
+        $(".navigation-holder").removeClass("x-close");
     });
     $(".menu-close").on("click", function () {
         $(".navigation-holder").removeClass("slideInn");

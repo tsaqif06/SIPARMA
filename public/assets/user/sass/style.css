@@ -2503,6 +2503,86 @@ a.ui-button:active,
         right: 10px;
     }
 }
+/* Menu Mobile Berdikari */
+.navigation-holder-mobile {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 80%;
+    max-width: 300px;
+    height: 100vh;
+    background: #1d3557;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    transition: left 0.3s ease-in-out;
+    z-index: 1000;
+    color: #fff;
+    overflow-y: auto; /* Memungkinkan scrolling jika konten terlalu panjang */
+}
+
+/* Ketika menu aktif */
+.navigation-holder-mobile.slideInn {
+    left: 0;
+}
+
+/* Efek overlay saat menu mobile terbuka */
+body.menu-open::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Tombol close menu */
+.navigation-holder-mobile .menu-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: white;
+}
+
+.navigation-holder-mobile ul.navbar-nav {
+    padding-top: 60px;
+    padding-left: 20px;
+    list-style: none;
+}
+
+.navigation-holder-mobile ul.navbar-nav li {
+    margin-bottom: 20px;
+}
+
+.navigation-holder-mobile ul.navbar-nav li a {
+    color: white !important;
+    text-decoration: none;
+    font-size: 18px;
+    display: block;
+    padding: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.navigation-holder-mobile ul.navbar-nav li a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+/* Efek animasi submenu */
+.navigation-holder-mobile .sub-menu {
+    display: none;
+    padding-left: 20px;
+}
+
+.navigation-holder-mobile .menu-item-has-children > a.rotate {
+    transform: rotate(90deg);
+}
+
 @media (max-width: 767px) {
     .wpo-site-header .navbar-header .navbar-brand {
         font-size: 24px;
@@ -2612,7 +2692,7 @@ a.ui-button:active,
 @media (max-width: 991px) {
     .wpo-site-header,
     .wpo-header-style-2 {
-        z-index: 99999;
+        z-index: 998;
     }
 }
 .wpo-site-header .navigation.sticky-header {
