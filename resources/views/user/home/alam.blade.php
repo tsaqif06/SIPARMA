@@ -8,7 +8,7 @@
         @foreach ($recommendedDestinations as $destination)
             <div class="col-md-4 mb-4">
                 <div class="card">
-                    <img src="{{ $destination->image_url }}" class="card-img-top" alt="{{ $destination->name }}">
+                    <img src="{{ $destination->image_url }}" loading="lazy" class="card-img-top" alt="{{ $destination->name }}">
                     <div class="card-body">
                         <h5 class="card-title">{{ $destination->name }}</h5>
                         <p class="card-text">{{ $destination->description }}</p>
@@ -23,7 +23,7 @@
         @foreach ($promoDestinations as $promo)
             <div class="col-md-4 mb-4">
                 <div class="card">
-                    <img src="{{ $promo->image_url }}" class="card-img-top" alt="{{ $promo->name }}">
+                    <img src="{{ $promo->image_url }}" loading="lazy" class="card-img-top" alt="{{ $promo->name }}">
                     <div class="card-body">
                         <h5 class="card-title">{{ $promo->name }}</h5>
                         <p class="card-text">Discount: {{ $promo->discount }}%</p>

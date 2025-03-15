@@ -72,7 +72,7 @@
                                     <label class="form-label fw-semibold">Thumbnail</label>
                                     <div class="mt-2">
                                         <img src="{{ asset(str_replace('public/', '', $article->thumbnail)) }}"
-                                            alt="Thumbnail" class="img-fluid" style="max-width: 200px;">
+                                            alt="Thumbnail" class="img-fluid" loading="lazy" style="max-width: 200px;">
                                     </div>
                                 </div>
 

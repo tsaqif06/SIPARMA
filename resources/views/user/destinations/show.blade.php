@@ -159,9 +159,9 @@
                                 </div>
                                 <div class="col-md-4 d-flex flex-column">
                                     <img src="{{ asset($chunk[1]->image_url ?? ($chunk[0]->image_url ?? 'assets/images/default.png')) }}"
-                                        class="mb-2 w-100 img-clickable" alt="{{ $destination->name }}">
+                                        class="mb-2 w-100 img-clickable" loading="lazy" alt="{{ $destination->name }}">
                                     <img src="{{ asset($chunk[2]->image_url ?? ($chunk[0]->image_url ?? 'assets/images/default.png')) }}"
-                                        class="w-100 img-clickable" alt="{{ $destination->name }}">
+                                        class="w-100 img-clickable" loading="lazy" alt="{{ $destination->name }}">
                                 </div>
                             </div>
                         </div>
@@ -205,8 +205,8 @@
                             <h2>Tiket</h2>
                         </div>
                         <div class="ticket-card">
-                            <div class="img"
-                                style="background-image: url('../{{ $destination->gallery[0]->image_url ?? 'assets/images/default.png' }}');">
+                            <div class="img lazy-bg"
+                                data-bg="{{ $destination->gallery[0]->image_url ? '../' . $destination->gallery[0]->image_url : asset('assets/images/default.png') }}">
                             </div>
                             <div class="ticket-info">
                                 <div class="ticket-title">Tiket {{ $destination->name }}</div>
@@ -227,18 +227,18 @@
                                     class="buy-button">Beli Tiket</a>
                             </div>
                         </div>
+
                         @foreach ($destination->rides->take(2) as $ride)
                             <div class="ticket-card">
-                                <div class="img"
-                                    style="background-image: url('../{{ $ride->gallery[0]->image_url ?? 'assets/images/default.png' }}');">
+                                <div class="img lazy-bg"
+                                    data-bg="{{ !empty($ride->gallery) && isset($ride->gallery[0]) ? '../' . $ride->gallery[0]->image_url : asset('assets/images/default.png') }}">
                                 </div>
                                 <div class="ticket-info">
                                     <div class="ticket-title">Tiket Wahana - {{ $ride->name }}</div>
                                     <div class="ticket-desc">Tiket Wahana</div>
                                 </div>
                                 <div class="ticket-price-button">
-                                    <span class="ticket-price">IDR
-                                        {{ number_format($ride->price, 0, ',', '.') }}</span>
+                                    <span class="ticket-price">IDR {{ number_format($ride->price, 0, ',', '.') }}</span>
                                     <a href="{{ route('destination.checkout', ['slug' => $ride->slug, 'type' => 'ride']) }}"
                                         class="buy-button">Beli Tiket</a>
                                 </div>
@@ -249,8 +249,8 @@
                             <div id="more-rides">
                                 @foreach ($destination->rides->slice(2) as $ride)
                                     <div class="ticket-card hidden-ride">
-                                        <div class="img"
-                                            style="background-image: url('../{{ $ride->gallery[0]->image_url ?? 'assets/images/default.png' }}');">
+                                        <div class="img lazy-bg"
+                                            data-bg="{{ !empty($ride->gallery) && isset($ride->gallery[0]) ? '../' . $ride->gallery[0]->image_url : asset('assets/images/default.png') }}">
                                         </div>
                                         <div class="ticket-info">
                                             <div class="ticket-title">Tiket Wahana - {{ $ride->name }}</div>
@@ -276,8 +276,8 @@
                             </div>
                             @foreach ($destination->bundles as $bundle)
                                 <div class="ticket-card">
-                                    <div class="img"
-                                        style="background-image: url('../{{ $bundle->gallery[0]->image_url ?? 'assets/images/default.png' }}');">
+                                    <div class="img lazy-bg"
+                                        data-bg="{{ !empty($bundle->gallery) && isset($bundle->gallery[0]) ? '../' . $bundle->gallery[0]->image_url : asset('assets/images/default.png') }}">
                                     </div>
                                     <div class="ticket-info">
                                         <div class="ticket-title">Tiket Bundle - {{ $bundle->name }}</div>
@@ -306,7 +306,6 @@
                                             $bundle->total_price - ($bundle->total_price * $discountedPrice) / 100;
                                     @endphp
 
-
                                     <div class="ticket-price-button">
                                         @if ($discountedPrice > 0)
                                             <span class="price-old">IDR
@@ -333,10 +332,10 @@
                             @foreach ($reviews as $review)
                                 <div class="review-item">
                                     <div class="review-img">
-                        <div class="img"
-                                            style="background-image: url('{{ asset(file_exists(public_path($review->user->profile_picture)) && $review->user->profile_picture 
-                                                ? $review->user->profile_picture 
-                                                : 'assets/images/default-avatar.jpg') }}');">
+                                        <div class="img lazy-bg"
+                                            data-bg="{{ file_exists(public_path($review->user->profile_picture)) && $review->user->profile_picture
+                                                ? asset($review->user->profile_picture)
+                                                : asset('assets/images/default-avatar.jpg') }}">
                                         </div>
                                     </div>
                                     <div class="review-text">
@@ -346,10 +345,9 @@
                                             <ul style="display: flex;">
                                                 @for ($i = 1; $i <= 5; $i++)
                                                     <li>
-                                                        <iconify-icon 
-                                                            icon="{{ $i <= $review->rating ? 'material-symbols:star' : 'material-symbols:star-outline' }}" 
-                                                            class="menu-icon"
-                                                            style="font-size: 24px; color: gold;">
+                                                        <iconify-icon
+                                                            icon="{{ $i <= $review->rating ? 'material-symbols:star' : 'material-symbols:star-outline' }}"
+                                                            class="menu-icon" style="font-size: 24px; color: gold;">
                                                         </iconify-icon>
                                                     </li>
                                                 @endfor
@@ -380,10 +378,12 @@
                             </div>
                             <div class="review-item">
                                 <div class="review-img">
-                                    <div class="img"
-                                        style="background-image: url('{{ asset(file_exists(public_path($review->user->profile_picture)) && $review->user->profile_picture 
-                                            ? $review->user->profile_picture 
-                                            : 'assets/images/default-avatar.jpg') }}');">
+                                    <div class="img lazy-bg"
+                                        data-bg="{{ asset(
+                                            file_exists(public_path($review->user->profile_picture)) && $review->user->profile_picture
+                                                ? $review->user->profile_picture
+                                                : 'assets/images/default-avatar.jpg',
+                                        ) }}">
                                     </div>
                                 </div>
                                 <div class="review-text">
@@ -393,14 +393,13 @@
                                         <ul style="display: flex;">
                                             @for ($i = 1; $i <= 5; $i++)
                                                 <li>
-                                                    <iconify-icon 
-                                                        icon="{{ $i <= $review->rating ? 'material-symbols:star' : 'material-symbols:star-outline' }}" 
-                                                        class="menu-icon"
-                                                        style="font-size: 24px; color: gold;">
+                                                    <iconify-icon
+                                                        icon="{{ $i <= $review->rating ? 'material-symbols:star' : 'material-symbols:star-outline' }}"
+                                                        class="menu-icon" style="font-size: 24px; color: gold;">
                                                     </iconify-icon>
                                                 </li>
                                             @endfor
-                                        </ul>                                    
+                                        </ul>
                                     </div>
                                     <p>{{ $userReview->comment }}</p>
                                 </div>
@@ -554,15 +553,15 @@
                                         </svg>
                                     </div>
                                     <div class="image">
-                                        <div class="img"
-                                            style="background-image: url('../{{ $place->gallery[0]->image_url ?? 'assets/images/default.png' }}');">
+                                        <div class="img lazy-bg"
+                                            data-bg="{{ !empty($place->gallery) && isset($place->gallery[0]) ? '../' . $ride->gallery[0]->image_url : asset('assets/images/default.png') }}">
                                         </div>
                                     </div>
                                     <div class="content">
                                         <div class="rating">
                                             Rating: {{ number_format($place->reviews_avg_rating, 1) }} (<img
                                                 src="{{ asset('assets/user/images/authorlist/star.svg') }}"
-                                                alt="">)
+                                                alt="" loading="lazy">)
                                         </div>
                                         <h2>{{ $place->name }}</h2>
                                         <h4>{{ ucfirst($place->type) }}</h4>

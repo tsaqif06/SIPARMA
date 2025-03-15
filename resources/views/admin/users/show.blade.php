@@ -185,7 +185,7 @@
                                         <div class="row">
                                             @foreach ($managedItems->destination->gallery as $image)
                                                 <div class="col-md-4">
-                                                    <img src="{{ asset($image->image_url) }}" alt="Gallery Image"
+                                                    <img src="{{ asset($image->image_url) }}" loading="lazy" alt="Gallery Image"
                                                         class="img-fluid rounded mb-3">
                                                 </div>
                                             @endforeach
@@ -198,7 +198,7 @@
                                         <div class="row">
                                             @foreach ($managedItems->place->gallery as $image)
                                                 <div class="col-md-4">
-                                                    <img src="{{ asset($image->image_url) }}" alt="Gallery Image"
+                                                    <img src="{{ asset($image->image_url) }}" loading="lazy" alt="Gallery Image"
                                                         class="img-fluid rounded mb-3">
                                                 </div>
                                             @endforeach

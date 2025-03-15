@@ -108,8 +108,8 @@
                     <hr style="margin-bottom: 20px">
                     <div class="pricing-area">
                         <div class="ticket-card">
-                            <div class="img"
-                                style="background-image: url('../../../{{ $item->gallery[0]->image_url ?? 'assets/images/default.png' }}');">
+                            <div class="img lazy-bg"
+                                data-bg="{{ !empty($item->gallery) && isset($item->gallery[0]) ? '../../../' . $item->gallery[0]->image_url : asset('assets/images/default.png') }}">
                             </div>
                             <div class="ticket-info">
                                 <div class="ticket-title">Tiket
@@ -137,8 +137,8 @@
                             </div>
                         </div>
                         <div class="ticket-card">
-                            <div class="img"
-                                style="background-image: url('../../../{{ $item->gallery[0]->image_url ?? 'assets/images/default.png' }}');">
+                            <div class="img lazy-bg"
+                                data-bg="{{ !empty($item->gallery) && isset($item->gallery[0]) ? '../../../' . $item->gallery[0]->image_url : asset('assets/images/default.png') }}">
                             </div>
                             <div class="ticket-info">
                                 <div class="ticket-title">Tiket
@@ -168,7 +168,7 @@
                         <h5>Tiket Anak-Anak</h5>
                         <div class="d-flex align-items-center">
                             <img src="{{ asset($item->gallery[0]->image_url ?? 'assets/images/default.png') }}"
-                                alt="Ticket Image" class="me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                                alt="Ticket Image" class="me-3" loading="lazy" style="width: 50px; height: 50px; object-fit: cover;">
                             <div>
                                 <p class="text-muted">{{ $item->name }}</p>
                                 <p class="text-danger">IDR <span id="child-price" data-price="{{ $item->children_price }}">

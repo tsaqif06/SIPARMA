@@ -28,6 +28,22 @@
             flag.remove();
         }
 
+        $(".lazy-bg").each(function() {
+            let $el = $(this);
+
+            let observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        $el.css("background-image", `url('${$el.data("bg")}')`);
+                        $el.removeClass("lazy-bg");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            });
+
+            observer.observe(this);
+        });
+
         var navbarMobile = $(".navigation-holder-mobile");
         var openBtn = $(".mobail-menu .navbar-toogler");
         var closeBtn = $(".menu-close");

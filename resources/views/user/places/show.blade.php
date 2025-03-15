@@ -122,13 +122,13 @@
                             <div class="row">
                                 <div class="col-md-8 mb-sm-2">
                                     <img src="{{ asset($chunk[0]->image_url ?? 'assets/images/default.png') }}"
-                                        class="d-block w-100" alt="{{ $place->name }}">
+                                        class="d-block w-100 img-clickable" alt="{{ $place->name }}">
                                 </div>
                                 <div class="col-md-4 d-flex flex-column">
                                     <img src="{{ asset($chunk[1]->image_url ?? ($chunk[0]->image_url ?? 'assets/images/default.png')) }}"
-                                        class="mb-2 w-100" alt="{{ $place->name }}">
+                                        class="mb-2 w-100 img-clickable" loading="lazy" alt="{{ $place->name }}">
                                     <img src="{{ asset($chunk[2]->image_url ?? ($chunk[0]->image_url ?? 'assets/images/default.png')) }}"
-                                        class="w-100" alt="{{ $place->name }}">
+                                        class="w-100 img-clickable" loading="lazy" alt="{{ $place->name }}">
                                 </div>
                             </div>
                         </div>
@@ -179,12 +179,12 @@
                             @foreach ($reviews as $review)
                                 <div class="review-item">
                                     <div class="review-img">
-                                        <div class="img"
-                                            style="background-image: url('{{ asset(
+                                        <div class="img lazy-bg"
+                                            data-bg="{{ asset(
                                                 file_exists(public_path($review->user->profile_picture)) && $review->user->profile_picture
                                                     ? $review->user->profile_picture
                                                     : 'assets/images/default-avatar.jpg',
-                                            ) }}');">
+                                            ) }}">
                                         </div>
                                     </div>
                                     <div class="review-text">
@@ -227,12 +227,12 @@
                             </div>
                             <div class="review-item">
                                 <div class="review-img">
-                                    <div class="img"
-                                        style="background-image: url('{{ asset(
+                                    <div class="img lazy-bg"
+                                        data-bg="{{ asset(
                                             file_exists(public_path($review->user->profile_picture)) && $review->user->profile_picture
                                                 ? $review->user->profile_picture
                                                 : 'assets/images/default-avatar.jpg',
-                                        ) }}');">
+                                        ) }}">
                                     </div>
                                 </div>
                                 <div class="review-text">
@@ -382,45 +382,5 @@
             </div>
         </div>
     </div>
-
-    {{--  <section class="blog-section section-padding">
-        <div class="container">
-            <div class="room-title">
-                <h2>Wisata Terdekat</h2>
-            </div>
-            <div class="authorlist-wrap">
-                <div class="row">
-                    @foreach ($place->places as $place)
-                        <div class="col-lg-3 col-md-4 col-sm-6 col-12">
-                            <a href="{{ route('place.show', $place->slug) }}" class="text-decoration-none">
-                                <div class="auth-card">
-                                    <div class="shape">
-                                        <svg viewBox="0 0 250 246" fill="none">
-                                            <path
-                                                d="M0 90.5622C0 85.4392 3.25219 80.8812 8.09651 79.2148L234.097 1.47079C241.887 -1.2093 250 4.57911 250 12.8182V234C250 240.627 244.627 246 238 246H12C5.37258 246 0 240.627 0 234V90.5622Z" />
-                                        </svg>
-                                    </div>
-                                    <div class="image">
-                                        <div class="img"
-                                            style="background-image: url('../{{ $place->gallery[0]->image_url ?? 'assets/images/default.png' }}');">
-                                        </div>
-                                    </div>
-                                    <div class="content">
-                                        <div class="rating">
-                                            Rating: {{ number_format($place->reviews_avg_rating, 1) }} (<img
-                                                src="{{ asset('assets/user/images/authorlist/star.svg') }}"
-                                                alt="">)
-                                        </div>
-                                        <h2>{{ $place->name }}</h2>
-                                        <h4>{{ ucfirst($place->type) }}</h4>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-    </section>  --}}
     <!--End Room-details area-->
 @endsection

@@ -57,8 +57,8 @@
                     <hr style="margin-bottom: 20px">
                     <div class="pricing-area">
                         <div class="ticket-card">
-                            <div class="img"
-                                style="background-image: url('../../../{{ $item->gallery[0]->image_url ?? 'assets/images/default.png' }}');">
+                            <div class="img lazy-bg"
+                                data-bg="{{ !empty($item->gallery) && isset($item->gallery[0]) ? '../../../' . $item->gallery[0]->image_url : asset('assets/images/default.png') }}">
                             </div>
                             <div class="ticket-info">
                                 <div class="ticket-title">Tiket Bundle - {{ $item->name }}</div>

@@ -138,7 +138,7 @@
                     <button class="d-flex justify-content-center align-items-center rounded-circle" type="button"
                         data-bs-toggle="dropdown">
                         <img src="{{ asset(auth()->user()->profile_picture ?? 'assets/images/default-avatar.jpg') }}"
-                            alt="image" class="w-40-px h-40-px object-fit-cover rounded-circle">
+                            alt="image" loading="lazy" class="w-40-px h-40-px object-fit-cover rounded-circle">
                     </button>
                     <div class="dropdown-menu to-top dropdown-menu-sm">
                         <div

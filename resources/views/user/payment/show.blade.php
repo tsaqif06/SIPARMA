@@ -40,7 +40,7 @@
                                         ? $ticket->item->items[0]->item->gallery[0]->image_url ?? 'assets/images/default.png'
                                         : $ticket->item->gallery[0]->image_url ?? 'assets/images/default.png',
                                 ) }}"
-                                    class="rounded me-3 ticket-image" alt="Tiket">
+                                    class="rounded me-3 ticket-image" loading="lazy" alt="Tiket">
 
                                 <div>
                                     <p class="mb-0">{{ $ticket->translated_type }} - {{ $ticket->item->name }}</p>

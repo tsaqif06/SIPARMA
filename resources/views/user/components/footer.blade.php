@@ -6,7 +6,7 @@
                 <div class="col col-xl-5 col-lg-4 col-md-6 col-sm-12 col-12">
                     <div class="widget about-widget">
                         <div class="logo">
-                            <img src="{{ asset('assets/user/images/logo_siparma.png') }}" alt="blog">
+                            <img src="{{ asset('assets/user/images/logo_siparma.png') }}" loading="lazy" alt="blog">
                         </div>
                         <h4>Tentang SIPARMA</h4>
                         <p>SIPARMA adalah sebuah website yang bertujuan untuk memberikan informasi lengkap tentang

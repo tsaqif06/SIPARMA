@@ -106,19 +106,19 @@
                             alt="">
                     </div>
                     {{--  <div class="item">
-                        <img src="{{ asset('assets/user/images/slider/slide-new.jpg') }}" style="object-fit: cover;"
+                        <img src="{{ asset('assets/user/images/slider/slide-new.jpg') }}" loading="lazy" style="object-fit: cover;"
                             alt="">
                     </div>
                     <div class="item">
-                        <img src="{{ asset('assets/user/images/slider/slide-new.jpg') }}" style="object-fit: cover;"
+                        <img src="{{ asset('assets/user/images/slider/slide-new.jpg') }}" loading="lazy" style="object-fit: cover;"
                             alt="">
                     </div>  --}}
                 </div>
                 <div class="side-img-2">
-                    <img src="{{ asset('assets/user/images/slider/side-img-2.jpg') }}" alt="">
+                    <img src="{{ asset('assets/user/images/slider/side-img-2.jpg') }}" loading="lazy" alt="">
                 </div>
                 <div class="side-img-3">
-                    <img src="{{ asset('assets/user/images/slider/side-img-3.jpg') }}" alt="">
+                    <img src="{{ asset('assets/user/images/slider/side-img-3.jpg') }}" loading="lazy" alt="">
                 </div>
             </div>
         </div>
@@ -213,8 +213,9 @@
                             <a href="{{ route('destination.show', $destination->slug) }}" class="text-decoration-none">
                                 <div class="featured-card d-flex flex-column h-100" style="min-height: 500px;">
                                     <div class="image">
-                                        <div class="img bg-cover"
-                                            style="background-image: url('{{ $destination->gallery[0]->image_url ?? asset('assets/images/default.png') }}'); height: 250px;">
+                                        <div class="img bg-cover lazy-bg"
+                                            data-bg="{{ $destination->gallery[0]->image_url ?? asset('assets/images/default.png') }}"
+                                            style="height: 250px;">
                                         </div>
                                     </div>
                                     <div class="content flex-grow-1 d-flex flex-column">
@@ -285,15 +286,16 @@
                                             </svg>
                                         </div>
                                         <div class="image">
-                                            <div class="img"
-                                                style="background-image: url('{{ $destination->gallery[0]->image_url ?? 'assets/images/default.png' }}');">
+                                            <div class="img lazy-bg"
+                                                data-bg="{{ $destination->gallery[0]->image_url ?? 'assets/images/default.png' }}">
                                             </div>
+
                                         </div>
                                         <div class="content">
                                             <div class="rating">
                                                 Rating: {{ number_format($destination->reviews_avg_rating, 1) }} (<img
                                                     src="{{ asset('assets/user/images/authorlist/star.svg') }}"
-                                                    alt="">)
+                                                    alt="" loading="lazy">)
                                             </div>
                                             <h2>{{ $destination->name }}</h2>
                                             <h4>Rp {{ number_format($destination->price, 0, ',', '.') }}</h4>
