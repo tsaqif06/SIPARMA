@@ -394,33 +394,33 @@
     }
 
     // clone home style 1 navigation for sticky menu
-    if ($(".wpo-site-header .navigation").length) {
-        cloneNavForSticyMenu(
-            $(".wpo-site-header .navigation"),
-            "sticky-header"
-        );
-    }
+    // if ($(".wpo-site-header .navigation").length) {
+    //     cloneNavForSticyMenu(
+    //         $(".wpo-site-header .navigation"),
+    //         "sticky-header"
+    //     );
+    // }
 
     var lastScrollTop = "";
 
-    function stickyMenu($targetMenu, $toggleClass) {
-        var st = $(window).scrollTop();
-        var mainMenuTop = $(".wpo-site-header .navigation");
+    // function stickyMenu($targetMenu, $toggleClass) {
+    //     var st = $(window).scrollTop();
+    //     var mainMenuTop = $(".wpo-site-header .navigation");
 
-        if ($(window).scrollTop() > 1000) {
-            if (st > lastScrollTop) {
-                // hide sticky menu on scroll down
-                $targetMenu.removeClass($toggleClass);
-            } else {
-                // active sticky menu on scroll up
-                $targetMenu.addClass($toggleClass);
-            }
-        } else {
-            $targetMenu.removeClass($toggleClass);
-        }
+    //     if ($(window).scrollTop() > 1000) {
+    //         if (st > lastScrollTop) {
+    //             // hide sticky menu on scroll down
+    //             $targetMenu.removeClass($toggleClass);
+    //         } else {
+    //             // active sticky menu on scroll up
+    //             $targetMenu.addClass($toggleClass);
+    //         }
+    //     } else {
+    //         $targetMenu.removeClass($toggleClass);
+    //     }
 
-        lastScrollTop = st;
-    }
+    //     lastScrollTop = st;
+    // }
 
     /*------------------------------------------
             = Header search toggle
@@ -775,7 +775,7 @@
     }
 
     /*-----------------------
-       cart-plus-minus-button 
+       cart-plus-minus-button
      -------------------------*/
     $(".cart-plus-minus").append(
         '<div class="dec qtybutton">-</div><div class="inc qtybutton">+</div>'
@@ -965,13 +965,13 @@
     /*==========================================================================
         WHEN WINDOW SCROLL
     ==========================================================================*/
-    $(window).on("scroll", function () {
-        if ($(".wpo-site-header").length) {
-            stickyMenu($(".wpo-site-header .navigation"), "sticky-on");
-        }
+    // $(window).on("scroll", function () {
+    //     if ($(".wpo-site-header").length) {
+    //         stickyMenu($(".wpo-site-header .navigation"), "sticky-on");
+    //     }
 
-        toggleBackToTopBtn();
-    });
+    //     toggleBackToTopBtn();
+    // });
 
     /*==========================================================================
         WHEN WINDOW RESIZE

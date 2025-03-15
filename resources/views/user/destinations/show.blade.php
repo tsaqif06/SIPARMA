@@ -333,7 +333,7 @@
                             @foreach ($reviews as $review)
                                 <div class="review-item">
                                     <div class="review-img">
-                                        <div class="img"
+                        <div class="img"
                                             style="background-image: url('{{ asset(file_exists(public_path($review->user->profile_picture)) && $review->user->profile_picture 
                                                 ? $review->user->profile_picture 
                                                 : 'assets/images/default-avatar.jpg') }}');">
@@ -381,7 +381,9 @@
                             <div class="review-item">
                                 <div class="review-img">
                                     <div class="img"
-                                        style="background-image: url('../{{ file_exists(public_path($userReview->user->profile_picture)) ? $userReview->user->profile_picture : 'assets/images/default-avatar.jpg' }}');">
+                                        style="background-image: url('{{ asset(file_exists(public_path($review->user->profile_picture)) && $review->user->profile_picture 
+                                            ? $review->user->profile_picture 
+                                            : 'assets/images/default-avatar.jpg') }}');">
                                     </div>
                                 </div>
                                 <div class="review-text">
