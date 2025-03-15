@@ -289,7 +289,6 @@
                                             <div class="img lazy-bg"
                                                 data-bg="{{ $destination->gallery[0]->image_url ?? 'assets/images/default.png' }}">
                                             </div>
-
                                         </div>
                                         <div class="content">
                                             <div class="rating">
