@@ -190,7 +190,7 @@
                                     <div class="review-text">
                                         <div class="r-title">
                                             <h2>{{ $review->user->name }}</h2>
-                                            <span class="ms-2">{{ $review->created_at }}</span>
+                                            <span class="ms-2">{{ $review->created_at->format('d M Y') }}</span>
                                             <ul style="display: flex;">
                                                 @for ($i = 1; $i <= 5; $i++)
                                                     <li>
@@ -238,7 +238,7 @@
                                 <div class="review-text">
                                     <div class="r-title">
                                         <h2>{{ $userReview->user->name }}</h2>
-                                        <span class="ms-2">{{ $userReview->created_at }}</span>
+                                        <span class="ms-2">{{ $userReview->created_at->format('d M Y') }}</span>
                                         <ul style="display: flex;">
                                             @for ($i = 1; $i <= 5; $i++)
                                                 <li>
