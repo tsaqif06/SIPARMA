@@ -1,1 +1,134 @@
-!function(e){"use strict";function t({buttonEl:e,isDark:t}){const o=t?"dark":"light";e.setAttribute("aria-label",o),e.innerText=o}function o({theme:e}){document.querySelector("html").setAttribute("data-theme",e)}e(".sidebar-menu .dropdown").on("click",(function(){var t=e(this);t.siblings(".dropdown").children(".sidebar-submenu").slideUp(),t.siblings(".dropdown").removeClass("dropdown-open"),t.siblings(".dropdown").removeClass("open"),t.children(".sidebar-submenu").slideToggle(),t.toggleClass("dropdown-open")})),e(".sidebar-toggle").on("click",(function(){e(this).toggleClass("active"),e(".sidebar").toggleClass("active"),e(".dashboard-main").toggleClass("active")})),e(".sidebar-mobile-toggle").on("click",(function(){e(".sidebar").addClass("sidebar-open"),e("body").addClass("overlay-active")})),e(".sidebar-close-btn").on("click",(function(){e(".sidebar").removeClass("sidebar-open"),e("body").removeClass("overlay-active")})),e((function(){for(var t=window.location,o=e("ul#sidebar-menu a").filter((function(){return this.href==t})).addClass("active-page").parent().addClass("active-page");o.is("li");)o=o.parent().addClass("show").parent().addClass("open")}));const a=document.querySelector("[data-theme-toggle]");let n=function({localStorageTheme:e}){return null!==e?e:"light"}({localStorageTheme:localStorage.getItem("theme")});a?(t({buttonEl:a,isDark:"dark"===n}),o({theme:n}),a.addEventListener("click",(e=>{const s="dark"===n?"light":"dark";localStorage.setItem("theme",s),t({buttonEl:a,isDark:"dark"===s}),o({theme:s}),n=s}))):o({theme:n}),e("#selectAll").on("change",(function(){e(".form-check .form-check-input").prop("checked",e(this).prop("checked"))})),e(".remove-btn").on("click",(function(){e(this).closest("tr").remove(),0===e(".table tbody tr").length&&(e(".table").addClass("bg-danger"),e(".no-items-found").show())}))}(jQuery);
+(function ($) {
+  'use strict';
+
+  // sidebar submenu collapsible js
+  $(".sidebar-menu .dropdown").on("click", function(){
+    var item = $(this);
+    item.siblings(".dropdown").children(".sidebar-submenu").slideUp();
+
+    item.siblings(".dropdown").removeClass("dropdown-open");
+
+    item.siblings(".dropdown").removeClass("open");
+
+    item.children(".sidebar-submenu").slideToggle();
+
+    item.toggleClass("dropdown-open");
+  });
+
+  $(".sidebar-toggle").on("click", function(){
+    $(this).toggleClass("active");
+    $(".sidebar").toggleClass("active");
+    $(".dashboard-main").toggleClass("active");
+  });
+
+  $(".sidebar-mobile-toggle").on("click", function(){
+    $(".sidebar").addClass("sidebar-open");
+    $("body").addClass("overlay-active");
+  });
+
+  $(".sidebar-close-btn").on("click", function(){
+    $(".sidebar").removeClass("sidebar-open");
+    $("body").removeClass("overlay-active");
+  });
+
+  //to keep the current page active
+  $(function () {
+    for (
+      var nk = window.location,
+        o = $("ul#sidebar-menu a")
+          .filter(function () {
+            return this.href == nk;
+          })
+          .addClass("active-page") // anchor
+          .parent()
+          .addClass("active-page");
+      ;
+
+    ) {
+      // li
+      if (!o.is("li")) break;
+      o = o.parent().addClass("show").parent().addClass("open");
+    }
+  });
+
+/**
+* Utility function to calculate the current theme setting based on localStorage.
+*/
+function calculateSettingAsThemeString({ localStorageTheme }) {
+  if (localStorageTheme !== null) {
+    return localStorageTheme;
+  }
+  return "light"; // default to light theme if nothing is stored
+}
+
+/**
+* Utility function to update the button text and aria-label.
+*/
+function updateButton({ buttonEl, isDark }) {
+  const newCta = isDark ? "dark" : "light";
+  buttonEl.setAttribute("aria-label", newCta);
+  buttonEl.innerText = newCta;
+}
+
+/**
+* Utility function to update the theme setting on the html tag.
+*/
+function updateThemeOnHtmlEl({ theme }) {
+  document.querySelector("html").setAttribute("data-theme", theme);
+}
+
+/**
+* 1. Grab what we need from the DOM and system settings on page load.
+*/
+const button = document.querySelector("[data-theme-toggle]");
+const localStorageTheme = localStorage.getItem("theme");
+
+/**
+* 2. Work out the current site settings.
+*/
+let currentThemeSetting = calculateSettingAsThemeString({ localStorageTheme });
+
+/**
+* 3. If the button exists, update the theme setting and button text according to current settings.
+*/
+if (button) {
+  updateButton({ buttonEl: button, isDark: currentThemeSetting === "dark" });
+  updateThemeOnHtmlEl({ theme: currentThemeSetting });
+
+  /**
+  * 4. Add an event listener to toggle the theme.
+  */
+  button.addEventListener("click", (event) => {
+    const newTheme = currentThemeSetting === "dark" ? "light" : "dark";
+
+    localStorage.setItem("theme", newTheme);
+    updateButton({ buttonEl: button, isDark: newTheme === "dark" });
+    updateThemeOnHtmlEl({ theme: newTheme });
+
+    currentThemeSetting = newTheme;
+  });
+} else {
+  // If no button is found, just apply the current theme to the page
+  updateThemeOnHtmlEl({ theme: currentThemeSetting });
+}
+
+
+// =========================== Table Header Checkbox checked all js Start ================================
+$('#selectAll').on('change', function () {
+  $('.form-check .form-check-input').prop('checked', $(this).prop('checked')); 
+}); 
+
+  // Remove Table Tr when click on remove btn start
+  $('.remove-btn').on('click', function () {
+    $(this).closest('tr').remove(); 
+
+    // Check if the table has no rows left
+    if ($('.table tbody tr').length === 0) {
+      $('.table').addClass('bg-danger');
+
+      // Show notification
+      $('.no-items-found').show();
+    }
+  });
+  // Remove Table Tr when click on remove btn end
+})(jQuery);
