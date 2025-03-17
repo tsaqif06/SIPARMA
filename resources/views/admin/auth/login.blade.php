@@ -73,11 +73,6 @@
                             Google
                         </button>
                     </div>  --}}
-                    <div class="mt-32 text-center text-sm">
-                        <p class="mb-0">Don’t have an account?<a href="{{ route('register') }}"
-                                class="text-primary-600 fw-semibold">Sign Up</a></p>
-                    </div>
-
                 </form>
 
             </div>
