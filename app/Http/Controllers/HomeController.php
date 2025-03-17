@@ -119,6 +119,99 @@ class HomeController extends Controller
 
     public function indexAdmin()
     {
-        return view('admin.dashboard.index3');
+        $user = auth()->user();
+        $role = $user->role;
+
+        if ($role === 'superadmin') {
+            $total_users = DB::table('tbl_users')->count();
+            $total_balance = DB::table('tbl_admin_balance')->sum('balance');
+            $total_profit = DB::table('tbl_admin_balance_logs')->sum('profit');
+            $total_destinations = DB::table('tbl_destinations')->count();
+            $total_places = DB::table('tbl_places')->count();
+            $total_transactions = DB::table('tbl_transactions')->count();
+
+            $recentTransactions = DB::table('tbl_transactions')
+                ->join('tbl_users', 'tbl_transactions.user_id', '=', 'tbl_users.id')
+                ->select(
+                    'tbl_transactions.id',
+                    'tbl_users.name as user_name',
+                    'tbl_transactions.transaction_code',
+                    'tbl_transactions.amount',
+                    'tbl_transactions.status',
+                    'tbl_transactions.created_at'
+                )
+                ->latest('tbl_transactions.created_at')
+                ->limit(5)
+                ->get();
+
+            // **Revenue untuk Superadmin dari tbl_admin_balance_logs**
+            $revenueData = DB::table('tbl_admin_balance_logs')
+                ->select(DB::raw('SUM(profit) as profit, period_year, period_month'))
+                ->groupBy('period_year', 'period_month')
+                ->orderBy('period_year', 'asc')
+                ->orderBy('period_month', 'asc')
+                ->get();
+        } elseif ($role === 'admin_wisata') {
+            $total_users = null;
+            $total_destinations = null;
+            $total_places = null;
+
+            $total_profit = DB::table('tbl_balance')->sum('profit');
+
+            $wahana_ids = DB::table('tbl_rides')->where('admin_id', $user->id)->pluck('id');
+
+            $total_transactions = DB::table('tbl_transaction_tickets as tt')
+                ->join('tbl_transactions as t', 'tt.transaction_id', '=', 't.id')
+                ->whereIn('tt.item_id', $wahana_ids)
+                ->count();
+
+            $recentTransactions = DB::table('tbl_transaction_tickets as tt')
+                ->join('tbl_transactions as t', 'tt.transaction_id', '=', 't.id')
+                ->join('tbl_users as u', 't.user_id', '=', 'u.id')
+                ->whereIn('tt.item_id', $wahana_ids)
+                ->select('t.id', 'u.name as user_name', 't.transaction_code', 't.amount', 't.status', 't.created_at')
+                ->latest('t.created_at')
+                ->limit(5)
+                ->get();
+
+            // **Revenue untuk Admin Wisata dari tbl_balance_logs**
+            $revenueData = DB::table('tbl_balance_logs')
+                ->select(DB::raw('SUM(profit) as profit, period_year, period_month'))
+                ->groupBy('period_year', 'period_month')
+                ->orderBy('period_year', 'asc')
+                ->orderBy('period_month', 'asc')
+                ->get();
+        } elseif ($role === 'admin_tempat') {
+            $total_users = null;
+            $total_profit = null;
+            $total_destinations = null;
+            $total_places = null;
+            $total_transactions = null;
+            $recentTransactions = collect(); // Kosongin data transaksi
+
+            // Admin Tempat tidak punya revenue data
+            $revenueData = collect();
+        }
+
+        // **Konversi Revenue Data ke Chart Format**
+        $revenueLabels = [];
+        $revenueSeries = [];
+        foreach ($revenueData as $data) {
+            $revenueLabels[] = date('M', mktime(0, 0, 0, $data->period_month, 10)); // Format bulan (Jan, Feb, dst)
+            $revenueSeries[] = $data->profit;
+        }
+
+        // Kirim data ke view
+        return view('admin.dashboard.index3', compact(
+            'total_users',
+            'total_destinations',
+            'total_places',
+            'total_transactions',
+            'total_balance',
+            'total_profit',
+            'recentTransactions',
+            'revenueLabels',
+            'revenueSeries'
+        ));
     }
 }

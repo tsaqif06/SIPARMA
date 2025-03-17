@@ -111,7 +111,7 @@ class PaymentController extends Controller
                         'period_month' => now()->month,
                     ],
                     [
-                        'profit' => $adminFee,
+                        'profit' => DB::raw('profit + ' . $adminFee),
                     ]
                 );
 
