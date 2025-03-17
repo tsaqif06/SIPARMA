@@ -204,15 +204,31 @@ class HomeController extends Controller
                 ->orderBy('period_month', 'asc')
                 ->get();
         } elseif ($role === 'admin_tempat') {
-            $total_users = null;
-            $total_profit = null;
-            $total_destinations = null;
-            $total_places = null;
-            $total_transactions = null;
-            $recentTransactions = collect(); // Kosongin data transaksi
+            $total_facility = DB::table('tbl_facilities')
+                ->where([
+                    ['item_type', 'place'],
+                    ['item_id', auth()->user()->adminPlaces[0]->place_id],
+                ])
+                ->count();
 
-            // Admin Tempat tidak punya revenue data
-            $revenueData = collect();
+            $total_gallery = DB::table('tbl_gallery_places')
+                ->where('place_id', auth()->user()->adminPlaces[0]->place_id)
+                ->count();
+
+            $total_article = DB::table('tbl_articles')
+                ->where('user_id', auth()->user()->id)
+                ->count();
+
+            $average_rating = DB::table('tbl_reviews')
+                ->where('place_id', auth()->user()->adminPlaces[0]->place_id)
+                ->avg('rating');
+
+            return view('admin.dashboard.admintempat', compact(
+                'total_facility',
+                'total_gallery',
+                'total_article',
+                'average_rating',
+            ));
         }
 
         // **Konversi Revenue Data ke Chart Format**
@@ -224,7 +240,7 @@ class HomeController extends Controller
         }
 
         // Kirim data ke view
-        return view('admin.dashboard.index3', compact(
+        return view('admin.dashboard.index', compact(
             'total_users',
             'total_destinations',
             'total_places',
