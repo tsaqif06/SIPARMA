@@ -122,6 +122,17 @@ class HomeController extends Controller
         $user = auth()->user();
         $role = $user->role;
 
+        $total_users = null;
+        $total_balance = null;
+        $total_profit = null;
+        $total_rides = null;
+        $average_rating = null;
+        $total_destinations = null;
+        $total_places = null;
+        $total_transactions = null;
+        $recentTransactions = collect();
+        $revenueData = collect();
+
         if ($role === 'superadmin') {
             $total_users = DB::table('tbl_users')->count();
             $total_balance = DB::table('tbl_admin_balance')->sum('balance');
@@ -152,25 +163,36 @@ class HomeController extends Controller
                 ->orderBy('period_month', 'asc')
                 ->get();
         } elseif ($role === 'admin_wisata') {
-            $total_users = null;
-            $total_destinations = null;
-            $total_places = null;
+            $total_profit = DB::table('tbl_balance')
+                ->where('destination_id', auth()->user()->adminDestinations[0]->destination_id)
+                ->value('total_profit');
 
-            $total_profit = DB::table('tbl_balance')->sum('profit');
+            $total_balance = DB::table('tbl_balance')->where('destination_id', auth()->user()->adminDestinations[0]->destination_id)
+                ->value('balance');;
 
-            $wahana_ids = DB::table('tbl_rides')->where('admin_id', $user->id)->pluck('id');
 
-            $total_transactions = DB::table('tbl_transaction_tickets as tt')
-                ->join('tbl_transactions as t', 'tt.transaction_id', '=', 't.id')
-                ->whereIn('tt.item_id', $wahana_ids)
+            $total_rides = DB::table('tbl_rides')
+                ->where('destination_id', auth()->user()->adminDestinations[0]->destination_id)
                 ->count();
 
-            $recentTransactions = DB::table('tbl_transaction_tickets as tt')
-                ->join('tbl_transactions as t', 'tt.transaction_id', '=', 't.id')
-                ->join('tbl_users as u', 't.user_id', '=', 'u.id')
-                ->whereIn('tt.item_id', $wahana_ids)
-                ->select('t.id', 'u.name as user_name', 't.transaction_code', 't.amount', 't.status', 't.created_at')
-                ->latest('t.created_at')
+            $average_rating = DB::table('tbl_reviews')
+                ->where('destination_id', auth()->user()->adminDestinations[0]->destination_id)
+                ->avg('rating');
+
+            $total_transactions = DB::table('tbl_transactions')->where('destination_id', auth()->user()->adminDestinations[0]->destination_id)->count();
+
+            $recentTransactions = DB::table('tbl_transactions')
+                ->join('tbl_users', 'tbl_transactions.user_id', '=', 'tbl_users.id')
+                ->where('destination_id', auth()->user()->adminDestinations[0]->destination_id)
+                ->select(
+                    'tbl_transactions.id',
+                    'tbl_users.name as user_name',
+                    'tbl_transactions.transaction_code',
+                    'tbl_transactions.amount',
+                    'tbl_transactions.status',
+                    'tbl_transactions.created_at'
+                )
+                ->latest('tbl_transactions.created_at')
                 ->limit(5)
                 ->get();
 
@@ -209,6 +231,8 @@ class HomeController extends Controller
             'total_transactions',
             'total_balance',
             'total_profit',
+            'total_rides',
+            'average_rating',
             'recentTransactions',
             'revenueLabels',
             'revenueSeries'

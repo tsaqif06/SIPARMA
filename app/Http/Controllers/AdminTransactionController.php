@@ -26,10 +26,12 @@ class AdminTransactionController extends Controller
     public function index()
     {
         if (Auth::user()->role === 'superadmin') {
-            $transactions = Transaction::all();
+            $transactions = Transaction::latest()->get(); // Mengambil transaksi terbaru
         } else if (Auth::user()->role === 'admin_wisata') {
             $destinationId = auth()->user()->adminDestinations[0]->destination_id;
-            $transactions = Transaction::where('destination_id', $destinationId)->get();
+            $transactions = Transaction::where('destination_id', $destinationId)
+                ->latest()
+                ->get();
         }
 
         return view('admin.transactions.index', compact('transactions'));

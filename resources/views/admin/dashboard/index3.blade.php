@@ -36,12 +36,25 @@
                                     class="card-body p-24 h-100 d-flex flex-column justify-content-center border border-top-0">
                                     <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
                                         <div>
-                                            <span
-                                                class="mb-12 w-44-px h-44-px text-primary-600 bg-primary-light border border-primary-light-white flex-shrink-0 d-flex justify-content-center align-items-center radius-8 h6 mb-12">
-                                                <iconify-icon icon="solar:map-bold" class="icon"></iconify-icon>
-                                            </span>
-                                            <span class="mb-1 fw-medium text-secondary-light text-md">Total Wisata</span>
-                                            <h6 class="fw-semibold text-primary-light mb-1">{{ $total_destinations }}</h6>
+                                            @if (auth()->user()->role == 'superadmin')
+                                                <span
+                                                    class="mb-12 w-44-px h-44-px text-primary-600 bg-primary-light border border-primary-light-white flex-shrink-0 d-flex justify-content-center align-items-center radius-8 h6 mb-12">
+                                                    <iconify-icon icon="solar:map-bold" class="icon"></iconify-icon>
+                                                </span>
+                                                <span class="mb-1 fw-medium text-secondary-light text-md">Total
+                                                    Wisata</span>
+                                                <h6 class="fw-semibold text-primary-light mb-1">{{ $total_destinations }}
+                                                </h6>
+                                            @elseif (auth()->user()->role == 'admin_wisata')
+                                                <span
+                                                    class="mb-12 w-44-px h-44-px text-primary-600 bg-primary-light border border-primary-light-white flex-shrink-0 d-flex justify-content-center align-items-center radius-8 h6 mb-12">
+                                                    <iconify-icon icon="material-symbols:pool-rounded"
+                                                        class="icon"></iconify-icon>
+                                                </span>
+                                                <span class="mb-1 fw-medium text-secondary-light text-md">Total
+                                                    Wahana</span>
+                                                <h6 class="fw-semibold text-primary-light mb-1">{{ $total_rides }}</h6>
+                                            @endif
                                         </div>
                                     </div>
                                     {{--  <p class="text-sm mb-0">Increase by <span
@@ -54,13 +67,26 @@
                                     class="card-body p-24 h-100 d-flex flex-column justify-content-center border border-top-0 border-start-0 border-end-0">
                                     <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
                                         <div>
-                                            <span
-                                                class="mb-12 w-44-px h-44-px text-secondary-600 bg-secondary-light border border-secondary-light-white flex-shrink-0 d-flex justify-content-center align-items-center radius-8 h6 mb-12">
-                                                <iconify-icon icon="material-symbols:file-map-rounded"
-                                                    class="icon"></iconify-icon>
-                                            </span>
-                                            <span class="mb-1 fw-medium text-secondary-light text-md">Total Tempat</span>
-                                            <h6 class="fw-semibold text-primary-light mb-1">{{ $total_places }}</h6>
+                                            @if (auth()->user()->role == 'superadmin')
+                                                <span
+                                                    class="mb-12 w-44-px h-44-px text-secondary-600 bg-secondary-light border border-secondary-light-white flex-shrink-0 d-flex justify-content-center align-items-center radius-8 h6 mb-12">
+                                                    <iconify-icon icon="material-symbols:file-map-rounded"
+                                                        class="icon"></iconify-icon>
+                                                </span>
+                                                <span class="mb-1 fw-medium text-secondary-light text-md">Total
+                                                    Tempat</span>
+                                                <h6 class="fw-semibold text-primary-light mb-1">{{ $total_places }}</h6>
+                                            @elseif (auth()->user()->role == 'admin_wisata')
+                                                <span
+                                                    class="mb-12 w-44-px h-44-px text-secondary-600 bg-secondary-light border border-secondary-light-white flex-shrink-0 d-flex justify-content-center align-items-center radius-8 h6 mb-12">
+                                                    <iconify-icon icon="uil:transaction" class="icon"></iconify-icon>
+                                                </span>
+                                                <span class="mb-1 fw-medium text-secondary-light text-md">Total
+                                                    Transaksi</span>
+                                                <h6 class="fw-semibold text-primary-light mb-1">{{ $total_transactions }}
+                                                </h6>
+                                            @endif
+
                                         </div>
                                     </div>
                                     {{--  <p class="text-sm mb-0">Increase by <span
@@ -73,13 +99,25 @@
                                     class="card-body p-24 h-100 d-flex flex-column justify-content-center border border-top-0 border-bottom-0">
                                     <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-8">
                                         <div>
-                                            <span
-                                                class="mb-12 w-44-px h-44-px text-yellow bg-yellow-light border border-yellow-light-white flex-shrink-0 d-flex justify-content-center align-items-center radius-8 h6 mb-12">
-                                                <iconify-icon icon="flowbite:users-group-solid"
-                                                    class="icon"></iconify-icon>
-                                            </span>
-                                            <span class="mb-1 fw-medium text-secondary-light text-md">Total User</span>
-                                            <h6 class="fw-semibold text-primary-light mb-1">{{ $total_users }}</h6>
+                                            @if (auth()->user()->role == 'superadmin')
+                                                <span
+                                                    class="mb-12 w-44-px h-44-px text-yellow bg-yellow-light border border-yellow-light-white flex-shrink-0 d-flex justify-content-center align-items-center radius-8 h6 mb-12">
+                                                    <iconify-icon icon="flowbite:users-group-solid"
+                                                        class="icon"></iconify-icon>
+                                                </span>
+                                                <span class="mb-1 fw-medium text-secondary-light text-md">Total User</span>
+                                                <h6 class="fw-semibold text-primary-light mb-1">{{ $total_users }}</h6>
+                                            @elseif (auth()->user()->role == 'admin_wisata')
+                                                <span
+                                                    class="mb-12 w-44-px h-44-px text-yellow bg-yellow-light border border-yellow-light-white flex-shrink-0 d-flex justify-content-center align-items-center radius-8 h6 mb-12">
+                                                    <iconify-icon icon="fluent:star-12-filled"
+                                                        class="icon"></iconify-icon>
+                                                </span>
+                                                <span class="mb-1 fw-medium text-secondary-light text-md">Rata - Rata
+                                                    Rating</span>
+                                                <h6 class="fw-semibold text-primary-light mb-1">
+                                                    {{ number_format($average_rating, 1) }}</h6>
+                                            @endif
                                         </div>
                                     </div>
                                     {{--  <p class="text-sm mb-0">Increase by <span
@@ -116,7 +154,7 @@
             <div class="card h-100">
                 <div class="card-body p-24">
                     <div class="d-flex align-items-center flex-wrap gap-2 justify-content-between mb-20">
-                        <h6 class="mb-2 fw-bold text-lg mb-0">Order Terbaru</h6>
+                        <h6 class="mb-2 fw-bold text-lg mb-0">Transaksi Terbaru</h6>
                         <a href="{{ route('admin.transactions.index') }}"
                             class="text-primary-600 hover-text-primary d-flex align-items-center gap-1">
                             View All
