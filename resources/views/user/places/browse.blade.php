@@ -44,35 +44,6 @@
                             <p class="text-muted">Coba kata kunci lain atau hapus filter pencarian.</p>
                         </div>
                     @else
-                        {{--  <div class="dropdown">
-                            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Urutkan :
-                                @php
-                                    $sort = request('sort', 'populer');
-                                    switch ($sort) {
-                                        case 'populer':
-                                            echo 'Paling Populer';
-                                            break;
-                                        case 'rating_tertinggi':
-                                            echo 'Rating Tertinggi';
-                                            break;
-                                        default:
-                                            echo 'Paling Populer';
-                                    }
-                                @endphp
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item"
-                                        href="{{ route('place.browse', array_merge(request()->all(), ['sort' => 'populer'])) }}">Paling
-                                        Populer</a></li>
-                                <li><a class="dropdown-item"
-                                        href="{{ route('place.browse', array_merge(request()->all(), ['sort' => 'rating_tertinggi'])) }}">Rating
-                                        Tertinggi
-                                    </a></li>
-                            </ul>
-                        </div>  --}}
-
                         <div class="gallery-container gallery-fancybox masonry-gallery row">
                             @foreach ($places as $place)
                                 <div class="col-xl-4 col-lg-4 col-md-6 col-12 custom-grid" data-wow-duration="2000ms">
@@ -114,7 +85,7 @@
 
                 <!-- Pagination -->
                 <div class="d-flex justify-content-center mt-4">
-                    {{ $places->links() }}
+                    {{ $places->links('vendor.pagination.bootstrap-5') }}
                 </div>
             </div>
         </div>

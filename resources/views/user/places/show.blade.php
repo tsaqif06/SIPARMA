@@ -207,7 +207,7 @@
                                 </div>
                             @endforeach
                             <div class="pagination mt-4">
-                                {{ $reviews->links() }}
+                                {{ $reviews->links('vendor.pagination.bootstrap-5') }}
                             </div>
                         @endif
                     </div>

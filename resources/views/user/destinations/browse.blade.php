@@ -129,7 +129,7 @@
 
                 <!-- Pagination -->
                 <div class="d-flex justify-content-center mt-4">
-                    {{ $destinations->links() }}
+                    {{ $destinations->links('vendor.pagination.bootstrap-5') }}
                 </div>
             </div>
         </div>
