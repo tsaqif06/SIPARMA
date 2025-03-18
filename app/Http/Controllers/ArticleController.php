@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class ArticleController extends Controller
 {
     // Tampilkan semua artikel
-    public function index()
+    public function browse()
     {
         $articles = Article::with(['category', 'tags', 'comments', 'likes', 'views'])->where('status', 'published')->latest()->get();
         return response()->json($articles);

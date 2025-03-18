@@ -27,6 +27,7 @@
                                 <li><a href="{{ route('home.index') }}">Beranda</a></li>
                                 <li><a href="{{ route('destination.browse') }}">Wisata</a></li>
                                 <li><a href="{{ route('place.browse') }}">Tempat</a></li>
+                                <li><a href="{{ route('article.browse') }}">Artikel</a></li>
                             </ul>
 
                         </div><!-- end of nav-collapse -->
@@ -71,5 +72,6 @@
         <li><a href="{{ route('home.index') }}">Beranda</a></li>
         <li><a href="{{ route('destination.browse') }}">Wisata</a></li>
         <li><a href="{{ route('place.browse') }}">Tempat</a></li>
+        <li><a href="{{ route('article.browse') }}">Artikel</a></li>
     </ul>
 </div>

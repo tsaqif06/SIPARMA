@@ -11,6 +11,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\AdminRideController;
 use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\AdminPlaceController;
 use App\Http\Controllers\AdminPromoController;
@@ -39,8 +40,10 @@ Route::middleware('no_admin')->group(function () {
     Route::post('/recommendation/submit', [HomeController::class, 'submitRecommendation'])->name('home.recommendation.store');
     Route::get('/destinations', [DestinationController::class, 'browse'])->name('destination.browse');
     Route::get('/places', [PlaceController::class, 'browse'])->name('place.browse');
+    Route::get('/articles', [ArticleController::class, 'browse'])->name('article.browse');
     Route::get('/destinations/{slug}', [DestinationController::class, 'show'])->name('destination.show');
     Route::get('/places/{slug}', [PlaceController::class, 'show'])->name('place.show');
+    Route::get('/articles/{slug}', [ArticleController::class, 'show'])->name('article.show');
 });
 
 
