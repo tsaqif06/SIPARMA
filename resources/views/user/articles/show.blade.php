@@ -24,14 +24,16 @@
         }
     </script>';
 
-    function formatLikes($num)
-    {
-        if ($num >= 1000000) {
-            return number_format($num / 1000000, 1, ',', '.') . 'jt';
-        } elseif ($num >= 1000) {
-            return number_format($num / 1000, 1, ',', '.') . 'k';
+    if (!function_exists('formatLikes')) {
+        function formatLikes($num)
+        {
+            if ($num >= 1000000) {
+                return number_format($num / 1000000, 1, ',', '.') . 'jt';
+            } elseif ($num >= 1000) {
+                return number_format($num / 1000, 1, ',', '.') . 'k';
+            }
+            return $num;
         }
-        return $num;
     }
 @endphp
 
@@ -66,185 +68,222 @@
                                         </span>
                                     </div>
                                     <!-- Like -->
-                                    <div class="d-flex align-items-center gap-1">
-                                        <iconify-icon icon="solar:heart-outline"
-                                            style="color: black; font-size: 25px"></iconify-icon>
-                                        <span class="text-muted" style="font-size: 14px;">
+                                    @php
+                                        $isLiked = $article->likes->where('user_id', auth()->id())->count() > 0;
+                                    @endphp
+                                    <button id="like-btn" class="border-0 bg-transparent d-flex align-items-center gap-1"
+                                        onclick="toggleLike({{ $article->id }})">
+                                        <iconify-icon id="like-icon"
+                                            icon="{{ $isLiked ? 'solar:heart-bold' : 'solar:heart-outline' }}"
+                                            style="color: {{ $isLiked ? 'red' : 'black' }}; font-size: 25px"></iconify-icon>
+                                        <span id="like-count" class="text-muted" style="font-size: 14px;">
                                             {{ formatLikes($article->likes->count()) }}
                                         </span>
-                                    </div>
-                                </div>
-                            </div>
-                            @if (!empty($article->thumbnail))
-                                <div class="article-thumbnail">
-                                    <a
-                                        href="{{ asset(
-                                            file_exists(public_path($article->thumbnail)) && $article->thumbnail
-                                                ? $article->thumbnail
-                                                : 'assets/images/default-avatar.jpg',
-                                        ) }}">
-                                        <div class="img lazy-bg"
-                                            data-bg="{{ asset(
-                                                file_exists(public_path($article->thumbnail)) && $article->thumbnail
-                                                    ? $article->thumbnail
-                                                    : 'assets/images/default-avatar.jpg',
-                                            ) }}">
+                                    </button>
+                                    <!-- Comments -->
+                                    <a href="#comments">
+                                        <div class="d-flex align-items-center gap-1">
+                                            <iconify-icon icon="solar:chat-line-linear"
+                                                style="color: black; font-size: 25px"></iconify-icon>
+                                            <span class="text-muted" style="font-size: 14px;">
+                                                {{ formatLikes($article->comments->count()) }}
+                                            </span>
                                         </div>
                                     </a>
                                 </div>
-                            @endif
+                            </div>
+                            <div class="article-thumbnail">
+                                <a
+                                    href="{{ asset(
+                                        file_exists(public_path($article->thumbnail)) && $article->thumbnail
+                                            ? $article->thumbnail
+                                            : 'assets/images/default.png',
+                                    ) }}">
+                                    <div class="img lazy-bg"
+                                        data-bg="{{ asset(
+                                            file_exists(public_path($article->thumbnail)) && $article->thumbnail
+                                                ? $article->thumbnail
+                                                : 'assets/images/default.png',
+                                        ) }}">
+                                    </div>
+                                </a>
+                            </div>
                         </div>
                         <div class="article-content mt-5">
                             {!! $article->content !!}
                         </div>
-
                     </div>
 
-                    <div class="room-review">
+                    <div class="room-review" id="comments">
                         <div class="room-title">
-                            <h2>Ulasan</h2>
+                            <h2>Komentar</h2>
                         </div>
 
-                        @if ($reviews->isEmpty())
-                            <p>Belum ada ulasan.</p>
+                        @php
+                            $userComments = $reviews->where('user_id', auth()->id()); // Komentar user login
+                            $otherComments = $reviews->where('user_id', '!=', auth()->id()); // Komentar lainnya
+                            $sortedComments = $userComments->merge($otherComments); // User login duluan
+                        @endphp
+
+                        @if ($sortedComments->isEmpty())
+                            <p>Belum ada komentar.</p>
                         @else
-                            @foreach ($reviews as $review)
-                                <div class="review-item">
-                                    <div class="review-img">
-                                        <div class="img lazy-bg"
-                                            data-bg="{{ asset(
-                                                file_exists(public_path($review->user->profile_picture)) && $review->user->profile_picture
-                                                    ? $review->user->profile_picture
-                                                    : 'assets/images/default-avatar.jpg',
-                                            ) }}">
+                            @foreach ($sortedComments->where('parent_id', null) as $review)
+                                <div class="review-item mb-4 p-3 border rounded shadow-sm">
+                                    <div class="d-flex align-items-start">
+                                        <!-- Foto Profil -->
+                                        <div class="review-img me-3">
+                                            <div class="img-comment lazy-bg"
+                                                data-bg="{{ asset(
+                                                    file_exists(public_path($review->user->profile_picture)) && $review->user->profile_picture
+                                                        ? $review->user->profile_picture
+                                                        : 'assets/images/default-avatar.jpg',
+                                                ) }}">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="review-text">
-                                        <div class="r-title">
-                                            <h2>{{ $review->user->name }}</h2>
-                                            <span class="ms-2">{{ $review->created_at->format('d M Y') }}</span>
-                                            <ul style="display: flex;">
-                                                @for ($i = 1; $i <= 5; $i++)
-                                                    <li>
-                                                        <iconify-icon
-                                                            icon="{{ $i <= $review->rating ? 'material-symbols:star' : 'material-symbols:star-outline' }}"
-                                                            class="menu-icon" style="font-size: 24px; color: gold;">
-                                                        </iconify-icon>
-                                                    </li>
-                                                @endfor
-                                            </ul>
+
+                                        <!-- Konten Komentar -->
+                                        <div class="review-text flex-grow-1">
+                                            <div class="r-title d-flex align-items-center">
+                                                <h2 class="fs-5 mb-0 fw-bold">{{ $review->user->name }}</h2>
+                                                <span
+                                                    class="ms-2 text-muted small">{{ $review->created_at->format('d M Y') }}</span>
+                                            </div>
+
+                                            <p class="mt-2 mb-2">{{ $review->comment }}</p>
+
+                                            <!-- Tombol Aksi -->
+                                            <div class="d-flex gap-2">
+                                                <!-- Tombol Balas -->
+                                                <button
+                                                    class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#reply-form-{{ $review->id }}">
+                                                    <iconify-icon icon="solar:chat-line-linear"
+                                                        style="font-size: 18px;"></iconify-icon>
+                                                    Balas
+                                                </button>
+
+                                                <!-- Tombol Hapus (Hanya untuk user pemilik komentar) -->
+                                                @if (auth()->id() == $review->user_id)
+                                                    <form action="{{ route('comment.destroy', $review->id) }}"
+                                                        method="POST" class="d-inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                            class="btn btn-danger btn-sm d-inline-flex align-items-center gap-1"
+                                                            onclick="return confirm('Hapus komentar ini?')">
+                                                            <iconify-icon icon="solar:trash-bin-trash-linear"
+                                                                style="font-size: 18px;"></iconify-icon>
+                                                            Hapus
+                                                        </button>
+                                                    </form>
+                                                @endif
+                                            </div>
+
+                                            <!-- Form Balasan -->
+                                            <div id="reply-form-{{ $review->id }}" class="collapse my-2">
+                                                <form method="POST"
+                                                    action="{{ route('comment.reply.store', $review->id) }}">
+                                                    @csrf
+                                                    <textarea class="form-control" name="comment" rows="2" placeholder="Tulis balasan..." required></textarea>
+                                                    <button type="submit" class="btn btn-sm btn-primary mt-2">
+                                                        <iconify-icon icon="solar:send-linear"
+                                                            style="font-size: 18px;"></iconify-icon>
+                                                        Kirim
+                                                    </button>
+                                                </form>
+                                            </div>
+
+                                            <!-- Tombol Lihat Balasan -->
+                                            @if ($review->replies->isNotEmpty())
+                                                <button
+                                                    class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-1 mt-2"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#replies-{{ $review->id }}">
+                                                    <iconify-icon icon="solar:eye-linear"
+                                                        style="font-size: 18px;"></iconify-icon>
+                                                    Lihat Balasan ({{ $review->replies->count() }})
+                                                </button>
+
+                                                <!-- Balasan -->
+                                                <div id="replies-{{ $review->id }}"
+                                                    class="collapse mt-3 ms-4 border-start ps-3">
+                                                    @foreach ($review->replies as $reply)
+                                                        <div class="review-item reply-item d-flex align-items-start mb-3">
+                                                            <!-- Foto Profil Reply -->
+                                                            <div class="review-img reply-img me-2">
+                                                                <div class="img-reply lazy-bg"
+                                                                    data-bg="{{ asset(
+                                                                        file_exists(public_path($reply->user->profile_picture)) && $reply->user->profile_picture
+                                                                            ? $reply->user->profile_picture
+                                                                            : 'assets/images/default-avatar.jpg',
+                                                                    ) }}">
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- Konten Reply -->
+                                                            <div class="review-text reply-text">
+                                                                <div class="r-title reply-title d-flex align-items-center">
+                                                                    <h3 class="fs-6 mb-0 fw-bold">{{ $reply->user->name }}
+                                                                    </h3>
+                                                                    <span
+                                                                        class="ms-2 text-muted small">{{ $reply->created_at->format('d M Y') }}</span>
+                                                                </div>
+
+                                                                <p class="small mt-2">{{ $reply->comment }}</p>
+
+                                                                <!-- Hapus Reply -->
+                                                                @if (auth()->id() == $reply->user_id)
+                                                                    <form
+                                                                        action="{{ route('comment.reply.destroy', $reply->id) }}"
+                                                                        method="POST" class="d-inline">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                        <button type="submit"
+                                                                            class="btn btn-danger btn-sm d-inline-flex align-items-center gap-1"
+                                                                            onclick="return confirm('Hapus balasan ini?')">
+                                                                            <iconify-icon
+                                                                                icon="solar:trash-bin-trash-linear"
+                                                                                style="font-size: 18px;"></iconify-icon>
+                                                                            Hapus
+                                                                        </button>
+                                                                    </form>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            @endif
                                         </div>
-                                        <p>{{ $review->comment }}</p>
                                     </div>
                                 </div>
                             @endforeach
-                            <div class="pagination mt-4">
-                                {{ $reviews->links('vendor.pagination.bootstrap-5') }}
-                            </div>
                         @endif
                     </div>
 
                     @php
                         $userReview = \App\Models\ArticleComment::where('user_id', auth()->id())
                             ->where('article_id', $article->id)
+                            ->whereNull('parent_id')
                             ->first();
                     @endphp
 
-                    <div class="add-review">
-                        @if ($userReview)
+                    @if (!$userReview)
+                        <div class="add-review">
                             <div class="room-title">
-                                <h2>Ulasan Anda</h2>
-                            </div>
-                            <div class="review-item">
-                                <div class="review-img">
-                                    <div class="img lazy-bg"
-                                        data-bg="{{ asset(
-                                            file_exists(public_path($review->user->profile_picture)) && $review->user->profile_picture
-                                                ? $review->user->profile_picture
-                                                : 'assets/images/default-avatar.jpg',
-                                        ) }}">
-                                    </div>
-                                </div>
-                                <div class="review-text">
-                                    <div class="r-title">
-                                        <h2>{{ $userReview->user->name }}</h2>
-                                        <span class="ms-2">{{ $userReview->created_at->format('d M Y') }}</span>
-                                        <ul style="display: flex;">
-                                            @for ($i = 1; $i <= 5; $i++)
-                                                <li>
-                                                    <iconify-icon
-                                                        icon="{{ $i <= $review->rating ? 'material-symbols:star' : 'material-symbols:star-outline' }}"
-                                                        class="menu-icon" style="font-size: 24px; color: gold;">
-                                                    </iconify-icon>
-                                                </li>
-                                            @endfor
-                                        </ul>
-                                    </div>
-                                    <p>{{ $userReview->comment }}</p>
-                                </div>
-
-                                <div class="review-actions">
-                                    <form id="deleteForm{{ $userReview->id }}"
-                                        action="{{ route('reviews.destroy', $userReview->id) }}" method="POST"
-                                        style="display: inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button" class="btn btn-danger"
-                                            onclick="confirmDelete({{ $userReview->id }})"><iconify-icon icon="mdi:trash"
-                                                width="24" height="24"></iconify-icon></button>
-                                    </form>
-                                </div>
-                            </div>
-                        @else
-                            <div class="room-title">
-                                <h2>Berikan Ulasan</h2>
+                                <h2>Berikan Komentar</h2>
                             </div>
 
-                            <form action="{{ route('reviews.store') }}" method="POST">
+                            <form action="{{ route('comment.store', $review->id) }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="article_id" value="{{ $article->id }}">
                                 <div class="wpo-blog-single-section review-form">
-                                    <div class="give-rat-sec">
-                                        <div class="give-rating">
-                                            <label>
-                                                <input type="radio" name="rating" value="1"
-                                                    {{ old('rating') == 1 ? 'checked' : '' }} required />
-                                                <span class="icon">★</span>
-                                            </label>
-                                            <label>
-                                                <input type="radio" name="rating" value="2"
-                                                    {{ old('rating') == 2 ? 'checked' : '' }} />
-                                                <span class="icon">★</span><span class="icon">★</span>
-                                            </label>
-                                            <label>
-                                                <input type="radio" name="rating" value="3"
-                                                    {{ old('rating') == 3 ? 'checked' : '' }} />
-                                                <span class="icon">★</span><span class="icon">★</span><span
-                                                    class="icon">★</span>
-                                            </label>
-                                            <label>
-                                                <input type="radio" name="rating" value="4"
-                                                    {{ old('rating') == 4 ? 'checked' : '' }} />
-                                                <span class="icon">★</span><span class="icon">★</span><span
-                                                    class="icon">★</span><span class="icon">★</span>
-                                            </label>
-                                            <label>
-                                                <input type="radio" name="rating" value="5"
-                                                    {{ old('rating') == 5 ? 'checked' : '' }} />
-                                                <span class="icon">★</span><span class="icon">★</span><span
-                                                    class="icon">★</span><span class="icon">★</span><span
-                                                    class="icon">★</span>
-                                            </label>
-                                            @error('rating')
-                                                <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
                                     <div class="review-add">
                                         <div class="comment-respond">
                                             <div id="commentform" class="comment-form">
                                                 <div class="form">
-                                                    <textarea id="comment" name="comment" placeholder="Ketik Ulasan" required>{{ old('comment') }}</textarea>
+                                                    <textarea id="comment" name="comment" placeholder="Ketik Komentar" required>{{ old('comment') }}</textarea>
                                                     @error('comment')
                                                         <div class="text-danger">{{ $message }}</div>
                                                     @enderror
@@ -254,15 +293,15 @@
                                                 <div class="form-submit">
                                                     <button type="submit" class="btn btn-primary"
                                                         style="font-size: 16px;">Kirim
-                                                        Ulasan</button>
+                                                        Komentar</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </form>
-                        @endif
-                    </div>
+                        </div>
+                    @endif
                 </div>
                 <div class="col-lg-4 col-12">
                     <div class="d-none d-md-block mt-5"></div>
@@ -276,7 +315,7 @@
                                 <h2>Artikel Relevan</h2>
                             </div>
                             <div class="fasilitas-list">
-                                @if ($article->tags->isEmpty())
+                                @if ($relatedArticles->isEmpty())
                                     <p>Tidak ada artikel relevan</p>
                                 @else
                                     @foreach ($relatedArticles as $related)
@@ -288,7 +327,7 @@
                                                         data-bg="{{ asset(
                                                             file_exists(public_path($related->thumbnail)) && $related->thumbnail
                                                                 ? $related->thumbnail
-                                                                : 'assets/images/default.jpg',
+                                                                : 'assets/images/default.png',
                                                         ) }}">
                                                     </div>
                                                 </div>
@@ -301,7 +340,10 @@
                                                     </div>
 
                                                     <!-- Content -->
-                                                    <p class="content-clamp">{!! Str::limit(strip_tags($related->content), 80) !!}</p>
+                                                    <p class="content-clamp">{!! Str::limit(
+                                                        preg_replace('/<figure[^>]*>.*?<\/figure>/', '', strip_tags(html_entity_decode($article->content))),
+                                                        100,
+                                                    ) !!}</p>
                                                 </div>
                                             </div>
                                         </a>
@@ -311,16 +353,10 @@
                         </div>
                         <div class="side-category">
                             <div class="room-title">
-                                <h2>Katgeori</h2>
+                                <h2>Kategori</h2>
                             </div>
                             <div class="fasilitas-list">
-                                @if ($article->tags->isEmpty())
-                                    <p>Tidak ada tag</p>
-                                @else
-                                    @foreach ($article->tags as $tag)
-                                        <span class="fasilitas-item">{{ ucfirst($tag->tag_name) }}</span>
-                                    @endforeach
-                                @endif
+                                <p>{{ ucfirst($article->category->name) }}</p>
                             </div>
                         </div>
                         <div class="side-tag">
@@ -371,4 +407,39 @@
         </div>
     </div>
     <!--End Room-details area-->
+
+    <script>
+        function formatLikes(num) {
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(1).replace(".", ",") + "jt";
+            } else if (num >= 1000) {
+                return (num / 1000).toFixed(1).replace(".", ",") + "k";
+            }
+            return num;
+        }
+
+        function toggleLike(articleId) {
+            $.ajax({
+                url: "{{ route('article.like') }}",
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    article_id: articleId
+                },
+                success: function(response) {
+                    if (response.status === 'liked') {
+                        $("#like-icon").attr("icon", "solar:heart-bold").css("color", "red");
+                    } else {
+                        $("#like-icon").attr("icon", "solar:heart-outline").css("color", "black");
+                    }
+
+                    // Gunakan formatLikes sebelum menampilkan
+                    $("#like-count").text(formatLikes(response.likes));
+                },
+                error: function(xhr) {
+                    alert("Gagal melakukan aksi.");
+                }
+            });
+        }
+    </script>
 @endsection

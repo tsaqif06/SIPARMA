@@ -1,5 +1,17 @@
 @extends('user.layouts.app')
 
+@php
+    function formatLikes($num)
+    {
+        if ($num >= 1000000) {
+            return number_format($num / 1000000, 1, ',', '.') . 'jt';
+        } elseif ($num >= 1000) {
+            return number_format($num / 1000, 1, ',', '.') . 'k';
+        }
+        return $num;
+    }
+@endphp
+
 @section('content')
     <div class="container">
         <div class="hero-article-browse lazy-bg overlay-dark d-flex justify-content-center align-items-center"
@@ -15,37 +27,63 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-4 col-sm-6 mb-4">
-                <div class="card">
-                    <img src="Hz" class="card-img-top" alt="Gunung Bromo">
-                    <div class="card-body">
-                        <h5 class="card-title">Gunung Bromo Erupsi <i class="fas fa-arrow-right arrow-icon"></i></h5>
-                        <p class="card-text">Petugas PVMBG melaporkan adanya...</p>
-                        <a href="#" class="stretched-link"></a>
+        <div class="row mt-5">
+            @foreach ($articles as $article)
+                <div class="col-md-4 col-sm-6 mb-4">
+                    <div class="card" style="min-height: 450px;">
+                        <div class="article-thumbnail-browse">
+                            <div class="img lazy-bg" data-bg="{{ $article->thumbnail ?? 'assets/images/default.png' }}">
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                {{ $article->title }} <i class="fas fa-arrow-right arrow-icon"></i>
+                            </h5>
+                            <p class="card-text">
+                                {!! Str::limit(
+                                    preg_replace('/<figure[^>]*>.*?<\/figure>/', '', strip_tags(html_entity_decode($article->content))),
+                                    100,
+                                ) !!}
+                            </p>
+
+                            <a href="{{ route('article.show', ['slug' => $article->slug]) }}" class="stretched-link"></a>
+                        </div>
+
+                        <div class="card-footer">
+                            <div class="d-flex align-items-center gap-3">
+                                <!-- View -->
+                                <div class="d-flex align-items-center gap-1">
+                                    <iconify-icon icon="solar:eye-linear"
+                                        style="color: black; font-size: 25px"></iconify-icon>
+                                    <span class="text-muted" style="font-size: 14px;">
+                                        {{ formatLikes($article->views->count()) }}
+                                    </span>
+                                </div>
+
+                                <!-- Like -->
+                                <div class="d-flex align-items-center gap-1">
+                                    <iconify-icon icon="solar:heart-outline"
+                                        style="color: black; font-size: 25px"></iconify-icon>
+                                    <span class="text-muted" style="font-size: 14px;">
+                                        {{ formatLikes($article->likes->count()) }}
+                                    </span>
+                                </div>
+
+                                <!-- Comments -->
+                                <div class="d-flex align-items-center gap-1">
+                                    <iconify-icon icon="solar:chat-line-linear"
+                                        style="color: black; font-size: 25px"></iconify-icon>
+                                    <span class="text-muted" style="font-size: 14px;">
+                                        {{ formatLikes($article->comments->count()) }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4 col-sm-6 mb-4">
-                <div class="card">
-                    <img src="assets\images\asset\Balekambang Beach.jpeg" class="card-img-top" alt="Pantai Goa China">
-                    <div class="card-body">
-                        <h5 class="card-title">Pantai Goa China Terkenal <i class="fas fa-arrow-right arrow-icon"></i></h5>
-                        <p class="card-text">Pantai ini memiliki ombak yang cukup...</p>
-                        <a href="#" class="stretched-link"></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-6 mb-4">
-                <div class="card">
-                    <img src="assets\images\asset\Balekambang Beach.jpeg" class="card-img-top" alt="Hawai Waterpark">
-                    <div class="card-body">
-                        <h5 class="card-title">Hawai Waterpark <i class="fas fa-arrow-right arrow-icon"></i></h5>
-                        <p class="card-text">Taman wisata air terbesar di...</p>
-                        <a href="#" class="stretched-link"></a>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
     </div>
     {{--  <section class="verifikasi-section section-padding" style="margin-top: -150px">

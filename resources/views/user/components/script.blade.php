@@ -39,7 +39,7 @@
                         if ($el.hasClass("overlay-dark")) {
                             $el.css("background-image",
                                 `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('${bgUrl}')`
-                                );
+                            );
                         } else {
                             $el.css("background-image", `url('${bgUrl}')`);
                         }
@@ -62,10 +62,6 @@
         var navbarMobile = $(".navigation-holder-mobile");
         var openBtn = $(".mobail-menu .navbar-toogler");
         var closeBtn = $(".menu-close");
-
-        console.log(navbarMobile)
-        console.log(openBtn)
-        console.log(closeBtn)
 
         // Buka menu
         openBtn.on("click", function(e) {

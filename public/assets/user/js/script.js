@@ -985,7 +985,7 @@
 
         toggleMobileNavigation();
 
-        smallNavFunctionality();
+        // smallNavFunctionality();
     });
 
     /*==========================================================================
@@ -1011,7 +1011,7 @@
             this,
             "resizeTimer",
             setTimeout(function () {
-                smallNavFunctionality();
+                // smallNavFunctionality();
             }, 200)
         );
     });

@@ -56,6 +56,13 @@ Route::middleware(['auth', 'is_user'])->group(function () {
 
     Route::post('/reviews/store', [ReviewController::class, 'store'])->name('reviews.store');
     Route::delete('/reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+
+    Route::post('/article/like', [ArticleController::class, 'toggleLike'])->name('article.like');
+    Route::post('/comments/{id}', [ArticleController::class, 'comment'])->name('comment.store');
+    Route::post('/comments/{id}/reply', [ArticleController::class, 'reply'])->name('comment.reply.store');
+    Route::delete('/comments/{id}', [ArticleController::class, 'commentDestroy'])->name('comment.destroy');
+    Route::delete('/comments/{id}/reply', [ArticleController::class, 'replyDestroy'])->name('comment.reply.destroy');
+
     Route::post('/complaints', [ComplaintController::class, 'store'])->name('complaints.store');
 
     Route::get('/destinations/checkout/{slug}/{type?}', [DestinationController::class, 'checkout'])->name('destination.checkout');

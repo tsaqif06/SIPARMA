@@ -77,7 +77,7 @@ html {
 }
 
 :root {
-    scroll-behavior: unset;
+    scroll-behavior: smooth;
 }
 
 body {
@@ -6740,15 +6740,42 @@ body.menu-open::before {
 }
 
 .review-img {
-    width: 150px;
-    height: 150px;
+    width: 80px;
+    height: 80px;
     border-radius: 10px;
 }
 
 .review-img .img {
     width: 100%;
-    height: 150px;
+    height: 80px;
     border-radius: 10px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.review-img .img-comment {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.review-img .img-reply {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.article-thumbnail-browse .img {
+    width: 100%;
+    height: 250px;
+    border-radius: 10px 10px 0 0;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -6797,6 +6824,30 @@ body.menu-open::before {
     background-size: cover;
     background-position: center;
     border-radius: 8px;
+}
+
+.reply-item {
+    font-size: 0.85rem;
+}
+
+.reply-img .img {
+    width: 40px;
+    height: 40px;
+}
+
+.reply-title h3 {
+    font-size: 1rem;
+}
+
+.reply-text p {
+    font-size: 0.85rem;
+}
+
+.review-text button {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px; /* Jarak antara ikon dan teks */
+    margin-right: 8px; /* Beri jarak antar tombol */
 }
 
 .related-text {

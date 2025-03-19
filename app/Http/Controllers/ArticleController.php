@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Article;
+use App\Models\ArticleLike;
 use App\Models\ArticleView;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Models\ArticleComment;
 use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
@@ -52,28 +54,6 @@ class ArticleController extends Controller
         return view('user.articles.show', compact('article', 'reviews', 'relatedArticles'));
     }
 
-    // Tambah artikel
-    public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required',
-            'category_id' => 'required|exists:article_categories,id',
-        ]);
-
-        $article = Article::create([
-            'user_id' => Auth::id(),
-            'category_id' => $request->category_id,
-            'title' => $request->title,
-            'slug' => Str::slug($request->title),
-            'content' => $request->content,
-            'thumbnail' => $request->thumbnail,
-            'status' => $request->status ?? 'draft'
-        ]);
-
-        return response()->json(['message' => 'Artikel berhasil dibuat', 'article' => $article]);
-    }
-
     // Fungsi menambahkan views (anti-spam)
     private function addView($articleId, $ip)
     {
@@ -87,5 +67,104 @@ class ArticleController extends Controller
                 'user_id' => Auth::check() ? Auth::id() : null
             ]);
         }
+    }
+
+    // INTERAKSI
+
+    public function toggleLike(Request $request)
+    {
+        $articleId = $request->article_id;
+        $userId = auth()->id();
+
+        // Cek apakah user sudah like
+        $existingLike = ArticleLike::where('article_id', $articleId)
+            ->where('user_id', $userId)
+            ->first();
+
+        if ($existingLike) {
+            // Jika sudah like, maka unlike
+            $existingLike->delete();
+            $status = 'unliked';
+        } else {
+            // Jika belum like, maka tambahkan
+            ArticleLike::create([
+                'article_id' => $articleId,
+                'user_id' => $userId
+            ]);
+            $status = 'liked';
+        }
+
+        $likeCount = ArticleLike::where('article_id', $articleId)->count();
+
+        return response()->json([
+            'status' => $status,
+            'likes' => $likeCount
+        ]);
+    }
+
+    // Simpan Komentar
+    public function comment(Request $request, $id)
+    {
+        $request->validate([
+            'comment' => 'required|string|max:500',
+        ]);
+
+        ArticleComment::create([
+            'article_id' => $id,
+            'user_id' => Auth::id(),
+            'comment' => $request->comment,
+            'parent_id' => null, // Komentar utama
+        ]);
+
+        return back()->with('success', 'Komentar berhasil ditambahkan!');
+    }
+
+    // Simpan Balasan Komentar
+    public function reply(Request $request, $id)
+    {
+        $request->validate([
+            'comment' => 'required|string|max:500',
+        ]);
+
+        $parentComment = ArticleComment::findOrFail($id);
+
+        ArticleComment::create([
+            'article_id' => $parentComment->article_id,
+            'user_id' => Auth::id(),
+            'comment' => $request->comment,
+            'parent_id' => $id, // Balasan ke komentar utama
+        ]);
+
+        return back()->with('success', 'Balasan berhasil dikirim!');
+    }
+
+    // Hapus Komentar (termasuk balasan)
+    public function commentDestroy($id)
+    {
+        $comment = ArticleComment::findOrFail($id);
+
+        if (Auth::id() !== $comment->user_id) {
+            abort(403, 'Unauthorized');
+        }
+
+        // Hapus semua balasan juga
+        $comment->replies()->delete();
+        $comment->delete();
+
+        return back()->with('success', 'Komentar berhasil dihapus!');
+    }
+
+    // Hapus Balasan
+    public function replyDestroy($id)
+    {
+        $reply = ArticleComment::findOrFail($id);
+
+        if (Auth::id() !== $reply->user_id) {
+            abort(403, 'Unauthorized');
+        }
+
+        $reply->delete();
+
+        return back()->with('success', 'Balasan berhasil dihapus!');
     }
 }
