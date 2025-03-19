@@ -380,6 +380,8 @@
     </div>
 
     <script>
+        var isLoggedIn = {{ auth()->check() ? 'true' : 'false' }};
+
         function formatLikes(num) {
             if (num >= 1000000) {
                 return (num / 1000000).toFixed(1).replace(".", ",") + "jt";
@@ -390,6 +392,11 @@
         }
 
         function toggleLike(articleId) {
+            if (!isLoggedIn) {
+                window.location.href = "{{ route('login') }}";
+                return;
+            }
+
             $.ajax({
                 url: "{{ route('article.like') }}",
                 type: "POST",
