@@ -275,7 +275,7 @@
                                 <h2>Berikan Komentar</h2>
                             </div>
 
-                            <form action="{{ route('comment.store', $review->id) }}" method="POST">
+                            <form action="{{ route('comment.store', $article->id) }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="article_id" value="{{ $article->id }}">
                                 <div class="wpo-blog-single-section review-form">
