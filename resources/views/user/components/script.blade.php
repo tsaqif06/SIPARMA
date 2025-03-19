@@ -34,7 +34,22 @@
             let observer = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        $el.css("background-image", `url('${$el.data("bg")}')`);
+                        const bgUrl = $el.data("bg");
+
+                        if ($el.hasClass("overlay-dark")) {
+                            $el.css("background-image",
+                                `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('${bgUrl}')`
+                                );
+                        } else {
+                            $el.css("background-image", `url('${bgUrl}')`);
+                        }
+
+                        $el.css({
+                            "background-size": "cover",
+                            "background-position": "center",
+                            "background-repeat": "no-repeat"
+                        });
+
                         $el.removeClass("lazy-bg");
                         observer.unobserve(entry.target);
                     }

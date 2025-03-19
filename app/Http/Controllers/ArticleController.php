@@ -14,7 +14,7 @@ class ArticleController extends Controller
     public function browse()
     {
         $articles = Article::with(['category', 'tags', 'comments', 'likes', 'views'])->where('status', 'published')->latest()->get();
-        return response()->json($articles);
+        return view('user.articles.browse', compact('articles'));
     }
 
     // Tampilkan satu artikel (plus tambahin views)

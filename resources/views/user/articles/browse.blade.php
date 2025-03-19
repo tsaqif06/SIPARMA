@@ -1,7 +1,54 @@
 @extends('user.layouts.app')
 
 @section('content')
-    <section class="verifikasi-section section-padding" style="margin-top: -150px">
+    <div class="container">
+        <div class="hero-article-browse lazy-bg overlay-dark d-flex justify-content-center align-items-center"
+            data-bg="{{ asset('assets/images/hero-article.jpg') }}" style="height: 250px;">
+            <div class="text-center">
+                <h1 class="text-white mb-4">Cari Artikel</h1>
+                <div class="search-bar">
+                    <form action="{{ route('article.browse') }}" method="GET" class="d-flex justify-content-center">
+                        <input type="text" class="search-box rounded-pill w-100 me-2"
+                            placeholder="Masukkan kata kunci...">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="card">
+                    <img src="Hz" class="card-img-top" alt="Gunung Bromo">
+                    <div class="card-body">
+                        <h5 class="card-title">Gunung Bromo Erupsi <i class="fas fa-arrow-right arrow-icon"></i></h5>
+                        <p class="card-text">Petugas PVMBG melaporkan adanya...</p>
+                        <a href="#" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="card">
+                    <img src="assets\images\asset\Balekambang Beach.jpeg" class="card-img-top" alt="Pantai Goa China">
+                    <div class="card-body">
+                        <h5 class="card-title">Pantai Goa China Terkenal <i class="fas fa-arrow-right arrow-icon"></i></h5>
+                        <p class="card-text">Pantai ini memiliki ombak yang cukup...</p>
+                        <a href="#" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="card">
+                    <img src="assets\images\asset\Balekambang Beach.jpeg" class="card-img-top" alt="Hawai Waterpark">
+                    <div class="card-body">
+                        <h5 class="card-title">Hawai Waterpark <i class="fas fa-arrow-right arrow-icon"></i></h5>
+                        <p class="card-text">Taman wisata air terbesar di...</p>
+                        <a href="#" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{--  <section class="verifikasi-section section-padding" style="margin-top: -150px">
         <div class="container mt-5 d-flex">
             <!-- Sidebar Filter -->
             <div class="row">
@@ -89,5 +136,5 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section>  --}}
 @endsection
