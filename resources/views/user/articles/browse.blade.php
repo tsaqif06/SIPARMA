@@ -32,7 +32,8 @@
                 <div class="col-md-4 col-sm-6 mb-4">
                     <div class="card" style="min-height: 450px;">
                         <div class="article-thumbnail-browse">
-                            <div class="img lazy-bg" data-bg="{{ $article->thumbnail ?? 'assets/images/default.png' }}">
+                            <div class="img lazy-bg"
+                                data-bg="{{ asset($article->thumbnail ?? 'assets/images/default.png') }}">
                             </div>
                         </div>
 

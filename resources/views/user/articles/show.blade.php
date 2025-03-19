@@ -93,18 +93,9 @@
                                 </div>
                             </div>
                             <div class="article-thumbnail">
-                                <a
-                                    href="{{ asset(
-                                        file_exists(public_path($article->thumbnail)) && $article->thumbnail
-                                            ? $article->thumbnail
-                                            : 'assets/images/default.png',
-                                    ) }}">
+                                <a href="{{ asset($article->thumbnail ?? 'assets/images/default.png') }}">
                                     <div class="img lazy-bg"
-                                        data-bg="{{ asset(
-                                            file_exists(public_path($article->thumbnail)) && $article->thumbnail
-                                                ? $article->thumbnail
-                                                : 'assets/images/default.png',
-                                        ) }}">
+                                        data-bg="{{ asset($article->thumbnail ?? 'assets/images/default.png') }}">
                                     </div>
                                 </a>
                             </div>
