@@ -379,35 +379,6 @@
         </div>
     </div>
 
-    <div class="modal fade" id="laporModal" tabindex="-1" aria-labelledby="laporModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="laporModalLabel">Laporkan Masalah</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="{{ route('complaints.store') }}" method="POST">
-                    @csrf
-                    {{--  <input type="hidden" name="place_id" value="{{ $place->id }}">  --}}
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="complaint_text" class="form-label">Isi Laporan</label>
-                            <textarea class="form-control" name="complaint_text" rows="4" required placeholder="Tuliskan laporan Anda..."></textarea>
-                            @error('complaint_text')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary">Kirim Laporan</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!--End Room-details area-->
-
     <script>
         function formatLikes(num) {
             if (num >= 1000000) {
