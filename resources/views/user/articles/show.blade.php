@@ -93,9 +93,18 @@
                                 </div>
                             </div>
                             <div class="article-thumbnail">
-                                <a href="{{ asset($article->thumbnail ?? 'assets/images/default.png') }}">
+                                <a
+                                    href="{{ asset(
+                                        file_exists(public_path($article->thumbnail)) && $article->thumbnail
+                                            ? $article->thumbnail
+                                            : 'assets/images/default.png',
+                                    ) }}">
                                     <div class="img lazy-bg"
-                                        data-bg="{{ asset($article->thumbnail ?? 'assets/images/default.png') }}">
+                                        data-bg="{{ asset(
+                                            file_exists(public_path($article->thumbnail)) && $article->thumbnail
+                                                ? $article->thumbnail
+                                                : 'assets/images/default.png',
+                                        ) }}">
                                     </div>
                                 </a>
                             </div>
@@ -332,7 +341,7 @@
 
                                                     <!-- Content -->
                                                     <p class="content-clamp">{!! Str::limit(
-                                                        preg_replace('/<figure[^>]*>.*?<\/figure>/', '', strip_tags(html_entity_decode($article->content))),
+                                                        preg_replace('/<figure[^>]*>.*?<\/figure>/', '', strip_tags(html_entity_decode($related->content))),
                                                         100,
                                                     ) !!}</p>
                                                 </div>

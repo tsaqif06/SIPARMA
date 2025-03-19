@@ -339,9 +339,11 @@
                                 <div class="review-item">
                                     <div class="review-img">
                                         <div class="img lazy-bg"
-                                            data-bg="{{ file_exists(public_path($review->user->profile_picture)) && $review->user->profile_picture
-                                                ? asset($review->user->profile_picture)
-                                                : asset('assets/images/default-avatar.jpg') }}">
+                                            data-bg="{{ asset(
+                                                file_exists(public_path($review->user->profile_picture)) && $review->user->profile_picture
+                                                    ? $review->user->profile_picture
+                                                    : 'assets/images/default-avatar.jpg',
+                                            ) }}">
                                         </div>
                                     </div>
                                     <div class="review-text">
