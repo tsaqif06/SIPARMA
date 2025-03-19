@@ -24,10 +24,32 @@ class ArticleController extends Controller
             ->where('slug', $slug)
             ->firstOrFail();
 
-        // Tambah view dengan sistem anti-spam
+        $relatedByCategory = Article::where('category_id', $article->category_id)
+            ->where('id', '!=', $article->id)
+            ->limit(5);
+
+        $tagIds = $article->tags->pluck('tag_name');
+
+        if ($tagIds->isNotEmpty()) {
+            $relatedByTags = Article::where('id', '!=', $article->id)
+                ->whereHas('tags', function ($query) use ($tagIds) {
+                    $query->whereIn('tag_name', $tagIds);
+                })
+                ->limit(5);
+
+
+            $relatedArticles = $relatedByCategory->union($relatedByTags)->inRandomOrder()->limit(5)->get();
+        } else {
+            $relatedArticles = $relatedByCategory->inRandomOrder()->get();
+        }
+
+
         $this->addView($article->id, $request->ip());
 
-        return response()->json($article);
+        $reviews = $article->comments()->paginate(5);
+
+
+        return view('user.articles.show', compact('article', 'reviews', 'relatedArticles'));
     }
 
     // Tambah artikel

@@ -6754,6 +6754,73 @@ body.menu-open::before {
     background-repeat: no-repeat;
 }
 
+.article-thumbnail .img {
+    width: 100%;
+    height: 470px;
+    border-radius: 10px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.article-content {
+    font-size: 18px;
+    line-height: 1.8;
+    color: black;
+    /* text-align: justify; */
+}
+
+
+.related-article {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.related-item {
+    display: flex;
+    gap: 10px;
+    align-items: start;
+}
+
+.related-img .img {
+    width: 80px;
+    height: 80px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+}
+
+.related-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+.title-clamp {
+    font-size: 16px;
+    font-weight: bold;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 5px;
+}
+
+.content-clamp {
+    font-size: 14px;
+    color: gray;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+
 .review-text {
     overflow: hidden;
 }
