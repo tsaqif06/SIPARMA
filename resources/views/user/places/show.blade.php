@@ -173,10 +173,16 @@
                             <h2>Ulasan</h2>
                         </div>
 
-                        @if ($reviews->isEmpty())
+                        @php
+                            $userComments = $reviews->where('user_id', auth()->id());
+                            $otherComments = $reviews->where('user_id', '!=', auth()->id());
+                            $sortedComments = $userComments->merge($otherComments);
+                        @endphp
+
+                        @if ($sortedComments->isEmpty())
                             <p>Belum ada ulasan.</p>
                         @else
-                            @foreach ($reviews as $review)
+                            @foreach ($sortedComments as $review)
                                 <div class="review-item">
                                     <div class="review-img">
                                         <div class="img lazy-bg"
@@ -203,6 +209,23 @@
                                             </ul>
                                         </div>
                                         <p>{{ $review->comment }}</p>
+
+                                        <div class="d-flex gap-2">
+                                            @if (auth()->id() == $review->user_id)
+                                                <form action="{{ route('reviews.destroy', $review->id) }}" method="POST"
+                                                    class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit"
+                                                        class="btn btn-danger btn-sm d-inline-flex align-items-center gap-1"
+                                                        onclick="return confirm('Hapus komentar ini?')">
+                                                        <iconify-icon icon="solar:trash-bin-trash-linear"
+                                                            style="font-size: 18px;"></iconify-icon>
+                                                        Hapus
+                                                    </button>
+                                                </form>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             @endforeach
@@ -220,52 +243,8 @@
                             ->first();
                     @endphp
 
-                    <div class="add-review">
-                        @if ($userReview)
-                            <div class="room-title">
-                                <h2>Ulasan Anda</h2>
-                            </div>
-                            <div class="review-item">
-                                <div class="review-img">
-                                    <div class="img lazy-bg"
-                                        data-bg="{{ asset(
-                                            file_exists(public_path($review->user->profile_picture)) && $review->user->profile_picture
-                                                ? $review->user->profile_picture
-                                                : 'assets/images/default-avatar.jpg',
-                                        ) }}">
-                                    </div>
-                                </div>
-                                <div class="review-text">
-                                    <div class="r-title">
-                                        <h2>{{ $userReview->user->name }}</h2>
-                                        <span class="ms-2">{{ $userReview->created_at->format('d M Y') }}</span>
-                                        <ul style="display: flex;">
-                                            @for ($i = 1; $i <= 5; $i++)
-                                                <li>
-                                                    <iconify-icon
-                                                        icon="{{ $i <= $review->rating ? 'material-symbols:star' : 'material-symbols:star-outline' }}"
-                                                        class="menu-icon" style="font-size: 24px; color: gold;">
-                                                    </iconify-icon>
-                                                </li>
-                                            @endfor
-                                        </ul>
-                                    </div>
-                                    <p>{{ $userReview->comment }}</p>
-                                </div>
-
-                                <div class="review-actions">
-                                    <form id="deleteForm{{ $userReview->id }}"
-                                        action="{{ route('reviews.destroy', $userReview->id) }}" method="POST"
-                                        style="display: inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button" class="btn btn-danger"
-                                            onclick="confirmDelete({{ $userReview->id }})"><iconify-icon icon="mdi:trash"
-                                                width="24" height="24"></iconify-icon></button>
-                                    </form>
-                                </div>
-                            </div>
-                        @else
+                    @if (!$userReview)
+                        <div class="add-review">
                             <div class="room-title">
                                 <h2>Berikan Ulasan</h2>
                             </div>
@@ -331,8 +310,8 @@
                                     </div>
                                 </div>
                             </form>
-                        @endif
-                    </div>
+                        </div>
+                    @endif
                 </div>
                 <div class="col-lg-4 col-12">
                     <div class="blog-sidebar room-sidebar">

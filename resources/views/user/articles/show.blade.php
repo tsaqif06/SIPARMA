@@ -120,9 +120,9 @@
                         </div>
 
                         @php
-                            $userComments = $reviews->where('user_id', auth()->id()); // Komentar user login
-                            $otherComments = $reviews->where('user_id', '!=', auth()->id()); // Komentar lainnya
-                            $sortedComments = $userComments->merge($otherComments); // User login duluan
+                            $userComments = $reviews->where('user_id', auth()->id());
+                            $otherComments = $reviews->where('user_id', '!=', auth()->id());
+                            $sortedComments = $userComments->merge($otherComments);
                         @endphp
 
                         @if ($sortedComments->isEmpty())
