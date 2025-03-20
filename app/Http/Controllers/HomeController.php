@@ -65,7 +65,7 @@ class HomeController extends Controller
                         ->whereColumn('tbl_admin_places.place_id', 'tbl_places.id')
                         ->where('tbl_admin_places.approval_status', 'approved'); // Pastikan hanya tempat yang approved
                 })
-                ->limit(4)
+                ->limit(3)
                 ->get(),
         ];
 

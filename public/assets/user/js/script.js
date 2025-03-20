@@ -581,12 +581,14 @@
        popular-slider
     -------------------------------------------*/
     if ($(".popular-slider".length)) {
+        let totalItems = $(".popular-slider").find(".places-item").length;
+
         $(".popular-slider").owlCarousel({
             smartSpeed: 500,
             margin: 20,
             loop: true,
             dots: false,
-            nav: false,
+            nav: true,
             navText: [
                 '<iconify-icon icon="iconamoon:arrow-left-2-light" width="25" height="25"  style="color: #000"></iconify-icon>',
                 '<iconify-icon icon="iconamoon:arrow-right-2-light" width="25" height="25"  style="color: #000"></iconify-icon>',

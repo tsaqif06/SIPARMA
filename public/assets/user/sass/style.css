@@ -10092,3 +10092,11 @@ input[type="checkbox"]:checked:disabled + label:before {
 .img-clickable {
     cursor: pointer;
 }
+
+.promo-places-section {
+    max-width: 100vw;
+}
+
+.popular-slider {
+    max-width: 100%;
+}

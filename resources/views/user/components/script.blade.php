@@ -1,6 +1,6 @@
 <script src="{{ asset('assets/user/js/jquery.min.js') }}"></script>
 <script src="{{ asset('assets/user/js/bootstrap.bundle.min.js') }}"></script>
-{{--  <script src="{{ asset('assets/user/js/wow.min.js') }}"></script>  --}}
+<script src="{{ asset('assets/user/js/wow.min.js') }}"></script>
 <script src="{{ asset('assets/user/js/jquery-plugin-collection.js') }}"></script>
 <script src="{{ asset('assets/user/js/modernizr.custom.js') }}"></script>
 <script src="{{ asset('assets/user/js/jquery.dlmenu.js') }}"></script>
@@ -21,6 +21,7 @@
 
 <script>
     $(document).ready(function() {
+        new WOW().init();
         // Inisialisasi DataTable
         let table = new DataTable("#dataTable");
         let flag = $(".leaflet-attribution-flag");

@@ -81,18 +81,14 @@
                     <div class="col-lg-6 col-md-10 col-12">
                         <div class="hero-content-slider">
                             <div class="item">
-                                <h2>Booking Tiket & Eksplor Wisata Terbaik di Malang Raya</h2>
-                                <p>Temukan wisata terbaik di Malang! Pesan tiket dengan mudah,
+                                <h2 class="wow fadeInUp" data-wow-duration="1400ms">Booking Tiket & Eksplor Wisata Terbaik di
+                                    Malang Raya</h2>
+                                <p class="wow fadeInUp" data-wow-duration="1600ms">Temukan wisata terbaik di Malang! Pesan
+                                    tiket dengan mudah,
                                     jelajahi destinasi favorit, dan nikmati liburan tanpa ribet.</p>
-                                <div class="hero-btn">
+                                <div class="hero-btn wow fadeInUp" data-wow-duration="1800ms">
                                     <a href="#promo" class="theme-btn">Jelajahi Lebih Banyak</a>
                                 </div>
-                                {{--  <h2 class="wow fadeInUp" data-wow-duration="1400ms">Booking Tiket & Eksplor Wisata Terbaik di Malang Raya</h2>
-                                    <p class="wow fadeInUp" data-wow-duration="1600ms">Temukan wisata terbaik di Malang! Pesan tiket dengan mudah,
-                                        jelajahi destinasi favorit, dan nikmati liburan tanpa ribet.</p>
-                                    <div class="hero-btn wow fadeInUp" data-wow-duration="1800ms">
-                                        <a href="hotel-single.html" class="theme-btn">Jelajahi Lebih Banyak</a>
-                                    </div>  --}}
                             </div>
                         </div>
                     </div>
@@ -126,44 +122,48 @@
     <!-- end of hero -->
 
     <!-- start of promo-places -->
-    <section class="promo-places-section section-padding" id="promo">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-5 col-12">
-                    <div class="wpo-section-title">
-                        <span class="text-start">// Penawaran Terbaik</span>
-                        <h2>Penawaran Spesial</h2>
+    @if ($promos['destinations']->isNotEmpty())
+        <section class="promo-places-section section-padding" id="promo">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-5 col-12">
+                        <div class="wpo-section-title wow fadeInLeft">
+                            <span class="text-start">// Penawaran Terbaik</span>
+                            <h2>Penawaran Spesial</h2>
+                        </div>
                     </div>
-                </div>
 
-                <div class="col-lg-7 col-12">
-                    <div class="popular-slider owl-carousel">
-                        @foreach ($promos['destinations'] as $promo)
-                            @php
-                                $diskonPersen = $promo->promos[0]->discount;
-                                $hargaDiskon = $promo->price - ($promo->price * $diskonPersen) / 100;
-                            @endphp
-                            <div class="places-item">
-                                <div class="image" style="background-image: url('{{ $promo->gallery[0]->image_url }}');">
+                    <div class="col-lg-7 col-12">
+                        <div class="popular-slider owl-carousel">
+                            @foreach ($promos['destinations'] as $promo)
+                                @php
+                                    $diskonPersen = $promo->promos[0]->discount ?? 0;
+                                    $hargaDiskon = $promo->price - ($promo->price * $diskonPersen) / 100;
+                                @endphp
+                                <div class="places-item wow fadeInRight">
+                                    <div class="image"
+                                        style="background-image: url('{{ $promo->gallery[0]->image_url ?? '' }}');">
+                                    </div>
+                                    <div class="content">
+                                        <h2>
+                                            <a href="{{ route('destination.show', $promo->slug) }}">{{ $promo->name }}</a>
+                                        </h2>
+                                        <span class="price-old">IDR
+                                            {{ number_format($promo->price, 0, ',', '.') }}</span><br>
+                                        <span class="text-price" style="color: #ff8000;">IDR
+                                            {{ number_format($hargaDiskon, 0, ',', '.') }}</span>
+                                        <p class="card-text">
+                                            Rating: {{ number_format($promo->reviews_avg_rating, 1) }} / 5
+                                        </p>
+                                    </div>
                                 </div>
-                                <div class="content">
-                                    <h2>
-                                        <a href="{{ route('destination.show', $promo->slug) }}">{{ $promo->name }}</a>
-                                    </h2>
-                                    <span class="price-old">IDR {{ number_format($promo->price, 0, ',', '.') }}</span><br>
-                                    <span class="text-price" style="color: #ff8000;">IDR
-                                        {{ number_format($hargaDiskon, 0, ',', '.') }}</span>
-                                    <p class="card-text">
-                                        Rating: {{ number_format($promo->reviews_avg_rating, 1) }} / 5
-                                    </p>
-                                </div>
-                            </div>
-                        @endforeach
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    @endif
     <!-- end of promo-places -->
 
     <!-- start of featured-->
@@ -171,7 +171,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-10 col-12">
-                    <div class="wpo-section-title s2">
+                    <div class="wpo-section-title s2 wow fadeInDown">
                         <span>// Jelajahi Malang</span>
                         <h2>Temukan Keindahan <br>di Malang Raya</h2>
                     </div>
@@ -179,7 +179,7 @@
             </div>
             <div class="row">
                 <div class="col col-xs-12 sortable-gallery">
-                    <div class="gallery-filters">
+                    <div class="gallery-filters wow fadeInDown">
                         <div class="row justify-content-center">
                             <div class="col-lg-4">
                                 <ul class="category-item">
@@ -208,7 +208,7 @@
             <div class="gallery-container gallery-fancybox masonry-gallery row">
                 @foreach ($categories as $type => $destinations)
                     @foreach ($destinations as $destination)
-                        <div class="col-xl-3 col-lg-4 col-md-6 col-12 custom-grid {{ strtolower($type) }} zoomIn"
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-12 custom-grid {{ strtolower($type) }} wow zoomIn"
                             data-wow-duration="2000ms">
                             @if ($type != 'places')
                                 <a href="{{ route('destination.show', $destination->slug) }}" class="text-decoration-none">
@@ -260,7 +260,7 @@
                     @endforeach
                 @endforeach
             </div>
-            <div class="featured-all-btn">
+            <div class="featured-all-btn wow zoomIn">
                 <a href="#most-rating" class="theme-btn-s2">Jelajahi Lebih Banyak</a>
             </div>
         </div>
@@ -272,13 +272,13 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg- col-12">
-                    <div class="wpo-section-title s2">
+                    <div class="wpo-section-title s2 wow fadeInUp">
                         <span>// Wisata Terbaik</span>
                         <h2>Jelajahi Destinasi Wisata<br> Terindah di Malang Raya</h2>
                     </div>
                 </div>
                 <div class="col-lg-10 col-12">
-                    <div class="authorlist-wrap">
+                    <div class="authorlist-wrap wow fadeInUp">
                         <div class="row">
                             @foreach ($topRatedDestinations as $destination)
                                 <div class="col-lg-3 col-md-4 col-sm-6 col-12">
@@ -319,8 +319,7 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-xl-4 col-12">
-                    {{--  <div class="wpo-section-title s2 wow fadeInLeftSlow" data-wow-duration="1700ms">  --}}
-                    <div class="wpo-section-title s2">
+                    <div class="wpo-section-title s2 wow fadeInLeftSlow" data-wow-duration="1700ms">
                         <p style="color: #FFFFFF;">// Wisata Terbaik</p>
                         <h2 style="margin-top: 20px; color: #FFFFFF;">Beritahu Kami!</h2>
                         <p style="margin: 20px 0 0 0; color: #FFFFFF;">Ayo, jadi salah satu yang
@@ -330,7 +329,7 @@
                     </div>
                 </div>
                 <div class="offset-xl-2 col-xl-6 col-12">
-                    <div class="container-form">
+                    <div class="container-form wow fadeInRightSlow" data-wow-duration="1700ms">
                         <form action="{{ route('home.recommendation.store') }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf

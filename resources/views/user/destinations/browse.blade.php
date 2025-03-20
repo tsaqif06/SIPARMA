@@ -90,7 +90,7 @@
                         <div class="gallery-container gallery-fancybox masonry-gallery row">
                             @foreach ($destinations as $destination)
                                 <div class="col-xl-4 col-lg-4 col-md-6 col-12 custom-grid" data-wow-duration="2000ms">
-                                    <div class="featured-card">
+                                    <div class="featured-card" style="min-height: 500px;">
                                         <div class="image">
                                             <div class="img lazy-bg"
                                                 data-bg="{{ $destination->gallery[0]->image_url ?? asset('assets/images/default.png') }}">
