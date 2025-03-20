@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Facility;
+use App\Models\AdminPlace;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class AdminFacilityController extends Controller
@@ -18,7 +19,10 @@ class AdminFacilityController extends Controller
             return redirect()->back()->with('error', 'Jenis fasilitas tidak valid.');
         }
 
-        $nama = $type == 'destination' ? auth()->user()->adminDestinations[0]->destination->name : auth()->user()->adminPlaces[0]->place->name;
+        $nama = $type == 'destination' ? auth()->user()->adminDestinations[0]->destination->name : AdminPlace::where('user_id', auth()->user()->id)
+            ->where('approval_status', 'approved')
+            ->latest('created_at')
+            ->first()?->place->name;
 
         return view('admin.facility.index', compact('type', 'facilities', 'nama'));
     }
@@ -89,7 +93,10 @@ class AdminFacilityController extends Controller
     {
         return match ($type) {
             'destination' => auth()->user()->adminDestinations[0]->destination->facilities,
-            'place' => auth()->user()->adminPlaces[0]->place->facilities,
+            'place' => AdminPlace::where('user_id', auth()->user()->id)
+                ->where('approval_status', 'approved')
+                ->latest('created_at')
+                ->first()?->place->facilities,
             default => null,
         };
     }
@@ -98,7 +105,10 @@ class AdminFacilityController extends Controller
     {
         return match ($type) {
             'destination' => auth()->user()->adminDestinations[0]->destination_id ?? null,
-            'place' => auth()->user()->adminPlaces[0]->place_id ?? null,
+            'place' => AdminPlace::where('user_id', auth()->user()->id)
+                ->where('approval_status', 'approved')
+                ->latest('created_at')
+                ->first()?->place_id,
             default => null,
         };
     }

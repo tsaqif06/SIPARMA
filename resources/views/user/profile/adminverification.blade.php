@@ -99,9 +99,10 @@
                     <hr class="mb-4">
 
                     @php
-                        $adminPlace = \App\Models\AdminPlace::where('user_id', auth()->user()->id)->first();
+                        $adminPlace = \App\Models\AdminPlace::where('user_id', auth()->user()->id)
+                            ->orderByDesc('created_at')
+                            ->first();
                     @endphp
-
                     @if ($adminPlace && $adminPlace->approval_status == 'pending')
                         <h3 class="text-center text-secondary">Verifikasi Sedang Diproses</h3>
                         <p class="text-center text-muted">Permintaan Anda sedang ditinjau oleh admin. Mohon tunggu hingga
@@ -114,16 +115,29 @@
                             @csrf
                         </form>
 
-                        <button class="btn btn-primary w-100 mt-3" onclick="redirectToAdminLogin()">
+                        <button class="btn btn-primary w-100 mt-3" onclick="convertRoleAndRefresh()">
                             Masuk ke Admin
                         </button>
-
+                        
                         <script>
-                            function redirectToAdminLogin() {
-                                document.getElementById('adminLogoutForm').submit();
-                                setTimeout(() => {
-                                    window.location.href = "{{ route('admin.login') }}";
-                                }, 500);
+                            function convertRoleAndRefresh() {
+                                fetch("{{ route('convert.role') }}", {
+                                    method: "POST",
+                                    headers: {
+                                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+                                        "Content-Type": "application/json",
+                                    },
+                                    body: JSON.stringify({})
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        location.reload();
+                                    } else {
+                                        alert("Gagal mengubah role: " + data.message);
+                                    }
+                                })
+                                .catch(error => console.error("Error:", error));
                             }
                         </script>
                     @else

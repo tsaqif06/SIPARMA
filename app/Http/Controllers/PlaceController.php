@@ -22,6 +22,7 @@ class PlaceController extends Controller
             ->whereExists(function ($query) {
                 $query->select(DB::raw(1))
                     ->from('tbl_admin_places')
+                    ->where('tbl_admin_places.approval_status', 'approved')
                     ->whereColumn('tbl_admin_places.place_id', 'tbl_places.id');
             });
 

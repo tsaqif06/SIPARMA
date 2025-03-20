@@ -232,8 +232,14 @@
                     </a>
                 </li>
             @elseif ($user && $user->role === 'admin_tempat')
+                @php
+                    $approvedPlace = \App\Models\AdminPlace::where('user_id', $user->id)
+                        ->where('approval_status', 'approved')
+                        ->latest('created_at')
+                        ->first();
+                @endphp
                 <li>
-                    <a href="{{ route('admin.places.show', $user->adminPlaces[0]->place_id) }}">
+                    <a href="{{ route('admin.places.show', $approvedPlace->place_id) }}">
                         <iconify-icon icon="material-symbols:file-map-outline" class="menu-icon"></iconify-icon>
                         <span>Tempat Anda</span>
                     </a>

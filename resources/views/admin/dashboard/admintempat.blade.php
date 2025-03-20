@@ -56,7 +56,7 @@
                                                 <iconify-icon icon="fluent:star-12-filled" class="icon"></iconify-icon>
                                             </span>
                                             <span class="mb-1 fw-medium text-secondary-light text-md">Rata - Rata
-                                                Rating</span>
+                                                Rating Tempat</span>
                                             <h6 class="fw-semibold text-primary-light mb-1">
                                                 {{ number_format($average_rating, 1) }}</h6>
                                         </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Place;
+use App\Models\AdminPlace;
 use App\Models\Destination;
 use Illuminate\Http\Request;
 use App\Models\Recommendation;
@@ -207,12 +208,18 @@ class HomeController extends Controller
             $total_facility = DB::table('tbl_facilities')
                 ->where([
                     ['item_type', 'place'],
-                    ['item_id', auth()->user()->adminPlaces[0]->place_id],
+                    ['item_id', AdminPlace::where('user_id', auth()->user()->id)
+                        ->where('approval_status', 'approved')
+                        ->latest('created_at')
+                        ->first()?->place->id],
                 ])
                 ->count();
 
             $total_gallery = DB::table('tbl_gallery_places')
-                ->where('place_id', auth()->user()->adminPlaces[0]->place_id)
+                ->where('place_id', AdminPlace::where('user_id', auth()->user()->id)
+                    ->where('approval_status', 'approved')
+                    ->latest('created_at')
+                    ->first()?->place->id)
                 ->count();
 
             $total_article = DB::table('tbl_articles')
@@ -220,7 +227,10 @@ class HomeController extends Controller
                 ->count();
 
             $average_rating = DB::table('tbl_reviews')
-                ->where('place_id', auth()->user()->adminPlaces[0]->place_id)
+                ->where('place_id', AdminPlace::where('user_id', auth()->user()->id)
+                    ->where('approval_status', 'approved')
+                    ->latest('created_at')
+                    ->first()?->place->id)
                 ->avg('rating');
 
             return view('admin.dashboard.admintempat', compact(

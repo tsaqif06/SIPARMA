@@ -35,6 +35,8 @@ Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('regi
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::post('/convert-role', [AuthController::class, 'convertRoleAndLogin'])->name('convert.role');
+
 Route::middleware('no_admin')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home.index');
     Route::post('/recommendation/submit', [HomeController::class, 'submitRecommendation'])->name('home.recommendation.store');

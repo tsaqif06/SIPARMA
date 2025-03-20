@@ -118,10 +118,10 @@ class AdminPlaceController extends Controller
     public function show(Place $place)
     {
         $user = auth()->user();
+        $current_time = Carbon::now('Asia/Jakarta')->format('H:i:s');
 
-        if ($user->role === 'superadmin' || $user->adminPlaces->contains('place_id', $place->id)) {
-            $current_time = Carbon::now('Asia/Jakarta')->format('H:i:s');
-
+        if ($user->role === 'superadmin') {
+            // Superadmin bisa akses semua tempat
             $place->status = ($current_time >= $place->open_time && $current_time <= $place->close_time)
                 ? 'Buka'
                 : 'Tutup';
@@ -129,10 +129,40 @@ class AdminPlaceController extends Controller
             return view('admin.places.show', compact('place'));
         }
 
-        if (Auth::user()->role === 'admin_place') {
-            return redirect()->route('admin.places.show', $user->adminPlaces[0]->place_id)->with('error', 'Akses ditolak!');
+        if ($user->role === 'admin_tempat') {
+            // Cek apakah tempat yang diakses ini sudah di-approve
+            $adminPlace = AdminPlace::where('user_id', $user->id)
+                ->where('place_id', $place->id)
+                ->first();
+
+            if (!$adminPlace || $adminPlace->approval_status !== 'approved') {
+                // Cari tempat terbaru yang approved
+                $approvedPlace = AdminPlace::where('user_id', $user->id)
+                    ->where('approval_status', 'approved')
+                    ->latest('created_at')
+                    ->first();
+
+                if ($approvedPlace) {
+                    return redirect()->route('admin.places.show', $approvedPlace->place_id)
+                        ->with('error', 'Tempat ini belum disetujui, Anda diarahkan ke tempat yang telah disetujui.');
+                }
+
+                return redirect()->route('admin.dashboard')
+                    ->with('error', 'Tidak ada tempat yang disetujui.');
+            }
         }
-        return redirect()->route('admin.destinations.show', $user->adminDestinations[0]->destination_id)->with('error', 'Akses ditolak!');
+
+        if ($user->adminPlaces->contains('place_id', $place->id)) {
+            // Cek status buka/tutup
+            $place->status = ($current_time >= $place->open_time && $current_time <= $place->close_time)
+                ? 'Buka'
+                : 'Tutup';
+
+            return view('admin.places.show', compact('place'));
+        }
+
+        return redirect()->route('admin.dashboard')
+            ->with('error', 'Akses ditolak!');
     }
 
     /**
@@ -142,15 +172,43 @@ class AdminPlaceController extends Controller
     {
         $user = auth()->user();
 
-        if ($user->role === 'superadmin' || $user->adminPlaces->contains('place_id', $place->id)) {
+        if ($user->role === 'superadmin') {
+            // Superadmin bisa edit semua tempat
             $destinations = Destination::all();
             return view('admin.places.edit', compact('place', 'destinations'));
         }
 
-        if (Auth::user()->role === 'admin_place') {
-            return redirect()->route('admin.places.edit', $user->adminPlaces[0]->place_id)->with('error', 'Akses ditolak!');
+        if ($user->role === 'admin_tempat') {
+            // Cek apakah tempat yang diakses ini sudah di-approve
+            $adminPlace = AdminPlace::where('user_id', $user->id)
+                ->where('place_id', $place->id)
+                ->first();
+
+            if (!$adminPlace || $adminPlace->approval_status !== 'approved') {
+                // Cari tempat terbaru yang approved
+                $approvedPlace = AdminPlace::where('user_id', $user->id)
+                    ->where('approval_status', 'approved')
+                    ->latest('created_at')
+                    ->first();
+
+                if ($approvedPlace) {
+                    return redirect()->route('admin.places.edit', $approvedPlace->place_id)
+                        ->with('error', 'Tempat ini belum disetujui, Anda diarahkan ke tempat yang telah disetujui.');
+                }
+
+                return redirect()->route('admin.dashboard')
+                    ->with('error', 'Tidak ada tempat yang disetujui.');
+            }
         }
-        return redirect()->route('admin.destinations.edit', $user->adminDestinations[0]->destination_id)->with('error', 'Akses ditolak!');
+
+        if ($user->adminPlaces->contains('place_id', $place->id)) {
+            // Admin tempat bisa edit tempatnya sendiri (yang approved)
+            $destinations = Destination::all();
+            return view('admin.places.edit', compact('place', 'destinations'));
+        }
+
+        return redirect()->route('admin.dashboard')
+            ->with('error', 'Akses ditolak!');
     }
 
     /**

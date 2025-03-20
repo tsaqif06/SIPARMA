@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdminPlace;
+use App\Models\GalleryRide;
+use App\Models\GalleryPlace;
 use Illuminate\Http\Request;
 use App\Models\GalleryDestination;
-use App\Models\GalleryPlace;
-use App\Models\GalleryRide;
 use Illuminate\Support\Facades\Storage;
 
 class AdminGalleryController extends Controller
@@ -118,9 +119,14 @@ class AdminGalleryController extends Controller
 
     private function getGalleryModel($type)
     {
+        $user = auth()->user();
+
         return match ($type) {
-            'destination' => auth()->user()->adminDestinations[0]->destination,
-            'place' => auth()->user()->adminPlaces[0]->place,
+            'destination' => $user->adminDestinations[0]->destination ?? null,
+            'place' => AdminPlace::where('user_id', $user->id)
+                ->where('approval_status', 'approved')
+                ->latest('created_at')
+                ->first()?->place,
             'ride' => GalleryRide::class,
             default => null,
         };
@@ -128,14 +134,18 @@ class AdminGalleryController extends Controller
 
     private function getRelatedId($type)
     {
+        $user = auth()->user();
+
         return match ($type) {
-            'destination' => auth()->user()->adminDestinations[0]->destination_id ?? null,
-            'place' => auth()->user()->adminPlaces[0]->place_id ?? null,
-            'ride' => auth()->user()->adminRides[0]->ride_id ?? null,
+            'destination' => $user->adminDestinations[0]->destination_id ?? null,
+            'place' => AdminPlace::where('user_id', $user->id)
+                ->where('approval_status', 'approved')
+                ->latest('created_at')
+                ->first()?->place_id,
+            'ride' => $user->adminRides[0]->ride_id ?? null,
             default => null,
         };
     }
-
 
     /**
      * Fungsi helper untuk mendapatkan foreign key berdasarkan jenis galeri.

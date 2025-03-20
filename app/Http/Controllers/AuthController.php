@@ -85,6 +85,24 @@ class AuthController extends Controller
         return back()->with('error', $user ? 'Akun tidak memiliki akses admin.' : 'Email atau password salah.');
     }
 
+    public function convertRoleAndLogin()
+    {
+        $user = User::find(Auth::id());
+
+        if (!$user) {
+            return response()->json(['success' => false, 'message' => 'User tidak ditemukan']);
+        }
+
+        if ($user->role !== 'admin_tempat') {
+            $user->role = 'admin_tempat';
+            $user->save();
+        }
+
+        return response()->json(['success' => true]);
+    }
+
+
+
     public function register(Request $request)
     {
         $validated = $request->validate([
