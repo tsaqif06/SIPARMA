@@ -518,9 +518,9 @@
     <section class="blog-section section-padding">
         <div class="container">
             <div class="room-title">
-                <h2>Wisata Terdekat</h2>
+                <h2>Tempat Terdekat</h2>
             </div>
-            <div class="authorlist-wrap wow fadeInRightSlow" data-wow-duration="1700ms">
+            <div class="authorlist-wrap">
                 <div class="row">
                     @foreach ($destination->places as $place)
                         <div class="col-lg-3 col-md-4 col-sm-6 col-12">

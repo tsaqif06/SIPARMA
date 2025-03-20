@@ -212,8 +212,8 @@
                             data-wow-duration="2000ms">
                             @if ($type != 'places')
                                 <a href="{{ route('destination.show', $destination->slug) }}" class="text-decoration-none">
-                                @else
-                                    <a href="{{ route('place.show', $destination->slug) }}" class="text-decoration-none">
+                            @else
+                                <a href="{{ route('place.show', $destination->slug) }}" class="text-decoration-none">
                             @endif
                             <div class="featured-card d-flex flex-column h-100" style="min-height: 500px;">
                                 <div class="image">
@@ -240,8 +240,13 @@
                                     <div class="top-content mt-auto">
                                         <ul class="list-unstyled d-flex justify-content-between gap-2">
                                             <li class="text-center">
-                                                <span>{{ $destination->price ? number_format($destination->price, 0, ',', '.') : 'N/A' }}</span>
-                                                <span class="d-block small" style="color: gray">Harga</span>
+                                                @if ($type != 'places')
+                                                    <span>{{ $destination->price ? number_format($destination->price, 0, ',', '.') : 'N/A' }}</span>
+                                                    <span class="d-block small" style="color: gray">Harga</span>
+                                                @else
+                                                    <span>{{ number_format($destination->facilities->count() ?? '0', 0, ',', '.') }}</span>
+                                                    <span class="d-block small" style="color: gray">Fasilitas</span>
+                                                @endif
                                             </li>
                                             <li class="text-center">
                                                 <span>{{ number_format($destination->reviews->count() ?? '0', 0, ',', '.') }}</span>

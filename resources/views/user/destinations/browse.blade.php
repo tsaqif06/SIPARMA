@@ -90,19 +90,29 @@
                         <div class="gallery-container gallery-fancybox masonry-gallery row">
                             @foreach ($destinations as $destination)
                                 <div class="col-xl-4 col-lg-4 col-md-6 col-12 custom-grid" data-wow-duration="2000ms">
-                                    <div class="featured-card" style="min-height: 500px;">
+                                    <div class="featured-card d-flex flex-column h-100" style="min-height: 500px;">
                                         <div class="image">
                                             <div class="img lazy-bg"
                                                 data-bg="{{ $destination->gallery[0]->image_url ?? asset('assets/images/default.png') }}">
                                             </div>
                                         </div>
-                                        <div class="content">
+                                        <div class="content flex-grow-1 d-flex flex-column">
                                             <h2>
                                                 <a
                                                     href="{{ route('destination.show', $destination->slug) }}">{{ $destination->name }}</a>
                                             </h2>
-                                            <span>{{ Str::limit($destination->description ?? 'Deskripsi tidak tersedia.', 100, '...') }}</span>
-                                            <div class="top-content">
+                                            <div class="description flex-grow-1 d-flex align-items-start"
+                                                style="min-height: 40px;">
+                                                <span class="overflow-hidden"
+                                                    style="
+                                                display: -webkit-box;
+                                                -webkit-line-clamp: 3;
+                                                -webkit-box-orient: vertical;
+                                            ">
+                                                    {{ $destination->description ?? 'Deskripsi tidak tersedia.' }}
+                                                </span>
+                                            </div>
+                                            <div class="top-content mt-auto">
                                                 <ul>
                                                     <li>
                                                         <span>
