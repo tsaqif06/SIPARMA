@@ -13,9 +13,25 @@ use Illuminate\Support\Facades\Auth;
 class ArticleController extends Controller
 {
     // Tampilkan semua artikel
-    public function browse()
+    public function browse(Request $request)
     {
-        $articles = Article::with(['category', 'tags', 'comments', 'likes', 'views'])->where('status', 'published')->latest()->get();
+        $query = $request->input('search'); // Ambil input pencarian
+
+        $articles = Article::with(['category', 'tags', 'comments', 'likes', 'views'])
+            ->where('status', 'published')
+            ->when($query, function ($q) use ($query) {
+                $q->where('title', 'LIKE', "%{$query}%")
+                    ->orWhere('content', 'LIKE', "%{$query}%")
+                    ->orWhereHas('category', function ($q) use ($query) {
+                        $q->where('name', 'LIKE', "%{$query}%");
+                    })
+                    ->orWhereHas('tags', function ($q) use ($query) {
+                        $q->where('tag_name', 'LIKE', "%{$query}%");
+                    });
+            })
+            ->latest()
+            ->paginate(9);
+
         return view('user.articles.browse', compact('articles'));
     }
 

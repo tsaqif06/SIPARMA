@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="sidebar-filter col-md-3 col-12" style="height: 330px">
                     <form action="{{ route('place.browse') }}" method="GET">
-                        <input type="text" name="search" class="search-box" placeholder="Cari tiket"
+                        <input type="text" name="search" class="search-box" placeholder="Cari tempat"
                             value="{{ request('search') }}">
                         <h4>Filter</h4>
                         <hr>

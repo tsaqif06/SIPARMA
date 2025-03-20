@@ -212,8 +212,8 @@
                             data-wow-duration="2000ms">
                             @if ($type != 'places')
                                 <a href="{{ route('destination.show', $destination->slug) }}" class="text-decoration-none">
-                            @else
-                                <a href="{{ route('place.show', $destination->slug) }}" class="text-decoration-none">
+                                @else
+                                    <a href="{{ route('place.show', $destination->slug) }}" class="text-decoration-none">
                             @endif
                             <div class="featured-card d-flex flex-column h-100" style="min-height: 500px;">
                                 <div class="image">
