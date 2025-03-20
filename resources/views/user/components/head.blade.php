@@ -26,8 +26,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/lib/leaflet-routing-machine.css') }}">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js"
+    <script
+        src="{{ config('services.midtrans.is_production') ? 'https://app.midtrans.com/snap/snap.js' : 'https://app.sandbox.midtrans.com/snap/snap.js' }}"
         data-client-key="{{ config('services.midtrans.client_key') }}"></script>
-
     <style></style>
 </head>
