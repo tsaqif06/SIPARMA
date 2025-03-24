@@ -63,7 +63,7 @@
                                 </div>
 
                                 <!-- Statistik Artikel -->
-                                <div class="d-flex flex-wrap gap-4 justify-content-center justify-content-md-end py-2">
+                                <div class="d-flex flex-wrap gap-4 justify-content-center justify-content-md-end py-2 stats">
                                     <!-- Views -->
                                     <div class="d-flex align-items-center gap-2 text-muted">
                                         <iconify-icon icon="solar:eye-linear" class="meta-icon"></iconify-icon>
