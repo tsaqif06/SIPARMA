@@ -10100,3 +10100,28 @@ input[type="checkbox"]:checked:disabled + label:before {
 .popular-slider {
     max-width: 100%;
 }
+
+/* Animasi like */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+.liked {
+    animation: pulse 0.5s;
+}
+
+#like-btn:hover {
+    transform: scale(1.05);
+    opacity: 0.8;
+}
+
+.meta-icon {
+    font-size: 26px;
+    min-width: 30px;
+}
+
+#like-btn {
+    cursor: pointer;
+}

@@ -45,71 +45,102 @@
                 <div class="col-lg-8 col-12">
                     <div class="room-description">
                         <div class="room-title">
-                            <h2 style="border-bottom: 0">{{ $article->title }}</h2>
-                            <div class="d-flex justify-content-between align-items-center flex-wrap mb-5"
-                                style="margin-top: -20px">
-                                <!-- Info Penulis -->
-                                <div class="d-flex align-items-center gap-2 text-muted">
-                                    <iconify-icon icon="solar:user-linear"
-                                        style="color: black; font-size: 25px;"></iconify-icon>
-                                    <span style="color: black; font-size: 16px;">Diunggah oleh
-                                        {{ $article->user->name }}</span>
-                                    <span class="ms-4">{{ $article->created_at->format('d M Y') }}</span>
+                            <!-- Judul Artikel -->
+                            <h1 class="display-5 fw-bold mb-3 text-dark text-center text-md-start">{{ $article->title }}</h1>
+
+                            <!-- Meta Informasi -->
+                            <div
+                                class="d-flex flex-column flex-md-row justify-content-between align-items-center border-bottom pb-3 mb-4">
+                                <!-- Informasi Penulis -->
+                                <div class="d-flex align-items-center gap-3">
+                                    <iconify-icon icon="solar:user-linear" class="meta-icon"></iconify-icon>
+                                    <div>
+                                        <span class="d-block text-dark fw-semibold">Diunggah oleh
+                                            {{ $article->user->name }}</span>
+                                        <span
+                                            class="text-muted small">{{ $article->created_at->format('d M Y, H:i') }}</span>
+                                    </div>
                                 </div>
 
-                                <!-- Tombol Like & View -->
-                                <div class="d-flex align-items-center gap-3">
-                                    <!-- View -->
-                                    <div class="d-flex align-items-center gap-1">
-                                        <iconify-icon icon="solar:eye-linear"
-                                            style="color: black; font-size: 25px"></iconify-icon>
-                                        <span class="text-muted" style="font-size: 14px;">
-                                            {{ formatLikes($article->views->count()) }}
-                                        </span>
+                                <!-- Statistik Artikel -->
+                                <div class="d-flex flex-wrap gap-4 justify-content-center justify-content-md-end py-2">
+                                    <!-- Views -->
+                                    <div class="d-flex align-items-center gap-2 text-muted">
+                                        <iconify-icon icon="solar:eye-linear" class="meta-icon"></iconify-icon>
+                                        <span class="small">{{ formatLikes($article->views->count()) }}</span>
                                     </div>
-                                    <!-- Like -->
+
+                                    <!-- Likes -->
                                     @php
                                         $isLiked = $article->likes->where('user_id', auth()->id())->count() > 0;
                                     @endphp
-                                    <button id="like-btn" class="border-0 bg-transparent d-flex align-items-center gap-1"
+                                    <button id="like-btn"
+                                        class="d-flex align-items-center gap-2 border-0 bg-transparent text-muted p-1"
                                         onclick="toggleLike({{ $article->id }})">
                                         <iconify-icon id="like-icon"
                                             icon="{{ $isLiked ? 'solar:heart-bold' : 'solar:heart-outline' }}"
-                                            style="color: {{ $isLiked ? 'red' : 'black' }}; font-size: 25px"></iconify-icon>
-                                        <span id="like-count" class="text-muted" style="font-size: 14px;">
-                                            {{ formatLikes($article->likes->count()) }}
-                                        </span>
+                                            class="meta-icon {{ $isLiked ? 'text-danger' : '' }}"></iconify-icon>
+                                        <span id="like-count"
+                                            class="small">{{ formatLikes($article->likes->count()) }}</span>
                                     </button>
+
                                     <!-- Comments -->
-                                    <a href="#comments">
-                                        <div class="d-flex align-items-center gap-1">
-                                            <iconify-icon icon="solar:chat-line-linear"
-                                                style="color: black; font-size: 25px"></iconify-icon>
-                                            <span class="text-muted" style="font-size: 14px;">
-                                                {{ formatLikes($article->comments->count()) }}
-                                            </span>
-                                        </div>
+                                    <a href="#comments"
+                                        class="d-flex align-items-center gap-2 text-decoration-none text-muted">
+                                        <iconify-icon icon="solar:chat-line-linear" class="meta-icon"></iconify-icon>
+                                        <span class="small">{{ formatLikes($article->comments->count()) }}</span>
                                     </a>
                                 </div>
                             </div>
-                            <div class="article-thumbnail">
-                                <a
-                                    href="{{ asset(
-                                        file_exists(public_path($article->thumbnail)) && $article->thumbnail
-                                            ? $article->thumbnail
-                                            : 'assets/images/default.png',
-                                    ) }}">
-                                    <div class="img lazy-bg"
-                                        data-bg="{{ asset(
-                                            file_exists(public_path($article->thumbnail)) && $article->thumbnail
-                                                ? $article->thumbnail
-                                                : 'assets/images/default.png',
-                                        ) }}">
-                                    </div>
-                                </a>
+
+                            <!-- Thumbnail Artikel -->
+                            <div class="mb-3 rounded-3 overflow-hidden shadow-sm">
+                                <img src="{{ asset(file_exists(public_path($article->thumbnail)) && $article->thumbnail ? $article->thumbnail : 'assets/images/default.png') }}"
+                                    alt="{{ $article->title }}" class="img-fluid w-100 lazy" loading="lazy"
+                                    style="object-fit: cover; height: auto;">
+                            </div>
+
+                            <!-- Share Button -->
+                            <div class="d-flex justify-content-center justify-content-md-end">
+                                <div class="dropdown">
+                                    <button
+                                        class="btn btn-outline-secondary btn-sm dropdown-toggle d-flex align-items-center gap-1"
+                                        type="button" id="shareDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <iconify-icon icon="solar:share-linear" class="fs-6"></iconify-icon>
+                                        <span>Bagikan</span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="shareDropdown">
+                                        <li><a class="dropdown-item d-flex align-items-center gap-2"
+                                                href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}"
+                                                target="_blank">
+                                                <iconify-icon icon="logos:facebook" class="fs-6"></iconify-icon>
+                                                Facebook</a></li>
+                                        <li><a class="dropdown-item d-flex align-items-center gap-2"
+                                                href="https://twitter.com/intent/tweet?url={{ urlencode(url()->current()) }}&text={{ urlencode($article->title) }}"
+                                                target="_blank">
+                                                <iconify-icon icon="logos:twitter" class="fs-6"></iconify-icon>
+                                                Twitter</a></li>
+                                        <li><a class="dropdown-item d-flex align-items-center gap-2"
+                                                href="https://wa.me/?text={{ urlencode($article->title . ' ' . url()->current()) }}"
+                                                target="_blank">
+                                                <iconify-icon icon="logos:whatsapp-icon" class="fs-6"></iconify-icon>
+                                                WhatsApp</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li>
+                                            <button class="dropdown-item d-flex align-items-center gap-2"
+                                                onclick="copyToClipboard('{{ url()->current() }}')">
+                                                <iconify-icon icon="solar:link-linear" class="fs-6"></iconify-icon> Copy
+                                                Link
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                        <div class="article-content mt-5">
+
+                        <div class="article-content mt-3">
                             {!! $article->content !!}
                         </div>
                     </div>
@@ -382,6 +413,14 @@
     <script>
         var isLoggedIn = {{ auth()->check() ? 'true' : 'false' }};
 
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                alert('Link berhasil disalin!');
+            }, function(err) {
+                console.error('Gagal menyalin: ', err);
+            });
+        }
+
         function formatLikes(num) {
             if (num >= 1000000) {
                 return (num / 1000000).toFixed(1).replace(".", ",") + "jt";
@@ -408,7 +447,7 @@
                     if (response.status === 'liked') {
                         $("#like-icon").attr("icon", "solar:heart-bold").css("color", "red");
                     } else {
-                        $("#like-icon").attr("icon", "solar:heart-outline").css("color", "black");
+                        $("#like-icon").attr("icon", "solar:heart-outline").css("color", "#595c5f");
                     }
 
                     // Gunakan formatLikes sebelum menampilkan
