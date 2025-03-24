@@ -63,7 +63,8 @@
                                 </div>
 
                                 <!-- Statistik Artikel -->
-                                <div class="d-flex flex-wrap gap-4 justify-content-center justify-content-md-end py-2 stats">
+                                <div
+                                    class="d-flex flex-wrap gap-4 justify-content-center justify-content-md-end py-2 stats">
                                     <!-- Views -->
                                     <div class="d-flex align-items-center gap-2 text-muted">
                                         <iconify-icon icon="solar:eye-linear" class="meta-icon"></iconify-icon>
@@ -150,26 +151,16 @@
                             <h2>Komentar</h2>
                         </div>
 
-                        @php
-                            $userComments = $reviews->where('user_id', auth()->id());
-                            $otherComments = $reviews->where('user_id', '!=', auth()->id());
-                            $sortedComments = $userComments->merge($otherComments);
-                        @endphp
-
-                        @if ($sortedComments->isEmpty())
+                        @if ($reviews->isEmpty())
                             <p>Belum ada komentar.</p>
                         @else
-                            @foreach ($sortedComments->where('parent_id', null) as $review)
+                            @foreach ($reviews as $review)
                                 <div class="review-item mb-4 p-3 border rounded shadow-sm">
                                     <div class="d-flex align-items-start">
                                         <!-- Foto Profil -->
                                         <div class="review-img me-3">
                                             <div class="img-comment lazy-bg"
-                                                data-bg="{{ asset(
-                                                    file_exists(public_path($review->user->profile_picture)) && $review->user->profile_picture
-                                                        ? $review->user->profile_picture
-                                                        : 'assets/images/default-avatar.jpg',
-                                                ) }}">
+                                                data-bg="{{ asset($review->user->profile_picture ?: 'assets/images/default-avatar.jpg') }}">
                                             </div>
                                         </div>
 
@@ -183,34 +174,14 @@
 
                                             <p class="mt-2 mb-2">{{ $review->comment }}</p>
 
-                                            <!-- Tombol Aksi -->
-                                            <div class="d-flex gap-2">
-                                                <!-- Tombol Balas -->
-                                                <button
-                                                    class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1"
-                                                    data-bs-toggle="collapse"
-                                                    data-bs-target="#reply-form-{{ $review->id }}">
-                                                    <iconify-icon icon="solar:chat-line-linear"
-                                                        style="font-size: 18px;"></iconify-icon>
-                                                    Balas
-                                                </button>
-
-                                                <!-- Tombol Hapus (Hanya untuk user pemilik komentar) -->
-                                                @if (auth()->id() == $review->user_id)
-                                                    <form action="{{ route('comment.destroy', $review->id) }}"
-                                                        method="POST" class="d-inline">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit"
-                                                            class="btn btn-danger btn-sm d-inline-flex align-items-center gap-1"
-                                                            onclick="return confirm('Hapus komentar ini?')">
-                                                            <iconify-icon icon="solar:trash-bin-trash-linear"
-                                                                style="font-size: 18px;"></iconify-icon>
-                                                            Hapus
-                                                        </button>
-                                                    </form>
-                                                @endif
-                                            </div>
+                                            <!-- Tombol Balas -->
+                                            <button
+                                                class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1"
+                                                data-bs-toggle="collapse" data-bs-target="#reply-form-{{ $review->id }}">
+                                                <iconify-icon icon="solar:chat-line-linear"
+                                                    style="font-size: 18px;"></iconify-icon>
+                                                Balas
+                                            </button>
 
                                             <!-- Form Balasan -->
                                             <div id="reply-form-{{ $review->id }}" class="collapse my-2">
@@ -226,7 +197,7 @@
                                                 </form>
                                             </div>
 
-                                            <!-- Tombol Lihat Balasan -->
+                                            <!-- Tampilkan Balasan -->
                                             @if ($review->replies->isNotEmpty())
                                                 <button
                                                     class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-1 mt-2"
@@ -237,23 +208,18 @@
                                                     Lihat Balasan ({{ $review->replies->count() }})
                                                 </button>
 
-                                                <!-- Balasan -->
                                                 <div id="replies-{{ $review->id }}"
                                                     class="collapse mt-3 ms-4 border-start ps-3">
                                                     @foreach ($review->replies as $reply)
                                                         <div class="review-item reply-item d-flex align-items-start mb-3">
-                                                            <!-- Foto Profil Reply -->
+                                                            <!-- Foto Profil Balasan -->
                                                             <div class="review-img reply-img me-2">
                                                                 <div class="img-reply lazy-bg"
-                                                                    data-bg="{{ asset(
-                                                                        file_exists(public_path($reply->user->profile_picture)) && $reply->user->profile_picture
-                                                                            ? $reply->user->profile_picture
-                                                                            : 'assets/images/default-avatar.jpg',
-                                                                    ) }}">
+                                                                    data-bg="{{ asset($reply->user->profile_picture ?: 'assets/images/default-avatar.jpg') }}">
                                                                 </div>
                                                             </div>
 
-                                                            <!-- Konten Reply -->
+                                                            <!-- Konten Balasan -->
                                                             <div class="review-text reply-text">
                                                                 <div class="r-title reply-title d-flex align-items-center">
                                                                     <h3 class="fs-6 mb-0 fw-bold">{{ $reply->user->name }}
@@ -263,24 +229,6 @@
                                                                 </div>
 
                                                                 <p class="small mt-2">{{ $reply->comment }}</p>
-
-                                                                <!-- Hapus Reply -->
-                                                                @if (auth()->id() == $reply->user_id)
-                                                                    <form
-                                                                        action="{{ route('comment.reply.destroy', $reply->id) }}"
-                                                                        method="POST" class="d-inline">
-                                                                        @csrf
-                                                                        @method('DELETE')
-                                                                        <button type="submit"
-                                                                            class="btn btn-danger btn-sm d-inline-flex align-items-center gap-1"
-                                                                            onclick="return confirm('Hapus balasan ini?')">
-                                                                            <iconify-icon
-                                                                                icon="solar:trash-bin-trash-linear"
-                                                                                style="font-size: 18px;"></iconify-icon>
-                                                                            Hapus
-                                                                        </button>
-                                                                    </form>
-                                                                @endif
                                                             </div>
                                                         </div>
                                                     @endforeach
@@ -291,6 +239,11 @@
                                 </div>
                             @endforeach
                         @endif
+
+                        <!-- PAGINATION -->
+                        <div class="mt-3">
+                            {{ $reviews->links('vendor.pagination.bootstrap-5') }}
+                        </div>
                     </div>
 
                     @php

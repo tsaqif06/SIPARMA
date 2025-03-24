@@ -64,7 +64,11 @@ class ArticleController extends Controller
 
         $this->addView($article->id, $request->ip());
 
-        $reviews = $article->comments()->paginate(5);
+        $reviews = $article->comments()
+            ->whereNull('parent_id')
+            ->with(['replies.user'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(5);
 
 
         return view('user.articles.show', compact('article', 'reviews', 'relatedArticles'));
