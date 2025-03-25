@@ -122,6 +122,82 @@ class ArticleController extends Controller
         ]);
     }
 
+    public function filterBadWords($text)
+    {
+        $badWords = [
+            'anjing',
+            'babi',
+            'bangsat',
+            'brengsek',
+            'goblok',
+            'tolol',
+            'idiot',
+            'kampret',
+            'kontol',
+            'memek',
+            'ngentot',
+            'pepek',
+            'peler',
+            'pler',
+            'setan',
+            'sialan',
+            'tai',
+            'jembut',
+            'kenthu',
+            'keparat',
+            'asu',
+            'bencong',
+            'banci',
+            'lonte',
+            'pelacur',
+            'sundal',
+            'perek',
+            'bego',
+            'dongo',
+            'dungu',
+            'gembel',
+            'laknat',
+            'mampus',
+            'mati lu',
+            'kuburan lu',
+            'kimak',
+            'fuckboy',
+            'fuckgirl',
+            'fuck',
+            'shit',
+            'asshole',
+            'bitch',
+            'bastard',
+            'dick',
+            'cunt',
+            'motherfucker',
+            'pussy',
+            'slut',
+            'whore',
+            'dumbass',
+            'retard',
+            'moron',
+            'stupid',
+            'jerk',
+            'prick',
+            'wanker',
+            'bollocks',
+            'twat',
+            'bloody hell',
+            'dipshit',
+            'faggot',
+            'cock',
+            'scumbag',
+            'nigger',
+            'nigga',
+            'hoe',
+            'jackass',
+            'douchebag'
+        ];
+
+        return str_ireplace($badWords, '***', $text);
+    }
+
     // Simpan Komentar
     public function comment(Request $request, $id)
     {
@@ -129,11 +205,13 @@ class ArticleController extends Controller
             'comment' => 'required|string|max:500',
         ]);
 
+        $cleanComment = $this->filterBadWords($request->comment);
+
         ArticleComment::create([
             'article_id' => $id,
             'user_id' => Auth::id(),
-            'comment' => $request->comment,
-            'parent_id' => null, // Komentar utama
+            'comment' => $cleanComment,
+            'parent_id' => null,
         ]);
 
         return back()->with('success', 'Komentar berhasil ditambahkan!');
@@ -146,13 +224,15 @@ class ArticleController extends Controller
             'comment' => 'required|string|max:500',
         ]);
 
+        $cleanComment = $this->filterBadWords($request->comment);
+
         $parentComment = ArticleComment::findOrFail($id);
 
         ArticleComment::create([
             'article_id' => $parentComment->article_id,
             'user_id' => Auth::id(),
-            'comment' => $request->comment,
-            'parent_id' => $id, // Balasan ke komentar utama
+            'comment' => $cleanComment,
+            'parent_id' => $id,
         ]);
 
         return back()->with('success', 'Balasan berhasil dikirim!');
