@@ -54,7 +54,7 @@
                                                 <div
                                                     class="col-md-3 d-flex flex-column justify-content-center ms-md-3 mt-sm-2">
                                                     <h5 class="mb-2">{{ __('main.tiket') }}
-                                                        {{ $transaction->tickets[0]->item->name }}</h5>
+                                                        {{ $transaction->tickets[0]->item->getTranslatedName() }}</h5>
                                                     <p class="mb-0">IDR
                                                         {{ number_format($transaction->amount + config('app.admin_fee'), 0, ',', '.') }}
                                                     </p>

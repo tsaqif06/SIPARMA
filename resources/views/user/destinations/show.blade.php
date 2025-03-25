@@ -166,9 +166,10 @@
                 <div class="col-lg-8 col-12">
                     <div class="room-description">
                         <div class="room-title">
-                            <h2>{{ $destination->name }}</h2>
+                            <h2>{{ $destination->getTranslatedName() }}</h2>
                         </div>
-                        <p class="p-wrap">{{ $destination->description }}</p>
+                        <p class="p-wrap">
+                            {{ $destination->getTranslatedDescription() ?? __('main.deskripsi_tidak_tersedia') }}</p>
                         <p class="p-wrap">{{ $location->address }}</p>
                         <div class="room-title">
                             <h2>{{ __('main.fasilitas') }}</h2>
@@ -178,7 +179,7 @@
                                 <p>{{ __('main.belum_ada_fasilitas') }}</p>
                             @else
                                 @foreach ($destination->facilities as $facility)
-                                    <span class="fasilitas-item">{{ ucfirst($facility->name) }}</span>
+                                    <span class="fasilitas-item">{{ $facility->getTranslatedName() }}</span>
                                 @endforeach
                             @endif
                         </div>
@@ -192,7 +193,8 @@
                                 data-bg="{{ $destination->gallery[0]->image_url ? '../' . $destination->gallery[0]->image_url : asset('assets/images/default.png') }}">
                             </div>
                             <div class="ticket-info">
-                                <div class="ticket-title">{{ __('main.tiket') }} {{ $destination->name }}</div>
+                                <div class="ticket-title">{{ __('main.tiket') }} {{ $destination->getTranslatedName() }}
+                                </div>
                                 <div class="ticket-desc">{{ __('main.tiket_wisata') }}</div>
                             </div>
                             <div class="ticket-price-button">
@@ -534,7 +536,7 @@
                                                 alt="" loading="lazy">)
                                         </div>
                                         <h2>{{ $place->name }}</h2>
-                                        <h4>{{ ucfirst($place->type) }}</h4>
+                                        <h4>{{ $place->getTranslatedType() }}</h4>
                                     </div>
                                 </div>
                             </a>

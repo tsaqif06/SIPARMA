@@ -55,13 +55,14 @@
                                         </div>
                                         <div class="content flex-grow-1 d-flex flex-column">
                                             <h2>
-                                                <a href="{{ route('place.show', $place->slug) }}">{{ $place->name }}</a>
+                                                <a
+                                                    href="{{ route('place.show', $place->slug) }}">{{ $place->getTranslatedName() }}</a>
                                             </h2>
                                             <div class="description flex-grow-1 d-flex align-items-start"
                                                 style="min-height: 50px;">
                                                 <span class="overflow-hidden"
                                                     style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
-                                                    {{ $place->description ?? __('main.deskripsi_tidak_tersedia') }}
+                                                    {{ $place->getTranslatedDescription() ?? __('main.deskripsi_tidak_tersedia') }}
                                                 </span>
                                             </div>
                                             <div class="top-content mt-auto">

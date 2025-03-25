@@ -116,7 +116,7 @@
                             @foreach ($popularDestinations as $destination)
                                 <li>
                                     <a
-                                        href="{{ route('destination.show', $destination->slug) }}">{{ $destination->name }}</a>
+                                        href="{{ route('destination.show', $destination->slug) }}">{{ $destination->getTranslatedName() }}</a>
                                 </li>
                             @endforeach
                         </ul>

@@ -81,7 +81,7 @@
     <div class="container">
         <!-- Title: Beli Tiket -->
         <div class="text-center mb-4">
-            <h2>{{ __('main.beli_tiket') }} {{ $item->name }}</h2>
+            <h2>{{ __('main.beli_tiket') }} {{ $item->getTranslatedName() }}</h2>
         </div>
 
         <div class="container mt-5">
@@ -108,7 +108,7 @@
                             <div class="ticket-info">
                                 <div class="ticket-title">{{ __('main.tiket') }}
                                     {{ str_replace(['destination', 'ride'], [__('main.wisata'), __('main.wahana')], $type) }} -
-                                    {{ $item->name }}</div>
+                                    {{ $item->getTranslatedName() }}</div>
                                 <div class="ticket-desc">{{ __('main.dewasa') }}</div>
                             </div>
 
@@ -137,7 +137,7 @@
                             <div class="ticket-info">
                                 <div class="ticket-title">{{ __('main.tiket') }}
                                     {{ str_replace(['destination', 'ride'], [__('main.wisata'), __('main.wahana')], $type) }} -
-                                    {{ $item->name }}</div>
+                                    {{ $item->getTranslatedName() }}</div>
                                 <div class="ticket-desc">{{ __('main.anakanak') }}</div>
                             </div>
 

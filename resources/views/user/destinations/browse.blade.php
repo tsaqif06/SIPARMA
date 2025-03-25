@@ -98,13 +98,13 @@
                                         <div class="content flex-grow-1 d-flex flex-column">
                                             <h2>
                                                 <a
-                                                    href="{{ route('destination.show', $destination->slug) }}">{{ $destination->name }}</a>
+                                                    href="{{ route('destination.show', $destination->slug) }}">{{ $destination->getTranslatedName() }}</a>
                                             </h2>
                                             <div class="description flex-grow-1 d-flex align-items-start"
                                                 style="min-height: 40px;">
                                                 <span class="overflow-hidden"
                                                     style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
-                                                    {{ $destination->description ?? __('main.deskripsi_tidak_tersedia') }}
+                                                    {{ $destination->getTranslatedDescription() ?? __('main.deskripsi_tidak_tersedia') }}
                                                 </span>
                                             </div>
                                             <div class="top-content mt-auto">

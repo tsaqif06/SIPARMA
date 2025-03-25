@@ -158,9 +158,10 @@
                 <div class="col-lg-8 col-12">
                     <div class="room-description">
                         <div class="room-title">
-                            <h2>{{ $place->name }}</h2>
+                            <h2>{{ $place->getTranslatedName() }}</h2>
                         </div>
-                        <p class="p-wrap">{{ $place->description }}</p>
+                        <p class="p-wrap">{{ $place->getTranslatedDescription() ?? __('main.deskripsi_tidak_tersedia') }}
+                        </p>
                         <p class="p-wrap">{{ $location->address }}</p>
                         <div class="room-title">
                             <h2>{{ __('main.fasilitas') }}</h2>
@@ -170,7 +171,7 @@
                                 <p>{{ __('main.belum_ada_fasilitas') }}</p>
                             @else
                                 @foreach ($place->facilities as $facility)
-                                    <span class="fasilitas-item">{{ ucfirst($facility->name) }}</span>
+                                    <span class="fasilitas-item">{{ $facility->getTranslatedName() }}</span>
                                 @endforeach
                             @endif
                         </div>

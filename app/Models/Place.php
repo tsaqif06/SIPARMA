@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
+use Stichoza\GoogleTranslate\GoogleTranslate;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Place extends Model
 {
@@ -43,5 +45,44 @@ class Place extends Model
     public function promos()
     {
         return $this->hasMany(Promo::class, 'place_id');
+    }
+
+    public function getTranslatedDescription()
+    {
+        $locale = app()->getLocale();
+
+        if ($locale === 'id') {
+            return $this->description;
+        }
+
+        return Cache::remember("translated_description_place_{$this->id}_{$locale}", now()->addDay(), function () use ($locale) {
+            return GoogleTranslate::trans($this->description, $locale, 'id');
+        });
+    }
+
+    public function getTranslatedName()
+    {
+        $locale = app()->getLocale();
+
+        if ($locale === 'id') {
+            return ucwords($this->name);
+        }
+
+        return Cache::remember("translated_name_place_{$this->id}_{$locale}", now()->addDay(), function () use ($locale) {
+            return ucwords(GoogleTranslate::trans($this->name, $locale, 'id'));
+        });
+    }
+
+    public function getTranslatedType()
+    {
+        $locale = app()->getLocale();
+
+        if ($locale === 'id') {
+            return ucwords($this->type); // Kalau bahasa ID, pakai aslinya
+        }
+
+        return Cache::remember("translated_type_place_{$this->id}_{$locale}", now()->addDay(), function () use ($locale) {
+            return ucwords(GoogleTranslate::trans($this->type, $locale, 'id'));
+        });
     }
 }

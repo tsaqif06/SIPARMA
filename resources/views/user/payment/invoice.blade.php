@@ -67,7 +67,7 @@
 
                             @if ($ticket->adult_count > 0)
                                 <tr>
-                                    <td>{{ $type_translation[$ticket->item_type] }} - {{ $ticket->item->name }}
+                                    <td>{{ $type_translation[$ticket->item_type] }} - {{ $ticket->item->getTranslatedName() }}
                                         ({{ __('main.dewasa') }})</td>
                                     <td>IDR {{ number_format($adultPrice, 0, ',', '.') }}</td>
                                     <td>{{ $ticket->adult_count }}</td>
@@ -77,7 +77,7 @@
 
                             @if ($ticket->children_count > 0)
                                 <tr>
-                                    <td>{{ $type_translation[$ticket->item_type] }} - {{ $ticket->item->name }}
+                                    <td>{{ $type_translation[$ticket->item_type] }} - {{ $ticket->item->getTranslatedName() }}
                                         ({{ __('main.anakanak') }})</td>
                                     <td>IDR {{ number_format($hargaDiskonAnak, 0, ',', '.') }}</td>
                                     <td>{{ $ticket->children_count }}</td>
@@ -88,7 +88,7 @@
                         @else
                             <tr>
                                 <td>
-                                    {{ $type_translation[$ticket->item_type] }} - {{ $ticket->item->name }}
+                                    {{ $type_translation[$ticket->item_type] }} - {{ $ticket->item->getTranslatedName() }}
                                     <ul class="mb-3 ms-4">
                                         @foreach ($ticket->item->items as $it)
                                             @php

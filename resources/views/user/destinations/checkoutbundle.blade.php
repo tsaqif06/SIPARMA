@@ -32,7 +32,7 @@
     <div class="container">
         <!-- Title: Beli Tiket -->
         <div class="text-center mb-4">
-            <h2>{{ __('main.beli_tiket') }} {{ $item->name }}</h2>
+            <h2>{{ __('main.beli_tiket') }} {{ $item->getTranslatedName() }}</h2>
         </div>
 
         <div class="container mt-5">
@@ -49,7 +49,7 @@
                         <div class="text-danger mt-1">{{ $message }}</div>
                     @enderror
 
-                    <h4 style="margin-top: 40px">{{ __('main.pilih') }}</h4>
+                    <h4 style="margin-top: 40px">{{ __('main.pilih_tiket') }}</h4>
                     <hr style="margin-bottom: 20px">
                     <div class="pricing-area">
                         <div class="ticket-card">
@@ -57,7 +57,8 @@
                                 data-bg="{{ !empty($item->gallery) && isset($item->gallery[0]) ? '../../../' . $item->gallery[0]->image_url : asset('assets/images/default.png') }}">
                             </div>
                             <div class="ticket-info">
-                                <div class="ticket-title">{{ __('main.tiket_bundle') }} - {{ $item->name }}</div>
+                                <div class="ticket-title">{{ __('main.tiket_bundle') }} - {{ $item->getTranslatedName() }}
+                                </div>
                                 <div class="ticket-desc">{{ __('main.isi_item_bundle') }}:
                                     <ul class="list-unstyled mb-0">
                                         @foreach ($item->items as $it)
@@ -70,7 +71,7 @@
                                                     })
                                                     ->implode(', ');
                                             @endphp
-                                            <li>{{ __('main.tiket') }} {{ optional($it->item)->name }}
+                                            <li>{{ __('main.tiket') }} {{ optional($it->item)->getTranslatedName() }}
                                                 <small class="text-muted">({{ $quantities }})</small>
                                             </li>
                                         @endforeach

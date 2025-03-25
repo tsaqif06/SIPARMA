@@ -43,7 +43,7 @@
                                     class="rounded me-3 ticket-image" loading="lazy" alt="Tiket">
 
                                 <div>
-                                    <p class="mb-0">{{ $ticket->translated_type }} - {{ $ticket->item->name }}</p>
+                                    <p class="mb-0">{{ $ticket->translated_type }} - {{ $ticket->item->getTranslatedName() }}</p>
                                     <small>{{ \Carbon\Carbon::parse($ticket->visit_date)->format('F d, Y') }}</small>
                                 </div>
                             </div>
@@ -74,7 +74,7 @@
                         @if ($ticket->item_type !== 'bundle')
                             @if ($ticket->adult_count > 0)
                                 <div class="d-flex justify-content-between">
-                                    <p>{{ $ticket->translated_type }} - {{ $ticket->item->name }}
+                                    <p>{{ $ticket->translated_type }} - {{ $ticket->item->getTranslatedName() }}
                                         ({{ $ticket->adult_count }} {{ __('main.dewasa') }})
                                     </p>
                                     <p>IDR
@@ -91,7 +91,7 @@
 
                             @if ($ticket->children_count > 0)
                                 <div class="d-flex justify-content-between">
-                                    <p>{{ $ticket->translated_type }} - {{ $ticket->item->name }}
+                                    <p>{{ $ticket->translated_type }} - {{ $ticket->item->getTranslatedName() }}
                                         ({{ $ticket->children_count }} {{ __('main.anak') }})
                                     </p>
                                     <p>IDR
@@ -110,7 +110,7 @@
                             <div class="d-flex justify-content-between">
                                 <div class="d-flex flex-column">
                                     <p class="mb-0">{{ $type_translation[$ticket->item_type] }} -
-                                        {{ $ticket->item->name }}</p>
+                                        {{ $ticket->item->getTranslatedName() }}</p>
                                     <ul class="list-unstyled mb-3">
                                         @foreach ($ticket->item->items as $it)
                                             @php
@@ -122,7 +122,8 @@
                                                     })
                                                     ->implode(', ');
                                             @endphp
-                                            <li class="text-muted">{{ __('main.tiket') }} {{ optional($it->item)->name }}
+                                            <li class="text-muted">{{ __('main.tiket') }}
+                                                {{ optional($it->item)->getTranslatedName() }}
                                                 <small class="text-muted">({{ $quantities }})</small>
                                             </li>
                                         @endforeach

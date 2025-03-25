@@ -137,7 +137,7 @@
                                     <div class="content">
                                         <h2>
                                             <a
-                                                href="{{ route('destination.show', $promo->slug) }}">{{ $promo->name }}</a>
+                                                href="{{ route('destination.show', $promo->slug) }}">{{ $promo->getTranslatedName() }}</a>
                                         </h2>
                                         <span class="price-old">IDR
                                             {{ number_format($promo->price, 0, ',', '.') }}</span><br>
@@ -216,13 +216,13 @@
                                 </div>
                                 <div class="content flex-grow-1 d-flex flex-column">
                                     <h2 class="fs-5 text-dark">
-                                        {{ $destination->name }}
+                                        {{ $destination->getTranslatedName() }}
                                     </h2>
                                     <div class="description flex-grow-1 d-flex align-items-start"
                                         style="min-height: 100px;">
                                         <span class="overflow-hidden"
                                             style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
-                                            {{ $destination->description ?? __('main.deskripsi_tidak_tersedia') }}
+                                            {{ $destination->getTranslatedDescription() ?? __('main.deskripsi_tidak_tersedia') }}
                                         </span>
                                     </div>
                                     <div class="top-content mt-auto">
@@ -298,7 +298,7 @@
                                                     src="{{ asset('assets/user/images/authorlist/star.svg') }}"
                                                     alt="" loading="lazy">)
                                             </div>
-                                            <h2>{{ $destination->name }}</h2>
+                                            <h2>{{ $destination->getTranslatedName() }}</h2>
                                             <h4>Rp {{ number_format($destination->price, 0, ',', '.') }}</h4>
                                         </div>
                                     </div>
