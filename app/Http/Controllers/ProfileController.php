@@ -60,7 +60,7 @@ class ProfileController extends Controller
 
         Auth::setUser($user);
 
-        return redirect()->route('profile')->with('success', 'Profil berhasil diperbarui!');
+        return redirect()->route('profile')->with('success', __('flasher.profil_diperbarui'));
     }
 
     public function transactionHistory()
@@ -136,6 +136,6 @@ class ProfileController extends Controller
             }
         }
 
-        return redirect()->back()->with('success', 'Pengajuan verifikasi berhasil dikirim.');
+        return redirect()->back()->with('success', __('flasher.pengajuan_verifikasi_dikirim'));
     }
 }

@@ -5,25 +5,25 @@
         <div class="row g-4">
             <div class="col-lg-6">
                 <div class="card p-4">
-                    <h5 class="mb-3">Data Pemesan</h5>
+                    <h5 class="mb-3">{{ __('main.data_pemesan') }}</h5>
                     <form id="checkout-form">
                         @csrf
                         <div class="mb-3">
-                            <label class="form-label">Nama</label>
+                            <label class="form-label">{{ __('main.nama') }}</label>
                             <input type="text" class="form-control" value="{{ old('name', auth()->user()->name) }}"
-                                placeholder="Masukkan Nama" id="name" name="name">
+                                placeholder="{{ __('main.masukkan_nama') }}" id="name" name="name">
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Email</label>
+                                <label class="form-label">{{ __('main.email') }}</label>
                                 <input type="email" class="form-control" value="{{ old('email', auth()->user()->email) }}"
-                                    placeholder="Masukkan Email" id="email" name="email">
+                                    placeholder="{{ __('main.masukkan_email') }}" id="email" name="email">
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Telepon</label>
+                                <label class="form-label">{{ __('main.telepon') }}</label>
                                 <input type="text" class="form-control"
                                     value="{{ old('phone_number', auth()->user()->phone_number) }}"
-                                    placeholder="Masukkan No. Telepon" id="phone_number" name="phone_number">
+                                    placeholder="{{ __('main.masukkan_telepon') }}" id="phone_number" name="phone_number">
                             </div>
                         </div>
                     </form>
@@ -31,7 +31,7 @@
             </div>
             <div class="col-lg-6">
                 <div class="card p-4 mb-3">
-                    <h5 class="mb-3">Jumlah Tiket</h5>
+                    <h5 class="mb-3">{{ __('main.jumlah_tiket') }}</h5>
                     @foreach ($transaction->tickets as $ticket)
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <div class="d-flex align-items-center">
@@ -48,9 +48,9 @@
                                 </div>
                             </div>
                             @if ($ticket->item_type !== 'bundle')
-                                <span>{{ $ticket->adult_count + $ticket->children_count }} Tiket</span>
+                                <span>{{ $ticket->adult_count + $ticket->children_count }} {{ __('main.tiket') }}</span>
                             @else
-                                <span>1 Tiket</span>
+                                <span>1 {{ __('main.tiket') }}</span>
                             @endif
                         </div>
                     @endforeach
@@ -69,13 +69,13 @@
                 @endphp
 
                 <div class="card p-4">
-                    <h5 class="mb-3">Total Pembayaran</h5>
+                    <h5 class="mb-3">{{ __('main.total_pembayaran') }}</h5>
                     @foreach ($transaction->tickets as $ticket)
                         @if ($ticket->item_type !== 'bundle')
                             @if ($ticket->adult_count > 0)
                                 <div class="d-flex justify-content-between">
                                     <p>{{ $ticket->translated_type }} - {{ $ticket->item->name }}
-                                        ({{ $ticket->adult_count }} Dewasa)
+                                        ({{ $ticket->adult_count }} {{ __('main.dewasa') }})
                                     </p>
                                     <p>IDR
                                         {{ number_format(
@@ -92,7 +92,7 @@
                             @if ($ticket->children_count > 0)
                                 <div class="d-flex justify-content-between">
                                     <p>{{ $ticket->translated_type }} - {{ $ticket->item->name }}
-                                        ({{ $ticket->children_count }} Anak)
+                                        ({{ $ticket->children_count }} {{ __('main.anak') }})
                                     </p>
                                     <p>IDR
                                         {{ number_format($hargaDiskonAnak * $ticket->children_count, 0, ',', '.') }}
@@ -102,9 +102,9 @@
                         @else
                             @php
                                 $type_translation = [
-                                    'destination' => 'Tiket Wisata',
-                                    'ride' => 'Tiket Wahana',
-                                    'bundle' => 'Tiket Bundle',
+                                    'destination' => __('main.tiket_wisata'),
+                                    'ride' => __('main.tiket_wahana'),
+                                    'bundle' => __('main.tiket_bundle'),
                                 ];
                             @endphp
                             <div class="d-flex justify-content-between">
@@ -116,12 +116,13 @@
                                             @php
                                                 $quantities = collect(json_decode($it->quantity, true))
                                                     ->map(function ($qty, $key) {
-                                                        $label = $key === 'adults' ? 'Dewasa' : 'Anak-anak';
+                                                        $label =
+                                                            $key === 'adults' ? __('main.dewasa') : __('main.anakanak');
                                                         return $label . ': ' . $qty;
                                                     })
                                                     ->implode(', ');
                                             @endphp
-                                            <li class="text-muted">Tiket {{ optional($it->item)->name }}
+                                            <li class="text-muted">{{ __('main.tiket') }} {{ optional($it->item)->name }}
                                                 <small class="text-muted">({{ $quantities }})</small>
                                             </li>
                                         @endforeach
@@ -135,7 +136,7 @@
                             </div>
                         @endif
                         <div class="d-flex justify-content-between">
-                            <p>Biaya Admin</p>
+                            <p>{{ __('main.biaya_admin') }}</p>
                             <p>IDR
                                 {{ number_format(config('app.admin_fee'), 0, ',', '.') }}
                             </p>
@@ -143,10 +144,10 @@
                     @endforeach
                     <hr>
                     <div class="d-flex justify-content-between">
-                        <p><strong>Total</strong></p>
+                        <p><strong>{{ __('main.total') }}</strong></p>
                         <p><strong>IDR {{ number_format($transaction->total_pay, 0, ',', '.') }}</strong></p>
                     </div>
-                    <button class="btn btn-custom w-100 mt-3" id="pay-button">Bayar</button>
+                    <button class="btn btn-custom w-100 mt-3" id="pay-button">{{ __('main.bayar') }}</button>
                 </div>
             </div>
         </div>

@@ -81,13 +81,11 @@
                     <div class="col-lg-6 col-md-10 col-12">
                         <div class="hero-content-slider">
                             <div class="item">
-                                <h2 class="wow fadeInUp" data-wow-duration="1400ms">Booking Tiket & Eksplor Wisata Terbaik di
-                                    Malang Raya</h2>
-                                <p class="wow fadeInUp" data-wow-duration="1600ms">Temukan wisata terbaik di Malang! Pesan
-                                    tiket dengan mudah,
-                                    jelajahi destinasi favorit, dan nikmati liburan tanpa ribet.</p>
+                                <h2 class="wow fadeInUp" data-wow-duration="1400ms">{{ __('main.booking_tiket') }} &
+                                    {{ __('main.eksplor_wisata') }}</h2>
+                                <p class="wow fadeInUp" data-wow-duration="1600ms">{{ __('main.temukan_wisata') }}</p>
                                 <div class="hero-btn wow fadeInUp" data-wow-duration="1800ms">
-                                    <a href="#promo" class="theme-btn">Jelajahi Lebih Banyak</a>
+                                    <a href="#promo" class="theme-btn">{{ __('main.jelajahi_lebih') }}</a>
                                 </div>
                             </div>
                         </div>
@@ -101,14 +99,6 @@
                         <img src="{{ asset('assets/user/images/slider/slide-new.jpg') }}" style="object-fit: cover;"
                             alt="">
                     </div>
-                    {{--  <div class="item">
-                        <img src="{{ asset('assets/user/images/slider/slide-new.jpg') }}" loading="lazy" style="object-fit: cover;"
-                            alt="">
-                    </div>
-                    <div class="item">
-                        <img src="{{ asset('assets/user/images/slider/slide-new.jpg') }}" loading="lazy" style="object-fit: cover;"
-                            alt="">
-                    </div>  --}}
                 </div>
                 <div class="side-img-2">
                     <img src="{{ asset('assets/user/images/slider/side-img-2.jpg') }}" loading="lazy" alt="">
@@ -128,8 +118,8 @@
                 <div class="row">
                     <div class="col-lg-5 col-12">
                         <div class="wpo-section-title wow fadeInLeft">
-                            <span class="text-start">// Penawaran Terbaik</span>
-                            <h2>Penawaran Spesial</h2>
+                            <span class="text-start">// {{ __('main.penawaran_terbaik') }}</span>
+                            <h2>{{ __('main.penawaran_spesial') }}</h2>
                         </div>
                     </div>
 
@@ -146,14 +136,16 @@
                                     </div>
                                     <div class="content">
                                         <h2>
-                                            <a href="{{ route('destination.show', $promo->slug) }}">{{ $promo->name }}</a>
+                                            <a
+                                                href="{{ route('destination.show', $promo->slug) }}">{{ $promo->name }}</a>
                                         </h2>
                                         <span class="price-old">IDR
                                             {{ number_format($promo->price, 0, ',', '.') }}</span><br>
                                         <span class="text-price" style="color: #ff8000;">IDR
                                             {{ number_format($hargaDiskon, 0, ',', '.') }}</span>
                                         <p class="card-text">
-                                            Rating: {{ number_format($promo->reviews_avg_rating, 1) }} / 5
+                                            {{ __('main.rating') }}: {{ number_format($promo->reviews_avg_rating, 1) }} /
+                                            5
                                         </p>
                                     </div>
                                 </div>
@@ -172,8 +164,8 @@
             <div class="row justify-content-center">
                 <div class="col-lg-10 col-12">
                     <div class="wpo-section-title s2 wow fadeInDown">
-                        <span>// Jelajahi Malang</span>
-                        <h2>Temukan Keindahan <br>di Malang Raya</h2>
+                        <span>// {{ __('main.jelajahi_malang') }}</span>
+                        <h2>{{ __('main.temukan_keindahan') }}</h2>
                     </div>
                 </div>
             </div>
@@ -185,17 +177,17 @@
                                 <ul class="category-item">
                                     <li>
                                         <a data-filter=".alams" href="#" class="featured-btn current">
-                                            Alam
+                                            {{ __('main.alam') }}
                                         </a>
                                     </li>
                                     <li>
                                         <a data-filter=".wahanas" href="#" class="featured-btn">
-                                            Wahana
+                                            {{ __('main.wahana') }}
                                         </a>
                                     </li>
                                     <li>
                                         <a data-filter=".places" href="#" class="featured-btn">
-                                            Tempat
+                                            {{ __('main.tempat') }}
                                         </a>
                                     </li>
                                 </ul>
@@ -229,12 +221,8 @@
                                     <div class="description flex-grow-1 d-flex align-items-start"
                                         style="min-height: 100px;">
                                         <span class="overflow-hidden"
-                                            style="
-                                                display: -webkit-box;
-                                                -webkit-line-clamp: 3;
-                                                -webkit-box-orient: vertical;
-                                            ">
-                                            {{ $destination->description ?? 'Deskripsi tidak tersedia.' }}
+                                            style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
+                                            {{ $destination->description ?? __('main.deskripsi_tidak_tersedia') }}
                                         </span>
                                     </div>
                                     <div class="top-content mt-auto">
@@ -242,19 +230,23 @@
                                             <li class="text-center">
                                                 @if ($type != 'places')
                                                     <span>{{ $destination->price ? number_format($destination->price, 0, ',', '.') : 'N/A' }}</span>
-                                                    <span class="d-block small" style="color: gray">Harga</span>
+                                                    <span class="d-block small"
+                                                        style="color: gray">{{ __('main.harga') }}</span>
                                                 @else
                                                     <span>{{ number_format($destination->facilities->count() ?? '0', 0, ',', '.') }}</span>
-                                                    <span class="d-block small" style="color: gray">Fasilitas</span>
+                                                    <span class="d-block small"
+                                                        style="color: gray">{{ __('main.fasilitas') }}</span>
                                                 @endif
                                             </li>
                                             <li class="text-center">
                                                 <span>{{ number_format($destination->reviews->count() ?? '0', 0, ',', '.') }}</span>
-                                                <span class="d-block small" style="color: gray">Ulasan</span>
+                                                <span class="d-block small"
+                                                    style="color: gray">{{ __('main.ulasan') }}</span>
                                             </li>
                                             <li class="text-center">
                                                 <span>{{ number_format($destination->reviews_avg_rating, 1) ?? '0.0' }}</span>
-                                                <span class="d-block small" style="color: gray">Rating</span>
+                                                <span class="d-block small"
+                                                    style="color: gray">{{ __('main.rating') }}</span>
                                             </li>
                                         </ul>
                                     </div>
@@ -266,7 +258,7 @@
                 @endforeach
             </div>
             <div class="featured-all-btn wow zoomIn">
-                <a href="#most-rating" class="theme-btn-s2">Jelajahi Lebih Banyak</a>
+                <a href="#most-rating" class="theme-btn-s2">{{ __('main.jelajahi_lebih') }}</a>
             </div>
         </div>
     </section>
@@ -278,8 +270,8 @@
             <div class="row justify-content-center">
                 <div class="col-lg- col-12">
                     <div class="wpo-section-title s2 wow fadeInUp">
-                        <span>// Wisata Terbaik</span>
-                        <h2>Jelajahi Destinasi Wisata<br> Terindah di Malang Raya</h2>
+                        <span>// {{ __('main.wisata_terbaik') }}</span>
+                        <h2>{{ __('main.jelajahi_destinasi') }}</h2>
                     </div>
                 </div>
                 <div class="col-lg-10 col-12">
@@ -301,7 +293,8 @@
                                         </div>
                                         <div class="content">
                                             <div class="rating">
-                                                Rating: {{ number_format($destination->reviews_avg_rating, 1) }} (<img
+                                                {{ __('main.rating') }}:
+                                                {{ number_format($destination->reviews_avg_rating, 1) }} (<img
                                                     src="{{ asset('assets/user/images/authorlist/star.svg') }}"
                                                     alt="" loading="lazy">)
                                             </div>
@@ -325,12 +318,9 @@
             <div class="row align-items-center">
                 <div class="col-xl-4 col-12">
                     <div class="wpo-section-title s2 wow fadeInLeftSlow" data-wow-duration="1700ms">
-                        <p style="color: #FFFFFF;">// Wisata Terbaik</p>
-                        <h2 style="margin-top: 20px; color: #FFFFFF;">Beritahu Kami!</h2>
-                        <p style="margin: 20px 0 0 0; color: #FFFFFF;">Ayo, jadi salah satu yang
-                            pertama mengungkap
-                            keajaiban tersembunyi ini!
-                            Rencanakan perjalanan Anda sekarang dan ciptakan pengalaman yang tak terlupakan.</p>
+                        <p style="color: #FFFFFF;">// {{ __('main.wisata_terbaik') }}</p>
+                        <h2 style="margin-top: 20px; color: #FFFFFF;">{{ __('main.beritahu_kami') }}</h2>
+                        <p style="margin: 20px 0 0 0; color: #FFFFFF;">{{ __('main.rekomendasi_deskripsi') }}</p>
                     </div>
                 </div>
                 <div class="offset-xl-2 col-xl-6 col-12">
@@ -342,7 +332,7 @@
                                 <div class="col-md-6 mt-4">
                                     <div class="mb-4">
                                         <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                            id="name" name="name" placeholder="Nama Wisata"
+                                            id="name" name="name" placeholder="{{ __('main.nama_wisata') }}"
                                             value="{{ old('name') }}">
                                         @error('name')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -350,7 +340,7 @@
                                     </div>
                                     <div class="mb-4">
                                         <input type="text" class="form-control @error('address') is-invalid @enderror"
-                                            id="address" name="address" placeholder="Alamat"
+                                            id="address" name="address" placeholder="{{ __('main.alamat') }}"
                                             value="{{ old('address') }}">
                                         @error('address')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -358,14 +348,14 @@
                                     </div>
                                     <div class="mb-3">
                                         <textarea class="form-control" id="description @error('description') is-invalid @enderror" name="description"
-                                            rows="3" placeholder="Deskripsi">{{ old('description') }}</textarea>
+                                            rows="3" placeholder="{{ __('main.deskripsi') }}">{{ old('description') }}</textarea>
                                         @error('description')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="mb-4">
-                                        <label style="color: black" for="image_url" class="form-label">Upload Gambar
-                                            Wisata</label>
+                                        <label style="color: black" for="image_url"
+                                            class="form-label">{{ __('main.upload_gambar') }}</label>
                                         <input class="form-control @error('image_url') is-invalid @enderror"
                                             type="file" id="image_url" name="image_url[]" multiple>
                                         @error('image_url')
@@ -374,34 +364,33 @@
                                     </div>
                                 </div>
 
-                                <!-- Bagian Map -->
+                                <!-- Map Section -->
                                 <div class="col-md-6 d-flex align-items-center">
                                     <div class="preview-box text-center w-100">
-                                        <span class="text-muted">Tentukan Lokasi Wisata</span>
+                                        <span class="text-muted">{{ __('main.tentukan_lokasi') }}</span>
                                         <div id="map"
                                             class="border @error('latitude') border-danger @enderror @error('longitude') border-danger @enderror"
                                             style="height: 250px; width: 100%; border-radius: 7px;"></div>
 
-                                        <!-- Input Hidden untuk Latitude & Longitude -->
+                                        <!-- Hidden Input for Latitude & Longitude -->
                                         <input type="hidden" name="latitude" id="latitude"
                                             value="{{ old('latitude', '-7.9666') }}">
                                         <input type="hidden" name="longitude" id="longitude"
                                             value="{{ old('longitude', '112.6326') }}">
 
-                                        <!-- Menampilkan pesan error jika latitude/longitude kosong -->
                                         @error('longitude')
-                                            <div class="text-danger">Harap pilih lokasi di peta.</div>
+                                            <div class="text-danger">{{ __('main.harap_pilih_lokasi') }}</div>
                                         @enderror
                                     </div>
                                 </div>
                             </div>
                             @auth
-                                <button type="submit" class="btn btn-primary">Kirim</button>
+                                <button type="submit" class="btn btn-primary">{{ __('main.kirim') }}</button>
                             @endauth
 
                             @guest
                                 <a href="{{ route('login') }}">
-                                    <button type="button" class="btn btn-primary">Kirim</button>
+                                    <button type="button" class="btn btn-primary">{{ __('main.kirim') }}</button>
                                 </a>
                             @endguest
                         </form>

@@ -18,11 +18,11 @@
         <div class="hero-article-browse lazy-bg overlay-dark d-flex justify-content-center align-items-center"
             data-bg="{{ asset('assets/images/hero-article.jpg') }}" style="height: 250px;">
             <div class="text-center">
-                <h1 class="text-white mb-4">Cari Artikel</h1>
+                <h1 class="text-white mb-4">{{ __('main.cari_artikel') }}</h1>
                 <div class="search-bar">
                     <form action="{{ route('article.browse') }}" method="GET" class="d-flex justify-content-center">
                         <input type="text" name="search" class="search-box rounded-pill w-100 me-2"
-                            placeholder="Masukkan kata kunci..." value="{{ request('search') }}">
+                            placeholder="{{ __('main.masukkan_kata_kunci') }}" value="{{ request('search') }}">
                     </form>
                 </div>
             </div>
@@ -86,8 +86,8 @@
                 </div>
             @empty
                 <div class="col-12 text-center">
-                    <p class="text-muted">Tidak ada artikel yang ditemukan.</p>
-                    <p class="text-muted">Coba kata kunci lain atau hapus filter pencarian.</p>
+                    <p class="text-muted">{{ __('main.tidak_ada_artikel') }}</p>
+                    <p class="text-muted">{{ __('main.coba_kata_kunci_lain') }}</p>
                 </div>
             @endforelse
         </div>

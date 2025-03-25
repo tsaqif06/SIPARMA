@@ -31,9 +31,9 @@ class PaymentController extends Controller
             ->firstOrFail();
 
         $type_translation = [
-            'destination' => 'Tiket Wisata',
-            'ride' => 'Tiket Wahana',
-            'bundle' => 'Tiket Bundle'
+            'destination' => __('main.tiket_wisata'),
+            'ride' => __('main.tiket_wahana'),
+            'bundle' => __('main.tiket_bundle')
         ];
 
         $transaction->total_pay = $transaction->amount + $this->adminFee;

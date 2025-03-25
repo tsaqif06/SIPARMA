@@ -32,7 +32,7 @@ class ComplaintController extends Controller
             'status' => 'new',
         ]);
 
-        return back()->with('success', 'Laporan berhasil dikirim!');
+        return back()->with('success', __('flasher.laporan_dikirim'));
     }
 
     public function show($id)

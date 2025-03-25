@@ -214,7 +214,7 @@ class ArticleController extends Controller
             'parent_id' => null,
         ]);
 
-        return back()->with('success', 'Komentar berhasil ditambahkan!');
+        return back()->with('success', __('flasher.komentar_ditambahkan'));
     }
 
     // Simpan Balasan Komentar
@@ -235,7 +235,7 @@ class ArticleController extends Controller
             'parent_id' => $id,
         ]);
 
-        return back()->with('success', 'Balasan berhasil dikirim!');
+        return back()->with('success', __('flasher.balasan_dikirim'));
     }
 
     // Hapus Komentar (termasuk balasan)
@@ -251,7 +251,7 @@ class ArticleController extends Controller
         $comment->replies()->delete();
         $comment->delete();
 
-        return back()->with('success', 'Komentar berhasil dihapus!');
+        return back()->with('success', __('flasher.komentar_dihapus'));
     }
 
     // Hapus Balasan
@@ -265,6 +265,6 @@ class ArticleController extends Controller
 
         $reply->delete();
 
-        return back()->with('success', 'Balasan berhasil dihapus!');
+        return back()->with('success', __('flasher.balasan_dihapus'));
     }
 }

@@ -115,7 +115,7 @@ class HomeController extends Controller
             }
         }
 
-        return redirect()->back()->with('success', 'Rekomendasi berhasil dikirim!');
+        return redirect()->back()->with('success', __('flasher.rekomendasi_dikirim'));
     }
 
     public function indexAdmin()

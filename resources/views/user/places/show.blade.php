@@ -4,17 +4,17 @@
     $script = '<script>
         //---------------------------
         $(".remove-item-btn").on("click", function() {
-            $(this).closest("tr").addClass("d-none")
+            $(this).closest("tr").addClass("d-none");
         });
 
         function confirmDelete(userId) {
             Swal.fire({
-                title: "Apakah Anda yakin?",
-                text: "Data ini akan dihapus secara permanen!",
+                title: ' . json_encode(__("main.apakah_anda_yakin")) . ',
+                text: ' . json_encode(__("main.data_akan_dihapus")) . ',
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonText: "Hapus",
-                cancelButtonText: "Batal",
+                confirmButtonText: ' . json_encode(__("main.hapus")) . ',
+                cancelButtonText: ' . json_encode(__("main.batal")) . ',
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -64,7 +64,7 @@
                             icon: defaultIcon
                         })
                         .addTo(map)
-                        .bindPopup("Lokasi Anda")
+                        .bindPopup(' . json_encode(__("main.lokasi_anda")) . ')
                         .openPopup();
 
                     // Zoom ke lokasi pengguna
@@ -86,7 +86,7 @@
                     }).addTo(map);
                 },
                 function() {
-                    alert("Gagal mendapatkan lokasi Anda. Pastikan GPS aktif.");
+                    alert(' . json_encode(__("main.gagal_mendapatkan_lokasi")) . ');
                 }
             );
         });
@@ -121,14 +121,22 @@
                         <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
                             <div class="row">
                                 <div class="col-md-8 mb-sm-2">
-                                    <img src="{{ asset($chunk[0]->image_url ?? 'assets/images/default.png') }}"
-                                        class="d-block w-100 img-clickable" alt="{{ $place->name }}">
+                                    <a href="{{ asset($chunk[0]->image_url ?? 'assets/images/default.png') }}">
+                                        <img src="{{ asset($chunk[0]->image_url ?? 'assets/images/default.png') }}"
+                                            class="d-block w-100 img-clickable" alt="{{ $place->name }}">
+                                    </a>
                                 </div>
                                 <div class="col-md-4 d-flex flex-column">
-                                    <img src="{{ asset($chunk[1]->image_url ?? ($chunk[0]->image_url ?? 'assets/images/default.png')) }}"
-                                        class="mb-2 w-100 img-clickable" loading="lazy" alt="{{ $place->name }}">
-                                    <img src="{{ asset($chunk[2]->image_url ?? ($chunk[0]->image_url ?? 'assets/images/default.png')) }}"
-                                        class="w-100 img-clickable" loading="lazy" alt="{{ $place->name }}">
+                                    <a
+                                        href="{{ asset($chunk[1]->image_url ?? ($chunk[0]->image_url ?? 'assets/images/default.png')) }}">
+                                        <img src="{{ asset($chunk[1]->image_url ?? ($chunk[0]->image_url ?? 'assets/images/default.png')) }}"
+                                            class="mb-2 w-100 img-clickable" loading="lazy" alt="{{ $place->name }}">
+                                    </a>
+                                    <a
+                                        href="{{ asset($chunk[2]->image_url ?? ($chunk[0]->image_url ?? 'assets/images/default.png')) }}">
+                                        <img src="{{ asset($chunk[2]->image_url ?? ($chunk[0]->image_url ?? 'assets/images/default.png')) }}"
+                                            class="w-100 img-clickable" loading="lazy" alt="{{ $place->name }}">
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -155,11 +163,11 @@
                         <p class="p-wrap">{{ $place->description }}</p>
                         <p class="p-wrap">{{ $location->address }}</p>
                         <div class="room-title">
-                            <h2>Fasilitas</h2>
+                            <h2>{{ __('main.fasilitas') }}</h2>
                         </div>
                         <div class="fasilitas-list">
                             @if ($place->facilities->isEmpty())
-                                <p>Belum ada fasilitas yang tersedia.</p>
+                                <p>{{ __('main.belum_ada_fasilitas') }}</p>
                             @else
                                 @foreach ($place->facilities as $facility)
                                     <span class="fasilitas-item">{{ ucfirst($facility->name) }}</span>
@@ -170,7 +178,7 @@
 
                     <div class="room-review">
                         <div class="room-title">
-                            <h2>Ulasan</h2>
+                            <h2>{{ __('main.ulasan') }}</h2>
                         </div>
 
                         @php
@@ -180,7 +188,7 @@
                         @endphp
 
                         @if ($sortedComments->isEmpty())
-                            <p>Belum ada ulasan.</p>
+                            <p>{{ __('main.belum_ada_ulasan') }}.</p>
                         @else
                             @foreach ($sortedComments as $review)
                                 <div class="review-item">
@@ -218,7 +226,7 @@
                                                     @method('DELETE')
                                                     <button type="submit"
                                                         class="btn btn-danger btn-sm d-inline-flex align-items-center gap-1"
-                                                        onclick="return confirm('Hapus komentar ini?')">
+                                                        onclick="return confirm('{{ __('main.hapus_komen_ini') }}')">
                                                         <iconify-icon icon="solar:trash-bin-trash-linear"
                                                             style="font-size: 18px;"></iconify-icon>
                                                         Hapus
@@ -246,7 +254,7 @@
                     @if (!$userReview)
                         <div class="add-review">
                             <div class="room-title">
-                                <h2>Berikan Ulasan</h2>
+                                <h2>{{ __('main.berikan_ulasan') }}</h2>
                             </div>
 
                             <form action="{{ route('reviews.store') }}" method="POST">
@@ -293,7 +301,7 @@
                                         <div class="comment-respond">
                                             <div id="commentform" class="comment-form">
                                                 <div class="form">
-                                                    <textarea id="comment" name="comment" placeholder="Ketik Ulasan" required>{{ old('comment') }}</textarea>
+                                                    <textarea id="comment" name="comment" placeholder="{{ __('main.ketik_ulasan') }}" required>{{ old('comment') }}</textarea>
                                                     @error('comment')
                                                         <div class="text-danger">{{ $message }}</div>
                                                     @enderror
@@ -302,8 +310,7 @@
                                                 <!-- Submit Button -->
                                                 <div class="form-submit">
                                                     <button type="submit" class="btn btn-primary"
-                                                        style="font-size: 16px;">Kirim
-                                                        Ulasan</button>
+                                                        style="font-size: 16px;">{{ __('main.kirim_ulasan') }}</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -320,13 +327,14 @@
                             </div>
                             <input type="hidden" name="latitude" id="latitude" value="{{ $location->latitude }}">
                             <input type="hidden" name="longitude" id="longitude" value="{{ $location->longitude }}">
-                            <button id="showRoute" class="btn btn-primary mt-3">Tunjukkan Navigasi dari Lokasi
-                                Saya</button>
+                            <button id="showRoute"
+                                class="btn btn-primary mt-3">{{ __('main.tunjukkan_navigasi') }}</button>
                         </div>
                         <div class="wpo-contact-widget widget mt-5">
-                            <h4>Mengalami Masalah?</h4>
-                            <p>Laporkan tempat ini jika tempat ini mengalami masalah</p>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#laporModal">Laporkan</a>
+                            <h4>{{ __('main.mengalami_masalah') }}</h4>
+                            <p>{{ __('main.laporkan_tempat_ini') }}</p>
+                            <a href="#" data-bs-toggle="modal"
+                                data-bs-target="#laporModal">{{ __('main.laporkan') }}</a>
                         </div>
                     </div>
                 </div>
@@ -338,7 +346,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="laporModalLabel">Laporkan Masalah</h5>
+                    <h5 class="modal-title" id="laporModalLabel">{{ __('main.laporkan_masalah') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('complaints.store') }}" method="POST">
@@ -346,16 +354,18 @@
                     <input type="hidden" name="place_id" value="{{ $place->id }}">
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="complaint_text" class="form-label">Isi Laporan</label>
-                            <textarea class="form-control" name="complaint_text" rows="4" required placeholder="Tuliskan laporan Anda..."></textarea>
+                            <label for="complaint_text" class="form-label">{{ __('main.isi_laporan') }}</label>
+                            <textarea class="form-control" name="complaint_text" rows="4" required
+                                placeholder="{{ __('main.tuliskan_laporan') }}"></textarea>
                             @error('complaint_text')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary">Kirim Laporan</button>
+                        <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">{{ __('main.batal') }}</button>
+                        <button type="submit" class="btn btn-primary">{{ __('main.kirim_laporan') }}</button>
                     </div>
                 </form>
             </div>

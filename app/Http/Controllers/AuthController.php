@@ -52,13 +52,11 @@ class AuthController extends Controller
             'password' => 'required|min:6',
         ]);
 
-        // $remember = $request->has('remember');
-
         if (Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']])) {
-            return redirect()->route('home.index')->with('success', 'Login berhasil! Selamat datang');
+            return redirect()->route('home.index')->with('success', __('flasher.login_berhasil'));
         }
 
-        return back()->with('error', 'Email atau password salah.');
+        return back()->with('error', __('flasher.email_password_salah'));
     }
 
     public function loginAdmin(Request $request)
@@ -74,15 +72,15 @@ class AuthController extends Controller
             if (Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']])) {
                 return redirect()
                     ->route('admin.dashboard')
-                    ->with('success', 'Login berhasil! Selamat datang, ' . $user->name);
+                    ->with('success', __('flasher.login_admin_berhasil', ['name' => $user->name]));
             } else {
                 return redirect()
                     ->route('admin.dashboard')
-                    ->with('error', 'Email atau password salah.');
+                    ->with('error', __('flasher.email_password_salah'));
             }
         }
 
-        return back()->with('error', $user ? 'Akun tidak memiliki akses admin.' : 'Email atau password salah.');
+        return back()->with('error', $user ? __('flasher.tidak_ada_akses_admin') : __('flasher.email_password_salah'));
     }
 
     public function convertRoleAndLogin()
@@ -101,8 +99,6 @@ class AuthController extends Controller
         return response()->json(['success' => true]);
     }
 
-
-
     public function register(Request $request)
     {
         $validated = $request->validate([
@@ -119,7 +115,7 @@ class AuthController extends Controller
             'phone_number' => $validated['phone_number'],
         ]);
 
-        return redirect('/login')->with('success', 'Daftar berhasil! Silahkan login dengan akun anda.');
+        return redirect('/login')->with('success', __('flasher.daftar_berhasil'));
     }
 
     public function logout()

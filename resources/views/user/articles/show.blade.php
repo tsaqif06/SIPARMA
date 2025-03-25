@@ -4,17 +4,17 @@
     $script = '<script>
         //---------------------------
         $(".remove-item-btn").on("click", function() {
-            $(this).closest("tr").addClass("d-none")
+            $(this).closest("tr").addClass("d-none");
         });
 
         function confirmDelete(userId) {
             Swal.fire({
-                title: "Apakah Anda yakin?",
-                text: "Data ini akan dihapus secara permanen!",
+                title: ' . json_encode(__("main.apakah_anda_yakin")) . ',
+                text: ' . json_encode(__("main.data_akan_dihapus")) . ',
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonText: "Hapus",
-                cancelButtonText: "Batal",
+                confirmButtonText: ' . json_encode(__("main.hapus")) . ',
+                cancelButtonText: ' . json_encode(__("main.batal")) . ',
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -55,7 +55,7 @@
                                 <div class="d-flex align-items-center gap-3">
                                     <iconify-icon icon="solar:user-linear" class="meta-icon"></iconify-icon>
                                     <div>
-                                        <span class="d-block text-dark fw-semibold">Diunggah oleh
+                                        <span class="d-block text-dark fw-semibold">{{ __('main.diunggah_oleh') }}
                                             {{ $article->user->name }}</span>
                                         <span
                                             class="text-muted small">{{ $article->created_at->format('d M Y, H:i') }}</span>
@@ -108,7 +108,7 @@
                                         class="btn btn-outline-secondary btn-sm dropdown-toggle d-flex align-items-center gap-1"
                                         type="button" id="shareDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                         <iconify-icon icon="solar:share-linear" class="fs-6"></iconify-icon>
-                                        <span>Bagikan</span>
+                                        <span>{{ __('main.bagikan') }}</span>
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="shareDropdown">
                                         <li><a class="dropdown-item d-flex align-items-center gap-2"
@@ -148,11 +148,11 @@
 
                     <div class="room-review" id="comments">
                         <div class="room-title">
-                            <h2>Komentar</h2>
+                            <h2>{{ __('main.komentar') }}</h2>
                         </div>
 
                         @if ($reviews->isEmpty())
-                            <p>Belum ada komentar.</p>
+                            <p>{{ __('main.belum_ada_komentar') }}</p>
                         @else
                             @foreach ($reviews as $review)
                                 <div class="review-item mb-4 p-3 border rounded shadow-sm">
@@ -174,14 +174,34 @@
 
                                             <p class="mt-2 mb-2">{{ $review->comment }}</p>
 
-                                            <!-- Tombol Balas -->
-                                            <button
-                                                class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1"
-                                                data-bs-toggle="collapse" data-bs-target="#reply-form-{{ $review->id }}">
-                                                <iconify-icon icon="solar:chat-line-linear"
-                                                    style="font-size: 18px;"></iconify-icon>
-                                                Balas
-                                            </button>
+                                            <div class="d-flex gap-2">
+                                                <!-- Tombol Balas -->
+                                                <button
+                                                    class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#reply-form-{{ $review->id }}">
+                                                    <iconify-icon icon="solar:chat-line-linear"
+                                                        style="font-size: 18px;"></iconify-icon>
+                                                    {{ __('main.balas') }}
+                                                </button>
+
+                                                <!-- Tombol Hapus (Hanya untuk user pemilik komentar) -->
+                                                @if (auth()->id() == $review->user_id)
+                                                    <form action="{{ route('comment.destroy', $review->id) }}"
+                                                        method="POST" class="d-inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                            class="btn btn-danger btn-sm d-inline-flex align-items-center gap-1"
+                                                            onclick="return confirm('{{ __('main.hapus_komen_ini') }}')">
+                                                            <iconify-icon icon="solar:trash-bin-trash-linear"
+                                                                style="font-size: 18px;"></iconify-icon>
+                                                            {{ __('main.hapus') }}
+                                                        </button>
+                                                    </form>
+                                                @endif
+                                            </div>
+
 
                                             <!-- Form Balasan -->
                                             <div id="reply-form-{{ $review->id }}" class="collapse my-2">
@@ -192,7 +212,7 @@
                                                     <button type="submit" class="btn btn-sm btn-primary mt-2">
                                                         <iconify-icon icon="solar:send-linear"
                                                             style="font-size: 18px;"></iconify-icon>
-                                                        Kirim
+                                                        {{ __('main.kirim') }}
                                                     </button>
                                                 </form>
                                             </div>
@@ -205,7 +225,7 @@
                                                     data-bs-target="#replies-{{ $review->id }}">
                                                     <iconify-icon icon="solar:eye-linear"
                                                         style="font-size: 18px;"></iconify-icon>
-                                                    Lihat Balasan ({{ $review->replies->count() }})
+                                                    {{ __('main.lihat_balasan') }} ({{ $review->replies->count() }})
                                                 </button>
 
                                                 <div id="replies-{{ $review->id }}"
@@ -229,6 +249,23 @@
                                                                 </div>
 
                                                                 <p class="small mt-2">{{ $reply->comment }}</p>
+
+                                                                @if (auth()->id() == $reply->user_id)
+                                                                    <form
+                                                                        action="{{ route('comment.reply.destroy', $reply->id) }}"
+                                                                        method="POST" class="d-inline">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                        <button type="submit"
+                                                                            class="btn btn-danger btn-sm d-inline-flex align-items-center gap-1"
+                                                                            onclick="return confirm('{{ __('main.hapus_balasan_ini') }}')">
+                                                                            <iconify-icon
+                                                                                icon="solar:trash-bin-trash-linear"
+                                                                                style="font-size: 18px;"></iconify-icon>
+                                                                            {{ __('main.hapus') }}
+                                                                        </button>
+                                                                    </form>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     @endforeach
@@ -256,7 +293,7 @@
                     @if (!$userReview)
                         <div class="add-review">
                             <div class="room-title">
-                                <h2>Berikan Komentar</h2>
+                                <h2>{{ __('main.berikan_komentar') }}</h2>
                             </div>
 
                             <form action="{{ route('comment.store', $article->id) }}" method="POST">
@@ -267,7 +304,7 @@
                                         <div class="comment-respond">
                                             <div id="commentform" class="comment-form">
                                                 <div class="form">
-                                                    <textarea id="comment" name="comment" placeholder="Ketik Komentar" required>{{ old('comment') }}</textarea>
+                                                    <textarea id="comment" name="comment" placeholder="{{ __('main.ketik_komentar') }}" required>{{ old('comment') }}</textarea>
                                                     @error('comment')
                                                         <div class="text-danger">{{ $message }}</div>
                                                     @enderror
@@ -276,8 +313,7 @@
                                                 <!-- Submit Button -->
                                                 <div class="form-submit">
                                                     <button type="submit" class="btn btn-primary"
-                                                        style="font-size: 16px;">Kirim
-                                                        Komentar</button>
+                                                        style="font-size: 16px;">{{ __('main.kirim_komentar') }}</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -291,16 +327,16 @@
                     <div class="d-none d-md-block mt-5"></div>
                     <div class="blog-sidebar room-sidebar">
                         <form action="{{ route('article.browse') }}" method="GET">
-                            <input type="text" name="search" class="search-box" placeholder="Cari Artikel"
-                                value="{{ request('search') }}">
+                            <input type="text" name="search" class="search-box"
+                                placeholder="{{ __('main.cari_artikel') }}" value="{{ request('search') }}">
                         </form>
                         <div class="side-relevan mt-5">
                             <div class="room-title">
-                                <h2>Artikel Relevan</h2>
+                                <h2>{{ __('main.artikel_relevan') }}</h2>
                             </div>
                             <div class="fasilitas-list">
                                 @if ($relatedArticles->isEmpty())
-                                    <p>Tidak ada artikel relevan</p>
+                                    <p>{{ __('main.tidak_ada_artikel_relevan') }}</p>
                                 @else
                                     @foreach ($relatedArticles as $related)
                                         <a href="{{ route('article.show', $related->slug) }}" class="related-article">
@@ -337,7 +373,7 @@
                         </div>
                         <div class="side-category">
                             <div class="room-title">
-                                <h2>Kategori</h2>
+                                <h2>{{ __('main.kategori') }}</h2>
                             </div>
                             <div class="fasilitas-list">
                                 <p>{{ ucfirst($article->category->name) }}</p>
@@ -349,7 +385,7 @@
                             </div>
                             <div class="fasilitas-list">
                                 @if ($article->tags->isEmpty())
-                                    <p>Tidak ada tag</p>
+                                    <p>{{ __('main.tidak_ada_tag') }}</p>
                                 @else
                                     @foreach ($article->tags as $tag)
                                         <span class="fasilitas-item">{{ ucfirst($tag->tag_name) }}</span>
@@ -368,7 +404,7 @@
 
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(function() {
-                alert('Link berhasil disalin!');
+                alert({!! json_encode(__('main.link_berhasil_disalin')) !!});
             }, function(err) {
                 console.error('Gagal menyalin: ', err);
             });
@@ -407,7 +443,7 @@
                     $("#like-count").text(formatLikes(response.likes));
                 },
                 error: function(xhr) {
-                    alert("Gagal melakukan aksi.");
+                    alert({!! json_encode(__('main.gagal_melakukan_aksi')) !!});
                 }
             });
         }

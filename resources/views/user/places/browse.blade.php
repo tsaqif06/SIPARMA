@@ -3,45 +3,45 @@
 @section('content')
     <section class="verifikasi-section section-padding" style="margin-top: -150px">
         <div class="container mt-5 d-flex">
-            <!-- Sidebar Filter -->
             <div class="row">
+                <!-- Sidebar Filter -->
                 <div class="sidebar-filter col-md-3 col-12" style="height: 330px">
                     <form action="{{ route('place.browse') }}" method="GET">
-                        <input type="text" name="search" class="search-box" placeholder="Cari tempat"
+                        <input type="text" name="search" class="search-box" placeholder="{{ __('main.cari_tempat') }}"
                             value="{{ request('search') }}">
-                        <h4>Filter</h4>
+                        <h4>{{ __('main.filter') }}</h4>
                         <hr>
                         <div class="filter-section">
-                            <label class="filter-title">Jenis Tempat</label>
+                            <label class="filter-title">{{ __('main.jenis_tempat') }}</label>
                             <div class="checkbox-group">
                                 <label for="restoran">
                                     <input type="checkbox" name="jenis_tempat[]" value="Restoran" id="restoran"
                                         {{ in_array('Restoran', request('jenis_tempat', [])) ? 'checked' : '' }}>
-                                    Restoran
+                                    {{ __('main.restoran') }}
                                 </label>
                                 <label for="penginapan">
                                     <input type="checkbox" name="jenis_tempat[]" value="Penginapan" id="penginapan"
                                         {{ in_array('Penginapan', request('jenis_tempat', [])) ? 'checked' : '' }}>
-                                    Penginapan
+                                    {{ __('main.penginapan') }}
                                 </label>
                                 <label for="other">
                                     <input type="checkbox" name="jenis_tempat[]" value="Other" id="other"
                                         {{ in_array('Other', request('jenis_tempat', [])) ? 'checked' : '' }}>
-                                    Lainnya
+                                    {{ __('main.lainnya') }}
                                 </label>
                             </div>
                         </div>
                         <hr>
-                        <button type="submit" class="btn btn-primary">Terapkan Filter</button>
+                        <button type="submit" class="btn btn-primary">{{ __('main.terapkan_filter') }}</button>
                     </form>
                 </div>
 
-                <!-- Konten Wisata -->
+                <!-- Place Content -->
                 <div class="container-form col-md-9 col-12">
                     @if ($places->isEmpty())
                         <div class="col-12 text-center">
-                            <p class="text-muted">Tidak ada tempat yang ditemukan.</p>
-                            <p class="text-muted">Coba kata kunci lain atau hapus filter pencarian.</p>
+                            <p class="text-muted">{{ __('main.tidak_ada_tempat') }}</p>
+                            <p class="text-muted">{{ __('main.coba_kata_kunci_lain') }}</p>
                         </div>
                     @else
                         <div class="gallery-container gallery-fancybox masonry-gallery row">
@@ -60,28 +60,23 @@
                                             <div class="description flex-grow-1 d-flex align-items-start"
                                                 style="min-height: 50px;">
                                                 <span class="overflow-hidden"
-                                                    style="
-                                                    display: -webkit-box;
-                                                    -webkit-line-clamp: 3;
-                                                    -webkit-box-orient: vertical;
-                                                ">
-                                                    {{ $place->description ?? 'Deskripsi tidak tersedia.' }}
+                                                    style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
+                                                    {{ $place->description ?? __('main.deskripsi_tidak_tersedia') }}
                                                 </span>
                                             </div>
                                             <div class="top-content mt-auto">
                                                 <ul>
                                                     <li>
-                                                        <span>
-                                                            {{ number_format($place->facilities->count() ?? '0', 0, ',', '.') }}</span>
-                                                        <span class="date">Fasilitas</span>
+                                                        <span>{{ number_format($place->facilities->count() ?? '0', 0, ',', '.') }}</span>
+                                                        <span class="date">{{ __('main.fasilitas') }}</span>
                                                     </li>
                                                     <li>
                                                         <span>{{ number_format($place->reviews->count() ?? '0', 0, ',', '.') }}</span>
-                                                        <span class="date">Ulasan</span>
+                                                        <span class="date">{{ __('main.ulasan') }}</span>
                                                     </li>
                                                     <li>
                                                         <span>{{ number_format($place->reviews_avg_rating, 1) ?? '0.0' }}</span>
-                                                        <span class="date">Rating</span>
+                                                        <span class="date">{{ __('main.rating') }}</span>
                                                     </li>
                                                 </ul>
                                             </div>

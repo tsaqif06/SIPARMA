@@ -101,7 +101,7 @@ class ReviewController extends Controller
             'comment' => $cleanComment,
         ]);
 
-        return redirect()->back()->with('success', 'Ulasan berhasil dikirim!');
+        return redirect()->back()->with('success', __('flasher.ulasan_dikirim'));
     }
 
     public function destroy($id)
@@ -109,9 +109,9 @@ class ReviewController extends Controller
         $review = Review::find($id);
         if ($review) {
             $review->delete();
-            return redirect()->back()->with('success', 'Review berhasil dihapus.');
+            return redirect()->back()->with('success', __('flasher.ulasan_dihapus'));
         } else {
-            return redirect()->back()->with('error', 'Review tidak ditemukan.');
+            return redirect()->back()->with('error', __('flasher.ulasan_tidak_ditemukan'));
         }
     }
 }

@@ -78,16 +78,18 @@
             <!-- Sidebar -->
             <div class="col-md-3">
                 <div class="sidebar">
-                    <div class="sidebar-title text-secondary">Menu</div>
-                    <a href="{{ route('profile') }}"><i class="fas fa-user"></i> Profil</a>
-                    <a href="{{ route('transactions.history') }}"><i class="fas fa-list"></i> Riwayat Transaksi</a>
+                    <div class="sidebar-title text-secondary">{{ __('main.menu') }}</div>
+                    <a href="{{ route('profile') }}"><i class="fas fa-user"></i>
+                        {{ __('main.profil') }}</a>
+                    <a href="{{ route('transactions.history') }}"><i class="fas fa-list"></i>
+                        {{ __('main.riwayat_transaksi') }}</a>
                     <a href="{{ route('admin.verification') }}" style="color: black;"><i class="fas fa-check-circle"></i>
-                        Verifikasi Admin</a>
+                        {{ __('main.verifikasi_admin') }}</a>
                     <hr>
                     <form action="{{ route('logout') }}" method="POST" class="mt-2">
                         @csrf
                         <button type="submit" class="btn btn-danger w-100"><i class="fas fa-sign-out-alt"></i>
-                            Logout</button>
+                            {{ __('main.logout') }}</button>
                     </form>
                 </div>
             </div>
@@ -95,7 +97,7 @@
             <!-- Main Content -->
             <div class="col-md-9">
                 <div class="card p-4">
-                    <h3>Verifikasi Admin Tempat</h3>
+                    <h3>{{ __('main.verifikasi_admin_tempat') }}</h3>
                     <hr class="mb-4">
 
                     @php
@@ -104,58 +106,59 @@
                             ->first();
                     @endphp
                     @if ($adminPlace && $adminPlace->approval_status == 'pending')
-                        <h3 class="text-center text-secondary">Verifikasi Sedang Diproses</h3>
-                        <p class="text-center text-muted">Permintaan Anda sedang ditinjau oleh admin. Mohon tunggu hingga
-                            proses verifikasi selesai.</p>
+                        <h3 class="text-center text-secondary">{{ __('main.verifikasi_diproses') }}</h3>
+                        <p class="text-center text-muted">{{ __('main.verifikasi_diproses_pesan') }}</p>
                     @elseif ($adminPlace && $adminPlace->approval_status == 'approved')
-                        <h3 class="text-center text-success">Verifikasi Berhasil</h3>
-                        <p class="text-center text-muted">Selamat! Akun Anda telah disetujui sebagai admin tempat.</p>
+                        <h3 class="text-center text-success">{{ __('main.verifikasi_berhasil') }}</h3>
+                        <p class="text-center text-muted">{{ __('main.verifikasi_berhasil_pesan') }}</p>
 
                         <form id="adminLogoutForm" action="{{ route('logout') }}" method="POST">
                             @csrf
                         </form>
 
                         <button class="btn btn-primary w-100 mt-3" onclick="convertRoleAndRefresh()">
-                            Masuk ke Admin
+                            {{ __('main.masuk_admin') }}
                         </button>
-                        
+
                         <script>
                             function convertRoleAndRefresh() {
                                 fetch("{{ route('convert.role') }}", {
-                                    method: "POST",
-                                    headers: {
-                                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
-                                        "Content-Type": "application/json",
-                                    },
-                                    body: JSON.stringify({})
-                                })
-                                .then(response => response.json())
-                                .then(data => {
-                                    if (data.success) {
-                                        location.reload();
-                                    } else {
-                                        alert("Gagal mengubah role: " + data.message);
-                                    }
-                                })
-                                .catch(error => console.error("Error:", error));
+                                        method: "POST",
+                                        headers: {
+                                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+                                            "Content-Type": "application/json",
+                                        },
+                                        body: JSON.stringify({})
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            location.reload();
+                                        } else {
+                                            alert("{{ __('main.gagal_ubah_role') }}: " + data.message);
+                                        }
+                                    })
+                                    .catch(error => console.error("Error:", error));
                             }
                         </script>
                     @else
                         @if ($adminPlace && $adminPlace->approval_status == 'rejected')
                             <div class="alert alert-danger text-center">
-                                <strong>Pengajuan Anda Sebelumnya Telah Ditolak.</strong><br>
-                                Anda masih bisa mengajukan ulang jika ingin mencoba kembali.
+                                <strong>{{ __('main.pengajuan_ditolak') }}</strong><br>
+                                {{ __('main.pengajuan_ulang_pesan') }}
                             </div>
                         @endif
 
-                        <form action="{{ route('admin.verification.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('admin.verification.store') }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                                 <div class="col-md-6 mt-4">
                                     <div class="mb-3">
                                         <input type="text" name="name"
                                             class="form-control @error('name') is-invalid @enderror"
-                                            placeholder="Nama Tempat" value="{{ old('name') }}" required>
+                                            placeholder="{{ __('main.nama_tempat') }}" value="{{ old('name') }}"
+                                            required>
                                         @error('name')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -163,16 +166,16 @@
                                     <div class="mb-3">
                                         <input type="text" name="type"
                                             class="form-control @error('type') is-invalid @enderror"
-                                            placeholder="Tipe tempat (Restoran, Penginapan, dll)"
-                                            value="{{ old('type') }}" required>
+                                            placeholder="{{ __('main.tipe_tempat') }}" value="{{ old('type') }}"
+                                            required>
                                         @error('type')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="mb-3">
                                         <input type="text" name="address" id="address"
-                                            class="form-control @error('address') is-invalid @enderror" placeholder="Alamat"
-                                            value="{{ old('address') }}" required>
+                                            class="form-control @error('address') is-invalid @enderror"
+                                            placeholder="{{ __('main.alamat') }}" value="{{ old('address') }}" required>
                                         @error('address')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -181,7 +184,7 @@
                                         <select name="destination_id"
                                             class="form-control @error('destination_id') is-invalid @enderror w-100"
                                             required>
-                                            <option value="" disabled selected>Pilih Wisata Terdekat</option>
+                                            <option value="" disabled selected>{{ __('main.pilih_wisata') }}</option>
                                             @foreach ($destinations as $destination)
                                                 <option value="{{ $destination->id }}"
                                                     {{ old('destination_id') == $destination->id ? 'selected' : '' }}>
@@ -194,7 +197,7 @@
                                         @enderror
                                     </div>
                                     <div class="mb-3 mt-1">
-                                        <label for="imageUpload" class="form-label">Unggah Bukti Kepemilikan</label>
+                                        <label for="imageUpload" class="form-label">{{ __('main.unggah_bukti') }}</label>
                                         <input type="file" name="ownership_docs"
                                             class="form-control @error('ownership_docs') is-invalid @enderror"
                                             id="imageUpload" required>
@@ -203,7 +206,7 @@
                                         @enderror
                                     </div>
                                     <div class="mb-3 mt-1">
-                                        <label for="galleryImages" class="form-label">Unggah Foto Tempat</label>
+                                        <label for="galleryImages" class="form-label">{{ __('main.unggah_foto') }}</label>
                                         <input type="file" name="gallery_images[]"
                                             class="form-control @error('gallery_images') is-invalid @enderror"
                                             id="galleryImages" multiple>
@@ -213,28 +216,27 @@
                                     </div>
                                 </div>
 
-                                <!-- Bagian Map -->
+                                <!-- Map Section -->
                                 <div class="col-md-6 d-flex align-items-center">
                                     <div class="preview-box text-center w-100">
-                                        <span class="text-muted">Silakan pilih titik lokasi tempat Anda di peta</span>
+                                        <span class="text-muted">{{ __('main.pilih_lokasi_peta') }}</span>
                                         <div id="map"
                                             class="border @error('latitude') border-danger @enderror @error('longitude') border-danger @enderror"
                                             style="height: 300px; width: 100%; border-radius: 7px;"></div>
 
-                                        <!-- Input Hidden untuk Latitude & Longitude -->
+                                        <!-- Hidden Input for Latitude & Longitude -->
                                         <input type="hidden" name="latitude" id="latitude"
                                             value="{{ old('latitude', '-7.9666') }}">
                                         <input type="hidden" name="longitude" id="longitude"
                                             value="{{ old('longitude', '112.6326') }}">
 
-                                        <!-- Menampilkan pesan error jika latitude/longitude kosong -->
                                         @error('longitude')
-                                            <div class="text-danger">Harap pilih lokasi di peta.</div>
+                                            <div class="text-danger">{{ __('main.harap_pilih_lokasi') }}</div>
                                         @enderror
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary w-100 mt-3">Kirim</button>
+                            <button type="submit" class="btn btn-primary w-100 mt-3">{{ __('main.kirim') }}</button>
                         </form>
                     @endif
                 </div>

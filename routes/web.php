@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\App;
+
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
@@ -27,6 +30,17 @@ use App\Http\Controllers\AdminWithdrawalController;
 use App\Http\Controllers\AdminDestinationController;
 use App\Http\Controllers\AdminTransactionController;
 use App\Http\Controllers\AdminArticleCategoryController;
+
+Route::get('set-language/{lang}', function ($lang) {
+    if (!in_array($lang, ['en', 'id'])) {
+        abort(400);
+    }
+
+    Session::put('locale', $lang);
+    App::setLocale($lang);
+
+    return back();
+})->name('set-language');
 
 // user auth
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
