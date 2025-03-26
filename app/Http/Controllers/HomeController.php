@@ -2,11 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ride;
+use App\Models\User;
 use App\Models\Place;
+use App\Models\Review;
+use App\Models\Article;
+use App\Models\Balance;
+use App\Models\Facility;
 use App\Models\AdminPlace;
+use App\Models\BalanceLog;
 use App\Models\Destination;
+use App\Models\Transaction;
+use App\Models\AdminBalance;
+use App\Models\GalleryPlace;
 use Illuminate\Http\Request;
 use App\Models\Recommendation;
+use App\Models\AdminBalanceLog;
 use Illuminate\Support\Facades\DB;
 use App\Models\RecommendationImage;
 
@@ -17,8 +28,9 @@ class HomeController extends Controller
      */
     public function index()
     {
+        // Promos
         $promos = [
-            'destinations' => Destination::with('promos')
+            'destinations' => Destination::with(['promos', 'gallery'])
                 ->withAvg('reviews', 'rating')
                 ->whereHas('promos', function ($query) {
                     $query->where('discount', '>', 0)
@@ -27,7 +39,8 @@ class HomeController extends Controller
                 })
                 ->limit(4)
                 ->get(),
-            'places' => Place::with('promos')
+
+            'places' => Place::with(['promos', 'gallery'])
                 ->withAvg('reviews', 'rating')
                 ->whereHas('promos', function ($query) {
                     $query->where('discount', '>', 0)
@@ -38,8 +51,10 @@ class HomeController extends Controller
                 ->get(),
         ];
 
+        // Categories
         $categories = [
-            'alams' => Destination::withAvg('reviews', 'rating')
+            'alams' => Destination::with(['gallery'])
+                ->withAvg('reviews', 'rating')
                 ->where('type', 'alam')
                 ->whereExists(function ($query) {
                     $query->select(DB::raw(1))
@@ -49,7 +64,8 @@ class HomeController extends Controller
                 ->limit(4)
                 ->get(),
 
-            'wahanas' => Destination::withAvg('reviews', 'rating')
+            'wahanas' => Destination::with(['gallery'])
+                ->withAvg('reviews', 'rating')
                 ->where('type', 'wahana')
                 ->whereExists(function ($query) {
                     $query->select(DB::raw(1))
@@ -59,18 +75,21 @@ class HomeController extends Controller
                 ->limit(4)
                 ->get(),
 
-            'places' => Place::withAvg('reviews', 'rating')
+            'places' => Place::with(['gallery', 'facilities'])
+                ->withAvg('reviews', 'rating')
                 ->whereExists(function ($query) {
                     $query->select(DB::raw(1))
                         ->from('tbl_admin_places')
                         ->whereColumn('tbl_admin_places.place_id', 'tbl_places.id')
-                        ->where('tbl_admin_places.approval_status', 'approved'); // Pastikan hanya tempat yang approved
+                        ->where('tbl_admin_places.approval_status', 'approved');
                 })
                 ->limit(3)
                 ->get(),
         ];
 
-        $topRatedDestinations = Destination::withAvg('reviews', 'rating')
+        // Top Rated Destinations
+        $topRatedDestinations = Destination::with(['gallery'])
+            ->withAvg('reviews', 'rating')
             ->orderBy('reviews_avg_rating', 'desc')
             ->limit(8)
             ->get();
@@ -123,145 +142,103 @@ class HomeController extends Controller
         $user = auth()->user();
         $role = $user->role;
 
-        $total_users = null;
-        $total_balance = null;
-        $total_profit = null;
-        $total_rides = null;
-        $average_rating = null;
-        $total_destinations = null;
-        $total_places = null;
-        $total_transactions = null;
-        $recentTransactions = collect();
-        $revenueData = collect();
+        // Data yang akan digunakan untuk semua role
+        $data = [
+            'total_users' => null,
+            'total_balance' => null,
+            'total_profit' => null,
+            'total_rides' => null,
+            'average_rating' => null,
+            'total_destinations' => null,
+            'total_places' => null,
+            'total_transactions' => null,
+            'recentTransactions' => collect(),
+            'revenueData' => collect(),
+            'total_facility' => null,
+            'total_gallery' => null,
+            'total_article' => null
+        ];
 
         if ($role === 'superadmin') {
-            $total_users = DB::table('tbl_users')->count();
-            $total_balance = DB::table('tbl_admin_balance')->sum('balance');
-            $total_profit = DB::table('tbl_admin_balance_logs')->sum('profit');
-            $total_destinations = DB::table('tbl_destinations')->count();
-            $total_places = DB::table('tbl_places')->count();
-            $total_transactions = DB::table('tbl_transactions')->count();
+            // Query untuk superadmin
+            $data['total_users'] = User::count();
+            $data['total_balance'] = AdminBalance::sum('balance');
+            $data['total_profit'] = AdminBalanceLog::sum('profit');
+            $data['total_destinations'] = Destination::count();
+            $data['total_places'] = Place::count();
+            $data['total_transactions'] = Transaction::count();
 
-            $recentTransactions = DB::table('tbl_transactions')
-                ->join('tbl_users', 'tbl_transactions.user_id', '=', 'tbl_users.id')
-                ->select(
-                    'tbl_transactions.id',
-                    'tbl_users.name as user_name',
-                    'tbl_transactions.transaction_code',
-                    'tbl_transactions.amount',
-                    'tbl_transactions.status',
-                    'tbl_transactions.created_at'
-                )
-                ->latest('tbl_transactions.created_at')
+            $data['recentTransactions'] = Transaction::with(['user:id,name'])
+                ->select('id', 'user_id', 'transaction_code', 'amount', 'status', 'created_at')
+                ->latest()
                 ->limit(5)
                 ->get();
 
-            // **Revenue untuk Superadmin dari tbl_admin_balance_logs**
-            $revenueData = DB::table('tbl_admin_balance_logs')
-                ->select(DB::raw('SUM(profit) as profit, period_year, period_month'))
+            $data['revenueData'] = AdminBalanceLog::select(
+                DB::raw('SUM(profit) as profit, period_year, period_month')
+            )
                 ->groupBy('period_year', 'period_month')
-                ->orderBy('period_year', 'asc')
-                ->orderBy('period_month', 'asc')
+                ->orderBy('period_year')
+                ->orderBy('period_month')
                 ->get();
         } elseif ($role === 'admin_wisata') {
-            $total_profit = DB::table('tbl_balance')
-                ->where('destination_id', auth()->user()->adminDestinations[0]->destination_id)
-                ->value('total_profit');
+            // Query untuk admin wisata
+            $destinationId = $user->adminDestinations[0]->destination_id;
 
-            $total_balance = DB::table('tbl_balance')->where('destination_id', auth()->user()->adminDestinations[0]->destination_id)
-                ->value('balance');;
+            $balance = Balance::where('destination_id', $destinationId)->first();
+            $data['total_profit'] = $balance->total_profit ?? 0;
+            $data['total_balance'] = $balance->balance ?? 0;
+            $data['total_rides'] = Ride::where('destination_id', $destinationId)->count();
+            $data['average_rating'] = Review::where('destination_id', $destinationId)->avg('rating');
+            $data['total_transactions'] = Transaction::where('destination_id', $destinationId)->count();
 
-
-            $total_rides = DB::table('tbl_rides')
-                ->where('destination_id', auth()->user()->adminDestinations[0]->destination_id)
-                ->count();
-
-            $average_rating = DB::table('tbl_reviews')
-                ->where('destination_id', auth()->user()->adminDestinations[0]->destination_id)
-                ->avg('rating');
-
-            $total_transactions = DB::table('tbl_transactions')->where('destination_id', auth()->user()->adminDestinations[0]->destination_id)->count();
-
-            $recentTransactions = DB::table('tbl_transactions')
-                ->join('tbl_users', 'tbl_transactions.user_id', '=', 'tbl_users.id')
-                ->where('destination_id', auth()->user()->adminDestinations[0]->destination_id)
-                ->select(
-                    'tbl_transactions.id',
-                    'tbl_users.name as user_name',
-                    'tbl_transactions.transaction_code',
-                    'tbl_transactions.amount',
-                    'tbl_transactions.status',
-                    'tbl_transactions.created_at'
-                )
-                ->latest('tbl_transactions.created_at')
+            $data['recentTransactions'] = Transaction::with(['user:id,name'])
+                ->where('destination_id', $destinationId)
+                ->select('id', 'user_id', 'transaction_code', 'amount', 'status', 'created_at')
+                ->latest()
                 ->limit(5)
                 ->get();
 
-            // **Revenue untuk Admin Wisata dari tbl_balance_logs**
-            $revenueData = DB::table('tbl_balance_logs')
-                ->select(DB::raw('SUM(profit) as profit, period_year, period_month'))
+            $data['revenueData'] = BalanceLog::where('destination_id', $destinationId)
+                ->select(
+                    DB::raw('SUM(profit) as profit, period_year, period_month')
+                )
                 ->groupBy('period_year', 'period_month')
-                ->orderBy('period_year', 'asc')
-                ->orderBy('period_month', 'asc')
+                ->orderBy('period_year')
+                ->orderBy('period_month')
                 ->get();
         } elseif ($role === 'admin_tempat') {
-            $total_facility = DB::table('tbl_facilities')
-                ->where([
-                    ['item_type', 'place'],
-                    ['item_id', AdminPlace::where('user_id', auth()->user()->id)
-                        ->where('approval_status', 'approved')
-                        ->latest('created_at')
-                        ->first()?->place->id],
-                ])
-                ->count();
+            // Query untuk admin tempat
+            $place = $user->adminPlaces[0]
+                ->where('approval_status', 'approved')
+                ->latest()
+                ->first();
 
-            $total_gallery = DB::table('tbl_gallery_places')
-                ->where('place_id', AdminPlace::where('user_id', auth()->user()->id)
-                    ->where('approval_status', 'approved')
-                    ->latest('created_at')
-                    ->first()?->place->id)
-                ->count();
+            if ($place) {
+                $placeId = $place->place_id;
+                $data['total_facility'] = Facility::where('item_type', 'place')
+                    ->where('item_id', $placeId)
+                    ->count();
+                $data['total_gallery'] = GalleryPlace::where('place_id', $placeId)->count();
+                $data['total_article'] = Article::where('user_id', $user->id)->count();
+                $data['average_rating'] = Review::where('place_id', $placeId)->avg('rating');
+            }
 
-            $total_article = DB::table('tbl_articles')
-                ->where('user_id', auth()->user()->id)
-                ->count();
-
-            $average_rating = DB::table('tbl_reviews')
-                ->where('place_id', AdminPlace::where('user_id', auth()->user()->id)
-                    ->where('approval_status', 'approved')
-                    ->latest('created_at')
-                    ->first()?->place->id)
-                ->avg('rating');
-
-            return view('admin.dashboard.admintempat', compact(
-                'total_facility',
-                'total_gallery',
-                'total_article',
-                'average_rating',
-            ));
+            return view('admin.dashboard.admintempat', $data);
         }
 
-        // **Konversi Revenue Data ke Chart Format**
+        // Konversi Revenue Data ke Chart Format
         $revenueLabels = [];
         $revenueSeries = [];
-        foreach ($revenueData as $data) {
-            $revenueLabels[] = date('M', mktime(0, 0, 0, $data->period_month, 10)); // Format bulan (Jan, Feb, dst)
-            $revenueSeries[] = $data->profit;
+        foreach ($data['revenueData'] as $dataItem) {
+            $revenueLabels[] = date('M', mktime(0, 0, 0, $dataItem->period_month, 10));
+            $revenueSeries[] = $dataItem->profit;
         }
 
-        // Kirim data ke view
-        return view('admin.dashboard.index', compact(
-            'total_users',
-            'total_destinations',
-            'total_places',
-            'total_transactions',
-            'total_balance',
-            'total_profit',
-            'total_rides',
-            'average_rating',
-            'recentTransactions',
-            'revenueLabels',
-            'revenueSeries'
-        ));
+        // Tambahkan data ke array utama
+        $data['revenueLabels'] = $revenueLabels;
+        $data['revenueSeries'] = $revenueSeries;
+
+        return view('admin.dashboard.index', $data);
     }
 }

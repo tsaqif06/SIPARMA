@@ -65,9 +65,8 @@ class ProfileController extends Controller
 
     public function transactionHistory()
     {
-        $user = auth()->user();
-
-        $transactions = Transaction::where('user_id', $user->id)
+        $transactions = Transaction::with('tickets')
+            ->where('user_id', auth()->id())
             ->orderBy('created_at', 'desc')
             ->paginate(5);
 
@@ -76,8 +75,13 @@ class ProfileController extends Controller
 
     public function adminPlaceVerification()
     {
-        $destinations = Destination::all();
-        return view('user.profile.adminverification', compact('destinations'));
+        $destinations = Destination::select('id', 'name')->get();
+        $adminPlace = AdminPlace::with(['destination:id,name'])
+            ->where('user_id', auth()->id())
+            ->latest()
+            ->first();
+
+        return view('user.profile.adminverification', compact('destinations', 'adminPlace'));
     }
 
     public function storeVerification(Request $request)

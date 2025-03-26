@@ -131,7 +131,11 @@ class PaymentController extends Controller
 
     public function invoice($order_id)
     {
-        $transaction = Transaction::where('transaction_code', $order_id)
+        $transaction = Transaction::with([
+            'user:id,name',
+            'tickets',
+        ])
+            ->where('transaction_code', $order_id)
             ->where('status', 'paid')
             ->where('user_id', auth()->user()->id)
             ->firstOrFail();

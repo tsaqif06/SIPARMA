@@ -1,20 +1,20 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Session;
+use App\Models\ArticleComment;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Route;
 
+use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\AdminRideController;
 use App\Http\Controllers\AdminUserController;
-use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\AdminPlaceController;
 use App\Http\Controllers\AdminPromoController;
@@ -41,6 +41,25 @@ Route::get('set-language/{lang}', function ($lang) {
 
     return back();
 })->name('set-language');
+
+Route::get('/comments/{comment}/replies', function (ArticleComment $comment) {
+    $limit = request('limit', 3);
+    $offset = request('offset', 0);
+
+    $replies = $comment->replies()
+        ->with('user:id,name,profile_picture')
+        ->latest()
+        ->skip($offset)
+        ->take($limit)
+        ->get();
+
+    return view('user.components.replies', [
+        'replies' => $replies,
+        'total_replies' => $comment->replies()->count(),
+        'review_id' => $comment->id,
+        'current_offset' => $offset + $limit
+    ]);
+});
 
 // user auth
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');

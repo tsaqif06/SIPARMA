@@ -157,14 +157,14 @@
                             @foreach ($reviews as $review)
                                 <div class="review-item mb-4 p-3 border rounded shadow-sm">
                                     <div class="d-flex align-items-start">
-                                        <!-- Foto Profil -->
+                                        <!-- Profile Picture -->
                                         <div class="review-img me-3">
-                                            <div class="img-comment lazy-bg"
-                                                data-bg="{{ asset($review->user->profile_picture ?: 'assets/images/default-avatar.jpg') }}">
-                                            </div>
+                                            <img src="{{ asset($review->user->profile_picture ?: 'assets/images/default-avatar.jpg') }}"
+                                                class="rounded-circle" width="50" height="50"
+                                                alt="{{ $review->user->name }}">
                                         </div>
 
-                                        <!-- Konten Komentar -->
+                                        <!-- Comment Content -->
                                         <div class="review-text flex-grow-1">
                                             <div class="r-title d-flex align-items-center">
                                                 <h2 class="fs-5 mb-0 fw-bold">{{ $review->user->name }}</h2>
@@ -175,7 +175,7 @@
                                             <p class="mt-2 mb-2">{{ $review->comment }}</p>
 
                                             <div class="d-flex gap-2">
-                                                <!-- Tombol Balas -->
+                                                <!-- Reply Button -->
                                                 <button
                                                     class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1"
                                                     data-bs-toggle="collapse"
@@ -185,12 +185,11 @@
                                                     {{ __('main.balas') }}
                                                 </button>
 
-                                                <!-- Tombol Hapus (Hanya untuk user pemilik komentar) -->
+                                                <!-- Delete Button (only for comment owner) -->
                                                 @if (auth()->id() == $review->user_id)
                                                     <form action="{{ route('comment.destroy', $review->id) }}"
                                                         method="POST" class="d-inline">
-                                                        @csrf
-                                                        @method('DELETE')
+                                                        @csrf @method('DELETE')
                                                         <button type="submit"
                                                             class="btn btn-danger btn-sm d-inline-flex align-items-center gap-1"
                                                             onclick="return confirm('{{ __('main.hapus_komen_ini') }}')">
@@ -202,8 +201,7 @@
                                                 @endif
                                             </div>
 
-
-                                            <!-- Form Balasan -->
+                                            <!-- Reply Form -->
                                             <div id="reply-form-{{ $review->id }}" class="collapse my-2">
                                                 <form method="POST"
                                                     action="{{ route('comment.reply.store', $review->id) }}">
@@ -217,58 +215,26 @@
                                                 </form>
                                             </div>
 
-                                            <!-- Tampilkan Balasan -->
-                                            @if ($review->replies->isNotEmpty())
+                                            <!-- Replies Section -->
+                                            @if ($review->replies_count > 0)
                                                 <button
                                                     class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-1 mt-2"
                                                     data-bs-toggle="collapse"
-                                                    data-bs-target="#replies-{{ $review->id }}">
+                                                    data-bs-target="#replies-{{ $review->id }}"
+                                                    onclick="loadInitialReplies({{ $review->id }})">
                                                     <iconify-icon icon="solar:eye-linear"
                                                         style="font-size: 18px;"></iconify-icon>
-                                                    {{ __('main.lihat_balasan') }} ({{ $review->replies->count() }})
+                                                    {{ __('main.lihat_balasan') }} ({{ $review->replies_count }})
                                                 </button>
 
                                                 <div id="replies-{{ $review->id }}"
                                                     class="collapse mt-3 ms-4 border-start ps-3">
-                                                    @foreach ($review->replies as $reply)
-                                                        <div class="review-item reply-item d-flex align-items-start mb-3">
-                                                            <!-- Foto Profil Balasan -->
-                                                            <div class="review-img reply-img me-2">
-                                                                <div class="img-reply lazy-bg"
-                                                                    data-bg="{{ asset($reply->user->profile_picture ?: 'assets/images/default-avatar.jpg') }}">
-                                                                </div>
-                                                            </div>
-
-                                                            <!-- Konten Balasan -->
-                                                            <div class="review-text reply-text">
-                                                                <div class="r-title reply-title d-flex align-items-center">
-                                                                    <h3 class="fs-6 mb-0 fw-bold">{{ $reply->user->name }}
-                                                                    </h3>
-                                                                    <span
-                                                                        class="ms-2 text-muted small">{{ $reply->created_at->format('d M Y') }}</span>
-                                                                </div>
-
-                                                                <p class="small mt-2">{{ $reply->comment }}</p>
-
-                                                                @if (auth()->id() == $reply->user_id)
-                                                                    <form
-                                                                        action="{{ route('comment.reply.destroy', $reply->id) }}"
-                                                                        method="POST" class="d-inline">
-                                                                        @csrf
-                                                                        @method('DELETE')
-                                                                        <button type="submit"
-                                                                            class="btn btn-danger btn-sm d-inline-flex align-items-center gap-1"
-                                                                            onclick="return confirm('{{ __('main.hapus_balasan_ini') }}')">
-                                                                            <iconify-icon
-                                                                                icon="solar:trash-bin-trash-linear"
-                                                                                style="font-size: 18px;"></iconify-icon>
-                                                                            {{ __('main.hapus') }}
-                                                                        </button>
-                                                                    </form>
-                                                                @endif
-                                                            </div>
+                                                    <!-- Initial replies will be loaded here via AJAX -->
+                                                    <div class="text-center py-2">
+                                                        <div class="spinner-border spinner-border-sm" role="status">
+                                                            <span class="visually-hidden">Loading...</span>
                                                         </div>
-                                                    @endforeach
+                                                    </div>
                                                 </div>
                                             @endif
                                         </div>
@@ -277,7 +243,7 @@
                             @endforeach
                         @endif
 
-                        <!-- PAGINATION -->
+                        <!-- Pagination -->
                         <div class="mt-3">
                             {{ $reviews->links('vendor.pagination.bootstrap-5') }}
                         </div>
@@ -447,5 +413,69 @@
                 }
             });
         }
+
+        function loadInitialReplies(reviewId) {
+            const container = $(`#replies-${reviewId}`);
+
+            // Only load if not already loaded
+            if (container.children().length > 1) return;
+
+            $.get(`/comments/${reviewId}/replies?limit=3`, function(data) {
+                container.html(data);
+
+                const totalReplies = parseInt($(`[data-total-replies="${reviewId}"]`).val());
+                if (totalReplies > 3) {
+                    container.append(`
+                        <div class="text-center mt-2">
+                            <button class="btn btn-sm btn-link load-more-replies" 
+                                data-review-id="${reviewId}"
+                                data-offset="3">
+                                <iconify-icon icon="solar:arrow-down-linear"></iconify-icon>
+                                {{ __('main.lihat_lebih_banyak') }}
+                            </button>
+                        </div>
+                    `);
+                }
+            });
+        }
+
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('load-more-replies')) {
+                const button = event.target;
+                const reviewId = button.dataset.reviewId;
+                const offset = parseInt(button.dataset.offset);
+                const container = document.getElementById(`replies-${reviewId}`);
+
+                fetch(`/comments/${reviewId}/replies?limit=3&offset=${offset}`)
+                    .then(response => response.text())
+                    .then(data => {
+                        // Hapus tombol "Lihat Lebih Banyak" sebelumnya
+                        button.parentElement.remove();
+
+                        // Tambahkan balasan baru ke dalam container
+                        container.insertAdjacentHTML('beforeend', data);
+
+                        // Periksa apakah masih ada balasan yang tersisa
+                        const totalReplies = parseInt(document.querySelector(
+                            `[data-total-replies="${reviewId}"]`).value);
+                        const newOffset = offset + 3;
+
+                        if (newOffset < totalReplies) {
+                            const showMoreButton = `
+                                <div class="text-center mt-2">
+                                    <button class="btn btn-sm btn-link load-more-replies" 
+                                        data-review-id="${reviewId}"
+                                        data-offset="${newOffset}">
+                                        <iconify-icon icon="solar:arrow-down-linear"></iconify-icon>
+                                        Lihat Lebih Banyak
+                                    </button>
+                                </div>
+                            `;
+                            container.insertAdjacentHTML('beforeend', showMoreButton);
+                        }
+                    })
+                    .catch(error => console.error('Error loading replies:', error));
+            }
+        })
     </script>
 @endsection

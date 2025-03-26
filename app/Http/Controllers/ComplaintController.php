@@ -13,7 +13,7 @@ class ComplaintController extends Controller
             return redirect()->route('admin.dashboard')->with('error', 'Akses ditolak!');
         }
 
-        $complaints = Complaint::all();
+        $complaints = Complaint::with(['user', 'destination', 'place'])->get();
 
         return view('admin.complaints.index', compact('complaints'));
     }

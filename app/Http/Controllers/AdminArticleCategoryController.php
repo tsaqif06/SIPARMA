@@ -25,7 +25,7 @@ class AdminArticleCategoryController extends Controller
      */
     public function index()
     {
-        $categories = ArticleCategory::all();
+        $categories = ArticleCategory::with('articles')->get();
         return view('admin.articles.category.index', compact('categories'));
     }
 

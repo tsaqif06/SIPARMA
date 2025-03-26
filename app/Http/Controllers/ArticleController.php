@@ -15,7 +15,7 @@ class ArticleController extends Controller
     // Tampilkan semua artikel
     public function browse(Request $request)
     {
-        $query = $request->input('search'); // Ambil input pencarian
+        $query = $request->input('search');
 
         $articles = Article::with(['category', 'tags', 'comments', 'likes', 'views'])
             ->where('status', 'published')
@@ -66,7 +66,12 @@ class ArticleController extends Controller
 
         $reviews = $article->comments()
             ->whereNull('parent_id')
-            ->with(['replies.user'])
+            ->with(['user:id,name,profile_picture', 'replies' => function ($query) {
+                $query->with('user:id,name,profile_picture')
+                    ->latest()
+                    ->limit(3); 
+            }])
+            ->withCount('replies') 
             ->orderBy('created_at', 'desc')
             ->paginate(5);
 

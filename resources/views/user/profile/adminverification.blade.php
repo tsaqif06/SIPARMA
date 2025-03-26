@@ -100,11 +100,6 @@
                     <h3>{{ __('main.verifikasi_admin_tempat') }}</h3>
                     <hr class="mb-4">
 
-                    @php
-                        $adminPlace = \App\Models\AdminPlace::where('user_id', auth()->user()->id)
-                            ->orderByDesc('created_at')
-                            ->first();
-                    @endphp
                     @if ($adminPlace && $adminPlace->approval_status == 'pending')
                         <h3 class="text-center text-secondary">{{ __('main.verifikasi_diproses') }}</h3>
                         <p class="text-center text-muted">{{ __('main.verifikasi_diproses_pesan') }}</p>
