@@ -21,7 +21,7 @@ class AdminBundleController extends Controller
 
     public function index()
     {
-        $bundles = Bundle::where('destination_id', auth()->user()->adminDestinations[0]->destination_id)->get();
+        $bundles = Bundle::with('items')->where('destination_id', auth()->user()->adminDestinations[0]->destination_id)->get();
         return view('admin.bundles.index', compact('bundles'));
     }
 

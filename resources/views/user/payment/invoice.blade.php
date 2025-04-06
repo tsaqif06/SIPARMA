@@ -1,27 +1,27 @@
 @extends('user.layouts.app')
 
 @php
-    \Carbon\Carbon::setLocale('id');
+    \Carbon\Carbon::setLocale(app()->getLocale());
 @endphp
 
 @section('content')
     <div class="invoice-container p-3 p-md-4 mx-5 mx-md-5">
         <div class="invoice-header mb-4 d-flex flex-column flex-md-row justify-content-between align-items-center">
-            <h4 class="text-center text-md-start my-3 mb-md-0">INVOICE | PEMBAYARAN BERHASIL</h4>
+            <h4 class="text-center text-md-start my-3 mb-md-0">{{ __('main.invoice_title') }}</h4>
             <img src="{{ asset('assets/user/images/LOGO_SIPARMA_.png') }}" alt="Logo" class="img-fluid"
                 style="max-width: 150px;">
         </div>
 
         <div class="row mb-4">
             <div class="col-12 col-md-6">
-                <p><strong>Kode Pembayaran:</strong> {{ $transaction->transaction_code }}</p>
-                <p><strong>Nama:</strong> {{ $transaction->user->name }}</p>
+                <p><strong>{{ __('main.payment_code') }}:</strong> {{ $transaction->transaction_code }}</p>
+                <p><strong>{{ __('main.nama') }}:</strong> {{ $transaction->user->name }}</p>
             </div>
             <div class="col-12 col-md-6 text-md-end">
-                <p><strong>Waktu Pembayaran:</strong>
+                <p><strong>{{ __('main.payment_time') }}:</strong>
                     {{ \Carbon\Carbon::parse($transaction->created_at)->translatedFormat('d F Y') }}
                 </p>
-                <p><strong>Waktu Kunjungan:</strong>
+                <p><strong>{{ __('main.visit_time') }}:</strong>
                     {{ \Carbon\Carbon::parse($transaction->tickets[0]->visit_date)->translatedFormat('d F Y') }}
                 </p>
             </div>
@@ -29,9 +29,9 @@
 
         @php
             $type_translation = [
-                'destination' => 'Tiket Wisata',
-                'ride' => 'Tiket Wahana',
-                'bundle' => 'Tiket Bundle',
+                'destination' => __('main.tiket_wisata'),
+                'ride' => __('main.tiket_wahana'),
+                'bundle' => __('main.tiket_bundle'),
             ];
         @endphp
 
@@ -39,10 +39,10 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Nama Tiket</th>
-                        <th>Harga</th>
-                        <th>Jumlah</th>
-                        <th>Sub Total</th>
+                        <th>{{ __('main.nama_tiket') }}</th>
+                        <th>{{ __('main.harga') }}</th>
+                        <th>{{ __('main.quantity') }}</th>
+                        <th>{{ __('main.sub_total') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -67,8 +67,8 @@
 
                             @if ($ticket->adult_count > 0)
                                 <tr>
-                                    <td>{{ $type_translation[$ticket->item_type] }} - {{ $ticket->item->name }} (Dewasa)
-                                    </td>
+                                    <td>{{ $type_translation[$ticket->item_type] }} - {{ $ticket->item->getTranslatedName() }}
+                                        ({{ __('main.dewasa') }})</td>
                                     <td>IDR {{ number_format($adultPrice, 0, ',', '.') }}</td>
                                     <td>{{ $ticket->adult_count }}</td>
                                     <td>IDR {{ number_format($ticket->adult_count * $adultPrice, 0, ',', '.') }}</td>
@@ -77,30 +77,30 @@
 
                             @if ($ticket->children_count > 0)
                                 <tr>
-                                    <td>{{ $type_translation[$ticket->item_type] }} - {{ $ticket->item->name }}
-                                        (Anak-anak)</td>
+                                    <td>{{ $type_translation[$ticket->item_type] }} - {{ $ticket->item->getTranslatedName() }}
+                                        ({{ __('main.anakanak') }})</td>
                                     <td>IDR {{ number_format($hargaDiskonAnak, 0, ',', '.') }}</td>
                                     <td>{{ $ticket->children_count }}</td>
-                                    <td>IDR
-                                        {{ number_format($ticket->children_count * $hargaDiskonAnak, 0, ',', '.') }}
+                                    <td>IDR {{ number_format($ticket->children_count * $hargaDiskonAnak, 0, ',', '.') }}
                                     </td>
                                 </tr>
                             @endif
                         @else
                             <tr>
                                 <td>
-                                    {{ $type_translation[$ticket->item_type] }} - {{ $ticket->item->name }}
+                                    {{ $type_translation[$ticket->item_type] }} - {{ $ticket->item->getTranslatedName() }}
                                     <ul class="mb-3 ms-4">
                                         @foreach ($ticket->item->items as $it)
                                             @php
                                                 $quantities = collect(json_decode($it->quantity, true))
                                                     ->map(function ($qty, $key) {
-                                                        $label = $key === 'adults' ? 'Dewasa' : 'Anak-anak';
+                                                        $label =
+                                                            $key === 'adults' ? __('main.dewasa') : __('main.anakanak');
                                                         return $label . ': ' . $qty;
                                                     })
                                                     ->implode(', ');
                                             @endphp
-                                            <li class="text-muted">Tiket {{ optional($it->item)->name }}
+                                            <li class="text-muted">{{ __('main.tiket') }} {{ optional($it->item)->name }}
                                                 <small class="text-muted">({{ $quantities }})</small>
                                             </li>
                                         @endforeach
@@ -108,20 +108,18 @@
                                 </td>
                                 <td>IDR {{ number_format($transaction->amount, 0, ',', '.') }}</td>
                                 <td>1</td>
-                                <td>IDR
-                                    {{ number_format(1 * $transaction->amount, 0, ',', '.') }}
-                                </td>
+                                <td>IDR {{ number_format(1 * $transaction->amount, 0, ',', '.') }}</td>
                             </tr>
                         @endif
                     @endforeach
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="3" class="text-end"><strong>Biaya Admin:</strong></td>
+                        <td colspan="3" class="text-end"><strong>{{ __('main.biaya_admin') }}:</strong></td>
                         <td><strong>IDR {{ number_format(config('app.admin_fee'), 0, ',', '.') }}</strong></td>
                     </tr>
                     <tr>
-                        <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                        <td colspan="3" class="text-end"><strong>{{ __('main.total') }}:</strong></td>
                         <td><strong>IDR {{ number_format($transaction->total_pay, 0, ',', '.') }}</strong></td>
                     </tr>
                 </tfoot>

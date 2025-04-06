@@ -97,7 +97,7 @@ class AdminDestinationController extends Controller
             return redirect()->route('admin.dashboard')->with('error', 'Akses ditolak!');
         }
 
-        $recommendations = Recommendation::orderBy('created_at', 'desc')->get();
+        $recommendations = Recommendation::with('user')->orderBy('created_at', 'desc')->get();
 
         return view('admin.destinations.recommendation', compact('recommendations'));
     }

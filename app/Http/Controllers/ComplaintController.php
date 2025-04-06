@@ -13,7 +13,7 @@ class ComplaintController extends Controller
             return redirect()->route('admin.dashboard')->with('error', 'Akses ditolak!');
         }
 
-        $complaints = Complaint::all();
+        $complaints = Complaint::with(['user', 'destination', 'place'])->get();
 
         return view('admin.complaints.index', compact('complaints'));
     }
@@ -32,7 +32,7 @@ class ComplaintController extends Controller
             'status' => 'new',
         ]);
 
-        return back()->with('success', 'Laporan berhasil dikirim!');
+        return back()->with('success', __('flasher.laporan_dikirim'));
     }
 
     public function show($id)

@@ -6,18 +6,17 @@
                 <div class="col col-xl-5 col-lg-4 col-md-6 col-sm-12 col-12">
                     <div class="widget about-widget">
                         <div class="logo">
-                            <img src="{{ asset('assets/user/images/logo_siparma.png') }}" alt="blog">
+                            <img src="{{ asset('assets/user/images/logo_siparma.png') }}" loading="lazy" alt="blog">
                         </div>
-                        <h4>Tentang SIPARMA</h4>
-                        <p>SIPARMA adalah sebuah website yang bertujuan untuk memberikan informasi lengkap tentang
-                            destinasi wisata di Malang Raya.</p>
+                        <h4>{{ __('main.tentang_siparma') }}</h4>
+                        <p>{{ __('main.siparma_description') }}</p>
 
                     </div>
                 </div>
                 <div class="col col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12 footer-info">
                     <div class="widget address-widget">
                         <div class="widget-title">
-                            <h4>Hubungi Kami </h4>
+                            <h4>{{ __('main.hubungi_kami') }} </h4>
                         </div>
                         <ul>
                             <li>
@@ -100,24 +99,24 @@
                 <div class="col col-xl-2 col-lg-4 col-md-6 col-sm-12 col-12 footer-info">
                     <div class="widget link-widget">
                         <div class="widget-title">
-                            <h4>Kategori</h4>
+                            <h4>{{ __('main.kategori') }}</h4>
                         </div>
                         <ul>
-                            <li><a href="{{ route('destination.browse') }}">Wisata</a></li>
-                            <li><a href="{{ route('place.browse') }}">Tempat</a></li>
+                            <li><a href="{{ route('destination.browse') }}">{{ __('main.wisata') }}</a></li>
+                            <li><a href="{{ route('place.browse') }}">{{ __('main.tempat') }}</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="col col-xl-2 col-lg-4 col-md-6 col-sm-12 col-12 footer-info">
                     <div class="widget link-widget">
                         <div class="widget-title">
-                            <h4>Wisata Populer</h4>
+                            <h4>{{ __('main.wisata_populer') }}</h4>
                         </div>
                         <ul>
                             @foreach ($popularDestinations as $destination)
                                 <li>
                                     <a
-                                        href="{{ route('destination.show', $destination->slug) }}">{{ $destination->name }}</a>
+                                        href="{{ route('destination.show', $destination->slug) }}">{{ $destination->getTranslatedName() }}</a>
                                 </li>
                             @endforeach
                         </ul>

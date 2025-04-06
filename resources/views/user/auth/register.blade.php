@@ -30,24 +30,24 @@
                                 <img src="{{ asset('assets/user/images/LOGO_SIPARMA_.png') }}" alt="">
                             </div>
                             <div class="back-home">
-                                <a class="wpo-accountBtn" href="#" onclick="window.history.go(-1); return false;"
-                                    <span class="">Kembali</span>
+                                <a class="wpo-accountBtn" href="#" onclick="window.history.go(-1); return false;">
+                                    <span>{{ __('main.kembali') }}</span>
                                 </a>
                             </div>
                         </div>
                         <div class="wpo-accountForm form-style">
                             <div class="fromTitle">
-                                <h2>Daftar</h2>
-                                <p>Daftarkan akun anda</p>
+                                <h2>{{ __('main.daftar') }}</h2>
+                                <p>{{ __('main.daftarkan_akun') }}</p>
                             </div>
 
                             <div class="row">
                                 <!-- Nama -->
                                 <div class="col-lg-6 col-md-6 col-6">
-                                    <label class="text-secondary">Nama</label>
+                                    <label class="text-secondary">{{ __('main.nama') }}</label>
                                     <input type="text" id="name" name="name"
-                                        class="form-control @error('name') is-invalid @enderror" placeholder="Masukkan Nama"
-                                        value="{{ old('name') }}">
+                                        class="form-control @error('name') is-invalid @enderror"
+                                        placeholder="{{ __('main.masukkan_nama') }}" value="{{ old('name') }}">
                                     @error('name')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -55,10 +55,10 @@
 
                                 <!-- Email -->
                                 <div class="col-lg-6 col-md-6 col-6">
-                                    <label class="text-secondary">Email</label>
+                                    <label class="text-secondary">{{ __('main.email') }}</label>
                                     <input type="text" id="email" name="email"
                                         class="form-control @error('email') is-invalid @enderror"
-                                        placeholder="Masukkan Email" value="{{ old('email') }}">
+                                        placeholder="{{ __('main.masukkan_email') }}" value="{{ old('email') }}">
                                     @error('email')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -66,10 +66,10 @@
 
                                 <!-- No. Telepon -->
                                 <div class="col-lg-12 col-md-12 col-12">
-                                    <label class="text-secondary">No. Telepon</label>
+                                    <label class="text-secondary">{{ __('main.telepon') }}</label>
                                     <input type="text" id="phone_number" name="phone_number"
                                         class="form-control @error('phone_number') is-invalid @enderror"
-                                        placeholder="Masukkan Nomor Telepon" value="{{ old('phone_number') }}">
+                                        placeholder="{{ __('main.masukkan_telepon') }}" value="{{ old('phone_number') }}">
                                     @error('phone_number')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -78,10 +78,11 @@
                                 <!-- Password -->
                                 <div class="col-lg-12 col-md-12 col-12">
                                     <div class="form-group">
-                                        <label class="text-secondary">Password</label>
+                                        <label class="text-secondary">{{ __('main.password') }}</label>
                                         <div class="input-group">
                                             <input class="pwd6 form-control @error('password') is-invalid @enderror"
-                                                type="password" placeholder="Masukkan Password" name="password">
+                                                type="password" placeholder="{{ __('main.masukkan_password') }}"
+                                                name="password">
                                             <span class="input-group-btn">
                                                 <button class="reveal6 btn btn-outline-secondary" type="button"
                                                     style="margin-top: -30px;">
@@ -99,10 +100,10 @@
                                 <!-- Konfirmasi Password -->
                                 <div class="col-lg-12 col-md-12 col-12">
                                     <div class="form-group">
-                                        <label class="text-secondary">Konfirmasi Password</label>
+                                        <label class="text-secondary">{{ __('main.konfirmasi_password') }}</label>
                                         <div class="input-group">
                                             <input class="pwd6 form-control @error('password') is-invalid @enderror"
-                                                type="password" placeholder="Konfirmasi Password"
+                                                type="password" placeholder="{{ __('main.konfirmasi_password') }}"
                                                 name="password_confirmation">
                                             <span class="input-group-btn">
                                                 <button class="reveal6 btn btn-outline-secondary" type="button"
@@ -120,12 +121,12 @@
 
                                 <!-- Tombol Daftar -->
                                 <div class="col-lg-12 col-md-12 col-12">
-                                    <button type="submit" class="wpo-accountBtn">Daftar</button>
+                                    <button type="submit" class="wpo-accountBtn">{{ __('main.daftar') }}</button>
                                 </div>
                             </div>
 
-                            <p class="subText pt-3">Sudah mempunyai akun?
-                                <a href="{{ route('login') }}">Silahkan masuk di sini</a>
+                            <p class="subText pt-3">{{ __('main.sudah_punya_akun') }}
+                                <a href="{{ route('login') }}">{{ __('main.masuk_disini') }}</a>
                             </p>
                         </div>
                     </form>

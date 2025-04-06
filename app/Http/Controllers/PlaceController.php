@@ -10,7 +10,15 @@ class PlaceController extends Controller
 {
     public function show($slug)
     {
-        $place = Place::where('slug', $slug)->firstOrFail();
+        $place = Place::with([
+            'gallery',
+            'facilities',
+            'reviews' => function ($query) {
+                $query->with(['user:id,name,profile_picture'])
+                    ->latest()
+                    ->paginate(5);
+            }
+        ])->where('slug', $slug)->firstOrFail();
         $reviews = $place->reviews()->paginate(5);
 
         return view('user.places.show', compact('place', 'reviews'));
@@ -18,10 +26,16 @@ class PlaceController extends Controller
 
     public function browse(Request $request)
     {
-        $query = Place::withAvg('reviews', 'rating')
+        $query = Place::with([
+            'gallery',
+            'facilities',
+            'reviews'
+        ])
+            ->withAvg('reviews', 'rating')
             ->whereExists(function ($query) {
                 $query->select(DB::raw(1))
                     ->from('tbl_admin_places')
+                    ->where('tbl_admin_places.approval_status', 'approved')
                     ->whereColumn('tbl_admin_places.place_id', 'tbl_places.id');
             });
 

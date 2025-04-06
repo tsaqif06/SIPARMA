@@ -1,66 +1,68 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# SIPARMA - Sistem Informasi Pariwisata Malang
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 📌 Short Description
 
-## About Laravel
+**SIPARMA** is a web-based platform designed to provide information about tourist attractions in Malang and facilitate online ticket purchases. This website aims to help tourists easily access travel details, buy tickets, and read articles related to tourism.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🎯 Key Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+-   **Tourist Information**: Users can explore various tourist destinations with complete details.
+-   **Online Ticket Purchase**: Allows users to purchase tourist attraction tickets conveniently.
+-   **Tourism Management**: Admins can manage tourist site details, ticket prices, promotions, and more.
+-   **Reviews & Ratings**: Users can leave reviews and rate tourist attractions they visit.
+-   **Tourism Articles**: Articles managed by the super admin to provide additional information.
+-   **Multi-User System**: Supports different user roles with varying levels of access.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🏗️ Usage Scenarios
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 🔹 **Super Admin**
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+-   Manages all aspects of the website.
+-   Reviews transactions and approves tourist site applications.
+-   Manages fund withdrawals for tourism admins.
+-   Writes and manages articles.
 
-## Laravel Sponsors
+### 🔹 **Tourism Admin**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+-   Edits their respective tourist site pages.
+-   Adds and manages tickets, promotions, and ticket bundles.
+-   Requests fund withdrawals from the super admin.
 
-### Premium Partners
+### 🔹 **Site Admin**
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+-   Edits details of their assigned tourist site.
 
-## Contributing
+### 🔹 **User (Registered User)**
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+-   Purchases tourist attraction tickets.
+-   Views details of tourist sites.
+-   Checks transaction history and payment details.
+-   Reads articles and submits reviews and ratings.
+-   Applies to become a site admin.
 
-## Code of Conduct
+### 🔹 **Guest (Unregistered User)**
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+-   Can only view tourist site information and read articles.
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 🎯 Product Perspective
 
-## License
+SIPARMA is developed to make it easier for the public to find information about tourist attractions in Malang while also simplifying online ticket purchases. This system is designed to allow users, from tourists to tourism managers, to interact within a structured and efficient platform.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 🛠️ Technologies Used
+
+-   **Backend**: Laravel
+-   **Frontend**: Blade Template, Bootstrap, jQuery
+-   **Database**: MySQL
+-   **Version Control**: Git & GitHub
+
+---
+
+🚨 **This software is proprietary and intended for internal use only. Unauthorized distribution or modification is strictly prohibited.**

@@ -166,7 +166,7 @@
                                             @foreach ($recommendation->images as $image)
                                                 <div class="col-md-3">
                                                     <div class="mb-3">
-                                                        <img src="{{ asset($image->image_url) }}" alt="Image"
+                                                        <img src="{{ asset($image->image_url) }}" loading="lazy" alt="Image"
                                                             class="img-fluid rounded"
                                                             style="max-height: 150px; object-fit: cover;">
                                                     </div>

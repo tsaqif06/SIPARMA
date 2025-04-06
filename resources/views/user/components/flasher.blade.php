@@ -2,9 +2,9 @@
     <script>
         Swal.fire({
             icon: 'success',
-            title: 'Berhasil!',
+            title: '{{ __('main.berhasil') }}',
             text: '{{ session('success') }}',
-            confirmButtonText: 'Tutup',
+            confirmButtonText: '{{ __('main.tutup') }}',
             timer: 1000
         });
     </script>
@@ -14,9 +14,9 @@
     <script>
         Swal.fire({
             icon: 'error',
-            title: 'Gagal!',
+            title: '{{ __('main.gagal') }}',
             text: '{{ session('error') }}',
-            confirmButtonText: 'Tutup',
+            confirmButtonText: '{{ __('main.tutup') }}',
             timer: 1000
         });
     </script>

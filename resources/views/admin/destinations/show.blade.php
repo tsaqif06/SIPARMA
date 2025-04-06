@@ -160,7 +160,7 @@
                     <div class="row">
                         @foreach ($destination->gallery as $image)
                             <div class="col-md-3 mb-3">
-                                <img src="{{ asset($image->image_url) }}" class="img-fluid rounded" alt="Gallery Image"
+                                <img src="{{ asset($image->image_url) }}" loading="lazy" class="img-fluid rounded" alt="Gallery Image"
                                     style="height: 150px; object-fit: cover;">
                             </div>
                         @endforeach

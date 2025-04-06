@@ -29,14 +29,15 @@ class AdminBalanceController extends Controller
     public function index()
     {
         if (Auth::user()->role === 'superadmin') {
-            $balances = Balance::all();
+            $balances = Balance::with('destination')->get();
         } else if (Auth::user()->role === 'admin_wisata') {
             $destinationId = auth()->user()->adminDestinations[0]->destination_id;
-            $balances = Balance::where('destination_id', $destinationId)->get();
+            $balances = Balance::with('destination')->where('destination_id', $destinationId)->get();
         }
 
         return view('admin.balance.index', compact('balances'));
     }
+
 
     public function indexAdmin()
     {
@@ -54,12 +55,14 @@ class AdminBalanceController extends Controller
      */
     public function show($id)
     {
-        $balance = Balance::where('id', $id)->firstOrFail();
+        $balance = Balance::with('destination')->where('id', $id)->firstOrFail();
 
         if (auth()->user()->role === 'superadmin') {
             return view('admin.balance.show', compact('balance'));
         } else {
-            $adminDestinations = AdminDestination::where('user_id', auth()->user()->id)->pluck('destination_id')->toArray();
+            $adminDestinations = AdminDestination::where('user_id', auth()->user()->id)
+                ->pluck('destination_id')
+                ->toArray();
 
             if (in_array($balance->destination_id, $adminDestinations)) {
                 return view('admin.balance.show', compact('balance'));
@@ -68,6 +71,7 @@ class AdminBalanceController extends Controller
             }
         }
     }
+
 
     public function monthlyRecapIndex()
     {

@@ -31,9 +31,9 @@ class PaymentController extends Controller
             ->firstOrFail();
 
         $type_translation = [
-            'destination' => 'Tiket Wisata',
-            'ride' => 'Tiket Wahana',
-            'bundle' => 'Tiket Bundle'
+            'destination' => __('main.tiket_wisata'),
+            'ride' => __('main.tiket_wahana'),
+            'bundle' => __('main.tiket_bundle')
         ];
 
         $transaction->total_pay = $transaction->amount + $this->adminFee;
@@ -111,7 +111,7 @@ class PaymentController extends Controller
                         'period_month' => now()->month,
                     ],
                     [
-                        'profit' => $adminFee,
+                        'profit' => DB::raw('profit + ' . $adminFee),
                     ]
                 );
 
@@ -131,7 +131,11 @@ class PaymentController extends Controller
 
     public function invoice($order_id)
     {
-        $transaction = Transaction::where('transaction_code', $order_id)
+        $transaction = Transaction::with([
+            'user:id,name',
+            'tickets',
+        ])
+            ->where('transaction_code', $order_id)
             ->where('status', 'paid')
             ->where('user_id', auth()->user()->id)
             ->firstOrFail();

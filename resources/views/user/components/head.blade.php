@@ -1,6 +1,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>SIPARMA</title>
     <link rel="icon" type="image/png" href="{{ asset('assets/images/icon_siparma.png') }}" sizes="16x16">
     <link rel="stylesheet" href="{{ asset('assets/css/remixicon.css') }}">
@@ -25,8 +26,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/lib/leaflet-routing-machine.css') }}">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js"
+    <script
+        src="{{ config('services.midtrans.is_production') ? 'https://app.midtrans.com/snap/snap.js' : 'https://app.sandbox.midtrans.com/snap/snap.js' }}"
         data-client-key="{{ config('services.midtrans.client_key') }}"></script>
-
     <style></style>
 </head>

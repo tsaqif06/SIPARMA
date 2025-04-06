@@ -7,63 +7,89 @@
 
     // Toggle mobile navigation
     function toggleMobileNavigation() {
-        var navbar = $(".navigation-holder");
+        var mobileNav = $(".navigation-holder-mobile");
         var openBtn = $(".mobail-menu .open-btn");
-        var xbutton = $(".mobail-menu .navbar-toggler");
+        var closeBtn = $(".menu-close");
 
         openBtn.on("click", function (e) {
-            e.stopImmediatePropagation();
-            navbar.toggleClass("slideInn");
-            xbutton.toggleClass("x-close");
-            return false;
+            e.stopPropagation();
+            mobileNav.addClass("slideInn");
+            $("body").addClass("menu-open"); // Tambah overlay
         });
+
+        closeBtn.on("click", function () {
+            mobileNav.removeClass("slideInn");
+            $("body").removeClass("menu-open");
+        });
+
+        $(document).on("click", function (e) {
+            if (
+                !$(e.target).closest(".navigation-holder-mobile, .open-btn")
+                    .length
+            ) {
+                mobileNav.removeClass("slideInn");
+                $("body").removeClass("menu-open");
+            }
+        });
+
+        $(".navigation-holder-mobile .menu-item-has-children > a").on(
+            "click",
+            function (e) {
+                e.preventDefault();
+                $(this).siblings(".sub-menu").slideToggle();
+                $(this).toggleClass("rotate");
+            }
+        );
     }
 
     toggleMobileNavigation();
 
     // Function for toggle class for small menu
-    function toggleClassForSmallNav() {
-        var windowWidth = window.innerWidth;
-        var mainNav = $("#navbar > ul");
+    // function toggleClassForSmallNav() {
+    //     var windowWidth = window.innerWidth;
+    //     var mainNav = $("#navbar > ul");
 
-        if (windowWidth <= 991) {
-            mainNav.addClass("small-nav");
-        } else {
-            mainNav.removeClass("small-nav");
-        }
-    }
+    //     if (windowWidth <= 991) {
+    //         mainNav.addClass("small-nav");
+    //     } else {
+    //         mainNav.removeClass("small-nav");
+    //     }
+    // }
 
-    toggleClassForSmallNav();
+    // toggleClassForSmallNav();
 
-    // Function for small menu
-    function smallNavFunctionality() {
-        var windowWidth = window.innerWidth;
-        var mainNav = $(".navigation-holder");
-        var smallNav = $(".navigation-holder > .small-nav");
-        var subMenu = smallNav.find(".sub-menu");
-        var megamenu = smallNav.find(".mega-menu");
-        var menuItemWidthSubMenu = smallNav.find(".menu-item-has-children > a");
+    // // Function for small menu
+    // function smallNavFunctionality() {
+    //     var windowWidth = window.innerWidth;
+    //     var mainNav = $(".navigation-holder");
+    //     var smallNav = $(".navigation-holder > .small-nav");
+    //     var subMenu = smallNav.find(".sub-menu");
+    //     var megamenu = smallNav.find(".mega-menu");
+    //     var menuItemWidthSubMenu = smallNav.find(".menu-item-has-children > a");
 
-        if (windowWidth <= 991) {
-            subMenu.hide();
-            megamenu.hide();
-            menuItemWidthSubMenu.on("click", function (e) {
-                var $this = $(this);
-                $this.siblings().slideToggle();
-                e.preventDefault();
-                e.stopImmediatePropagation();
-                $this.toggleClass("rotate");
-            });
-        } else if (windowWidth > 991) {
-            mainNav.find(".sub-menu").show();
-            mainNav.find(".mega-menu").show();
-        }
-    }
+    //     if (windowWidth <= 991) {
+    //         subMenu.hide();
+    //         megamenu.hide();
+    //         menuItemWidthSubMenu.on("click", function (e) {
+    //             var $this = $(this);
+    //             $this.siblings().slideToggle();
+    //             e.preventDefault();
+    //             e.stopImmediatePropagation();
+    //             $this.toggleClass("rotate");
+    //         });
+    //     } else if (windowWidth > 991) {
+    //         mainNav.find(".sub-menu").show();
+    //         mainNav.find(".mega-menu").show();
+    //     }
+    // }
 
-    smallNavFunctionality();
+    // smallNavFunctionality();
 
     $("body").on("click", function () {
         $(".navigation-holder").removeClass("slideInn");
+    });
+    $("body").on("click", function () {
+        $(".navigation-holder").removeClass("x-close");
     });
     $(".menu-close").on("click", function () {
         $(".navigation-holder").removeClass("slideInn");
@@ -394,33 +420,33 @@
     }
 
     // clone home style 1 navigation for sticky menu
-    if ($(".wpo-site-header .navigation").length) {
-        cloneNavForSticyMenu(
-            $(".wpo-site-header .navigation"),
-            "sticky-header"
-        );
-    }
+    // if ($(".wpo-site-header .navigation").length) {
+    //     cloneNavForSticyMenu(
+    //         $(".wpo-site-header .navigation"),
+    //         "sticky-header"
+    //     );
+    // }
 
     var lastScrollTop = "";
 
-    function stickyMenu($targetMenu, $toggleClass) {
-        var st = $(window).scrollTop();
-        var mainMenuTop = $(".wpo-site-header .navigation");
+    // function stickyMenu($targetMenu, $toggleClass) {
+    //     var st = $(window).scrollTop();
+    //     var mainMenuTop = $(".wpo-site-header .navigation");
 
-        if ($(window).scrollTop() > 1000) {
-            if (st > lastScrollTop) {
-                // hide sticky menu on scroll down
-                $targetMenu.removeClass($toggleClass);
-            } else {
-                // active sticky menu on scroll up
-                $targetMenu.addClass($toggleClass);
-            }
-        } else {
-            $targetMenu.removeClass($toggleClass);
-        }
+    //     if ($(window).scrollTop() > 1000) {
+    //         if (st > lastScrollTop) {
+    //             // hide sticky menu on scroll down
+    //             $targetMenu.removeClass($toggleClass);
+    //         } else {
+    //             // active sticky menu on scroll up
+    //             $targetMenu.addClass($toggleClass);
+    //         }
+    //     } else {
+    //         $targetMenu.removeClass($toggleClass);
+    //     }
 
-        lastScrollTop = st;
-    }
+    //     lastScrollTop = st;
+    // }
 
     /*------------------------------------------
             = Header search toggle
@@ -555,12 +581,14 @@
        popular-slider
     -------------------------------------------*/
     if ($(".popular-slider".length)) {
+        let totalItems = $(".popular-slider").find(".places-item").length;
+
         $(".popular-slider").owlCarousel({
             smartSpeed: 500,
             margin: 20,
             loop: true,
             dots: false,
-            nav: false,
+            nav: true,
             navText: [
                 '<iconify-icon icon="iconamoon:arrow-left-2-light" width="25" height="25"  style="color: #000"></iconify-icon>',
                 '<iconify-icon icon="iconamoon:arrow-right-2-light" width="25" height="25"  style="color: #000"></iconify-icon>',
@@ -775,7 +803,7 @@
     }
 
     /*-----------------------
-       cart-plus-minus-button 
+       cart-plus-minus-button
      -------------------------*/
     $(".cart-plus-minus").append(
         '<div class="dec qtybutton">-</div><div class="inc qtybutton">+</div>'
@@ -959,25 +987,25 @@
 
         toggleMobileNavigation();
 
-        smallNavFunctionality();
+        // smallNavFunctionality();
     });
 
     /*==========================================================================
         WHEN WINDOW SCROLL
     ==========================================================================*/
-    $(window).on("scroll", function () {
-        if ($(".wpo-site-header").length) {
-            stickyMenu($(".wpo-site-header .navigation"), "sticky-on");
-        }
+    // $(window).on("scroll", function () {
+    //     if ($(".wpo-site-header").length) {
+    //         stickyMenu($(".wpo-site-header .navigation"), "sticky-on");
+    //     }
 
-        toggleBackToTopBtn();
-    });
+    //     toggleBackToTopBtn();
+    // });
 
     /*==========================================================================
         WHEN WINDOW RESIZE
     ==========================================================================*/
     $(window).on("resize", function () {
-        toggleClassForSmallNav();
+        // toggleClassForSmallNav();
         //smallNavFunctionality();
 
         clearTimeout($.data(this, "resizeTimer"));
@@ -985,7 +1013,7 @@
             this,
             "resizeTimer",
             setTimeout(function () {
-                smallNavFunctionality();
+                // smallNavFunctionality();
             }, 200)
         );
     });

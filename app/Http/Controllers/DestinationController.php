@@ -13,7 +13,23 @@ class DestinationController extends Controller
 {
     public function show($slug)
     {
-        $destination = Destination::where('slug', $slug)->firstOrFail();
+        $destination = Destination::with([
+            'gallery',
+            'facilities',
+            'rides' => function ($query) {
+                $query->with('gallery');
+            },
+            'bundles' => function ($query) {
+                $query->with('items');
+            },
+            'places' => function ($query) {
+                $query->with('gallery');
+            },
+            'promos',
+            'reviews' => function ($query) {
+                $query->with('user');
+            }
+        ])->where('slug', $slug)->firstOrFail();
         $reviews = $destination->reviews()->paginate(5);
 
         return view('user.destinations.show', compact('destination', 'reviews'));
@@ -21,7 +37,12 @@ class DestinationController extends Controller
 
     public function browse(Request $request)
     {
-        $query = Destination::withAvg('reviews', 'rating')
+        $query = Destination::with([
+            'gallery',
+            'reviews',
+            'admin'
+        ])
+            ->withAvg('reviews', 'rating')
             ->whereExists(function ($query) {
                 $query->select(DB::raw(1))
                     ->from('tbl_admin_destinations')
@@ -72,11 +93,17 @@ class DestinationController extends Controller
     public function checkout($slug, $type = 'destination')
     {
         if ($type === 'destination') {
-            $item = Destination::where('slug', $slug)->firstOrFail();
+            $item = Destination::with([
+                'gallery',
+                'promos',
+            ])->where('slug', $slug)->firstOrFail();
         } elseif ($type === 'ride') {
-            $item = Ride::where('slug', $slug)->firstOrFail();
+            $item = Ride::with([
+                'gallery',
+                'destination'
+            ])->where('slug', $slug)->firstOrFail();
         } elseif ($type === 'bundle') {
-            $item = Bundle::where('id', $slug)->firstOrFail();
+            $item = Bundle::with('items')->where('id', $slug)->firstOrFail();
 
             return view('user.destinations.checkoutbundle', [
                 'item' => $item,

@@ -58,7 +58,7 @@
 
                 // Validasi: Pastikan tanggal sudah dipilih
                 if (!visitDate) {
-                    alert("Silakan pilih tanggal kunjungan.");
+                    alert(' . json_encode(__("main.silahkan_pilih_tanggal")) . ');
                     event.preventDefault(); // Stop submit jika tidak valid
                     return;
                 }
@@ -68,12 +68,6 @@
                 $("#adult-count-input").val(adultCount);
                 $("#children-count-input").val(childrenCount);
                 $("#total-price-input").val(totalPrice);
-
-                // **Debugging untuk cek apakah input hidden sudah terisi**
-                console.log("Visit Date:", visitDate);
-                console.log("Adult Count:", adultCount);
-                console.log("Children Count:", childrenCount);
-                console.log("Total Price:", totalPrice);
             });
 
             // Inisialisasi harga awal
@@ -87,13 +81,13 @@
     <div class="container">
         <!-- Title: Beli Tiket -->
         <div class="text-center mb-4">
-            <h2>Beli Tiket {{ $item->name }}</h2>
+            <h2>{{ __('main.beli_tiket') }} {{ $item->getTranslatedName() }}</h2>
         </div>
 
         <div class="container mt-5">
             <div class="row">
                 <div class="col-md-7">
-                    <h4>Pilih Tanggal</h4>
+                    <h4>{{ __('main.pilih_tanggal') }}</h4>
                     <hr>
                     <input type="date" id="visit-date" name="visit_date"
                         class="form-control w-100 mt-4 @error('visit_date') is-invalid @enderror" required
@@ -104,18 +98,18 @@
                         <div class="text-danger mt-1">{{ $message }}</div>
                     @enderror
 
-                    <h4 style="margin-top: 40px">Pilih Tiket</h4>
+                    <h4 style="margin-top: 40px">{{ __('main.pilih_tiket') }}</h4>
                     <hr style="margin-bottom: 20px">
                     <div class="pricing-area">
                         <div class="ticket-card">
-                            <div class="img"
-                                style="background-image: url('../../../{{ $item->gallery[0]->image_url ?? 'assets/images/default.png' }}');">
+                            <div class="img lazy-bg"
+                                data-bg="{{ !empty($item->gallery) && isset($item->gallery[0]) ? '../../../' . $item->gallery[0]->image_url : asset('assets/images/default.png') }}">
                             </div>
                             <div class="ticket-info">
-                                <div class="ticket-title">Tiket
-                                    {{ str_replace(['destination', 'ride'], ['Wisata', 'Wahana'], $type) }} -
-                                    {{ $item->name }}</div>
-                                <div class="ticket-desc">Dewasa</div>
+                                <div class="ticket-title">{{ __('main.tiket') }}
+                                    {{ str_replace(['destination', 'ride'], [__('main.wisata'), __('main.wahana')], $type) }} -
+                                    {{ $item->getTranslatedName() }}</div>
+                                <div class="ticket-desc">{{ __('main.dewasa') }}</div>
                             </div>
 
                             @php
@@ -137,14 +131,14 @@
                             </div>
                         </div>
                         <div class="ticket-card">
-                            <div class="img"
-                                style="background-image: url('../../../{{ $item->gallery[0]->image_url ?? 'assets/images/default.png' }}');">
+                            <div class="img lazy-bg"
+                                data-bg="{{ !empty($item->gallery) && isset($item->gallery[0]) ? '../../../' . $item->gallery[0]->image_url : asset('assets/images/default.png') }}">
                             </div>
                             <div class="ticket-info">
-                                <div class="ticket-title">Tiket
-                                    {{ str_replace(['destination', 'ride'], ['Wisata', 'Wahana'], $type) }} -
-                                    {{ $item->name }}</div>
-                                <div class="ticket-desc">Anak-Anak</div>
+                                <div class="ticket-title">{{ __('main.tiket') }}
+                                    {{ str_replace(['destination', 'ride'], [__('main.wisata'), __('main.wahana')], $type) }} -
+                                    {{ $item->getTranslatedName() }}</div>
+                                <div class="ticket-desc">{{ __('main.anakanak') }}</div>
                             </div>
 
                             @php
@@ -168,7 +162,7 @@
                         <h5>Tiket Anak-Anak</h5>
                         <div class="d-flex align-items-center">
                             <img src="{{ asset($item->gallery[0]->image_url ?? 'assets/images/default.png') }}"
-                                alt="Ticket Image" class="me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                                alt="Ticket Image" class="me-3" loading="lazy" style="width: 50px; height: 50px; object-fit: cover;">
                             <div>
                                 <p class="text-muted">{{ $item->name }}</p>
                                 <p class="text-danger">IDR <span id="child-price" data-price="{{ $item->children_price }}">
@@ -185,13 +179,13 @@
                 </div>
                 <div class="col-md-5">
                     <div class="card p-3">
-                        <h5 class="mb-3">Tujuan Wisata</h5>
+                        <h5 class="mb-3">{{ __('main.tujuan_wisata') }}</h5>
                         <div class="d-flex flex-column justify-content-center align-items-center">
                             <img src="{{ asset($item->gallery[0]->image_url ?? 'assets/images/default.png') }}"
-                                alt="Tujuan Wisata" class="img-fluid mb-3"
+                                alt="{{ __('main.tujuan_wisata') }}" class="img-fluid mb-3"
                                 style="width: 100%; max-width: 200px; height: auto; object-fit: cover; border-radius: 10px;">
                             <div class="text-center">
-                                <p class="h6">Harga Total</p>
+                                <p class="h6">{{ __('main.harga_total') }}</p>
                                 <p class="h4 text-danger">IDR <span id="total-price">0</span></p>
                                 @error('total_price')
                                     <div class="text-danger mt-1">{{ $message }}</div>
@@ -207,7 +201,7 @@
                                     <input type="hidden" id="children-count-input" name="children_count">
                                     <input type="hidden" id="total-price-input" name="total_price">
 
-                                    <button type="submit" class="btn btn-transparent float-end">Pesan Sekarang</button>
+                                    <button type="submit" class="btn btn-transparent float-end">{{ __('main.pesan_sekarang') }}</button>
                                 </form>
                             </div>
                         </div>
@@ -220,12 +214,12 @@
         <div class="card p-3 mt-4">
             <div class="row">
                 <div class="col-12">
-                    <h3>Syarat & Ketentuan</h3>
-                    <p><strong>Informasi Umum</strong></p>
+                    <h3>{{ __('main.syarat_ketentuan') }}</h3>
+                    <p><strong>{{ __('main.informasi_umum') }}</strong></p>
                     <ul class="ms-4">
-                        <li>Pastikan informasi yang diisi sesuai.</li>
-                        <li>Tiket tidak dapat dikembalikan atau dibatalkan.</li>
-                        <li>Segala bentuk perubahan harus disesuaikan dengan kebijakan operator.</li>
+                        <li>{{ __('main.pastikan_informasi_benar') }}</li>
+                        <li>{{ __('main.tiket_tidak_dapat_dikembalikan') }}</li>
+                        <li>{{ __('main.perubahan_sesuai_kebijakan') }}</li>
                     </ul>
                 </div>
             </div>

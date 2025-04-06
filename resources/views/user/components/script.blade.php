@@ -1,6 +1,6 @@
 <script src="{{ asset('assets/user/js/jquery.min.js') }}"></script>
 <script src="{{ asset('assets/user/js/bootstrap.bundle.min.js') }}"></script>
-{{--  <script src="{{ asset('assets/user/js/wow.min.js') }}"></script>  --}}
+<script src="{{ asset('assets/user/js/wow.min.js') }}"></script>
 <script src="{{ asset('assets/user/js/jquery-plugin-collection.js') }}"></script>
 <script src="{{ asset('assets/user/js/modernizr.custom.js') }}"></script>
 <script src="{{ asset('assets/user/js/jquery.dlmenu.js') }}"></script>
@@ -21,6 +21,7 @@
 
 <script>
     $(document).ready(function() {
+        new WOW().init();
         // Inisialisasi DataTable
         let table = new DataTable("#dataTable");
         let flag = $(".leaflet-attribution-flag");
@@ -28,22 +29,82 @@
             flag.remove();
         }
 
+        $(".lazy-bg").each(function() {
+            let $el = $(this);
+
+            let observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const bgUrl = $el.data("bg");
+
+                        if ($el.hasClass("overlay-dark")) {
+                            $el.css("background-image",
+                                `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('${bgUrl}')`
+                            );
+                        } else {
+                            $el.css("background-image", `url('${bgUrl}')`);
+                        }
+
+                        $el.css({
+                            "background-size": "cover",
+                            "background-position": "center",
+                            "background-repeat": "no-repeat"
+                        });
+
+                        $el.removeClass("lazy-bg");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            });
+
+            observer.observe(this);
+        });
+
+        var navbarMobile = $(".navigation-holder-mobile");
+        var openBtn = $(".mobail-menu .navbar-toogler");
+        var closeBtn = $(".menu-close");
+
+        // Buka menu
+        openBtn.on("click", function(e) {
+            console.log("offnen")
+            e.preventDefault();
+            navbarMobile.addClass("slideInn");
+            $("body").addClass("menu-open");
+        });
+
+        // Tutup menu
+        closeBtn.on("click", function(e) {
+            e.preventDefault();
+            navbarMobile.removeClass("slideInn");
+            $("body").removeClass("menu-open");
+        });
+
+        // Tutup jika klik di luar menu
+        $(document).on("click", function(e) {
+            if (!$(e.target).closest(".navigation-holder-mobile, .open-btn").length) {
+                navbarMobile.removeClass("slideInn");
+                $("body").removeClass("menu-open");
+            }
+        });
+
         var lastScrollTop = 0;
-        var delta = 10; // Threshold untuk scroll atas
-        $(window).scroll(function() {
+
+        $(window).on("scroll", function() {
             var scrollTop = $(this).scrollTop();
 
-            if (Math.abs(lastScrollTop - scrollTop) <= delta) return;
-
             if (scrollTop > lastScrollTop) {
-                // Scroll ke bawah
-                $('.navigation').css('top', '-1000px');
+                $(".navigation").stop().animate({
+                    top: "-100px"
+                }, 200);
             } else {
-                // Scroll ke atas cukup jauh
-                $('.navigation').css('top', '20px');
+                $(".navigation").stop().animate({
+                    top: "20px"
+                }, 200);
             }
+
             lastScrollTop = scrollTop;
         });
+
     });
 </script>
 

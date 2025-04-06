@@ -27,6 +27,8 @@
     <script src="{{ asset('assets/js/lib/sweetalert2.min.js') }}"></script>
     <!-- leaflet -->
     <script src="{{ asset('assets/js/lib/leaflet.js') }}"></script>
+    <!-- trix -->
+    <script src="{{ asset('assets/js/lib/trix.js') }}"></script>
 
     <!-- main js -->
     <script src="{{ asset('assets/js/app.js') }}"></script>
@@ -39,6 +41,42 @@
             if (flag) {
                 flag.remove();
             }
+
+            document.addEventListener("trix-attachment-add", function(event) {
+                let attachment = event.attachment;
+
+                console.log("🔹 Gambar Ditambahkan di Trix:", attachment);
+
+                if (attachment.file) {
+                    let formData = new FormData();
+                    formData.append("image", attachment.file);
+
+                    console.log("🔹 Mengirim gambar ke server...");
+
+                    fetch("{{ route('admin.articles.upload-image') }}", {
+                        method: "POST",
+                        body: formData,
+                        headers: {
+                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("✅ Respon dari Server:", data);
+                        if (data.url) {
+                            attachment.setAttributes({
+                                url: data.url,
+                                href: data.url
+                            });
+                        } else {
+                            console.error("❌ Upload gagal: Respon tidak mengandung URL!");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("❌ Upload gagal", error);
+                    });
+                }
+            });
         });
     </script>
 

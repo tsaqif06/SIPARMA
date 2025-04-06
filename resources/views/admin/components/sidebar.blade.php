@@ -27,7 +27,7 @@
             <li>
                 <a href="{{ route('admin.dashboard') }}">
                     <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
-                    <span>Dasboard</span>
+                    <span>Dashboard</span>
                 </a>
             </li>
             <li class="sidebar-menu-group-title">Data</li>
@@ -49,6 +49,28 @@
                         <iconify-icon icon="material-symbols:file-map-outline" class="menu-icon"></iconify-icon>
                         <span>Tempat</span>
                     </a>
+                </li>
+                <li class="dropdown">
+                    <a href="javascript:void(0)">
+                        <iconify-icon icon="grommet-icons:article" class="menu-icon"></iconify-icon>
+                        <span>Artikel</span>
+                    </a>
+                    <ul class="sidebar-submenu">
+                        <li>
+                            <a href="{{ route('admin.articles.my') }}">
+                                <i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Artikel Saya</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.articles.index') }}"><i
+                                    class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Semua
+                                Artikel</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.articles.category.index') }}"><i
+                                    class="ri-circle-fill circle-icon text-success-main w-auto"></i> Kategori
+                                Artikel</a>
+                        </li>
+                    </ul>
                 </li>
 
                 <li class="sidebar-menu-group-title">Keuangan</li>
@@ -148,6 +170,12 @@
                         <span>Wahana</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('admin.articles.my') }}">
+                        <iconify-icon icon="grommet-icons:article" class="menu-icon"></iconify-icon>
+                        <span>Artikel</span>
+                    </a>
+                </li>
 
                 <li class="sidebar-menu-group-title">Keuangan</li>
                 <li>
@@ -204,8 +232,14 @@
                     </a>
                 </li>
             @elseif ($user && $user->role === 'admin_tempat')
+                @php
+                    $approvedPlace = \App\Models\AdminPlace::where('user_id', $user->id)
+                        ->where('approval_status', 'approved')
+                        ->latest('created_at')
+                        ->first();
+                @endphp
                 <li>
-                    <a href="{{ route('admin.places.show', $user->adminPlaces[0]->place_id) }}">
+                    <a href="{{ route('admin.places.show', $approvedPlace->place_id) }}">
                         <iconify-icon icon="material-symbols:file-map-outline" class="menu-icon"></iconify-icon>
                         <span>Tempat Anda</span>
                     </a>
@@ -221,6 +255,12 @@
                     <a href="{{ route('admin.facility.index', 'place') }}">
                         <iconify-icon icon="material-symbols:museum-outline-rounded" class="menu-icon"></iconify-icon>
                         <span>Fasilitas</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.articles.my') }}">
+                        <iconify-icon icon="grommet-icons:article" class="menu-icon"></iconify-icon>
+                        <span>Artikel</span>
                     </a>
                 </li>
 

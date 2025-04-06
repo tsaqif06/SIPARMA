@@ -1,11 +1,15 @@
 <?php
 
+use App\Models\ArticleComment;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
+
+use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CheckoutController;
@@ -17,13 +21,45 @@ use App\Http\Controllers\AdminPromoController;
 use App\Http\Controllers\AdminBundleController;
 use App\Http\Controllers\AdminReviewController;
 use App\Http\Controllers\DestinationController;
+use App\Http\Controllers\AdminArticleController;
+use App\Http\Controllers\AdminBalanceController;
 use App\Http\Controllers\AdminGalleryController;
 use App\Http\Controllers\AdminFacilityController;
 use App\Http\Controllers\AdminBundleItemController;
+use App\Http\Controllers\AdminWithdrawalController;
 use App\Http\Controllers\AdminDestinationController;
 use App\Http\Controllers\AdminTransactionController;
-use App\Http\Controllers\AdminBalanceController;
-use App\Http\Controllers\AdminWithdrawalController;
+use App\Http\Controllers\AdminArticleCategoryController;
+
+Route::get('set-language/{lang}', function ($lang) {
+    if (!in_array($lang, ['en', 'id'])) {
+        abort(400);
+    }
+
+    Session::put('locale', $lang);
+    App::setLocale($lang);
+
+    return back();
+})->name('set-language');
+
+Route::get('/comments/{comment}/replies', function (ArticleComment $comment) {
+    $limit = request('limit', 3);
+    $offset = request('offset', 0);
+
+    $replies = $comment->replies()
+        ->with('user:id,name,profile_picture')
+        ->latest()
+        ->skip($offset)
+        ->take($limit)
+        ->get();
+
+    return view('user.components.replies', [
+        'replies' => $replies,
+        'total_replies' => $comment->replies()->count(),
+        'review_id' => $comment->id,
+        'current_offset' => $offset + $limit
+    ]);
+});
 
 // user auth
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -32,13 +68,17 @@ Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('regi
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::post('/convert-role', [AuthController::class, 'convertRoleAndLogin'])->name('convert.role');
+
 Route::middleware('no_admin')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home.index');
     Route::post('/recommendation/submit', [HomeController::class, 'submitRecommendation'])->name('home.recommendation.store');
     Route::get('/destinations', [DestinationController::class, 'browse'])->name('destination.browse');
     Route::get('/places', [PlaceController::class, 'browse'])->name('place.browse');
+    Route::get('/articles', [ArticleController::class, 'browse'])->name('article.browse');
     Route::get('/destinations/{slug}', [DestinationController::class, 'show'])->name('destination.show');
     Route::get('/places/{slug}', [PlaceController::class, 'show'])->name('place.show');
+    Route::get('/articles/{slug}', [ArticleController::class, 'show'])->name('article.show');
 });
 
 
@@ -51,6 +91,13 @@ Route::middleware(['auth', 'is_user'])->group(function () {
 
     Route::post('/reviews/store', [ReviewController::class, 'store'])->name('reviews.store');
     Route::delete('/reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+
+    Route::post('/article/like', [ArticleController::class, 'toggleLike'])->name('article.like');
+    Route::post('/comments/{id}', [ArticleController::class, 'comment'])->name('comment.store');
+    Route::post('/comments/{id}/reply', [ArticleController::class, 'reply'])->name('comment.reply.store');
+    Route::delete('/comments/{id}', [ArticleController::class, 'commentDestroy'])->name('comment.destroy');
+    Route::delete('/comments/{id}/reply', [ArticleController::class, 'replyDestroy'])->name('comment.reply.destroy');
+
     Route::post('/complaints', [ComplaintController::class, 'store'])->name('complaints.store');
 
     Route::get('/destinations/checkout/{slug}/{type?}', [DestinationController::class, 'checkout'])->name('destination.checkout');
@@ -84,6 +131,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('places/approval', [AdminPlaceController::class, 'approval'])->name('places.approval');
         Route::post('places/{adminplace}/update-status', [AdminPlaceController::class, 'updateStatus'])->name('places.updateStatus');
         Route::resource('places', AdminPlaceController::class);
+
+        Route::get('articles/my', [AdminArticleController::class, 'my'])->name('articles.my');
+        Route::put('articles/{article}/block', [AdminArticleController::class, 'block'])->name('articles.block');
+        Route::post('articles/upload-image', [AdminArticleController::class, 'uploadImage'])->name('articles.upload-image');
+        Route::resource('articles/category', AdminArticleCategoryController::class)->names([
+            'index'   => 'articles.category.index',
+            'create'  => 'articles.category.create',
+            'store'   => 'articles.category.store',
+            'edit'    => 'articles.category.edit',
+            'update'  => 'articles.category.update',
+            'destroy' => 'articles.category.destroy',
+        ]);
+        Route::resource('articles', AdminArticleController::class);
 
         Route::get('/complaints', [ComplaintController::class, 'index'])->name('complaints.index');
         Route::get('/complaints/{id}', [ComplaintController::class, 'show'])->name('complaints.show');

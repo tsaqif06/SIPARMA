@@ -88,7 +88,7 @@
                                     @foreach ($place->gallery as $image)
                                         <div class="col-md-4 mb-3">
                                             <div class="gallery-image">
-                                                <img src="{{ asset($image->image_url) }}" alt="Gambar {{ $place->name }}"
+                                                <img src="{{ asset($image->image_url) }}" loading="lazy" alt="Gambar {{ $place->name }}"
                                                     class="img-fluid rounded">
                                             </div>
                                         </div>

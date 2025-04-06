@@ -60,14 +60,13 @@ class ProfileController extends Controller
 
         Auth::setUser($user);
 
-        return redirect()->route('profile')->with('success', 'Profil berhasil diperbarui!');
+        return redirect()->route('profile')->with('success', __('flasher.profil_diperbarui'));
     }
 
     public function transactionHistory()
     {
-        $user = auth()->user();
-
-        $transactions = Transaction::where('user_id', $user->id)
+        $transactions = Transaction::with('tickets')
+            ->where('user_id', auth()->id())
             ->orderBy('created_at', 'desc')
             ->paginate(5);
 
@@ -76,8 +75,13 @@ class ProfileController extends Controller
 
     public function adminPlaceVerification()
     {
-        $destinations = Destination::all();
-        return view('user.profile.adminverification', compact('destinations'));
+        $destinations = Destination::select('id', 'name')->get();
+        $adminPlace = AdminPlace::with(['destination:id,name'])
+            ->where('user_id', auth()->id())
+            ->latest()
+            ->first();
+
+        return view('user.profile.adminverification', compact('destinations', 'adminPlace'));
     }
 
     public function storeVerification(Request $request)
@@ -136,6 +140,6 @@ class ProfileController extends Controller
             }
         }
 
-        return redirect()->back()->with('success', 'Pengajuan verifikasi berhasil dikirim.');
+        return redirect()->back()->with('success', __('flasher.pengajuan_verifikasi_dikirim'));
     }
 }
