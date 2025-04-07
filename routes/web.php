@@ -76,6 +76,7 @@ Route::middleware('no_admin')->group(function () {
     Route::get('/destinations', [DestinationController::class, 'browse'])->name('destination.browse');
     Route::get('/places', [PlaceController::class, 'browse'])->name('place.browse');
     Route::get('/articles', [ArticleController::class, 'browse'])->name('article.browse');
+    Route::get('/articles/detail', [ArticleController::class, 'detailArticle'])->name('article.detail');
     Route::get('/destinations/{slug}', [DestinationController::class, 'show'])->name('destination.show');
     Route::get('/places/{slug}', [PlaceController::class, 'show'])->name('place.show');
     Route::get('/articles/{slug}', [ArticleController::class, 'show'])->name('article.show');

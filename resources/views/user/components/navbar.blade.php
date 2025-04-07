@@ -28,6 +28,7 @@
                                 <li><a href="{{ route('destination.browse') }}">{{ __('main.wisata') }}</a></li>
                                 <li><a href="{{ route('place.browse') }}">{{ __('main.tempat') }}</a></li>
                                 <li><a href="{{ route('article.browse') }}">{{ __('main.artikel') }}</a></li>
+                                <li><a href="{{ route('article.detail') }}">Details</a></li>
                             </ul>
 
                         </div><!-- end of nav-collapse -->

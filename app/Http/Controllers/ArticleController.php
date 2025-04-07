@@ -79,6 +79,11 @@ class ArticleController extends Controller
         return view('user.articles.show', compact('article', 'reviews', 'relatedArticles'));
     }
 
+    public function detailArticle()
+    {
+        return view('user.articles.detail');
+    }
+
     // Fungsi menambahkan views (anti-spam)
     private function addView($articleId, $ip)
     {
