@@ -12,11 +12,15 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
-
+/**
+ * Controller untuk mengelola tempat (Place) dari sisi admin.
+ */
 class AdminPlaceController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Menampilkan daftar tempat yang telah disetujui.
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function index()
     {
@@ -42,6 +46,11 @@ class AdminPlaceController extends Controller
         return view('admin.places.index', compact('places'));
     }
 
+    /**
+     * Menampilkan halaman approval tempat oleh superadmin.
+     *
+     * @return \Illuminate\View\View
+     */
     public function approval()
     {
         $adminplaces = AdminPlace::where('approval_status', 'pending')->get();
@@ -49,6 +58,12 @@ class AdminPlaceController extends Controller
         return view('admin.places.approval', compact('adminplaces'));
     }
 
+    /**
+     * Mengambil data AdminPlace lengkap dengan relasi user dan destination.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getPlace($id)
     {
         $place = AdminPlace::with('user', 'place.destination')->findOrFail($id);
@@ -56,6 +71,13 @@ class AdminPlaceController extends Controller
         return response()->json($place);
     }
 
+    /**
+     * Mengubah status approval untuk AdminPlace.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\AdminPlace $adminplace
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function updateStatus(Request $request, AdminPlace $adminplace)
     {
         $adminplace->approval_status = $request->status;
@@ -64,9 +86,10 @@ class AdminPlaceController extends Controller
         return redirect()->back()->with('success', 'Status berhasil diperbarui!');
     }
 
-
     /**
-     * Show the form for creating a new resource.
+     * Menampilkan form pembuatan tempat baru (khusus superadmin).
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function create()
     {
@@ -80,7 +103,10 @@ class AdminPlaceController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Menyimpan data tempat baru ke database.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -113,7 +139,10 @@ class AdminPlaceController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Menampilkan detail tempat berdasarkan hak akses user.
+     *
+     * @param \App\Models\Place $place
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function show(Place $place)
     {
@@ -166,7 +195,10 @@ class AdminPlaceController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Menampilkan form edit tempat (berdasarkan role dan akses).
+     *
+     * @param \App\Models\Place $place
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function edit(Place $place)
     {
@@ -212,7 +244,11 @@ class AdminPlaceController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Memperbarui data tempat.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Place $place
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Place $place)
     {
@@ -248,7 +284,10 @@ class AdminPlaceController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Menghapus data tempat beserta galeri terkait.
+     *
+     * @param \App\Models\Place $place
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Place $place)
     {

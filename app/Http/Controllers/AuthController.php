@@ -7,8 +7,17 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * Controller untuk mengelola otentikasi pengguna, termasuk login, register, dan logout.
+ * Fungsionalitas lainnya termasuk mengelola peran pengguna, seperti mengubah peran menjadi admin.
+ */
 class AuthController extends Controller
 {
+    /**
+     * Menampilkan form login untuk user.
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function showLoginForm()
     {
         if (Auth::check()) {
@@ -21,6 +30,11 @@ class AuthController extends Controller
         return view('user.auth.login');
     }
 
+    /**
+     * Menampilkan form login untuk admin.
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function showLoginFormAdmin()
     {
         if (Auth::check()) {
@@ -33,6 +47,11 @@ class AuthController extends Controller
         return view('admin.auth.login');
     }
 
+    /**
+     * Menampilkan form registrasi untuk user.
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function showRegisterForm()
     {
         if (Auth::check()) {
@@ -45,6 +64,12 @@ class AuthController extends Controller
         return view('user.auth.register');
     }
 
+    /**
+     * Proses login untuk user.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function login(Request $request)
     {
         $validated = $request->validate([
@@ -59,6 +84,12 @@ class AuthController extends Controller
         return back()->with('error', __('flasher.email_password_salah'));
     }
 
+    /**
+     * Proses login untuk admin.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function loginAdmin(Request $request)
     {
         $validated = $request->validate([
@@ -83,6 +114,11 @@ class AuthController extends Controller
         return back()->with('error', $user ? __('flasher.tidak_ada_akses_admin') : __('flasher.email_password_salah'));
     }
 
+    /**
+     * Mengubah peran pengguna menjadi 'admin_tempat' dan login.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function convertRoleAndLogin()
     {
         $user = User::find(Auth::id());
@@ -99,6 +135,12 @@ class AuthController extends Controller
         return response()->json(['success' => true]);
     }
 
+    /**
+     * Proses registrasi pengguna baru.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function register(Request $request)
     {
         $validated = $request->validate([
@@ -118,6 +160,11 @@ class AuthController extends Controller
         return redirect('/login')->with('success', __('flasher.daftar_berhasil'));
     }
 
+    /**
+     * Logout pengguna dan redirect sesuai dengan peran.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function logout()
     {
         $redirect = auth()->user()->role === 'user' ? '/' : '/admin';

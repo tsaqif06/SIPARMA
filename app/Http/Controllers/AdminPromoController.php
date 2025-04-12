@@ -7,8 +7,14 @@ use Illuminate\Http\Request;
 use App\Models\Promo;
 use Illuminate\Support\Str;
 
+/**
+ * Controller untuk mengelola data Promo dari sisi admin wisata.
+ */
 class AdminPromoController extends Controller
 {
+    /**
+     * Membatasi akses hanya untuk user dengan role admin_wisata.
+     */
     public function __construct()
     {
         $this->middleware('auth');
@@ -20,8 +26,11 @@ class AdminPromoController extends Controller
             return $next($request);
         });
     }
+
     /**
-     * Menampilkan daftar Promo berdasarkan destinasi.
+     * Menampilkan daftar Promo berdasarkan destinasi admin yang sedang login.
+     *
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -42,6 +51,8 @@ class AdminPromoController extends Controller
 
     /**
      * Menampilkan form untuk membuat Promo baru.
+     *
+     * @return \Illuminate\View\View
      */
     public function create()
     {
@@ -49,7 +60,10 @@ class AdminPromoController extends Controller
     }
 
     /**
-     * Menyimpan data Promo baru.
+     * Menyimpan data Promo baru ke database.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -68,7 +82,10 @@ class AdminPromoController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Menampilkan detail dari promo tertentu.
+     *
+     * @param \App\Models\Promo $promo
+     * @return \Illuminate\View\View
      */
     public function show(Promo $promo)
     {
@@ -77,6 +94,9 @@ class AdminPromoController extends Controller
 
     /**
      * Menampilkan form untuk mengedit Promo.
+     *
+     * @param \App\Models\Promo $promo
+     * @return \Illuminate\View\View
      */
     public function edit(Promo $promo)
     {
@@ -84,7 +104,11 @@ class AdminPromoController extends Controller
     }
 
     /**
-     * Memperbarui data Promo.
+     * Memperbarui data Promo di database.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Promo $promo
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Promo $promo)
     {
@@ -104,6 +128,9 @@ class AdminPromoController extends Controller
 
     /**
      * Menghapus Promo dari database.
+     *
+     * @param \App\Models\Promo $promo
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Promo $promo)
     {

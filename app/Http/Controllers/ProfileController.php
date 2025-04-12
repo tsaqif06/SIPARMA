@@ -12,13 +12,32 @@ use App\Models\GalleryPlace;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Controller untuk menangani tampilan dan pengelolaan profil pengguna.
+ * Menyediakan fungsi untuk melihat profil, memperbarui data profil,
+ * riwayat transaksi, dan verifikasi tempat admin.
+ */
 class ProfileController extends Controller
 {
+    /**
+     * Menampilkan halaman profil pengguna.
+     *
+     * @return \Illuminate\View\View
+     */
     public function index()
     {
         return view('user.profile.index');
     }
 
+    /**
+     * Memperbarui data profil pengguna.
+     *
+     * Mengupdate nama, email, nomor telepon, dan gambar profil
+     * sesuai dengan data yang diterima dari request pengguna.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function profileUpdate(Request $request)
     {
         $user = User::findOrFail(auth()->user()->id);
@@ -63,6 +82,14 @@ class ProfileController extends Controller
         return redirect()->route('profile')->with('success', __('flasher.profil_diperbarui'));
     }
 
+    /**
+     * Menampilkan riwayat transaksi pengguna.
+     *
+     * Mengambil semua transaksi yang dilakukan oleh pengguna yang sedang login,
+     * dan menampilkannya dengan paginasi.
+     *
+     * @return \Illuminate\View\View
+     */
     public function transactionHistory()
     {
         $transactions = Transaction::with('tickets')
@@ -73,6 +100,14 @@ class ProfileController extends Controller
         return view('user.profile.riwayat', compact('transactions'));
     }
 
+    /**
+     * Menampilkan halaman verifikasi tempat admin.
+     *
+     * Menampilkan pilihan destinasi yang tersedia dan status verifikasi tempat
+     * yang diajukan oleh pengguna yang sedang login.
+     *
+     * @return \Illuminate\View\View
+     */
     public function adminPlaceVerification()
     {
         $destinations = Destination::select('id', 'name')->get();
@@ -84,6 +119,15 @@ class ProfileController extends Controller
         return view('user.profile.adminverification', compact('destinations', 'adminPlace'));
     }
 
+    /**
+     * Menyimpan pengajuan verifikasi tempat baru.
+     *
+     * Menyimpan data tempat yang diajukan, termasuk dokumen kepemilikan, gambar galeri,
+     * dan data lainnya yang dibutuhkan untuk proses verifikasi oleh admin.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function storeVerification(Request $request)
     {
         $request->validate([

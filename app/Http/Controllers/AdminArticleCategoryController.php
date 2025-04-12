@@ -7,8 +7,16 @@ use App\Models\ArticleCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
+/**
+ * Controller untuk manajemen kategori artikel di panel admin.
+ * Hanya dapat diakses oleh pengguna dengan peran 'superadmin'.
+ */
 class AdminArticleCategoryController extends Controller
 {
+    /**
+     * Konstruktor: Menambahkan middleware untuk autentikasi dan otorisasi.
+     * Pengguna selain 'superadmin' akan diarahkan kembali ke dashboard admin.
+     */
     public function __construct()
     {
         $this->middleware('auth');
@@ -20,8 +28,11 @@ class AdminArticleCategoryController extends Controller
             return $next($request);
         });
     }
+
     /**
-     * Tampilkan daftar kategori
+     * Menampilkan daftar semua kategori artikel.
+     *
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -30,7 +41,9 @@ class AdminArticleCategoryController extends Controller
     }
 
     /**
-     * Tampilkan form tambah kategori
+     * Menampilkan form untuk menambahkan kategori baru.
+     *
+     * @return \Illuminate\View\View
      */
     public function create()
     {
@@ -38,7 +51,10 @@ class AdminArticleCategoryController extends Controller
     }
 
     /**
-     * Simpan kategori baru
+     * Menyimpan data kategori artikel baru ke database.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -55,7 +71,10 @@ class AdminArticleCategoryController extends Controller
     }
 
     /**
-     * Tampilkan form edit kategori
+     * Menampilkan form edit untuk kategori tertentu.
+     *
+     * @param \App\Models\ArticleCategory $category
+     * @return \Illuminate\View\View
      */
     public function edit(ArticleCategory $category)
     {
@@ -63,7 +82,11 @@ class AdminArticleCategoryController extends Controller
     }
 
     /**
-     * Update kategori
+     * Memperbarui data kategori di database.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\ArticleCategory $category
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, ArticleCategory $category)
     {
@@ -80,7 +103,10 @@ class AdminArticleCategoryController extends Controller
     }
 
     /**
-     * Hapus kategori
+     * Menghapus kategori artikel dari database.
+     *
+     * @param \App\Models\ArticleCategory $category
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(ArticleCategory $category)
     {

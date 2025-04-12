@@ -21,10 +21,17 @@ use App\Models\AdminBalanceLog;
 use Illuminate\Support\Facades\DB;
 use App\Models\RecommendationImage;
 
+/**
+ * Controller untuk menangani logika dan pengelolaan tampilan halaman utama
+ * serta dashboard untuk admin berdasarkan peran.
+ */
 class HomeController extends Controller
 {
     /**
-     * Menampilkan halaman utama (Home).
+     * Menampilkan halaman utama dengan berbagai data seperti promo,
+     * kategori destinasi, dan destinasi dengan rating tertinggi.
+     *
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -97,6 +104,12 @@ class HomeController extends Controller
         return view('user.home.index', compact('categories', 'promos', 'topRatedDestinations'));
     }
 
+    /**
+     * Menangani pengajuan rekomendasi tempat wisata oleh pengguna.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function submitRecommendation(Request $request)
     {
         $request->validate([
@@ -137,6 +150,11 @@ class HomeController extends Controller
         return redirect()->back()->with('success', __('flasher.rekomendasi_dikirim'));
     }
 
+    /**
+     * Menampilkan dashboard admin berdasarkan peran yang berbeda.
+     *
+     * @return \Illuminate\View\View
+     */
     public function indexAdmin()
     {
         $user = auth()->user();

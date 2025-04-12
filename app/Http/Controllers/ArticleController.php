@@ -10,9 +10,20 @@ use Illuminate\Http\Request;
 use App\Models\ArticleComment;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Controller untuk mengelola artikel, termasuk menampilkan artikel, pencarian, komentar, balasan,
+ * dan interaksi pengguna (like, views). Fungsionalitas lainnya termasuk filter kata-kata kasar
+ * dalam komentar dan pengelolaan artikel terkait.
+ */
 class ArticleController extends Controller
 {
-    // Tampilkan semua artikel
+    /**
+     * Tampilkan semua artikel berdasarkan query pencarian.
+     * Menyediakan fungsi pencarian berdasarkan judul, konten, kategori, dan tag.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\View\View
+     */
     public function browse(Request $request)
     {
         $query = $request->input('search');
@@ -35,7 +46,14 @@ class ArticleController extends Controller
         return view('user.articles.browse', compact('articles'));
     }
 
-    // Tampilkan satu artikel (plus tambahin views)
+    /**
+     * Tampilkan artikel berdasarkan slug dan tambah view.
+     * Fungsi ini juga menampilkan artikel terkait berdasarkan kategori dan tag.
+     *
+     * @param string $slug
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\View\View
+     */
     public function show($slug, Request $request)
     {
         $article = Article::with(['category', 'tags', 'comments', 'likes', 'views'])
@@ -55,12 +73,10 @@ class ArticleController extends Controller
                 })
                 ->limit(5);
 
-
             $relatedArticles = $relatedByCategory->union($relatedByTags)->inRandomOrder()->limit(5)->get();
         } else {
             $relatedArticles = $relatedByCategory->inRandomOrder()->get();
         }
-
 
         $this->addView($article->id, $request->ip());
 
@@ -69,20 +85,24 @@ class ArticleController extends Controller
             ->with(['user:id,name,profile_picture', 'replies' => function ($query) {
                 $query->with('user:id,name,profile_picture')
                     ->latest()
-                    ->limit(3); 
+                    ->limit(3);
             }])
-            ->withCount('replies') 
+            ->withCount('replies')
             ->orderBy('created_at', 'desc')
             ->paginate(5);
-
 
         return view('user.articles.show', compact('article', 'reviews', 'relatedArticles'));
     }
 
-    // Fungsi menambahkan views (anti-spam)
+    /**
+     * Fungsi untuk menambahkan view pada artikel dan memastikan satu IP hanya bisa menambah satu view.
+     *
+     * @param int $articleId
+     * @param string $ip
+     * @return void
+     */
     private function addView($articleId, $ip)
     {
-        // Cek apakah IP sudah pernah nambah view ke artikel ini
         $existingView = ArticleView::where('article_id', $articleId)->where('ip_address', $ip)->first();
 
         if (!$existingView) {
@@ -94,24 +114,26 @@ class ArticleController extends Controller
         }
     }
 
-    // INTERAKSI
-
+    /**
+     * Menyukai atau tidak menyukai artikel berdasarkan request.
+     * Fungsi ini akan mengubah status like artikel dan menghitung ulang jumlah like.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function toggleLike(Request $request)
     {
         $articleId = $request->article_id;
         $userId = auth()->id();
 
-        // Cek apakah user sudah like
         $existingLike = ArticleLike::where('article_id', $articleId)
             ->where('user_id', $userId)
             ->first();
 
         if ($existingLike) {
-            // Jika sudah like, maka unlike
             $existingLike->delete();
             $status = 'unliked';
         } else {
-            // Jika belum like, maka tambahkan
             ArticleLike::create([
                 'article_id' => $articleId,
                 'user_id' => $userId
@@ -127,6 +149,13 @@ class ArticleController extends Controller
         ]);
     }
 
+    /**
+     * Filter kata-kata kasar dalam teks komentar.
+     * Menggantikan kata-kata kasar dengan tanda bintang `***`.
+     *
+     * @param string $text
+     * @return string
+     */
     public function filterBadWords($text)
     {
         $badWords = [
@@ -203,7 +232,14 @@ class ArticleController extends Controller
         return str_ireplace($badWords, '***', $text);
     }
 
-    // Simpan Komentar
+    /**
+     * Simpan komentar baru pada artikel.
+     * Menggunakan filter bad words untuk memastikan komentar bersih.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function comment(Request $request, $id)
     {
         $request->validate([
@@ -222,7 +258,14 @@ class ArticleController extends Controller
         return back()->with('success', __('flasher.komentar_ditambahkan'));
     }
 
-    // Simpan Balasan Komentar
+    /**
+     * Simpan balasan komentar pada artikel.
+     * Balasan juga difilter untuk kata-kata kasar.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function reply(Request $request, $id)
     {
         $request->validate([
@@ -243,7 +286,13 @@ class ArticleController extends Controller
         return back()->with('success', __('flasher.balasan_dikirim'));
     }
 
-    // Hapus Komentar (termasuk balasan)
+    /**
+     * Hapus komentar beserta balasan yang terkait.
+     * Hanya pengguna yang memiliki komentar dapat menghapusnya.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function commentDestroy($id)
     {
         $comment = ArticleComment::findOrFail($id);
@@ -252,14 +301,19 @@ class ArticleController extends Controller
             abort(403, 'Unauthorized');
         }
 
-        // Hapus semua balasan juga
         $comment->replies()->delete();
         $comment->delete();
 
         return back()->with('success', __('flasher.komentar_dihapus'));
     }
 
-    // Hapus Balasan
+    /**
+     * Hapus balasan komentar.
+     * Hanya pengguna yang membuat balasan yang dapat menghapusnya.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function replyDestroy($id)
     {
         $reply = ArticleComment::findOrFail($id);

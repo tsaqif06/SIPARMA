@@ -9,8 +9,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * Controller untuk mengelola destinasi wisata, termasuk menampilkan detail destinasi,
+ * pencarian, pengecekan status pemesanan, dan mendapatkan destinasi populer.
+ */
 class DestinationController extends Controller
 {
+    /**
+     * Menampilkan detail destinasi berdasarkan slug.
+     *
+     * @param string $slug
+     * @return \Illuminate\View\View
+     */
     public function show($slug)
     {
         $destination = Destination::with([
@@ -35,6 +45,12 @@ class DestinationController extends Controller
         return view('user.destinations.show', compact('destination', 'reviews'));
     }
 
+    /**
+     * Menampilkan destinasi berdasarkan filter dan pencarian.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\View\View
+     */
     public function browse(Request $request)
     {
         $query = Destination::with([
@@ -90,6 +106,13 @@ class DestinationController extends Controller
         return view('user.destinations.browse', compact('destinations'));
     }
 
+    /**
+     * Menampilkan halaman checkout untuk destinasi, ride, atau bundle.
+     *
+     * @param string $slug
+     * @param string $type
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function checkout($slug, $type = 'destination')
     {
         if ($type === 'destination') {
@@ -119,6 +142,11 @@ class DestinationController extends Controller
         ]);
     }
 
+    /**
+     * Mendapatkan destinasi populer dengan rating tertinggi yang disimpan dalam cache.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
     public function getPopularDestinations()
     {
         return Cache::remember('popular_destinations', 3600, function () {

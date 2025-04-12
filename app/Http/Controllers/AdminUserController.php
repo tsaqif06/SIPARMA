@@ -11,10 +11,15 @@ use App\Models\AdminDestination;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * Controller untuk mengelola user oleh Superadmin.
+ */
 class AdminUserController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Menampilkan daftar user berdasarkan role dan status approval tempat.
+     *
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -40,7 +45,9 @@ class AdminUserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Menampilkan form pembuatan user baru (khusus superadmin).
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     public function create()
     {
@@ -55,7 +62,10 @@ class AdminUserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Menyimpan user baru ke database.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -104,7 +114,10 @@ class AdminUserController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Menampilkan detail user tertentu, hanya bisa diakses oleh superadmin atau user itu sendiri.
+     *
+     * @param \App\Models\User $user
+     * @return \Illuminate\View\View|\Illuminate\Http\Response
      */
     public function show(User $user)
     {
@@ -141,9 +154,11 @@ class AdminUserController extends Controller
         ], 404);
     }
 
-
     /**
-     * Show the form for editing the specified resource.
+     * Menampilkan form edit user.
+     *
+     * @param \App\Models\User $user
+     * @return \Illuminate\View\View|\Illuminate\Http\Response
      */
     public function edit(User $user)
     {
@@ -177,7 +192,11 @@ class AdminUserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Memperbarui data user di database.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\User $user
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, User $user)
     {
@@ -244,9 +263,11 @@ class AdminUserController extends Controller
         return redirect()->route('admin.users.index')->with('success', 'User telah diupdate');
     }
 
-
     /**
-     * Remove the specified resource from storage.
+     * Menghapus user dari database beserta relasinya jika ada.
+     *
+     * @param \App\Models\User $user
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(User $user)
     {

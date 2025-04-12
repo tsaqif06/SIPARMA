@@ -10,9 +10,16 @@ use App\Models\ArticleCategory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * Controller untuk manajemen artikel di panel admin.
+ */
 class AdminArticleController extends Controller
 {
-    // Tampilkan semua artikel
+    /**
+     * Menampilkan semua artikel (khusus superadmin).
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function index()
     {
         if (auth()->user()->role !== 'superadmin') {
@@ -27,7 +34,11 @@ class AdminArticleController extends Controller
         return view('admin.articles.index', compact('articles'));
     }
 
-
+    /**
+     * Menampilkan daftar artikel milik pengguna yang sedang login.
+     *
+     * @return \Illuminate\View\View
+     */
     public function my()
     {
         $articles = Article::with(['category', 'tags', 'comments', 'likes', 'views'])
@@ -38,16 +49,24 @@ class AdminArticleController extends Controller
         return view('admin.articles.my', compact('articles'));
     }
 
+    /**
+     * Memblokir artikel (status diubah menjadi 'blocked').
+     *
+     * @param Article $article
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function block(Article $article)
     {
         $article->update(['status' => 'blocked']);
-
         return redirect()->route('admin.articles.index')->with('success', 'Artikel berhasil diblokir.');
     }
 
-
-
-    // Tampilkan artikel berdasarkan ID
+    /**
+     * Menampilkan detail artikel berdasarkan ID.
+     *
+     * @param int $id
+     * @return \Illuminate\View\View
+     */
     public function show($id)
     {
         $article = Article::with([
@@ -62,15 +81,23 @@ class AdminArticleController extends Controller
         return view('admin.articles.show', compact('article'));
     }
 
-
-    // Form tambah artikel baru
+    /**
+     * Menampilkan form untuk membuat artikel baru.
+     *
+     * @return \Illuminate\View\View
+     */
     public function create()
     {
         $categories = ArticleCategory::all();
         return view('admin.articles.create', compact('categories'));
     }
 
-    // Simpan artikel baru
+    /**
+     * Menyimpan artikel baru ke database.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -84,15 +111,12 @@ class AdminArticleController extends Controller
 
         DB::beginTransaction();
 
-        // Simpan thumbnail jika ada
         $thumbnailPath = $request->hasFile('thumbnail')
             ? $request->file('thumbnail')->store('article/thumbnail', 'public')
             : null;
 
-        // Proses gambar dalam artikel
         $content = $this->processArticleImages($request->content);
 
-        // Simpan artikel
         $article = Article::create([
             'user_id'     => auth()->user()->id,
             'category_id' => $request->category_id,
@@ -103,20 +127,20 @@ class AdminArticleController extends Controller
             'status'      => $request->status
         ]);
 
-        $tagsArray = explode(',', $request->tags ?? '');
-        $tagsArray = array_map('trim', $tagsArray);
-        $tagsArray = array_filter($tagsArray);
-
-        // Simpan tags
+        $tagsArray = array_filter(array_map('trim', explode(',', $request->tags ?? '')));
         $this->syncTags($article, $tagsArray);
-
 
         DB::commit();
 
         return redirect()->route('admin.articles.my')->with('success', 'Artikel berhasil ditambahkan');
     }
 
-    // Upload gambar ke storage dari Trix
+    /**
+     * Mengunggah gambar dari editor Trix ke penyimpanan.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function uploadImage(Request $request)
     {
         $request->validate([
@@ -126,23 +150,32 @@ class AdminArticleController extends Controller
         $path = 'article/content/' . uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
         Storage::disk('public')->put($path, file_get_contents($request->file('image')));
 
-        return response()->json([
-            'url' => Storage::url($path)
-        ]);
+        return response()->json(['url' => Storage::url($path)]);
     }
 
-
-    // Update artikel
+    /**
+     * Menampilkan form edit artikel.
+     *
+     * @param Article $article
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function edit(Article $article)
     {
         if (auth()->user()->id !== $article->user_id) {
-            return redirect()->route('admin.articles.my')->with('error', 'Anda tidak memiliki izin untuk mengedit artikel ini, karena ini bukanlah artikel milik anda.');
+            return redirect()->route('admin.articles.my')->with('error', 'Anda tidak memiliki izin untuk mengedit artikel ini.');
         }
 
         $categories = ArticleCategory::all();
         return view('admin.articles.edit', compact('article', 'categories'));
     }
 
+    /**
+     * Memperbarui data artikel.
+     *
+     * @param Request $request
+     * @param Article $article
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update(Request $request, Article $article)
     {
         $request->validate([
@@ -156,20 +189,19 @@ class AdminArticleController extends Controller
 
         DB::beginTransaction();
 
+        // Hapus gambar lama yang tidak digunakan
         preg_match_all('/src=["\']\/storage\/article\/content\/(.*?)["\']/', $article->content, $oldImages);
+        preg_match_all('/src=["\']\/storage\/article\/content\/(.*?)["\']/', $request->content, $newImages);
+
         $oldImages = $oldImages[1] ?? [];
-
-        $content = $this->processArticleImages($request->content);
-
-        preg_match_all('/src=["\']\/storage\/article\/content\/(.*?)["\']/', $content, $newImages);
         $newImages = $newImages[1] ?? [];
-
         $imagesToDelete = array_diff($oldImages, $newImages);
 
         foreach ($imagesToDelete as $image) {
             Storage::disk('public')->delete("article/content/" . $image);
         }
 
+        // Update thumbnail jika ada
         if ($request->hasFile('thumbnail')) {
             if ($article->thumbnail) {
                 Storage::delete(str_replace('storage/', 'public/', $article->thumbnail));
@@ -182,14 +214,12 @@ class AdminArticleController extends Controller
             'title'       => $request->title,
             'slug'        => Str::slug($request->title),
             'category_id' => $request->category_id,
-            'content'     => $content,
+            'content'     => $this->processArticleImages($request->content),
             'status'      => $request->status,
             'thumbnail'   => $article->thumbnail ?? $article->getOriginal('thumbnail')
         ]);
 
-        $tagsArray = explode(',', $request->tags ?? '');
-        $tagsArray = array_map('trim', $tagsArray);
-        $tagsArray = array_filter($tagsArray);
+        $tagsArray = array_filter(array_map('trim', explode(',', $request->tags ?? '')));
         $this->syncTags($article, $tagsArray);
 
         DB::commit();
@@ -197,15 +227,18 @@ class AdminArticleController extends Controller
         return redirect()->route('admin.articles.my')->with('success', 'Artikel berhasil diperbarui');
     }
 
-    // Hapus artikel
+    /**
+     * Menghapus artikel dan semua gambar terkait dari storage.
+     *
+     * @param Article $article
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function destroy(Article $article)
     {
         DB::beginTransaction();
 
         preg_match_all('/src=["\']\/storage\/article\/content\/(.*?)["\']/', $article->content, $images);
-        $images = $images[1] ?? [];
-
-        foreach ($images as $image) {
+        foreach ($images[1] ?? [] as $image) {
             Storage::disk('public')->delete("article/content/" . $image);
         }
 
@@ -221,8 +254,12 @@ class AdminArticleController extends Controller
         return redirect()->route('admin.articles.my')->with('success', 'Artikel berhasil dihapus');
     }
 
-
-    // Proses gambar base64 dalam konten
+    /**
+     * Memproses gambar base64 dari konten artikel dan menyimpannya di storage.
+     *
+     * @param string $content
+     * @return string
+     */
     private function processArticleImages($content)
     {
         $dom = new DOMDocument();
@@ -243,7 +280,13 @@ class AdminArticleController extends Controller
         return $dom->saveHTML();
     }
 
-    // Kelola tags artikel
+    /**
+     * Menyimpan tag yang terkait dengan artikel.
+     *
+     * @param Article $article
+     * @param array $tags
+     * @return void
+     */
     private function syncTags(Article $article, array $tags)
     {
         DB::table('tbl_article_tags')->where('article_id', $article->id)->delete();

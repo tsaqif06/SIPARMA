@@ -10,8 +10,14 @@ use App\Models\Destination;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
+/**
+ * Controller untuk mengelola wahana (rides) oleh admin wisata.
+ */
 class AdminRideController extends Controller
 {
+    /**
+     * Konstruktor yang menetapkan middleware autentikasi dan role admin_wisata.
+     */
     public function __construct()
     {
         $this->middleware('auth');
@@ -23,8 +29,11 @@ class AdminRideController extends Controller
             return $next($request);
         });
     }
+
     /**
-     * Menampilkan daftar wahana berdasarkan destinasi.
+     * Menampilkan daftar wahana berdasarkan destinasi yang dikelola.
+     *
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -47,6 +56,8 @@ class AdminRideController extends Controller
 
     /**
      * Menampilkan form untuk membuat wahana baru.
+     *
+     * @return \Illuminate\View\View
      */
     public function create()
     {
@@ -54,7 +65,10 @@ class AdminRideController extends Controller
     }
 
     /**
-     * Menyimpan data wahana baru.
+     * Menyimpan data wahana baru ke database.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -81,7 +95,10 @@ class AdminRideController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Menampilkan detail dari sebuah wahana.
+     *
+     * @param \App\Models\Ride $ride
+     * @return \Illuminate\View\View
      */
     public function show(Ride $ride)
     {
@@ -100,6 +117,9 @@ class AdminRideController extends Controller
 
     /**
      * Menampilkan form untuk mengedit wahana.
+     *
+     * @param \App\Models\Ride $ride
+     * @return \Illuminate\View\View
      */
     public function edit(Ride $ride)
     {
@@ -108,6 +128,10 @@ class AdminRideController extends Controller
 
     /**
      * Memperbarui data wahana.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Ride $ride
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Ride $ride)
     {
@@ -136,7 +160,10 @@ class AdminRideController extends Controller
     }
 
     /**
-     * Menghapus wahana dari database.
+     * Menghapus data wahana dari database.
+     *
+     * @param \App\Models\Ride $ride
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Ride $ride)
     {
@@ -146,6 +173,13 @@ class AdminRideController extends Controller
             ->with('success', 'Wahana berhasil dihapus.');
     }
 
+    /**
+     * Mengupdate harga total bundle yang mengandung item tertentu.
+     *
+     * @param int $itemId ID item
+     * @param string $itemType Tipe item ('ride' atau 'destination')
+     * @return void
+     */
     private function updateBundlesContainingItem($itemId, $itemType)
     {
         $bundleItems = BundleItem::where('item_id', $itemId)
@@ -157,6 +191,12 @@ class AdminRideController extends Controller
         }
     }
 
+    /**
+     * Mengupdate harga total dari bundle berdasarkan item-item yang ada.
+     *
+     * @param int $bundleId
+     * @return void
+     */
     private function updateBundleTotalPrice($bundleId)
     {
         $bundleItems = BundleItem::where('bundle_id', $bundleId)->get();

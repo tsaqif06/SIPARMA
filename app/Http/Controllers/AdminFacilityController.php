@@ -7,10 +7,16 @@ use App\Models\AdminPlace;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * Controller untuk mengelola fasilitas (facility) destinasi dan tempat.
+ */
 class AdminFacilityController extends Controller
 {
     /**
-     * Menampilkan daftar gambar berdasarkan jenis galeri (destination, place, ride).
+     * Menampilkan daftar fasilitas berdasarkan jenis (destination/place).
+     *
+     * @param string $type Jenis item ('destination' atau 'place')
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function index($type)
     {
@@ -19,7 +25,9 @@ class AdminFacilityController extends Controller
             return redirect()->back()->with('error', 'Jenis fasilitas tidak valid.');
         }
 
-        $nama = $type == 'destination' ? auth()->user()->adminDestinations[0]->destination->name : AdminPlace::where('user_id', auth()->user()->id)
+        $nama = $type == 'destination'
+            ? auth()->user()->adminDestinations[0]->destination->name
+            : AdminPlace::where('user_id', auth()->user()->id)
             ->where('approval_status', 'approved')
             ->latest('created_at')
             ->first()?->place->name;
@@ -27,6 +35,12 @@ class AdminFacilityController extends Controller
         return view('admin.facility.index', compact('type', 'facilities', 'nama'));
     }
 
+    /**
+     * Menampilkan form untuk membuat fasilitas baru.
+     *
+     * @param string $type Jenis item ('destination' atau 'place')
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function create($type)
     {
         $facilityModel = $this->getFacilityModel($type);
@@ -39,6 +53,13 @@ class AdminFacilityController extends Controller
         return view('admin.facility.create', compact('type', 'itemId'));
     }
 
+    /**
+     * Menyimpan data fasilitas baru ke database.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param string $type
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request, $type)
     {
         $request->validate([
@@ -54,13 +75,26 @@ class AdminFacilityController extends Controller
             ->with('success', 'Fasilitas telah ditambahkan.');
     }
 
-    // Menampilkan form untuk mengedit fasilitas
+    /**
+     * Menampilkan form edit fasilitas.
+     *
+     * @param string $type
+     * @param \App\Models\Facility $facility
+     * @return \Illuminate\View\View
+     */
     public function edit($type, Facility $facility)
     {
         return view('admin.facility.edit', compact('facility', 'type'));
     }
 
-
+    /**
+     * Memperbarui data fasilitas yang ada.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param string $type
+     * @param \App\Models\Facility $facility
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update(Request $request, $type, Facility $facility)
     {
         $request->validate([
@@ -77,7 +111,13 @@ class AdminFacilityController extends Controller
             ->with('success', 'Fasilitas berhasil diperbarui.');
     }
 
-    // Menghapus fasilitas dari database
+    /**
+     * Menghapus fasilitas dari database.
+     *
+     * @param string $type
+     * @param \App\Models\Facility $facility
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function destroy($type, Facility $facility)
     {
         $facility->delete();
@@ -87,7 +127,10 @@ class AdminFacilityController extends Controller
     }
 
     /**
-     * Fungsi helper untuk menentukan model berdasarkan jenis galeri.
+     * Mengambil fasilitas berdasarkan tipe (destination/place).
+     *
+     * @param string $type
+     * @return \Illuminate\Support\Collection|null
      */
     private function getFacilityModel($type)
     {
@@ -101,6 +144,12 @@ class AdminFacilityController extends Controller
         };
     }
 
+    /**
+     * Mengambil ID item terkait (destination_id atau place_id).
+     *
+     * @param string $type
+     * @return int|null
+     */
     private function getRelatedId($type)
     {
         return match ($type) {

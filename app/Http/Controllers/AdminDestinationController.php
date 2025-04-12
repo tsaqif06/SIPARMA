@@ -13,11 +13,16 @@ use Illuminate\Http\Request;
 use App\Models\Recommendation;
 use Illuminate\Support\Facades\Auth;
 
-
+/**
+ * Controller untuk mengelola destinasi wisata.
+ */
 class AdminDestinationController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Menampilkan daftar semua destinasi wisata.
+     * Khusus untuk user dengan role superadmin.
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function index()
     {
@@ -46,7 +51,10 @@ class AdminDestinationController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Menampilkan form tambah destinasi wisata.
+     * Khusus untuk superadmin.
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function create()
     {
@@ -61,7 +69,10 @@ class AdminDestinationController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Menyimpan destinasi wisata baru ke database.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -91,6 +102,12 @@ class AdminDestinationController extends Controller
         return redirect()->route('admin.destinations.index')->with('success', 'Wisata telah ditambahkan.');
     }
 
+    /**
+     * Menampilkan daftar semua rekomendasi destinasi dari user.
+     * Hanya untuk superadmin.
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function recommendation()
     {
         if (Auth::user()->role !== 'superadmin') {
@@ -102,7 +119,13 @@ class AdminDestinationController extends Controller
         return view('admin.destinations.recommendation', compact('recommendations'));
     }
 
-    // Menampilkan detail rekomendasi beserta gambarnya
+    /**
+     * Menampilkan detail dari rekomendasi destinasi tertentu.
+     * Termasuk user pengusul dan gambar rekomendasinya.
+     *
+     * @param  int  $id
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function showRecommendation($id)
     {
         if (Auth::user()->role !== 'superadmin') {
@@ -113,6 +136,12 @@ class AdminDestinationController extends Controller
         return view('admin.destinations.recommendationshow', compact('recommendation'));
     }
 
+    /**
+     * Menampilkan form untuk mengubah status rekomendasi.
+     *
+     * @param  int  $id
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function changeStatus($id)
     {
         if (Auth::user()->role !== 'superadmin') {
@@ -123,6 +152,13 @@ class AdminDestinationController extends Controller
         return view('admin.destinations.changestatus', compact('recommendation'));
     }
 
+    /**
+     * Menyimpan perubahan status rekomendasi (pending, approved, rejected).
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function updateStatus(Request $request, $id)
     {
         $request->validate([
@@ -138,7 +174,11 @@ class AdminDestinationController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Menampilkan detail destinasi wisata tertentu.
+     * Bisa diakses oleh superadmin atau admin_wisata yang punya akses ke destinasi tersebut.
+     *
+     * @param  \App\Models\Destination  $destination
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function show(Destination $destination)
     {
@@ -171,7 +211,10 @@ class AdminDestinationController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Menampilkan form edit destinasi wisata.
+     *
+     * @param  \App\Models\Destination  $destination
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function edit(Destination $destination)
     {
@@ -188,7 +231,12 @@ class AdminDestinationController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Menyimpan perubahan data destinasi wisata.
+     * Dan otomatis memperbarui total harga bundle yang terpengaruh.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Destination  $destination
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Destination $destination)
     {
@@ -231,7 +279,10 @@ class AdminDestinationController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Menghapus destinasi dari database dan juga semua gambar terkait di storage.
+     *
+     * @param  \App\Models\Destination  $destination
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Destination $destination)
     {
@@ -247,6 +298,13 @@ class AdminDestinationController extends Controller
         return redirect()->route('admin.destinations.index')->with('success', 'Wisata telah dihapus.');
     }
 
+    /**
+     * Memperbarui total harga semua bundle yang berisi item tertentu.
+     *
+     * @param  int  $itemId
+     * @param  string  $itemType
+     * @return void
+     */
     private function updateBundlesContainingItem($itemId, $itemType)
     {
         $bundleItems = BundleItem::where('item_id', $itemId)
@@ -258,6 +316,12 @@ class AdminDestinationController extends Controller
         }
     }
 
+    /**
+     * Menghitung ulang dan menyimpan total harga sebuah bundle berdasarkan item-item di dalamnya.
+     *
+     * @param  int  $bundleId
+     * @return void
+     */
     private function updateBundleTotalPrice($bundleId)
     {
         $bundleItems = BundleItem::where('bundle_id', $bundleId)->get();

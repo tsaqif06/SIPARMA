@@ -9,9 +9,15 @@ use App\Models\AdminBalanceLog;
 use App\Models\AdminDestination;
 use Illuminate\Support\Facades\Auth;
 
-
+/**
+ * Controller untuk manajemen saldo dan log saldo di panel admin.
+ */
 class AdminBalanceController extends Controller
 {
+    /**
+     * Konstruktor controller. Menetapkan middleware autentikasi
+     * dan membatasi akses untuk role tertentu.
+     */
     public function __construct()
     {
         $this->middleware('auth');
@@ -23,8 +29,13 @@ class AdminBalanceController extends Controller
             return $next($request);
         });
     }
+
     /**
-     * Display a listing of the resource.
+     * Menampilkan daftar saldo berdasarkan peran pengguna:
+     * - Superadmin: semua saldo.
+     * - Admin wisata: hanya saldo destinasi yang dikelolanya.
+     *
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -38,7 +49,12 @@ class AdminBalanceController extends Controller
         return view('admin.balance.index', compact('balances'));
     }
 
-
+    /**
+     * Menampilkan daftar saldo pusat (AdminBalance).
+     * Hanya untuk superadmin.
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function indexAdmin()
     {
         if (Auth::user()->role !== 'superadmin') {
@@ -51,7 +67,12 @@ class AdminBalanceController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Menampilkan detail saldo berdasarkan ID.
+     * - Superadmin: bisa akses semua.
+     * - Admin wisata: hanya bisa melihat destinasi yang dikelolanya.
+     *
+     * @param int $id
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function show($id)
     {
@@ -72,13 +93,20 @@ class AdminBalanceController extends Controller
         }
     }
 
-
+    /**
+     * Menampilkan rekap saldo bulanan untuk admin wisata.
+     * Superadmin tidak diperbolehkan mengakses halaman ini.
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function monthlyRecapIndex()
     {
         if (Auth::user()->role === 'superadmin') {
             return redirect()->route('admin.dashboard');
         }
+
         $destinationId = auth()->user()->adminDestinations[0]->destination_id;
+
         $balanceLogs = BalanceLog::where('destination_id', $destinationId)
             ->orderBy('period_year', 'desc')
             ->orderBy('period_month', 'desc')
@@ -87,6 +115,12 @@ class AdminBalanceController extends Controller
         return view('admin.balance.recap', compact('balanceLogs'));
     }
 
+    /**
+     * Menampilkan rekap saldo bulanan pusat (AdminBalanceLog).
+     * Hanya untuk superadmin.
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function monthlyRecapIndexAdmin()
     {
         if (Auth::user()->role !== 'superadmin') {

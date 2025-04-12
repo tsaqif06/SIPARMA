@@ -7,8 +7,23 @@ use App\Models\Transaction;
 use App\Models\TransactionTicket;
 use Illuminate\Support\Str;
 
+/**
+ * Controller untuk mengelola proses checkout pengguna, termasuk menyimpan transaksi dan tiket.
+ * Fungsionalitas lainnya termasuk validasi input, penyimpanan data transaksi, dan pengalihan
+ * pengguna ke halaman pembayaran berdasarkan transaksi yang dibuat.
+ */
 class CheckoutController extends Controller
 {
+    /**
+     * Menyimpan transaksi checkout dan tiket terkait.
+     *
+     * Fungsi ini menerima data checkout yang valid, melakukan validasi,
+     * menyimpan transaksi dan tiket terkait ke dalam database,
+     * dan mengarahkan pengguna ke halaman pembayaran dengan kode transaksi.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
         // Validasi input

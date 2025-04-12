@@ -9,14 +9,19 @@ use Illuminate\Http\Request;
 use App\Models\GalleryDestination;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * Controller untuk mengelola galeri gambar (destination, place, ride).
+ */
 class AdminGalleryController extends Controller
 {
     /**
-     * Menampilkan daftar gambar berdasarkan jenis galeri (destination, place, ride).
+     * Menampilkan daftar gambar berdasarkan jenis galeri.
+     *
+     * @param string $type Jenis galeri ('destination', 'place', 'ride')
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function index($type)
     {
-        // auth()->user()->adminDestinations[0]->destination;
         $galleryModel = $this->getGalleryModel($type);
 
         if (!$galleryModel) {
@@ -28,12 +33,19 @@ class AdminGalleryController extends Controller
         $promoImages = $galleryModel->gallery()->where('image_type', 'promo')->get();
 
         $menuImages = null;
-
-        if ($type === 'place') $menuImages = $galleryModel->gallery()->where('image_type', 'menu')->get();
+        if ($type === 'place') {
+            $menuImages = $galleryModel->gallery()->where('image_type', 'menu')->get();
+        }
 
         return view('admin.gallery.index', compact('type', 'allImages', 'placeImages', 'promoImages', 'menuImages'));
     }
 
+    /**
+     * Menampilkan form untuk menambahkan gambar baru ke galeri.
+     *
+     * @param string $type Jenis galeri
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function create($type)
     {
         $galleryModel = $this->getGalleryModel($type);
@@ -45,9 +57,12 @@ class AdminGalleryController extends Controller
         return view('admin.gallery.create', compact('type'));
     }
 
-
     /**
-     * Menyimpan gambar ke galeri yang sesuai.
+     * Menyimpan gambar ke galeri berdasarkan jenis.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param string $type
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request, $type)
     {
@@ -77,11 +92,16 @@ class AdminGalleryController extends Controller
             'image_type' => $request->image_type ?? null,
         ]);
 
-        return redirect()->route('admin.gallery.index', ['type' => $type])->with('success', 'Gambar telah ditambahkan.');
+        return redirect()->route('admin.gallery.index', ['type' => $type])
+            ->with('success', 'Gambar telah ditambahkan.');
     }
 
     /**
-     * Menghapus gambar dari galeri yang sesuai.
+     * Menghapus gambar dari galeri.
+     *
+     * @param string $type
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($type, $id)
     {
@@ -92,7 +112,7 @@ class AdminGalleryController extends Controller
 
         $image = $galleryModel::findOrFail($id);
 
-        // Hapus file gambar dari storage
+        // Hapus file fisik dari storage
         $imagePath = public_path($image->image_url);
         if (file_exists($imagePath)) {
             unlink($imagePath);
@@ -101,11 +121,15 @@ class AdminGalleryController extends Controller
         // Hapus data dari database
         $image->delete();
 
-        return redirect()->route('admin.gallery.index', ['type' => $type])->with('success', 'Gambar telah dihapus.');
+        return redirect()->route('admin.gallery.index', ['type' => $type])
+            ->with('success', 'Gambar telah dihapus.');
     }
 
     /**
-     * Fungsi helper untuk menentukan model berdasarkan jenis galeri.
+     * Mendapatkan nama model berdasarkan jenis galeri.
+     *
+     * @param string $type
+     * @return string|null
      */
     private function getModel($type)
     {
@@ -117,6 +141,12 @@ class AdminGalleryController extends Controller
         };
     }
 
+    /**
+     * Mengambil instance model galeri berdasarkan user dan jenis.
+     *
+     * @param string $type
+     * @return mixed|null
+     */
     private function getGalleryModel($type)
     {
         $user = auth()->user();
@@ -132,6 +162,12 @@ class AdminGalleryController extends Controller
         };
     }
 
+    /**
+     * Mengambil ID yang terkait dengan galeri berdasarkan jenis.
+     *
+     * @param string $type
+     * @return int|null
+     */
     private function getRelatedId($type)
     {
         $user = auth()->user();
@@ -148,7 +184,10 @@ class AdminGalleryController extends Controller
     }
 
     /**
-     * Fungsi helper untuk mendapatkan foreign key berdasarkan jenis galeri.
+     * Mendapatkan nama foreign key berdasarkan jenis galeri.
+     *
+     * @param string $type
+     * @return string|null
      */
     private function getForeignKey($type)
     {
