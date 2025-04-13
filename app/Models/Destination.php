@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string $location Lokasi destinasi.
  * @property string $open_time Jam buka destinasi.
  * @property string $close_time Jam tutup destinasi.
- * @property string $operational_status Status operasional destinasi (misalnya: open, closed, sementara tutup).
+ * @property string $operational_status Status operasional destinasi (misalnya: open, closed, holiday).
  * @property float $price Harga tiket untuk destinasi.
  * @property float $weekend_price Harga tiket untuk akhir pekan.
  * @property float $children_price Harga tiket untuk anak-anak.

@@ -279,29 +279,32 @@
                         <div class="row">
                             @foreach ($topRatedDestinations as $destination)
                                 <div class="col-lg-3 col-md-4 col-sm-6 col-12">
-                                    <div class="auth-card">
-                                        <div class="shape">
-                                            <svg viewBox="0 0 250 246" fill="none">
-                                                <path
-                                                    d="M0 90.5622C0 85.4392 3.25219 80.8812 8.09651 79.2148L234.097 1.47079C241.887 -1.2093 250 4.57911 250 12.8182V234C250 240.627 244.627 246 238 246H12C5.37258 246 0 240.627 0 234V90.5622Z" />
-                                            </svg>
-                                        </div>
-                                        <div class="image">
-                                            <div class="img lazy-bg"
-                                                data-bg="{{ $destination->gallery[0]->image_url ?? 'assets/images/default.png' }}">
+                                    <a href="{{ route('destination.show', $destination->slug) }}"
+                                        class="text-decoration-none">
+                                        <div class="auth-card">
+                                            <div class="shape">
+                                                <svg viewBox="0 0 250 246" fill="none">
+                                                    <path
+                                                        d="M0 90.5622C0 85.4392 3.25219 80.8812 8.09651 79.2148L234.097 1.47079C241.887 -1.2093 250 4.57911 250 12.8182V234C250 240.627 244.627 246 238 246H12C5.37258 246 0 240.627 0 234V90.5622Z" />
+                                                </svg>
+                                            </div>
+                                            <div class="image">
+                                                <div class="img lazy-bg"
+                                                    data-bg="{{ $destination->gallery[0]->image_url ?? 'assets/images/default.png' }}">
+                                                </div>
+                                            </div>
+                                            <div class="content">
+                                                <div class="rating">
+                                                    {{ __('main.rating') }}:
+                                                    {{ number_format($destination->reviews_avg_rating, 1) }} (<img
+                                                        src="{{ asset('assets/user/images/authorlist/star.svg') }}"
+                                                        alt="" loading="lazy">)
+                                                </div>
+                                                <h2>{{ $destination->getTranslatedName() }}</h2>
+                                                <h4>Rp {{ number_format($destination->price, 0, ',', '.') }}</h4>
                                             </div>
                                         </div>
-                                        <div class="content">
-                                            <div class="rating">
-                                                {{ __('main.rating') }}:
-                                                {{ number_format($destination->reviews_avg_rating, 1) }} (<img
-                                                    src="{{ asset('assets/user/images/authorlist/star.svg') }}"
-                                                    alt="" loading="lazy">)
-                                            </div>
-                                            <h2>{{ $destination->getTranslatedName() }}</h2>
-                                            <h4>Rp {{ number_format($destination->price, 0, ',', '.') }}</h4>
-                                        </div>
-                                    </div>
+                                    </a>
                                 </div>
                             @endforeach
                         </div>

@@ -111,7 +111,7 @@ class ProfileController extends Controller
     public function adminPlaceVerification()
     {
         $destinations = Destination::select('id', 'name')->get();
-        $adminPlace = AdminPlace::with(['destination:id,name'])
+        $adminPlace = AdminPlace::with(['place:id,name'])
             ->where('user_id', auth()->id())
             ->latest()
             ->first();

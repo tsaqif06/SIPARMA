@@ -89,42 +89,45 @@
                         <div class="gallery-container gallery-fancybox masonry-gallery row">
                             @foreach ($destinations as $destination)
                                 <div class="col-xl-4 col-lg-4 col-md-6 col-12 custom-grid" data-wow-duration="2000ms">
-                                    <div class="featured-card d-flex flex-column h-100" style="min-height: 500px;">
-                                        <div class="image">
-                                            <div class="img lazy-bg"
-                                                data-bg="{{ $destination->gallery[0]->image_url ?? asset('assets/images/default.png') }}">
+                                    <a href="{{ route('destination.show', $destination->slug) }}"
+                                        class="text-decoration-none">
+                                        <div class="featured-card d-flex flex-column h-100" style="min-height: 500px;">
+                                            <div class="image">
+                                                <div class="img lazy-bg"
+                                                    data-bg="{{ $destination->gallery[0]->image_url ?? asset('assets/images/default.png') }}">
+                                                </div>
+                                            </div>
+                                            <div class="content flex-grow-1 d-flex flex-column">
+                                                <h2>
+                                                    <a
+                                                        href="{{ route('destination.show', $destination->slug) }}">{{ $destination->getTranslatedName() }}</a>
+                                                </h2>
+                                                <div class="description flex-grow-1 d-flex align-items-start"
+                                                    style="min-height: 40px;">
+                                                    <span class="overflow-hidden"
+                                                        style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
+                                                        {{ $destination->getTranslatedDescription() ?? __('main.deskripsi_tidak_tersedia') }}
+                                                    </span>
+                                                </div>
+                                                <div class="top-content mt-auto">
+                                                    <ul>
+                                                        <li>
+                                                            <span>{{ $destination->price ? number_format($destination->price, 0, ',', '.') : 'N/A' }}</span>
+                                                            <span class="date">{{ __('main.harga') }}</span>
+                                                        </li>
+                                                        <li>
+                                                            <span>{{ number_format($destination->reviews->count() ?? '0', 0, ',', '.') }}</span>
+                                                            <span class="date">{{ __('main.ulasan') }}</span>
+                                                        </li>
+                                                        <li>
+                                                            <span>{{ number_format($destination->reviews_avg_rating, 1) ?? '0.0' }}</span>
+                                                            <span class="date">{{ __('main.rating') }}</span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="content flex-grow-1 d-flex flex-column">
-                                            <h2>
-                                                <a
-                                                    href="{{ route('destination.show', $destination->slug) }}">{{ $destination->getTranslatedName() }}</a>
-                                            </h2>
-                                            <div class="description flex-grow-1 d-flex align-items-start"
-                                                style="min-height: 40px;">
-                                                <span class="overflow-hidden"
-                                                    style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
-                                                    {{ $destination->getTranslatedDescription() ?? __('main.deskripsi_tidak_tersedia') }}
-                                                </span>
-                                            </div>
-                                            <div class="top-content mt-auto">
-                                                <ul>
-                                                    <li>
-                                                        <span>{{ $destination->price ? number_format($destination->price, 0, ',', '.') : 'N/A' }}</span>
-                                                        <span class="date">{{ __('main.harga') }}</span>
-                                                    </li>
-                                                    <li>
-                                                        <span>{{ number_format($destination->reviews->count() ?? '0', 0, ',', '.') }}</span>
-                                                        <span class="date">{{ __('main.ulasan') }}</span>
-                                                    </li>
-                                                    <li>
-                                                        <span>{{ number_format($destination->reviews_avg_rating, 1) ?? '0.0' }}</span>
-                                                        <span class="date">{{ __('main.rating') }}</span>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    </a>
                                 </div>
                             @endforeach
                         </div>
