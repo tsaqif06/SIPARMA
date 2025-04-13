@@ -42,7 +42,7 @@ Route::get('set-language/{lang}', function ($lang) {
     return back();
 })->name('set-language');
 
-Route::get('/comments/{comment}/replies', function (ArticleComment $comment) {
+Route::get('comments/{comment}/replies', function (ArticleComment $comment) {
     $limit = request('limit', 3);
     $offset = request('offset', 0);
 
@@ -62,57 +62,57 @@ Route::get('/comments/{comment}/replies', function (ArticleComment $comment) {
 });
 
 // user auth
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
-Route::post('/register', [AuthController::class, 'register'])->name('register.post');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('login', [AuthController::class, 'login'])->name('login.post');
+Route::get('register', [AuthController::class, 'showRegisterForm'])->name('register');
+Route::post('register', [AuthController::class, 'register'])->name('register.post');
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::post('/convert-role', [AuthController::class, 'convertRoleAndLogin'])->name('convert.role');
 
 Route::middleware('no_admin')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home.index');
-    Route::post('/recommendation/submit', [HomeController::class, 'submitRecommendation'])->name('home.recommendation.store');
-    Route::get('/destinations', [DestinationController::class, 'browse'])->name('destination.browse');
-    Route::get('/places', [PlaceController::class, 'browse'])->name('place.browse');
-    Route::get('/articles', [ArticleController::class, 'browse'])->name('article.browse');
-    Route::get('/destinations/{slug}', [DestinationController::class, 'show'])->name('destination.show');
-    Route::get('/places/{slug}', [PlaceController::class, 'show'])->name('place.show');
-    Route::get('/articles/{slug}', [ArticleController::class, 'show'])->name('article.show');
+    Route::post('recommendation/submit', [HomeController::class, 'submitRecommendation'])->name('home.recommendation.store');
+    Route::get('destinations', [DestinationController::class, 'browse'])->name('destination.browse');
+    Route::get('places', [PlaceController::class, 'browse'])->name('place.browse');
+    Route::get('articles', [ArticleController::class, 'browse'])->name('article.browse');
+    Route::get('destinations/{slug}', [DestinationController::class, 'show'])->name('destination.show');
+    Route::get('places/{slug}', [PlaceController::class, 'show'])->name('place.show');
+    Route::get('articles/{slug}', [ArticleController::class, 'show'])->name('article.show');
 });
 
 
 Route::middleware(['auth', 'is_user'])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-    Route::put('/profile/update', [ProfileController::class, 'profileUpdate'])->name('profile.update');
-    Route::get('/transactions/history', [ProfileController::class, 'transactionHistory'])->name('transactions.history');
-    Route::get('/adminplace/verification', [ProfileController::class, 'adminPlaceVerification'])->name('admin.verification');
-    Route::post('/adminplace/verification', [ProfileController::class, 'storeVerification'])->name('admin.verification.store');
+    Route::get('profile', [ProfileController::class, 'index'])->name('profile');
+    Route::put('profile/update', [ProfileController::class, 'profileUpdate'])->name('profile.update');
+    Route::get('transactions/history', [ProfileController::class, 'transactionHistory'])->name('transactions.history');
+    Route::get('adminplace/verification', [ProfileController::class, 'adminPlaceVerification'])->name('admin.verification');
+    Route::post('adminplace/verification', [ProfileController::class, 'storeVerification'])->name('admin.verification.store');
 
-    Route::post('/reviews/store', [ReviewController::class, 'store'])->name('reviews.store');
-    Route::delete('/reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+    Route::post('reviews/store', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::delete('reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 
-    Route::post('/article/like', [ArticleController::class, 'toggleLike'])->name('article.like');
-    Route::post('/comments/{id}', [ArticleController::class, 'comment'])->name('comment.store');
-    Route::post('/comments/{id}/reply', [ArticleController::class, 'reply'])->name('comment.reply.store');
-    Route::delete('/comments/{id}', [ArticleController::class, 'commentDestroy'])->name('comment.destroy');
-    Route::delete('/comments/{id}/reply', [ArticleController::class, 'replyDestroy'])->name('comment.reply.destroy');
+    Route::post('article/like', [ArticleController::class, 'toggleLike'])->name('article.like');
+    Route::post('comments/{id}', [ArticleController::class, 'comment'])->name('comment.store');
+    Route::post('comments/{id}/reply', [ArticleController::class, 'reply'])->name('comment.reply.store');
+    Route::delete('comments/{id}', [ArticleController::class, 'commentDestroy'])->name('comment.destroy');
+    Route::delete('comments/{id}/reply', [ArticleController::class, 'replyDestroy'])->name('comment.reply.destroy');
 
-    Route::post('/complaints', [ComplaintController::class, 'store'])->name('complaints.store');
+    Route::post('complaints', [ComplaintController::class, 'store'])->name('complaints.store');
 
-    Route::get('/destinations/checkout/{slug}/{type?}', [DestinationController::class, 'checkout'])->name('destination.checkout');
-    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+    Route::get('destinations/checkout/{slug}/{type?}', [DestinationController::class, 'checkout'])->name('destination.checkout');
+    Route::post('checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 
-    Route::get('/payment/{transaction}', [PaymentController::class, 'show'])->name('payment.show');
-    Route::post('/payment/{transaction}/process', [PaymentController::class, 'process'])->name('payment.process');
-    Route::post('/payment/callback', [PaymentController::class, 'callback'])->name('payment.callback');
-    Route::get('/invoice/{order_id}', [PaymentController::class, 'invoice'])->name('payment.invoice');
-    Route::get('/invoice/download/{order_id}', [PaymentController::class, 'downloadInvoice'])->name('payment.invoice.download');
+    Route::get('payment/{transaction}', [PaymentController::class, 'show'])->name('payment.show');
+    Route::post('payment/{transaction}/process', [PaymentController::class, 'process'])->name('payment.process');
+    Route::post('payment/callback', [PaymentController::class, 'callback'])->name('payment.callback');
+    Route::get('invoice/{order_id}', [PaymentController::class, 'invoice'])->name('payment.invoice');
+    Route::get('invoice/download/{order_id}', [PaymentController::class, 'downloadInvoice'])->name('payment.invoice.download');
 });
 
 Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/login', [AuthController::class, 'showLoginFormAdmin'])->name('login');
-    Route::post('/login', [AuthController::class, 'loginAdmin'])->name('login.post');
+    Route::get('login', [AuthController::class, 'showLoginFormAdmin'])->name('login');
+    Route::post('login', [AuthController::class, 'loginAdmin'])->name('login.post');
 
     Route::middleware(['auth', 'is_admin'])->group(function () {
         Route::get('/', [HomeController::class, 'indexAdmin'])->name('dashboard');
@@ -145,10 +145,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         ]);
         Route::resource('articles', AdminArticleController::class);
 
-        Route::get('/complaints', [ComplaintController::class, 'index'])->name('complaints.index');
-        Route::get('/complaints/{id}', [ComplaintController::class, 'show'])->name('complaints.show');
-        Route::get('/complaints/{id}/edit', [ComplaintController::class, 'edit'])->name('complaints.edit');
-        Route::put('/complaints/{id}', [ComplaintController::class, 'update'])->name('complaints.update');
+        Route::get('complaints', [ComplaintController::class, 'index'])->name('complaints.index');
+        Route::get('complaints/{id}', [ComplaintController::class, 'show'])->name('complaints.show');
+        Route::get('complaints/{id}/edit', [ComplaintController::class, 'edit'])->name('complaints.edit');
+        Route::put('complaints/{id}', [ComplaintController::class, 'update'])->name('complaints.update');
 
         Route::prefix('gallery')->group(function () {
             Route::get('{type}', [AdminGalleryController::class, 'index'])->name('gallery.index');
