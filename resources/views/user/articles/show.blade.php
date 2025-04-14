@@ -161,7 +161,7 @@
                                         <div class="review-img me-3">
                                             <img src="{{ asset($review->user->profile_picture ?: 'assets/images/default-avatar.jpg') }}"
                                                 class="rounded-circle" width="50" height="50"
-                                                alt="{{ $review->user->name }}">
+                                                style="object-fit: cover;" alt="{{ $review->user->name }}">
                                         </div>
 
                                         <!-- Comment Content -->
@@ -427,7 +427,7 @@
                 if (totalReplies > 3) {
                     container.append(`
                         <div class="text-center mt-2">
-                            <button class="btn btn-sm btn-link load-more-replies" 
+                            <button class="btn btn-sm btn-link load-more-replies"
                                 data-review-id="${reviewId}"
                                 data-offset="3">
                                 <iconify-icon icon="solar:arrow-down-linear"></iconify-icon>
@@ -463,7 +463,7 @@
                         if (newOffset < totalReplies) {
                             const showMoreButton = `
                                 <div class="text-center mt-2">
-                                    <button class="btn btn-sm btn-link load-more-replies" 
+                                    <button class="btn btn-sm btn-link load-more-replies"
                                         data-review-id="${reviewId}"
                                         data-offset="${newOffset}">
                                         <iconify-icon icon="solar:arrow-down-linear"></iconify-icon>

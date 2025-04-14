@@ -107,7 +107,8 @@
                             </div>
                             <div class="ticket-info">
                                 <div class="ticket-title">{{ __('main.tiket') }}
-                                    {{ str_replace(['destination', 'ride'], [__('main.wisata'), __('main.wahana')], $type) }} -
+                                    {{ str_replace(['destination', 'ride'], [__('main.wisata'), __('main.wahana')], $type) }}
+                                    -
                                     {{ $item->getTranslatedName() }}</div>
                                 <div class="ticket-desc">{{ __('main.dewasa') }}</div>
                             </div>
@@ -136,9 +137,10 @@
                             </div>
                             <div class="ticket-info">
                                 <div class="ticket-title">{{ __('main.tiket') }}
-                                    {{ str_replace(['destination', 'ride'], [__('main.wisata'), __('main.wahana')], $type) }} -
+                                    {{ str_replace(['destination', 'ride'], [__('main.wisata'), __('main.wahana')], $type) }}
+                                    -
                                     {{ $item->getTranslatedName() }}</div>
-                                <div class="ticket-desc">{{ __('main.anakanak') }}</div>
+                                <div class="ticket-desc">{{ __('main.anakanak') }} {{ __('main.under_7') }}</div>
                             </div>
 
                             @php
@@ -201,7 +203,8 @@
                                     <input type="hidden" id="children-count-input" name="children_count">
                                     <input type="hidden" id="total-price-input" name="total_price">
 
-                                    <button type="submit" class="btn btn-transparent float-end">{{ __('main.pesan_sekarang') }}</button>
+                                    <button type="submit"
+                                        class="btn btn-transparent float-end">{{ __('main.pesan_sekarang') }}</button>
                                 </form>
                             </div>
                         </div>

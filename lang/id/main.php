@@ -212,4 +212,7 @@ return [
     'biaya_admin' => 'Biaya Admin',
     'bayar' => 'Bayar',
     'anak' => 'Anak',
+
+    // others
+    'under_7' => '(Usia <7 Tahun)',
 ];
