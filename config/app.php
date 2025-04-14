@@ -187,5 +187,5 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
-    'admin_fee' => 1000,
+    'admin_fee' => 50,
 ];

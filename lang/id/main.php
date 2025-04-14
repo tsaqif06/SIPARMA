@@ -75,6 +75,7 @@ return [
     'cari_artikel' => 'Cari Artikel',
     'masukkan_kata_kunci' => 'Masukkan kata kunci...',
     'tidak_ada_artikel' => 'Tidak ada artikel yang ditemukan.',
+    'rekomendasi_untuk_anda' => 'Rekomendasi untuk anda',
 
     // profile.index
     'menu' => 'Menu',

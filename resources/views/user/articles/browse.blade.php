@@ -1,33 +1,39 @@
 @extends('user.layouts.app')
 
 @php
-    function formatLikes($num)
-    {
-        if ($num >= 1000000) {
-            return number_format($num / 1000000, 1, ',', '.') . 'jt';
-        } elseif ($num >= 1000) {
-            return number_format($num / 1000, 1, ',', '.') . 'k';
+    if (!function_exists('formatLikes')) {
+        function formatLikes($num)
+        {
+            if ($num >= 1000000) {
+                return number_format($num / 1000000, 1, ',', '.') . 'jt';
+            } elseif ($num >= 1000) {
+                return number_format($num / 1000, 1, ',', '.') . 'k';
+            }
+            return $num;
         }
-        return $num;
     }
 @endphp
 
 @section('content')
-    <div class="container">
-        <!-- HERO SECTION -->
-        <div class="hero-article-browse lazy-bg overlay-dark d-flex justify-content-center align-items-center"
-            data-bg="{{ asset('assets/images/hero-article.jpg') }}" style="height: 250px;">
-            <div class="text-center">
-                <h1 class="text-white mb-4">{{ __('main.cari_artikel') }}</h1>
-                <div class="search-bar">
-                    <form action="{{ route('article.browse') }}" method="GET" class="d-flex justify-content-center">
-                        <input type="text" name="search" class="search-box rounded-pill w-100 me-2"
-                            placeholder="{{ __('main.masukkan_kata_kunci') }}" value="{{ request('search') }}">
-                    </form>
-                </div>
+    <!-- HERO SECTION (container-fluid style) -->
+    <div class="hero-article-browse lazy-bg overlay-dark d-flex justify-content-center align-items-center"
+        data-bg="{{ asset('assets/images/hero-article.jpg') }}" style="height: 350px;">
+        <div class="text-center">
+            <h1 class="text-white mb-4">{{ __('main.cari_artikel') }}</h1>
+            <div class="search-bar">
+                <form action="{{ route('article.browse') }}" method="GET" class="d-flex justify-content-center">
+                    <input type="text" name="search" class="search-box rounded-pill w-100 me-2"
+                        placeholder="{{ __('main.masukkan_kata_kunci') }}" value="{{ request('search') }}">
+                </form>
             </div>
         </div>
+    </div>
 
+    <!-- CONTENT (inside container) -->
+    <div class="container">
+        <div class="article-section-title">
+            <h2>{{ __('main.rekomendasi_untuk_anda') }}</h2>
+        </div>
         <!-- ARTICLES LIST -->
         <div class="row mt-5">
             @forelse ($articles as $article)
