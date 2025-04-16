@@ -27,6 +27,7 @@ class ArticleController extends Controller
     public function browse(Request $request)
     {
         $query = $request->input('search');
+        $sort = $request->input('sort', 'populer'); // default 'populer'
 
         $articles = Article::with(['category', 'tags', 'comments', 'likes', 'views'])
             ->where('status', 'published')
@@ -40,7 +41,18 @@ class ArticleController extends Controller
                         $q->where('tag_name', 'LIKE', "%{$query}%");
                     });
             })
-            ->latest()
+            ->when($sort === 'populer', function ($q) {
+                $q->withCount('views')->orderBy('views_count', 'desc');
+            })
+            ->when($sort === 'terbaru', function ($q) {
+                $q->orderBy('created_at', 'desc');
+            })
+            ->when($sort === 'like_terbanyak', function ($q) {
+                $q->withCount('likes')->orderBy('likes_count', 'desc');
+            })
+            ->when($sort === 'komen_terbanyak', function ($q) {
+                $q->withCount('comments')->orderBy('comments_count', 'desc');
+            })
             ->paginate(9);
 
         return view('user.articles.browse', compact('articles'));

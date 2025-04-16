@@ -215,4 +215,10 @@ return [
 
     // others
     'under_7' => '(Usia <7 Tahun)',
+    'suka' => 'Suka',
+    'lihat' => 'Dilihat',
+    'cari' => 'Cari',
+    'komen_terbanyak' => 'Komen Terbanyak',
+    'like_terbanyak' => 'Suka Terbanyak',
+    'terbaru' => 'Terbaru',
 ];

@@ -216,4 +216,10 @@ return [
 
     // others
     'under_7' => '(<7 Year old)',
+    'suka' => 'Likes',
+    'lihat' => 'Views',
+    'cari' => 'Search',
+    'komen_terbanyak' => 'Most Commented',
+    'like_terbanyak' => 'Most Liked',
+    'terbaru' => 'Newest',
 ];
