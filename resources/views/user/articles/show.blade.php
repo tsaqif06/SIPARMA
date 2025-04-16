@@ -298,7 +298,7 @@
                         </form>
                         <div class="side-relevan mt-5">
                             <div class="room-title">
-                                <h2>{{ __('main.artikel_relevan') }}</h2>
+                                <h2 style="font-size: 24px">{{ __('main.artikel_relevan') }}</h2>
                             </div>
                             <div class="fasilitas-list">
                                 @if ($relatedArticles->isEmpty())
@@ -339,7 +339,7 @@
                         </div>
                         <div class="side-category">
                             <div class="room-title">
-                                <h2>{{ __('main.kategori') }}</h2>
+                                <h2 style="font-size: 24px">{{ __('main.kategori') }}</h2>
                             </div>
                             <div class="fasilitas-list">
                                 <p>{{ ucfirst($article->category->name) }}</p>
@@ -347,7 +347,7 @@
                         </div>
                         <div class="side-tag">
                             <div class="room-title">
-                                <h2>Tags</h2>
+                                <h2 style="font-size: 24px">Tags</h2>
                             </div>
                             <div class="fasilitas-list">
                                 @if ($article->tags->isEmpty())

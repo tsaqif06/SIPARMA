@@ -222,4 +222,5 @@ return [
     'komen_terbanyak' => 'Most Commented',
     'like_terbanyak' => 'Most Liked',
     'terbaru' => 'Newest',
+    'tiket_hanya_sekali' => 'Tickets are for one entry only',
 ];

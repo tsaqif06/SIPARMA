@@ -118,25 +118,30 @@
             <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     @foreach ($galleryChunks as $key => $chunk)
+                        @php
+                            // reset key supaya bisa diakses dari 0
+                            $chunk = $chunk->values();
+                            $mainImage = $chunk[0] ?? null;
+                            $sideImages = $chunk->slice(1);
+                        @endphp
+
                         <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
                             <div class="row">
                                 <div class="col-md-8 mb-sm-2">
-                                    <a href="{{ asset($chunk[0]->image_url ?? 'assets/images/default.png') }}">
-                                        <img src="{{ asset($chunk[0]->image_url ?? 'assets/images/default.png') }}"
-                                            class="d-block w-100 img-clickable" alt="{{ $place->name }}">
-                                    </a>
+                                    @if ($mainImage)
+                                        <a href="{{ asset($mainImage->image_url ?? 'assets/images/default.png') }}">
+                                            <img src="{{ asset($mainImage->image_url ?? 'assets/images/default.png') }}"
+                                                class="d-block w-100 img-clickable" alt="{{ $place->name }}">
+                                        </a>
+                                    @endif
                                 </div>
                                 <div class="col-md-4 d-flex flex-column">
-                                    <a
-                                        href="{{ asset($chunk[1]->image_url ?? ($chunk[0]->image_url ?? 'assets/images/default.png')) }}">
-                                        <img src="{{ asset($chunk[1]->image_url ?? ($chunk[0]->image_url ?? 'assets/images/default.png')) }}"
-                                            class="mb-2 w-100 img-clickable" loading="lazy" alt="{{ $place->name }}">
-                                    </a>
-                                    <a
-                                        href="{{ asset($chunk[2]->image_url ?? ($chunk[0]->image_url ?? 'assets/images/default.png')) }}">
-                                        <img src="{{ asset($chunk[2]->image_url ?? ($chunk[0]->image_url ?? 'assets/images/default.png')) }}"
-                                            class="w-100 img-clickable" loading="lazy" alt="{{ $place->name }}">
-                                    </a>
+                                    @foreach ($sideImages as $item)
+                                        <a href="{{ asset($item->image_url ?? 'assets/images/default.png') }}">
+                                            <img src="{{ asset($item->image_url ?? 'assets/images/default.png') }}"
+                                                class="mb-2 w-100 img-clickable" loading="lazy" alt="{{ $place->name }}">
+                                        </a>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>

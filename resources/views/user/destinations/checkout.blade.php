@@ -223,6 +223,7 @@
                         <li>{{ __('main.pastikan_informasi_benar') }}</li>
                         <li>{{ __('main.tiket_tidak_dapat_dikembalikan') }}</li>
                         <li>{{ __('main.perubahan_sesuai_kebijakan') }}</li>
+                        <li>{{ __('main.tiket_hanya_sekali') }}</li>
                     </ul>
                 </div>
             </div>

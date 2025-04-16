@@ -221,4 +221,5 @@ return [
     'komen_terbanyak' => 'Komen Terbanyak',
     'like_terbanyak' => 'Suka Terbanyak',
     'terbaru' => 'Terbaru',
+    'tiket_hanya_sekali' => 'Tiket hanya untuk sekali masuk',
 ];
