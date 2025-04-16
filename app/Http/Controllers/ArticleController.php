@@ -8,6 +8,7 @@ use App\Models\ArticleView;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\ArticleComment;
+use App\Models\ArticleCategory;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -27,7 +28,10 @@ class ArticleController extends Controller
     public function browse(Request $request)
     {
         $query = $request->input('search');
-        $sort = $request->input('sort', 'populer'); // default 'populer'
+        $sort = $request->input('sort', 'populer');
+        $selectedCategories = $request->input('kategori', []);
+
+        $categories = ArticleCategory::all(); // ambil semua kategori
 
         $articles = Article::with(['category', 'tags', 'comments', 'likes', 'views'])
             ->where('status', 'published')
@@ -40,6 +44,11 @@ class ArticleController extends Controller
                     ->orWhereHas('tags', function ($q) use ($query) {
                         $q->where('tag_name', 'LIKE', "%{$query}%");
                     });
+            })
+            ->when(!empty($selectedCategories), function ($q) use ($selectedCategories) {
+                $q->whereHas('category', function ($q2) use ($selectedCategories) {
+                    $q2->whereIn('name', $selectedCategories);
+                });
             })
             ->when($sort === 'populer', function ($q) {
                 $q->withCount('views')->orderBy('views_count', 'desc');
@@ -55,7 +64,7 @@ class ArticleController extends Controller
             })
             ->paginate(9);
 
-        return view('user.articles.browse', compact('articles'));
+        return view('user.articles.browse', compact('articles', 'categories'));
     }
 
     /**

@@ -19,33 +19,26 @@
         <div class="container mt-5 d-flex">
             <div class="row">
                 <!-- Sidebar Filter -->
-                <div class="sidebar-filter col-md-3 col-12" style="height: 140px">
+                <div class="sidebar-filter col-md-3 col-12">
                     <form action="{{ route('article.browse') }}" method="GET">
                         <input type="text" name="search" class="search-box" placeholder="{{ __('main.cari_artikel') }}"
                             value="{{ request('search') }}">
-                        {{--  <h4>{{ __('main.filter') }}</h4>
+                        <h4>{{ __('main.filter') }}</h4>
                         <hr>
                         <div class="filter-section">
-                            <label class="filter-title">{{ __('main.jenis_tempat') }}</label>
+                            <label class="filter-title">{{ __('main.kategori') }}</label>
                             <div class="checkbox-group">
-                                <label for="restoran">
-                                    <input type="checkbox" name="jenis_tempat[]" value="Restoran" id="restoran"
-                                        {{ in_array('Restoran', request('jenis_tempat', [])) ? 'checked' : '' }}>
-                                    {{ __('main.restoran') }}
-                                </label>
-                                <label for="penginapan">
-                                    <input type="checkbox" name="jenis_tempat[]" value="Penginapan" id="penginapan"
-                                        {{ in_array('Penginapan', request('jenis_tempat', [])) ? 'checked' : '' }}>
-                                    {{ __('main.penginapan') }}
-                                </label>
-                                <label for="other">
-                                    <input type="checkbox" name="jenis_tempat[]" value="Other" id="other"
-                                        {{ in_array('Other', request('jenis_tempat', [])) ? 'checked' : '' }}>
-                                    {{ __('main.lainnya') }}
-                                </label>
+                                @foreach ($categories as $category)
+                                    <label for="cat-{{ $category->id }}">
+                                        <input type="checkbox" name="kategori[]" value="{{ $category->name }}"
+                                            id="cat-{{ $category->id }}"
+                                            {{ in_array($category->name, request('kategori', [])) ? 'checked' : '' }}>
+                                        {{ $category->name }}
+                                    </label>
+                                @endforeach
                             </div>
-                        </div>  --}}
-                        <button type="submit" class="btn btn-primary">{{ __('main.cari') }}</button>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-4">{{ __('main.terapkan_filter') }}</button>
                     </form>
                 </div>
 
