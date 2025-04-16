@@ -118,7 +118,7 @@
                 <div class="row">
                     <div class="col-lg-5 col-12">
                         <div class="wpo-section-title wow fadeInLeft">
-                            <span class="text-start">// {{ __('main.penawaran_terbaik') }}</span>
+                            <span class="text-start">{{ __('main.penawaran_terbaik') }}</span>
                             <h2>{{ __('main.penawaran_spesial') }}</h2>
                         </div>
                     </div>
@@ -164,7 +164,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg-10 col-12">
                     <div class="wpo-section-title s2 wow fadeInDown">
-                        <span>// {{ __('main.jelajahi_malang') }}</span>
+                        <span>{{ __('main.jelajahi_malang') }}</span>
                         <h2>{{ __('main.temukan_keindahan') }}</h2>
                     </div>
                 </div>
@@ -270,7 +270,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg- col-12">
                     <div class="wpo-section-title s2 wow fadeInUp">
-                        <span>// {{ __('main.wisata_terbaik') }}</span>
+                        <span>{{ __('main.wisata_terbaik') }}</span>
                         <h2>{{ __('main.jelajahi_destinasi') }}</h2>
                     </div>
                 </div>
@@ -321,7 +321,7 @@
             <div class="row align-items-center">
                 <div class="col-xl-4 col-12">
                     <div class="wpo-section-title s2 wow fadeInLeftSlow" data-wow-duration="1700ms">
-                        <p style="color: #FFFFFF;">// {{ __('main.wisata_terbaik') }}</p>
+                        <p style="color: #FFFFFF;">{{ __('main.wisata_terbaik') }}</p>
                         <h2 style="margin-top: 20px; color: #FFFFFF;">{{ __('main.beritahu_kami') }}</h2>
                         <p style="margin: 20px 0 0 0; color: #FFFFFF;">{{ __('main.rekomendasi_deskripsi') }}</p>
                     </div>

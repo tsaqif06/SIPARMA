@@ -123,11 +123,20 @@ class AdminWithdrawalController extends Controller
         $balance = Balance::where('destination_id', $destinationId)->first();
 
         $request->validate([
-            'amount' => ['required', 'numeric', 'min:1', function ($attribute, $value, $fail) use ($balance) {
-                if ($value > $balance->balance) {
-                    $fail('Jumlah yang diminta melebihi saldo yang tersedia.');
+            'amount' => [
+                'required',
+                'numeric',
+                'min:20000',
+                function ($attribute, $value, $fail) use ($balance) {
+                    if ($value > $balance->balance) {
+                        $fail('Jumlah yang diminta melebihi saldo yang tersedia.');
+                    }
                 }
-            }]
+            ]
+        ], [
+            'amount.required' => 'Jumlah pencairan wajib diisi.',
+            'amount.numeric' => 'Jumlah pencairan harus berupa angka.',
+            'amount.min' => 'Jumlah minimal pencairan adalah Rp 20.000.'
         ]);
 
         Withdrawal::create([

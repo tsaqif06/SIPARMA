@@ -8,9 +8,11 @@
         function updateBalance(initialBalance) {
             let amount = document.getElementById("amount").value;
             let currentBalance = initialBalance - amount;
-            document.getElementById("current_balance").value = currentBalance.toLocaleString("id-ID", {
-                minimumFractionDigits: 2
-            });
+            if (!isNaN(currentBalance)) {
+                document.getElementById("current_balance").value = currentBalance.toLocaleString("id-ID", {
+                    minimumFractionDigits: 2
+                });
+            }
         }
     </script>';
 @endphp
@@ -43,6 +45,7 @@
                                             <input type="number" name="amount" id="amount"
                                                 class="form-control radius-8 @error('amount') is-invalid @enderror"
                                                 oninput="updateBalance({{ $balance->balance }})">
+                                            <small class="">*Minimal pencairan adalah Rp 20.000</small>
                                             @error('amount')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
