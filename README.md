@@ -65,4 +65,4 @@ SIPARMA is developed to make it easier for the public to find information about 
 
 ---
 
-🚨 **This software is proprietary and intended for internal use only. Unauthorized distribution or modification is strictly prohibited.**
+🚨 **This software was developed as a final graduation project. Please note that the live demo link is currently offline, and unauthorized distribution or modification is strictly prohibited.**
